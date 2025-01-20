@@ -25,11 +25,11 @@ format_md <- function(content) {
   }
 
   mdx <- paste0(
-    "## Description\n\n", content$description, "\n",
-    "## Usage\n\n```r\n", content$usage, "\n```\n",
-    "## Arguments\n\n", arguments_table, "\n",
-    "## Returns\n\n", content$value, "\n",
-    "## Examples\n\n```r\n", content$examples, "\n```"
+    "## Description\n", content$description, "\n",
+    "## Usage\n```r", content$usage, "\n```\n",
+    "## Arguments\n", arguments_table, "\n",
+    "## Returns\n", content$value, "\n",
+    "## Examples\n```r", content$examples, "\n```"
   )
 
   return(mdx)
