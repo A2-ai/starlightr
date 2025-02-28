@@ -55,9 +55,8 @@ extract_rd_content <- function(rd_obj) {
 #' @return list of rd_objects, with each section parsed
 #' @export
 #'
-#' @examples \dontrun{
+#' @examples
 #' extract_package_rd_content("rdstarlight")
-#' }
 extract_package_rd_content <- function(pkg_name) {
   rd_files <- tools::Rd_db(pkg_name)
   return(lapply(rd_files, extract_rd_content))

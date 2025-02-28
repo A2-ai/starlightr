@@ -18,7 +18,5 @@ extracts all Rd files from a package and retrieves each section
 from extract_rd_section
 }
 \examples{
-\dontrun{
 extract_package_rd_content("rdstarlight")
-}
 }
