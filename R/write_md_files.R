@@ -23,7 +23,7 @@ write_md_files <- function(rd_files, output_dir, file_ext = ".md") {
 
     if (tolower(continue) == "y") {
       dir.create(output_dir, recursive = TRUE)
-			message(paste("created output_dir:", output_dir))
+      message(paste("created output_dir:", output_dir))
     } else {
       stop("Please supply output_dir to path that exists")
     }
