@@ -9,11 +9,8 @@
 #' @examples \dontrun{
 #' capture_example_output("pkg", "pkg-docs/public")
 #' }
-capture_example_output <- function(
-  pkg_name,
-  artifact_output_dir,
-  text_output_dir
-) {
+capture_example_output <- function(pkg_name, artifact_output_dir, text_output_dir) {
+
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
     stop("Package 'ggplot2' is required for 'capture_example_outputs()'.")
   }
@@ -29,23 +26,18 @@ capture_example_output <- function(
       )
     },
     error = function(e) {
-      stop(
-        "Failed to load package '",
-        pkg_name,
-        "'. Make sure it's installed. ",
-        e$message
-      )
+      stop("Failed to load package '", pkg_name,
+           "'. Make sure it's installed. ", e$message)
     }
   )
 
   rd_content <- extract_package_rd_content(pkg_name)
 
-  if (!dir.exists(artifact_output_dir)) dir.create(artifact_output_dir)
-  if (!dir.exists(text_output_dir)) dir.create(text_output_dir)
+  if (!dir.exists(artifact_output_dir)) dir.create(artifact_output_dir, recursive = TRUE)
+  if (!dir.exists(text_output_dir)) dir.create(text_output_dir, recursive = TRUE)
 
   for (fn in names(rd_content)) {
-    # Strip the .Rd suffix from fn to create a cleaner file base name
-    fn_name <- sub("\\.Rd$", "", fn)
+    fn_name <- strsplit(fn, ".Rd")[[1]]
 
     ex_code <- rd_content[[fn]]$examples
 
@@ -62,6 +54,7 @@ capture_example_output <- function(
     if (is.null(ex_exprs)) next
 
     env <- new.env(parent = globalenv())
+    
     for (i in seq_along(ex_exprs)) {
       val <- tryCatch(
         withVisible(eval(ex_exprs[i], envir = env)),
@@ -82,20 +75,9 @@ capture_example_output <- function(
         if (inherits(result, "ggplot")) {
           out_file <- file.path(artifact_output_dir, paste0(fn_name, ".png"))
           tryCatch(
-            ggplot2::ggsave(
-              filename = out_file,
-              plot = result,
-              width = 6,
-              height = 4
-            ),
+            ggplot2::ggsave(filename = out_file, plot = result, width = 6, height = 4),
             error = function(e) {
-              message(
-                "  Error saving ggplot for",
-                fn_name,
-                ":",
-                e$message,
-                "\n"
-              )
+              message("  Error saving ggplot for", fn_name, ":", e$message, "\n")
             }
           )
           message("Saved ggplot -> ", out_file)
@@ -111,10 +93,11 @@ capture_example_output <- function(
           )
           message("Saved gt table ->", out_file)
         } else {
+          # APPEND each result to function-specific file
           out_file <- file.path(text_output_dir, paste0(fn_name, ".txt"))
           printed_text <- utils::capture.output(print(result))
-          writeLines(printed_text, out_file)
-          message("Saved generic output -> ", out_file)
+          cat(paste(printed_text, collapse = "\n"), "\n", file = out_file, append = TRUE)
+          message("APPENDED output to -> ", out_file)
         }
       }
     }
