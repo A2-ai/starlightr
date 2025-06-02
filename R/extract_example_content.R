@@ -55,6 +55,9 @@ capture_example_output <- function(pkg_name, artifact_output_dir, text_output_di
 
     env <- new.env(parent = globalenv())
     
+    # Track if this is the first write to the text file for this function
+    first_write <- TRUE
+    
     for (i in seq_along(ex_exprs)) {
       val <- tryCatch(
         withVisible(eval(ex_exprs[i], envir = env)),
@@ -93,11 +96,17 @@ capture_example_output <- function(pkg_name, artifact_output_dir, text_output_di
           )
           message("Saved gt table ->", out_file)
         } else {
-          # APPEND each result to function-specific file
+          # First write overwrites, subsequent writes append
           out_file <- file.path(text_output_dir, paste0(fn_name, ".txt"))
           printed_text <- utils::capture.output(print(result))
-          cat(paste(printed_text, collapse = "\n"), "\n", file = out_file, append = TRUE)
-          message("APPENDED output to -> ", out_file)
+          cat(paste(printed_text, collapse = "\n"), "\n", file = out_file, append = !first_write)
+          
+          if (first_write) {
+            message("WROTE output to -> ", out_file)
+            first_write <- FALSE
+          } else {
+            message("APPENDED output to -> ", out_file)
+          }
         }
       }
     }
