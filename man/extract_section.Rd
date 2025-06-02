@@ -21,6 +21,6 @@ Pulls out text from rd_obj if Rd_tag attribute matches supplied tag
 \dontrun{
 rd_files <- tools::Rd_db("rdstarlight")
 
-extract_section(rd_files[['extract_section.Rd']], "description")
+extract_section(rd_files[["extract_section.Rd"]], "description")
 }
 }

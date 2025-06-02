@@ -4,7 +4,15 @@
 \alias{write_md_files}
 \title{Writes the parsed and formatted Rd file to a new file in output_dir}
 \usage{
-write_md_files(rd_files, output_dir, file_ext = ".md")
+write_md_files(
+  rd_files,
+  output_dir,
+  file_ext = ".md",
+  sections = c("description", "usage", "arguments", "details", "value", "examples",
+    "references", "note", "author", "source", "format", "section", "subsection"),
+  code_sections = c("usage", "examples"),
+  skip_sections = c("name", "title", "seealso")
+)
 }
 \arguments{
 \item{rd_files}{list of rd_objects to create md file for}
@@ -12,15 +20,24 @@ write_md_files(rd_files, output_dir, file_ext = ".md")
 \item{output_dir}{path to directory to save new md files}
 
 \item{file_ext}{either .md or .mdx. extension to use for files, default .md}
+
+\item{sections}{character vector of sections to include in markdown output, in order}
+
+\item{code_sections}{character vector of sections to format as code blocks}
+
+\item{skip_sections}{character vector of sections to skip entirely}
 }
 \description{
 Writes the parsed and formatted Rd file to a new file in output_dir
 }
 \examples{
 \dontrun{
-rd_files <- extract_package_rd_contents("rdstarlight")
+rd_files <- extract_package_rd_content("rdstarlight")
 output_dir <- file.path("path/to/rdstarlight/docs/content/rd_files")
 
 write_md_files(rd_files, output_dir)
+
+# Custom sections
+write_md_files(rd_files, output_dir, sections = c("description", "usage", "examples"))
 }
 }

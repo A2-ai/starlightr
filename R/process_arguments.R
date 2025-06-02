@@ -6,30 +6,81 @@
 #' @export
 #'
 #' @examples \dontrun{
-#' rd_files <- extract_package_rd_contents("rdstarlight")
+#' rd_files <- extract_package_rd_content("rdstarlight")
 #' process_arguments(rd_files[['write_md_files.Rd']]$arguments)
 #' }
 process_arguments <- function(arguments_text) {
-  if (is.null(arguments_text)) return(data.frame())
+  if (is.null(arguments_text) || nchar(trimws(arguments_text)) == 0) {
+    return(data.frame(
+      name = character(0),
+      description = character(0),
+      stringsAsFactors = FALSE
+    ))
+  }
 
-  # Remove leading/trailing whitespace and normalize newlines
-  cleaned_text <- gsub("^\\s+|\\s+$", "", arguments_text)
-  cleaned_text <- gsub("\n", " ", cleaned_text)
+  # Clean up the text
+  cleaned_text <- trimws(arguments_text)
 
-  # Split on double spaces to separate argument entries
-  split_args <- unlist(strsplit(cleaned_text, " {2,}"))
+  # R documentation arguments are typically separated by multiple newlines/spaces
+  # Split on patterns like "\n \n" which separate different arguments
+  arg_chunks <- unlist(strsplit(
+    cleaned_text,
+    "\\s*\\n\\s*\\n\\s*",
+    perl = TRUE
+  ))
 
-  # Parse each argument into name and description
-  args_list <- lapply(split_args, function(arg) {
-    parts <- unlist(strsplit(arg, " ", fixed = TRUE))
-    name <- parts[1]
-    description <- paste(parts[-1], collapse = " ")
-    c(name = name, description = description)
-  })
+  # Remove empty chunks
+  arg_chunks <- arg_chunks[nchar(trimws(arg_chunks)) > 0]
 
-  # Convert list to data frame
-  args_df <- as.data.frame(do.call(rbind, args_list), stringsAsFactors = FALSE)
-  names(args_df) <- c("name", "description")
+  if (length(arg_chunks) == 0) {
+    return(data.frame(
+      name = character(0),
+      description = character(0),
+      stringsAsFactors = FALSE
+    ))
+  }
 
-  return(args_df)
+  args_list <- list()
+
+  for (chunk in arg_chunks) {
+    # Each chunk should start with the argument name followed by description
+    # Clean up the chunk
+    chunk <- trimws(chunk)
+    chunk <- gsub("\\s+", " ", chunk) # Replace multiple spaces with single space
+
+    # Split on first space to separate name from description
+    words <- unlist(strsplit(chunk, "\\s+", perl = TRUE))
+
+    if (length(words) >= 2) {
+      name <- words[1]
+      description <- paste(words[-1], collapse = " ")
+
+      # Clean up common artifacts in descriptions
+      description <- trimws(description)
+
+      args_list[[length(args_list) + 1]] <- c(
+        name = name,
+        description = description
+      )
+    } else if (length(words) == 1) {
+      # Single word - might be just an argument name
+      args_list[[length(args_list) + 1]] <- c(name = words[1], description = "")
+    }
+  }
+
+  if (length(args_list) > 0) {
+    args_df <- as.data.frame(
+      do.call(rbind, args_list),
+      stringsAsFactors = FALSE
+    )
+    names(args_df) <- c("name", "description")
+    return(args_df)
+  }
+
+  # Fallback: return as single entry
+  return(data.frame(
+    name = "arguments",
+    description = cleaned_text,
+    stringsAsFactors = FALSE
+  ))
 }

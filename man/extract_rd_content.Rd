@@ -2,23 +2,30 @@
 % Please edit documentation in R/extract.R
 \name{extract_rd_content}
 \alias{extract_rd_content}
-\title{Wraps extract_section for name, description, usage, arguments, value, examples}
+\title{Extracts all sections from an Rd object dynamically}
 \usage{
-extract_rd_content(rd_obj)
+extract_rd_content(rd_obj, include_common_only = FALSE)
 }
 \arguments{
 \item{rd_obj}{rd object from tools::Rd_db}
+
+\item{include_common_only}{logical, if TRUE only extracts common sections,
+if FALSE extracts all available sections}
 }
 \value{
 list of sections for the rd_obj
 }
 \description{
-Wraps extract_section for name, description, usage, arguments, value, examples
+Extracts all sections from an Rd object dynamically
 }
 \examples{
 \dontrun{
 rd_files <- tools::Rd_db("rdstarlight")
 
-extract_rd_content(rd_files[['extract_section.Rd']])
+# Extract all sections
+extract_rd_content(rd_files[["extract_section.Rd"]])
+
+# Extract only common sections
+extract_rd_content(rd_files[["extract_section.Rd"]], include_common_only = TRUE)
 }
 }

@@ -3,20 +3,27 @@
 \name{extract_package_rd_content}
 \alias{extract_package_rd_content}
 \title{extracts all Rd files from a package and retrieves each section
-from extract_rd_section}
+from extract_rd_content}
 \usage{
-extract_package_rd_content(pkg_name)
+extract_package_rd_content(pkg_name, include_common_only = FALSE)
 }
 \arguments{
 \item{pkg_name}{name of package to collect Rd objects for}
+
+\item{include_common_only}{logical, if TRUE only extracts common sections,
+if FALSE extracts all available sections}
 }
 \value{
 list of rd_objects, with each section parsed
 }
 \description{
 extracts all Rd files from a package and retrieves each section
-from extract_rd_section
+from extract_rd_content
 }
 \examples{
+# Extract all sections
 extract_package_rd_content("rdstarlight")
+
+# Extract only common sections
+extract_package_rd_content("rdstarlight", include_common_only = TRUE)
 }

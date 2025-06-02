@@ -4,10 +4,22 @@
 \alias{format_md}
 \title{Formats the rd file contents to markdown}
 \usage{
-format_md(content)
+format_md(
+  content,
+  sections = c("description", "usage", "arguments", "details", "value", "examples",
+    "references", "note", "author", "source", "format", "section", "subsection"),
+  code_sections = c("usage", "examples"),
+  skip_sections = c("name", "title", "seealso")
+)
 }
 \arguments{
-\item{content}{rd_file contents}
+\item{content}{rd_file contents from extract_rd_content}
+
+\item{sections}{character vector of sections to include, in order}
+
+\item{code_sections}{character vector of sections to format as code blocks}
+
+\item{skip_sections}{character vector of sections to skip entirely}
 }
 \value{
 markdown formatted string of content
@@ -17,7 +29,7 @@ Formats the rd file contents to markdown
 }
 \examples{
 \dontrun{
-rd_files <- extract_package_rd_contents("rdstarlight")
+rd_files <- extract_package_rd_content("rdstarlight")
 format_md(rd_files[["function_name.Rd"]])
 }
 }

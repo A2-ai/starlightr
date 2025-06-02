@@ -17,7 +17,7 @@ Formats function arguments into markdown table
 }
 \examples{
 \dontrun{
-rd_files <- extract_package_rd_contents("rdstarlight")
+rd_files <- extract_package_rd_content("rdstarlight")
 process_arguments(rd_files[['write_md_files.Rd']]$arguments)
 }
 }

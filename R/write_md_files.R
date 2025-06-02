@@ -3,17 +3,45 @@
 #' @param rd_files list of rd_objects to create md file for
 #' @param output_dir path to directory to save new md files
 #' @param file_ext either .md or .mdx. extension to use for files, default .md
+#' @param sections character vector of sections to include in markdown output, in order
+#' @param code_sections character vector of sections to format as code blocks
+#' @param skip_sections character vector of sections to skip entirely
 #'
 #' @export
 #'
 #' @examples \dontrun{
-#' rd_files <- extract_package_rd_contents("rdstarlight")
+#' rd_files <- extract_package_rd_content("rdstarlight")
 #' output_dir <- file.path("path/to/rdstarlight/docs/content/rd_files")
 #'
 #' write_md_files(rd_files, output_dir)
+#'
+#' # Custom sections
+#' write_md_files(rd_files, output_dir, sections = c("description", "usage", "examples"))
 #' }
-write_md_files <- function(rd_files, output_dir, file_ext = ".md") {
+write_md_files <- function(
+  rd_files,
+  output_dir,
+  file_ext = ".md",
+  sections = c(
+    "description",
+    "usage",
+    "arguments",
+    "details",
+    "value",
+    "examples",
+    "references",
+    "note",
+    "author",
+    "source",
+    "format",
+    "section",
+    "subsection"
+  ),
+  code_sections = c("usage", "examples"),
+  skip_sections = c("name", "title", "seealso")
+) {
   checkmate::assert_choice(file_ext, c(".md", ".mdx"))
+
   if (!dir.exists(output_dir)) {
     continue <- readline(paste0(
       "output_dir: ",
@@ -30,7 +58,12 @@ write_md_files <- function(rd_files, output_dir, file_ext = ".md") {
   }
 
   for (file in names(rd_files)) {
-    md_content <- format_md(rd_files[[file]])
+    md_content <- format_md(
+      content = rd_files[[file]],
+      sections = sections,
+      code_sections = code_sections,
+      skip_sections = skip_sections
+    )
 
     writeLines(
       md_content,
