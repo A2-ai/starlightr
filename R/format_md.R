@@ -1,7 +1,6 @@
 #' Formats the rd file contents to markdown
 #'
 #' @param content rd_file contents from extract_rd_content
-#' @param sections character vector of sections to include, in order
 #' @param code_sections character vector of sections to format as code blocks
 #' @param skip_sections character vector of sections to skip entirely
 #'
@@ -14,21 +13,6 @@
 #' }
 format_md <- function(
   content,
-  sections = c(
-    "description",
-    "usage",
-    "arguments",
-    "details",
-    "value",
-    "examples",
-    "references",
-    "note",
-    "author",
-    "source",
-    "format",
-    "section",
-    "subsection"
-  ),
   code_sections = c("usage", "examples"),
   skip_sections = c("name", "title", "seealso")
 ) {
@@ -42,9 +26,13 @@ format_md <- function(
     md_parts <- c(md_parts, paste0("# ", clean_text(content$title), "\n\n"))
   }
 
-  # Process sections in the specified order
-  for (section_name in sections) {
-    if (section_name %in% skip_sections || is.null(content[[section_name]])) {
+  # Get all section names from content, excluding those in skip_sections
+  all_sections <- names(content)
+  sections_to_process <- all_sections[!all_sections %in% skip_sections]
+  
+  # Process all sections not in skip_sections
+  for (section_name in sections_to_process) {
+    if (is.null(content[[section_name]])) {
       next
     }
 
