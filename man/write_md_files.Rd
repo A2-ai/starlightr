@@ -8,10 +8,8 @@ write_md_files(
   rd_files,
   output_dir,
   file_ext = ".md",
-  sections = c("description", "usage", "arguments", "details", "value", "examples",
-    "references", "note", "author", "source", "format", "section", "subsection"),
   code_sections = c("usage", "examples"),
-  skip_sections = c("name", "title", "seealso")
+  skip_sections = c("name", "alias", "title", "seealso")
 )
 }
 \arguments{
@@ -20,8 +18,6 @@ write_md_files(
 \item{output_dir}{path to directory to save new md files}
 
 \item{file_ext}{either .md or .mdx. extension to use for files, default .md}
-
-\item{sections}{character vector of sections to include in markdown output, in order}
 
 \item{code_sections}{character vector of sections to format as code blocks}
 
@@ -38,6 +34,10 @@ output_dir <- file.path("path/to/rdstarlight/docs/content/rd_files")
 write_md_files(rd_files, output_dir)
 
 # Custom sections
-write_md_files(rd_files, output_dir, sections = c("description", "usage", "examples"))
+write_md_files(
+  rd_files,
+  output_dir,
+  sections = c("description", "usage", "examples")
+)
 }
 }

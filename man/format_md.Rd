@@ -6,16 +6,12 @@
 \usage{
 format_md(
   content,
-  sections = c("description", "usage", "arguments", "details", "value", "examples",
-    "references", "note", "author", "source", "format", "section", "subsection"),
   code_sections = c("usage", "examples"),
   skip_sections = c("name", "title", "seealso")
 )
 }
 \arguments{
 \item{content}{rd_file contents from extract_rd_content}
-
-\item{sections}{character vector of sections to include, in order}
 
 \item{code_sections}{character vector of sections to format as code blocks}
 
