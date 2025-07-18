@@ -253,7 +253,7 @@ format_format_section <- function(format_content) {
       # Heuristic: starts with uppercase letters/numbers, followed by space and description
       # BUT exclude dataset description lines
       if (grepl("^[A-Z][A-Z0-9_]*\\s+", line) && 
-          !grepl("data frame|tibble|rows|columns|×|x\\s+\\d", line, ignore.case = TRUE)) {
+          !grepl("data frame|tibble|rows|columns|x\\s+\\d", line, ignore.case = TRUE)) {
         column_lines <- c(column_lines, line)
       } else {
         # Probably header/description text

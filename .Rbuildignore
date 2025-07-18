@@ -3,3 +3,6 @@
 ^LICENSE\.md$
 ^\.github$
 ^README\.Rmd$
+
+^.*\.cqtkit-docs\.R$
+^.*\.scicalc-docs\.R$
