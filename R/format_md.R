@@ -41,6 +41,8 @@ format_md <- function(
     # Format section based on type
     if (section_name == "arguments") {
       md_parts <- c(md_parts, format_arguments_section(section_content))
+    } else if (section_name == "format") {
+      md_parts <- c(md_parts, format_format_section(section_content))
     } else if (section_name %in% code_sections) {
       md_parts <- c(
         md_parts,
@@ -192,7 +194,7 @@ format_arguments_section <- function(arguments_content) {
       # Check if the result looks reasonable (not overly split)
       if (is.data.frame(args_df) && nrow(args_df) > 0 && ncol(args_df) >= 2) {
         # Only use if it looks like proper parsing (reasonable number of rows)
-        if (nrow(args_df) <= 20) {
+        if (nrow(args_df) <= 50) {
           # Reasonable threshold
           table_content <- paste0(
             "| Name | Description |\n",
@@ -218,4 +220,114 @@ format_arguments_section <- function(arguments_content) {
   # Fallback: just display as plain text
   clean_args <- clean_text(arguments_content)
   return(paste0("## Arguments\n\n", clean_args, "\n\n"))
+}
+
+#' Format format section with describe blocks as tables
+#'
+#' @param format_content raw format content from Rd file
+#'
+#' @return formatted markdown string
+format_format_section <- function(format_content) {
+  if (is.null(format_content) || nchar(trimws(format_content)) == 0) {
+    return("")
+  }
+  
+  clean_content <- clean_text(format_content)
+  
+  # Try to parse the processed format content into a table
+  tryCatch({
+    # Split into lines
+    lines <- unlist(strsplit(clean_content, "\n"))
+    lines <- trimws(lines)
+    lines <- lines[nchar(lines) > 0]  # Remove empty lines
+    
+    # Look for lines that appear to be column definitions
+    # Pattern: starts with word(s) followed by description
+    column_lines <- c()
+    header_lines <- c()
+    
+    for (i in seq_along(lines)) {
+      line <- lines[i]
+      
+      # Check if line looks like a column definition
+      # Heuristic: starts with uppercase letters/numbers, followed by space and description
+      # BUT exclude dataset description lines
+      if (grepl("^[A-Z][A-Z0-9_]*\\s+", line) && 
+          !grepl("data frame|tibble|rows|columns|×|x\\s+\\d", line, ignore.case = TRUE)) {
+        column_lines <- c(column_lines, line)
+      } else {
+        # Probably header/description text
+        header_lines <- c(header_lines, line)
+      }
+    }
+    
+    # If we found column-like lines, try to parse them
+    if (length(column_lines) >= 2) {  # At least 2 columns to make a table worthwhile
+      items_df <- parse_format_lines(column_lines)
+      
+      if (nrow(items_df) > 0) {
+        # Create table
+        table_content <- paste0(
+          "| Column | Description |\n",
+          "|--------|-------------|\n",
+          paste(
+            apply(items_df, 1, function(row) {
+              name <- clean_text(row[1])
+              desc <- clean_text(row[2])
+              paste0("| `", name, "` | ", desc, " |")
+            }),
+            collapse = "\n"
+          )
+        )
+        
+        # Combine header text with table
+        result <- "## Format\n\n"
+        if (length(header_lines) > 0) {
+          result <- paste0(result, paste(header_lines, collapse = "\n\n"), "\n\n")
+        }
+        result <- paste0(result, table_content, "\n\n")
+        return(result)
+      }
+    }
+  }, error = function(e) {
+    # Fall through to plain text format
+  })
+  
+  # Fallback: display as plain text
+  return(paste0("## Format\n\n", clean_content, "\n\n"))
+}
+
+#' Parse format lines into column definitions
+#'
+#' @param format_lines vector of lines that look like column definitions
+#'
+#' @return data frame with name and description columns
+parse_format_lines <- function(format_lines) {
+  items_list <- list()
+  
+  for (i in seq_along(format_lines)) {
+    line <- trimws(format_lines[i])
+    
+    # Split on first sequence of spaces to separate name from description
+    # Pattern: capture word characters/underscores, then spaces, then rest
+    match_result <- regexec("^([A-Z][A-Z0-9_]*)\\s+(.+)$", line)
+    captures <- regmatches(line, match_result)[[1]]
+    
+    if (length(captures) >= 3) {
+      name <- trimws(captures[2])
+      description <- trimws(captures[3])
+      items_list[[i]] <- c(name = name, description = description)
+    }
+  }
+  
+  if (length(items_list) > 0) {
+    items_df <- as.data.frame(
+      do.call(rbind, items_list),
+      stringsAsFactors = FALSE
+    )
+    names(items_df) <- c("name", "description")
+    return(items_df)
+  }
+  
+  return(data.frame(name = character(0), description = character(0), stringsAsFactors = FALSE))
 }

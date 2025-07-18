@@ -30,11 +30,15 @@ write_md_files <- function(
   checkmate::assert_choice(file_ext, c(".md", ".mdx"))
 
   if (!dir.exists(output_dir)) {
-    continue <- readline(paste0(
-      "output_dir: ",
-      output_dir,
-      " does not exists. Would you like to create it? [Y/n]"
-    ))
+    if (interactive()) {
+      continue <- readline(paste0(
+        "output_dir: ",
+        output_dir,
+        " does not exists. Would you like to create it? [Y/n]"
+      ))
+    } else {
+			continue <- "y"
+		}
 
     if (tolower(continue) == "y") {
       dir.create(output_dir, recursive = TRUE)
