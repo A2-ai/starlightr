@@ -250,9 +250,9 @@ format_format_section <- function(format_content) {
       line <- lines[i]
       
       # Check if line looks like a column definition
-      # Heuristic: starts with uppercase letters/numbers, followed by space and description
+      # Heuristic: starts with letters/numbers/underscores, followed by space and description
       # BUT exclude dataset description lines
-      if (grepl("^[A-Z][A-Z0-9_]*\\s+", line) && 
+      if (grepl("^[A-Za-z][A-Za-z0-9_]*\\s+", line) && 
           !grepl("data frame|tibble|rows|columns|x\\s+\\d", line, ignore.case = TRUE)) {
         column_lines <- c(column_lines, line)
       } else {
@@ -310,7 +310,7 @@ parse_format_lines <- function(format_lines) {
     
     # Split on first sequence of spaces to separate name from description
     # Pattern: capture word characters/underscores, then spaces, then rest
-    match_result <- regexec("^([A-Z][A-Z0-9_]*)\\s+(.+)$", line)
+    match_result <- regexec("^([A-Za-z][A-Za-z0-9_]*)\\s+(.+)$", line)
     captures <- regmatches(line, match_result)[[1]]
     
     if (length(captures) >= 3) {
