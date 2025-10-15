@@ -4,5 +4,11 @@
 ^\.github$
 ^README\.Rmd$
 
-^.*\.cqtkit-docs\.R$
-^.*\.scicalc-docs\.R$
+^rv$
+^rproject.toml$
+^rv\.toml$
+^\.Rprofile$
+
+^.*\.*-docs\.R$
+
+^_starlightr\.yaml$

@@ -1,0 +1,68 @@
+---
+title: "Configuration Guide"
+description: "How to configure starlightr for your package"
+---
+
+# Configuration Guide
+
+The `_starlightr.yaml` file controls how your documentation site is built and organized.
+
+## Basic Configuration
+
+```yaml
+site:
+  title: "My Package"
+  description: "Documentation for my R package"
+
+navbar:
+  left:
+    - text: "Home"
+      href: "index.md"
+    - text: "Reference"
+      href: "reference/"
+    - text: "Articles"
+      href: "articles/"
+  right:
+    - icon: "github"
+      href: "https://github.com/user/repo"
+```
+
+## Organizing Function Reference
+
+You can organize your functions into logical groups:
+
+```yaml
+sidebar:
+  reference:
+    - title: "Data Processing"
+      contents:
+        - "extract_*"
+        - "process_*"
+    - title: "Output Functions"
+      contents:
+        - "format_*"
+        - "write_*"
+```
+
+## Theme Options
+
+Customize the appearance of your site:
+
+```yaml
+theme:
+  color_mode: "auto"  # light, dark, or auto
+```
+
+## Content Processing
+
+Control how your documentation is processed:
+
+```yaml
+content:
+  code_sections:
+    - "usage"
+    - "examples"
+  skip_sections:
+    - "seealso"
+    - "name"
+```

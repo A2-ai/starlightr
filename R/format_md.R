@@ -8,7 +8,7 @@
 #' @export
 #'
 #' @examples \dontrun{
-#' rd_files <- extract_package_rd_content("rdstarlight")
+#' rd_files <- extract_package_rd_content("starlightr")
 #' format_md(rd_files[["function_name.Rd"]])
 #' }
 format_md <- function(
@@ -18,6 +18,11 @@ format_md <- function(
 ) {
   # Start building markdown
   md_parts <- character(0)
+
+  # Add frontmatter header with title
+  title <- clean_text(content$name %||% content$title %||% "Documentation")
+  frontmatter <- paste0("---\ntitle: \"", title, "\"\n---\n\n")
+  md_parts <- c(md_parts, frontmatter)
 
   # Use name as main heading if available and not in skip_sections
   if (!is.null(content$name) && !"name" %in% skip_sections) {

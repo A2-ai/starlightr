@@ -1,0 +1,86 @@
+# starlightr configuration file
+# This file defines how your R package documentation will be built into a Starlight site
+
+# Site metadata
+site:
+  title: "starlightr"
+  description: "Build beautiful Starlight documentation sites for R packages"
+
+# Home page configuration
+home:
+  hero:
+    tagline: "Build beautiful Starlight documentation sites for R packages"
+    actions:
+      - text: "Get Started"
+        link: "/articles/introduction/"
+        icon: "right-arrow"
+        variant: "primary"
+      - text: "View on GitHub"
+        link: "https://github.com/A2-ai/starlightr"
+        icon: "external"
+        variant: "minimal"
+
+# Sidebar configuration for different sections
+sidebar:
+  articles:
+    # Custom organization of vignettes/articles
+    - title: "Getting Started"
+      contents:
+        - "introduction"
+        - "configuration"
+
+  reference:
+    # Organize functions into groups
+    - title: "Site Building"
+      contents:
+        - "build_site"
+        - "use_starlightr"
+    - title: "Documentation Processing"
+      collapsed: true
+      contents:
+        - "extract_*"  # Functions matching pattern will use autogenerate
+        - "process_*"
+        - "get_rd_tags"
+    - title: "Formatting & Output"
+      collapsed: true
+      contents:
+        - "format_*"
+        - "write_*"
+        - "clean_text"
+
+# Navigation structure
+navbar:
+  right:
+    - icon: "github"
+      href: "https://github.com/A2-ai/starlightr"
+
+# Theme and appearance
+theme:
+  # Starlight color scheme options: light, dark, auto
+  color_mode: "auto"
+  # Custom CSS file
+  # custom_css: "inst/starlightr/custom.css"
+
+# Content processing options
+content:
+  # Skip certain functions from reference
+  reference:
+    exclude:
+      - "internal_function"
+      - "deprecated_*"
+
+  # Custom sections to format as code
+  code_sections:
+    - "usage"
+    - "examples"
+
+  # Sections to skip entirely
+  skip_sections:
+    - "seealso"
+    - "name"
+
+# Output directory for generated site
+output:
+  dir: "docs"
+  # Generate package.json and astro.config.mjs
+  include_build_files: true

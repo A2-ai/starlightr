@@ -25,7 +25,7 @@ Formats the rd file contents to markdown
 }
 \examples{
 \dontrun{
-rd_files <- extract_package_rd_content("rdstarlight")
+rd_files <- extract_package_rd_content("starlightr")
 format_md(rd_files[["function_name.Rd"]])
 }
 }

@@ -7,7 +7,7 @@
 #' @export
 #'
 #' @examples \dontrun{
-#' rd_files <- tools::Rd_db("rdstarlight")
+#' rd_files <- tools::Rd_db("starlightr")
 #'
 #' extract_section(rd_files[["extract_section.Rd"]], "description")
 #' }
@@ -51,7 +51,7 @@ get_rd_tags <- function(rd_obj) {
 #' @export
 #'
 #' @examples \dontrun{
-#' rd_files <- tools::Rd_db("rdstarlight")
+#' rd_files <- tools::Rd_db("starlightr")
 #'
 #' # Extract all sections
 #' extract_rd_content(rd_files[["extract_section.Rd"]])
@@ -131,10 +131,10 @@ extract_rd_content_common <- function(rd_obj) {
 #'
 #' @examples
 #' # Extract all sections
-#' extract_package_rd_content("rdstarlight")
+#' extract_package_rd_content("starlightr")
 #'
 #' # Extract only common sections
-#' extract_package_rd_content("rdstarlight", include_common_only = TRUE)
+#' extract_package_rd_content("starlightr", include_common_only = TRUE)
 extract_package_rd_content <- function(pkg_name, include_common_only = FALSE) {
   rd_files <- tools::Rd_db(pkg_name)
   return(lapply(

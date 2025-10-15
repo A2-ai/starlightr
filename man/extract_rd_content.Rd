@@ -20,7 +20,7 @@ Extracts all sections from an Rd object dynamically
 }
 \examples{
 \dontrun{
-rd_files <- tools::Rd_db("rdstarlight")
+rd_files <- tools::Rd_db("starlightr")
 
 # Extract all sections
 extract_rd_content(rd_files[["extract_section.Rd"]])

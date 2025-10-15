@@ -7,7 +7,7 @@
 write_md_files(
   rd_files,
   output_dir,
-  file_ext = ".md",
+  file_ext = ".mdx",
   code_sections = c("usage", "examples"),
   skip_sections = c("name", "alias", "title", "seealso")
 )
@@ -28,8 +28,8 @@ Writes the parsed and formatted Rd file to a new file in output_dir
 }
 \examples{
 \dontrun{
-rd_files <- extract_package_rd_content("rdstarlight")
-output_dir <- file.path("path/to/rdstarlight/docs/content/rd_files")
+rd_files <- extract_package_rd_content("starlightr")
+output_dir <- file.path("path/to/starlightr/docs/content/rd_files")
 
 write_md_files(rd_files, output_dir)
 

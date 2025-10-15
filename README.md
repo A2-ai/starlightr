@@ -1,18 +1,18 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# rdstarlight
+# starlightr
 
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/A2-ai/rdstarlight/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/A2-ai/rdstarlight/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The goal of rdstarlight is to …
+The goal of starlightr is to …
 
 ## Installation
 
-You can install the development version of rdstarlight from
+You can install the development version of starlightr from
 [GitHub](https://github.com/) with:
 
 ``` r
@@ -25,6 +25,6 @@ devtools::install_github("A2-ai/rdstarlight")
 This is a basic example which shows you how to solve a common problem:
 
 ``` r
-library(rdstarlight)
+library(starlightr)
 ## basic example code
 ```
