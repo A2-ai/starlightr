@@ -5,26 +5,197 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/A2-ai/rdstarlight/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/A2-ai/rdstarlight/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/A2-ai/starlightr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/A2-ai/starlightr/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The goal of starlightr is to …
+**starlightr** generates beautiful, modern documentation sites for R
+packages using [Starlight](https://starlight.astro.build/) (built on
+[Astro](https://astro.build/)). Think of it as an alternative to pkgdown
+that produces fast, accessible documentation with a polished UI out of
+the box.
+
+## Features
+
+- Converts Rd documentation to clean Markdown/MDX
+- Processes vignettes into articles
+- Generates Astro/Starlight configuration automatically
+- Supports lifecycle badges, code examples, and complex documentation
+- Produces static sites that can be hosted anywhere (GitHub Pages,
+  Netlify, Vercel, etc.)
 
 ## Installation
 
-You can install the development version of starlightr from
-[GitHub](https://github.com/) with:
-
 ``` r
+# Install from GitHub
 # install.packages("devtools")
-devtools::install_github("A2-ai/rdstarlight")
+devtools::install_github("A2-ai/starlightr")
 ```
 
-## Example
+### Requirements
 
-This is a basic example which shows you how to solve a common problem:
+- **R \>= 4.0**
+- **pandoc** (comes with RStudio, or install separately)
+- **Node.js \>= 18** (for building/previewing the Starlight site)
+
+## Quick Start
+
+### 1. Initialize starlightr in your package
 
 ``` r
 library(starlightr)
-## basic example code
+
+# Run from your package directory
+use_starlightr()
 ```
+
+This creates: - `_starlightr.yaml` - configuration file - `vignettes/`
+directory with a sample article (if it doesn’t exist) - Updates
+`.Rbuildignore`
+
+### 2. Build the documentation site
+
+``` r
+# Build to an external directory (recommended)
+build_site(output_dir = "../my-package-docs")
+
+# Or build to a subdirectory (adds bloat to your package)
+build_site(output_dir = "docs")
+```
+
+### 3. Preview your site
+
+``` bash
+cd ../my-package-docs  # or wherever you built to
+npm install
+npm run dev
+```
+
+Open <http://localhost:4321> to see your documentation!
+
+## Configuration
+
+The `_starlightr.yaml` file controls how your site is generated:
+
+``` yaml
+# Site metadata
+site:
+  title: "My Package"
+  description: "A brief description of your package"
+
+# Homepage hero section
+home:
+  hero:
+    tagline: "What your package does in one sentence"
+    actions:
+      - text: "Get Started"
+        link: "/articles/"
+        icon: "right-arrow"
+        variant: "primary"
+      - text: "View on GitHub"
+        link: "https://github.com/user/repo"
+        icon: "external"
+        variant: "minimal"
+
+# Sidebar navigation
+sidebar:
+  # Articles section (from vignettes/)
+  articles:
+    - label: "Guides"
+      autogenerate:
+        directory: articles
+
+  # Reference section (auto-generated from Rd files)
+  reference:
+    - label: "All Functions"
+      autogenerate:
+        directory: reference
+
+# Content options
+content:
+  skip_sections:
+    - "seealso"  # Sections to exclude from output
+
+# Output settings
+output:
+  dir: "docs"
+  include_build_files: true
+```
+
+## Converting from pkgdown
+
+If you already have a `_pkgdown.yml` file, you can convert it:
+
+``` r
+pkgdown_to_starlight()
+```
+
+This reads your pkgdown configuration and creates a `_starlightr.yaml`
+with equivalent settings.
+
+## Building for Production
+
+To build a production-ready static site:
+
+``` bash
+cd ../my-package-docs
+npm install
+npm run build
+```
+
+The built site will be in the `dist/` folder, ready to deploy to any
+static hosting service.
+
+### Deploying to GitHub Pages
+
+1.  Build your site
+2.  Copy the `dist/` folder contents to your `gh-pages` branch, or
+3.  Use a GitHub Action to automate the build and deploy
+
+## API Reference
+
+### Main Functions
+
+| Function                 | Description                          |
+|--------------------------|--------------------------------------|
+| `use_starlightr()`       | Initialize starlightr in a package   |
+| `build_site()`           | Build the documentation site         |
+| `pkgdown_to_starlight()` | Convert pkgdown config to starlightr |
+
+### Lower-Level Functions
+
+| Function                   | Description                            |
+|----------------------------|----------------------------------------|
+| `rd_to_markdown()`         | Convert a single Rd object to Markdown |
+| `package_rd_to_markdown()` | Convert all Rd files in a package      |
+| `write_md_files()`         | Write converted Markdown to files      |
+
+## Troubleshooting
+
+### “pandoc not found”
+
+Install pandoc or use RStudio (which includes pandoc):
+
+``` r
+# Check if pandoc is available
+rmarkdown::pandoc_available()
+
+# See pandoc location
+rmarkdown::pandoc_exec()
+```
+
+### Site builds but styles are missing
+
+Make sure you ran `npm install` before `npm run dev` or `npm run build`.
+
+### Function documentation is missing
+
+Ensure your package is installed and has Rd files:
+
+``` r
+# Check if Rd files exist
+tools::Rd_db("yourpackage")
+```
+
+## License
+
+MIT
