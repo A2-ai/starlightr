@@ -470,9 +470,8 @@ fix_internal_links <- function(md, pkg_name = NULL) {
 
 #' Fix heading levels in Markdown
 #'
-#' Removes the first h1 (title duplicate) and promotes all headings up one level.
-#' Rd2HTML produces h3 headings which become h2 after pandoc; we want h1 for main sections
-#' since Starlight uses frontmatter title.
+#' Removes the first h1 (title duplicate). Keeps sections as h2 for Starlight TOC.
+#' Rd2HTML produces h3 headings which become h2 after pandoc.
 #'
 #' @param md Markdown string
 #'
@@ -484,11 +483,10 @@ fix_heading_levels <- function(md) {
   md <- gsub("^# [^\n]+\n+", "", md)
   md <- gsub("^\n*# [^\n]+\n+", "", md)
 
-  # Promote headings: ## -> #, ### -> ##
+  # Convert h3 to h2 (keep sections as h2 for Starlight TOC)
   md <- gsub("^### ", "## ", md)
   md <- gsub("\n### ", "\n## ", md)
-  md <- gsub("^## ", "# ", md)
-  md <- gsub("\n## ", "\n# ", md)
+  # Note: h2 sections stay as h2 (not promoted to h1) so they appear in TOC
 
   md
 }
@@ -616,11 +614,11 @@ remove_sections <- function(md, skip_sections) {
   }
 
   for (section in skip_sections) {
-    # Match # Section through to next # or end of string
+    # Match ## Section through to next ## or end of string
     # Case insensitive matching for section name
     pattern <- paste0(
-      "(?m)^# ", section, "\\s*\n",
-      "(?:(?!^# ).)*"
+      "(?m)^## ", section, "\\s*\n",
+      "(?:(?!^## ).)*"
     )
     md <- gsub(pattern, "", md, perl = TRUE, ignore.case = TRUE)
   }
@@ -726,16 +724,16 @@ rd_to_markdown <- function(
     args_table <- arguments_to_md_table(rd_obj)
     if (!is.null(args_table)) {
       # Replace HTML tables in Arguments section (pandoc often outputs HTML tables)
-      # Match from # Arguments to the closing </table> tag
+      # Match from ## Arguments to the closing </table> tag
       md <- gsub(
-        "(?s)(# Arguments\\s*\n+)<table[^>]*>.*?</table>",
+        "(?s)(## Arguments\\s*\n+)<table[^>]*>.*?</table>",
         paste0("\\1", args_table),
         md,
         perl = TRUE
       )
       # Also try markdown table format (fallback)
       md <- gsub(
-        "(?s)(# Arguments\\s*\n+)\\|[^|]*\\|[^|]*\\|\\s*\n\\|[-|]+\\|\\s*\n(\\|[^\\n]+\\n)+",
+        "(?s)(## Arguments\\s*\n+)\\|[^|]*\\|[^|]*\\|\\s*\n\\|[-|]+\\|\\s*\n(\\|[^\\n]+\\n)+",
         paste0("\\1", args_table, "\n"),
         md,
         perl = TRUE
@@ -749,10 +747,10 @@ rd_to_markdown <- function(
     example_outputs <- get_example_outputs(func_name, output_path)
     if (!is.null(example_outputs)) {
       # Find end of Examples section and insert outputs
-      if (grepl("# Examples", md)) {
+      if (grepl("## Examples", md)) {
         # Add after the code block in examples
         md <- sub(
-          "(# Examples.*?```\n)",
+          "(## Examples.*?```\n)",
           paste0("\\1\n", example_outputs, "\n"),
           md,
           perl = TRUE
