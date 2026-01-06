@@ -1,6 +1,10 @@
 ---
 title: "Introduction to starlightr"
-description: "Getting started with starlightr for R package documentation"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to starlightr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 # Introduction to starlightr

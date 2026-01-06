@@ -4,12 +4,14 @@
 \alias{generate_sidebar_config}
 \title{Generate sidebar configuration for Starlight}
 \usage{
-generate_sidebar_config(config, output_path = NULL)
+generate_sidebar_config(config, output_path = NULL, pkg_name = NULL)
 }
 \arguments{
 \item{config}{Configuration list from YAML}
 
 \item{output_path}{Path to output directory (needed for pattern matching)}
+
+\item{pkg_name}{Package name (for Rd database lookups)}
 }
 \value{
 JavaScript sidebar configuration as string

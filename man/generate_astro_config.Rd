@@ -4,12 +4,14 @@
 \alias{generate_astro_config}
 \title{Generate astro.config.mjs file}
 \usage{
-generate_astro_config(output_path, config)
+generate_astro_config(output_path, config, pkg_path = NULL)
 }
 \arguments{
 \item{output_path}{Path to output directory}
 
 \item{config}{Configuration list}
+
+\item{pkg_path}{Path to package directory}
 }
 \description{
 Generate astro.config.mjs file

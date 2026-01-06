@@ -2,13 +2,13 @@
 % Please edit documentation in R/build_site.R
 \name{create_sample_article}
 \alias{create_sample_article}
-\title{Create a sample article in inst/starlightr/}
+\title{Create a sample article in vignettes/}
 \usage{
 create_sample_article(articles_dir)
 }
 \arguments{
-\item{articles_dir}{Path to inst/starlightr directory}
+\item{articles_dir}{Path to vignettes directory}
 }
 \description{
-Create a sample article in inst/starlightr/
+Create a sample article in vignettes/
 }

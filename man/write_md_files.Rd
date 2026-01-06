@@ -2,42 +2,47 @@
 % Please edit documentation in R/write_md_files.R
 \name{write_md_files}
 \alias{write_md_files}
-\title{Writes the parsed and formatted Rd file to a new file in output_dir}
+\title{Write Rd objects to Markdown files}
 \usage{
 write_md_files(
-  rd_files,
+  rd_db,
   output_dir,
   file_ext = ".mdx",
-  code_sections = c("usage", "examples"),
-  skip_sections = c("name", "alias", "title", "seealso")
+  config = list(),
+  site_output_path = NULL,
+  pkg_name = NULL
 )
 }
 \arguments{
-\item{rd_files}{list of rd_objects to create md file for}
+\item{rd_db}{An Rd database from [tools::Rd_db()].}
 
-\item{output_dir}{path to directory to save new md files}
+\item{output_dir}{Path to directory to save markdown files.}
 
-\item{file_ext}{either .md or .mdx. extension to use for files, default .md}
+\item{file_ext}{File extension, either ".md" or ".mdx" (default ".mdx").}
 
-\item{code_sections}{character vector of sections to format as code blocks}
+\item{config}{Configuration list for conversion (see [rd_to_markdown()]).}
 
-\item{skip_sections}{character vector of sections to skip entirely}
+\item{site_output_path}{Path to site output directory (for embedding example outputs).}
+
+\item{pkg_name}{Package name (for link resolution).}
+}
+\value{
+Invisibly returns a character vector of written file paths.
 }
 \description{
-Writes the parsed and formatted Rd file to a new file in output_dir
+Converts Rd documentation objects to Markdown and writes them to files
+using the Rd -> HTML -> Markdown conversion pipeline.
 }
 \examples{
 \dontrun{
-rd_files <- extract_package_rd_content("starlightr")
-output_dir <- file.path("path/to/starlightr/docs/content/rd_files")
+rd_db <- tools::Rd_db("mypackage")
+write_md_files(rd_db, "docs/reference")
 
-write_md_files(rd_files, output_dir)
-
-# Custom sections
+# With configuration
 write_md_files(
-  rd_files,
-  output_dir,
-  sections = c("description", "usage", "examples")
+  rd_db,
+  "docs/reference",
+  config = list(skip_sections = c("author", "source"))
 )
 }
 }

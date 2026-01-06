@@ -1,3 +1,38 @@
+#' Extract raw code from an Rd examples section
+#'
+#' @param examples_section The examples section from an Rd object
+#' @return Character string of example code
+#' @keywords internal
+extract_examples_code <- function(examples_section) {
+  extract_code_recursive <- function(el) {
+    tag <- attr(el, "Rd_tag")
+
+    if (is.character(el)) {
+      return(el)
+    }
+
+    if (is.list(el)) {
+      # Handle special tags
+      if (!is.null(tag)) {
+        if (tag == "\\dontrun" || tag == "\\donttest") {
+          # Skip dontrun/donttest sections for actual execution
+          return("")
+        } else if (tag == "\\dontshow") {
+          return("")
+        }
+      }
+      # Recurse into children
+      parts <- vapply(el, extract_code_recursive, character(1))
+      return(paste(parts, collapse = ""))
+    }
+
+    ""
+  }
+
+  code <- extract_code_recursive(examples_section)
+  trimws(code)
+}
+
 #' Runs example code and capture output to a file
 #'
 #' @param pkg_name  name of package to collect Rd objects for
@@ -31,7 +66,18 @@ capture_example_output <- function(pkg_name, artifact_output_dir, text_output_di
     }
   )
 
-  rd_content <- extract_package_rd_content(pkg_name)
+  # Get Rd database and extract examples from each file
+  rd_db <- tools::Rd_db(pkg_name)
+  rd_content <- list()
+  for (rd_name in names(rd_db)) {
+    rd_obj <- rd_db[[rd_name]]
+    examples_section <- get_rd_section(rd_obj, "examples")
+    if (!is.null(examples_section)) {
+      # Extract code text from examples section
+      examples_code <- extract_examples_code(examples_section)
+      rd_content[[rd_name]] <- list(examples = examples_code)
+    }
+  }
 
   if (!dir.exists(artifact_output_dir)) dir.create(artifact_output_dir, recursive = TRUE)
   if (!dir.exists(text_output_dir)) dir.create(text_output_dir, recursive = TRUE)

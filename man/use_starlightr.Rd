@@ -17,7 +17,7 @@ Invisibly returns TRUE if successful
 \description{
 Sets up the necessary files and configuration for using starlightr.
 Creates a default _starlightr.yaml configuration file, updates .Rbuildignore,
-and creates the inst/starlightr/ directory structure.
+and creates the vignettes/ directory structure.
 }
 \examples{
 \dontrun{

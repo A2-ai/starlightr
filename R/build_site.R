@@ -45,14 +45,14 @@ build_site <- function(pkg = ".",
     output_path <- file.path(pkg_path, output_dir)
   }
 
-  message("Building Starlight site for package: ", basename(pkg_path))
-  message("Output directory: ", output_path)
+  cli::cli_h1("Building Starlight site for {.pkg {basename(pkg_path)}}")
+  cli::cli_alert_info("Output directory: {.path {output_path}}")
 
   # Provide helpful info about external vs internal directories
   if (is_absolute_path(output_dir) || startsWith(output_dir, "..")) {
-    message("Using external directory (recommended for Starlight sites)")
+    cli::cli_alert_info("Using external directory (recommended for Starlight sites)")
   } else {
-    message("Using internal directory - consider external directory to avoid bloat")
+    cli::cli_alert_warning("Using internal directory - consider external directory to avoid bloat")
   }
 
   # Create output directory structure
@@ -67,11 +67,13 @@ build_site <- function(pkg = ".",
   # Extract and process R documentation
   process_package_documentation(pkg_path, output_path, config)
 
-  # Process vignettes/articles from inst/starlightr/
-  process_articles(pkg_path, output_path, config)
+  # Process vignettes/articles only if configured in sidebar
+  if (!is.null(config$sidebar$articles)) {
+    process_articles(pkg_path, output_path, config)
+  }
 
   # Generate astro.config.mjs now that files exist for pattern matching
-  generate_astro_config(output_path, config)
+  generate_astro_config(output_path, config, pkg_path)
 
   # Copy assets if they exist
   copy_assets(pkg_path, output_path, config)
@@ -82,7 +84,7 @@ build_site <- function(pkg = ".",
   # Create directory index pages
   create_directory_indexes(pkg_path, output_path, config)
 
-  message("Site built successfully!")
+  cli::cli_alert_success("Site built successfully!")
 
   if (preview) {
     preview_site(output_path)
@@ -98,8 +100,8 @@ build_site <- function(pkg = ".",
 #' @return List containing parsed configuration
 read_config <- function(config_path) {
   if (!file.exists(config_path)) {
-    message("No _starlightr.yaml found, using default configuration")
-    message("Tip: Run use_starlightr() to create a configuration file")
+    cli::cli_alert_info("No _starlightr.yaml found, using default configuration")
+    cli::cli_alert("Tip: Run {.fn use_starlightr} to create a configuration file")
     return(default_config())
   }
 
@@ -168,14 +170,17 @@ setup_starlight_structure <- function(output_path, config) {
     file.path(output_path, "src", "content"),
     file.path(output_path, "src", "content", "docs"),
     file.path(output_path, "src", "content", "docs", "reference"),
-    file.path(output_path, "src", "content", "docs", "articles"),
     file.path(output_path, "public")
   )
+
+  # Only create articles dir if configured
+  if (!is.null(config$sidebar$articles)) {
+    dirs <- c(dirs, file.path(output_path, "src", "content", "docs", "articles"))
+  }
 
   for (dir in dirs) {
     if (!dir.exists(dir)) {
       dir.create(dir, recursive = TRUE)
-      message("Created directory: ", dir)
     }
   }
 }
@@ -187,7 +192,7 @@ setup_starlight_structure <- function(output_path, config) {
 #' @param pkg_path Path to package directory
 generate_starlight_config <- function(output_path, config, pkg_path) {
   # Generate astro.config.mjs
-  generate_astro_config(output_path, config)
+  generate_astro_config(output_path, config, pkg_path)
 
   # Generate content.config.ts (required for Astro content collections)
   generate_content_config(output_path)
@@ -202,7 +207,8 @@ generate_starlight_config <- function(output_path, config, pkg_path) {
 #'
 #' @param output_path Path to output directory
 #' @param config Configuration list
-generate_astro_config <- function(output_path, config) {
+#' @param pkg_path Path to package directory
+generate_astro_config <- function(output_path, config, pkg_path = NULL) {
   github_url <- get_github_url(config)
   social_config <- ""
 
@@ -211,7 +217,8 @@ generate_astro_config <- function(output_path, config) {
   }
 
   # Generate sidebar configuration from YAML
-  sidebar_config <- generate_sidebar_config(config, output_path)
+  pkg_name <- if (!is.null(pkg_path)) get_package_name(pkg_path) else NULL
+  sidebar_config <- generate_sidebar_config(config, output_path, pkg_name)
 
   astro_config <- sprintf('// @ts-check
 import { defineConfig } from "astro/config";
@@ -234,27 +241,31 @@ export default defineConfig({
   )
 
   writeLines(astro_config, file.path(output_path, "astro.config.mjs"))
-  message("Generated astro.config.mjs")
+  cli::cli_alert_success("Generated {.file astro.config.mjs}")
 }
 
 #' Generate sidebar configuration for Starlight
 #'
 #' @param config Configuration list from YAML
 #' @param output_path Path to output directory (needed for pattern matching)
+#' @param pkg_name Package name (for Rd database lookups)
 #' @return JavaScript sidebar configuration as string
-generate_sidebar_config <- function(config, output_path = NULL) {
+generate_sidebar_config <- function(config, output_path = NULL, pkg_name = NULL) {
   sidebar_parts <- c()
 
   # Handle articles section
   if (!is.null(config$sidebar$articles)) {
     articles_items <- c()
     for (group in config$sidebar$articles) {
-      if (!is.null(group$title) && !is.null(group$contents)) {
+      if (!is.null(group$label) && !is.null(group$contents)) {
         group_items <- c()
         for (content in group$contents) {
           # Convert content to slug format
           slug <- paste0("articles/", content)
-          group_items <- c(group_items, sprintf('{ label: "%s", slug: "%s" }', content, slug))
+          # Escape quotes for JavaScript
+          escaped_content <- gsub('"', '\\"', content, fixed = TRUE)
+          escaped_slug <- gsub('"', '\\"', slug, fixed = TRUE)
+          group_items <- c(group_items, sprintf('{ label: "%s", slug: "%s" }', escaped_content, escaped_slug))
         }
         # Handle collapsed field
         collapsed_attr <- ""
@@ -263,23 +274,22 @@ generate_sidebar_config <- function(config, output_path = NULL) {
         }
 
         group_js <- sprintf('{\n          label: "%s"%s,\n          items: [\n            %s\n          ]\n        }',
-                           group$title, collapsed_attr, paste(group_items, collapse = ",\n            "))
+                           group$label, collapsed_attr, paste(group_items, collapse = ",\n            "))
         articles_items <- c(articles_items, group_js)
       }
     }
     articles_section <- sprintf('{\n      label: "Articles",\n      items: [\n        %s\n      ]\n    }',
                                paste(articles_items, collapse = ",\n        "))
     sidebar_parts <- c(sidebar_parts, articles_section)
-  } else {
-    # Fallback to autogenerate
-    sidebar_parts <- c(sidebar_parts, '{\n      label: "Articles",\n      autogenerate: { directory: "articles" }\n    }')
   }
+  # No else - if articles not in config, don't add to sidebar
 
   # Handle reference section
   if (!is.null(config$sidebar$reference)) {
     reference_items <- c()
     for (group in config$sidebar$reference) {
-      if (!is.null(group$title) && !is.null(group$contents)) {
+      # Handle flat structure: label + contents
+      if (!is.null(group$label) && !is.null(group$contents)) {
         group_items <- c()
         has_patterns <- any(grepl("\\*", group$contents))
 
@@ -313,15 +323,26 @@ generate_sidebar_config <- function(config, output_path = NULL) {
             # Create items for matched files
             for (file in matched_files) {
               slug <- paste0("reference/", file)
-              group_items <- c(group_items, sprintf('{ label: "%s", slug: "%s" }', file, slug))
+              # Escape quotes for JavaScript
+              escaped_file <- gsub('"', '\\"', file, fixed = TRUE)
+              escaped_slug <- gsub('"', '\\"', slug, fixed = TRUE)
+              group_items <- c(group_items, sprintf('{ label: "%s", slug: "%s" }', escaped_file, escaped_slug))
             }
           }
         } else {
-          # No patterns, handle exact names
-          for (content in group$contents) {
+          # No patterns, handle exact names and selectors
+          expanded_contents <- expand_pkgdown_selectors(group$contents, output_path)
+          for (content in expanded_contents) {
             if (!grepl("\\*", content)) {
-              slug <- paste0("reference/", content)
-              group_items <- c(group_items, sprintf('{ label: "%s", slug: "%s" }', content, slug))
+              # Map function to its actual documentation file
+              doc_file <- find_function_doc_file(content, pkg_name)
+              if (!is.null(doc_file)) {
+                slug <- paste0("reference/", doc_file)
+                # Escape quotes for JavaScript
+                escaped_content <- gsub('"', '\\"', content, fixed = TRUE)
+                escaped_slug <- gsub('"', '\\"', slug, fixed = TRUE)
+                group_items <- c(group_items, sprintf('{ label: "%s", slug: "%s" }', escaped_content, escaped_slug))
+              }
             }
           }
         }
@@ -335,7 +356,54 @@ generate_sidebar_config <- function(config, output_path = NULL) {
           }
 
           group_js <- sprintf('{\n          label: "%s"%s,\n          items: [\n            %s\n          ]\n        }',
-                             group$title, collapsed_attr, paste(group_items, collapse = ",\n            "))
+                             group$label, collapsed_attr, paste(group_items, collapse = ",\n            "))
+          reference_items <- c(reference_items, group_js)
+        }
+      }
+      # Handle nested structure: label + items (each item has label + contents)
+      else if (!is.null(group$label) && !is.null(group$items)) {
+        nested_items <- c()
+
+        for (subgroup in group$items) {
+          if (!is.null(subgroup$label) && !is.null(subgroup$contents)) {
+            subgroup_items <- c()
+
+            # Process each function in the subgroup contents
+            expanded_contents <- expand_pkgdown_selectors(subgroup$contents, output_path)
+            for (content in expanded_contents) {
+              # Map function to its actual documentation file
+              doc_file <- find_function_doc_file(content, pkg_name)
+              if (!is.null(doc_file)) {
+                slug <- paste0("reference/", doc_file)
+                # Escape quotes for JavaScript
+                escaped_content <- gsub('"', '\\"', content, fixed = TRUE)
+                escaped_slug <- gsub('"', '\\"', slug, fixed = TRUE)
+                subgroup_items <- c(subgroup_items, sprintf('{ label: "%s", slug: "%s" }', escaped_content, escaped_slug))
+              }
+            }
+
+            # Handle collapsed field for subgroups
+            subcollapsed_attr <- ""
+            if (!is.null(subgroup$collapsed) && subgroup$collapsed) {
+              subcollapsed_attr <- ",\n            collapsed: true"
+            }
+
+            # Create subgroup JavaScript
+            subgroup_js <- sprintf('{\n            label: "%s"%s,\n            items: [\n              %s\n            ]\n          }',
+                                   subgroup$label, subcollapsed_attr, paste(subgroup_items, collapse = ",\n              "))
+            nested_items <- c(nested_items, subgroup_js)
+          }
+        }
+
+        if (length(nested_items) > 0) {
+          # Handle collapsed field for main group
+          collapsed_attr <- ""
+          if (!is.null(group$collapsed) && group$collapsed) {
+            collapsed_attr <- ",\n          collapsed: true"
+          }
+
+          group_js <- sprintf('{\n          label: "%s"%s,\n          items: [\n            %s\n          ]\n        }',
+                             group$label, collapsed_attr, paste(nested_items, collapse = ",\n            "))
           reference_items <- c(reference_items, group_js)
         }
       }
@@ -383,7 +451,7 @@ generate_package_json <- function(output_path, config) {
 }'
 
   writeLines(package_json, file.path(output_path, "package.json"))
-  message("Generated package.json")
+  cli::cli_alert_success("Generated {.file package.json}")
 }
 
 #' Generate content.config.ts file for Astro content collections
@@ -401,7 +469,7 @@ export const collections = {
 
   src_path <- file.path(output_path, "src")
   writeLines(content_config, file.path(src_path, "content.config.ts"))
-  message("Generated content.config.ts")
+  cli::cli_alert_success("Generated {.file content.config.ts}")
 }
 
 #' Extract GitHub URL from configuration
@@ -426,38 +494,75 @@ get_github_url <- function(config) {
 #' @param output_path Path to output directory
 #' @param config Configuration list
 process_package_documentation <- function(pkg_path, output_path, config) {
-  message("Processing R documentation...")
+  cli::cli_alert_info("Processing R documentation...")
 
   # Get the actual package name from DESCRIPTION
   pkg_name <- get_package_name(pkg_path)
 
-  # Extract all Rd content from the package
-  rd_content <- extract_package_rd_content(pkg_name)
+  # Get Rd database directly from tools (new approach)
+  rd_db <- tryCatch(
+    tools::Rd_db(pkg_name),
+    error = function(e) {
+      cli::cli_abort(c(
+        "Failed to load Rd documentation for package {.pkg {pkg_name}}",
+        "i" = "Make sure the package is installed: {.code install.packages('{pkg_name}')}"
+      ))
+    }
+  )
+
+  if (length(rd_db) == 0) {
+    cli::cli_warn("No Rd files found in package {.pkg {pkg_name}}")
+    return()
+  }
+
+  # Capture example outputs before generating markdown
+  cli::cli_alert_info("Capturing example outputs...")
+  artifact_dir <- file.path(output_path, "public", "examples")
+  text_output_dir <- file.path(output_path, "public", "examples", "text")
+
+  tryCatch({
+    capture_example_output(pkg_name, artifact_dir, text_output_dir)
+    cli::cli_alert_success("Example outputs captured successfully")
+  }, error = function(e) {
+    cli::cli_warn(c(
+      "Could not capture example outputs: {e$message}",
+      "i" = "Examples will show code only (no outputs)"
+    ))
+  })
 
   # Generate markdown files for each function
   ref_dir <- file.path(output_path, "src", "content", "docs", "reference")
 
-  write_md_files(
-    rd_content,
-    ref_dir,
-    file_ext = ".mdx",
-    code_sections = config$content$code_sections %||% c("usage", "examples"),
-    skip_sections = config$content$skip_sections %||% c("name", "alias", "title", "seealso")
+  # Build config for rd_to_markdown
+  md_config <- list(
+    skip_sections = config$content$skip_sections %||% c("alias", "keyword", "concept"),
+    arguments_format = "table",
+    include_title = TRUE,
+    include_frontmatter = TRUE
   )
 
-  message("Generated reference documentation")
+  write_md_files(
+    rd_db = rd_db,
+    output_dir = ref_dir,
+    file_ext = ".mdx",
+    config = md_config,
+    site_output_path = output_path,
+    pkg_name = pkg_name
+  )
+
+  cli::cli_alert_success("Generated reference documentation for {length(rd_db)} functions")
 }
 
-#' Process articles from inst/starlightr/*.Rmd
+#' Process articles from vignettes/*.Rmd
 #'
 #' @param pkg_path Path to package directory
 #' @param output_path Path to output directory
 #' @param config Configuration list
 process_articles <- function(pkg_path, output_path, config) {
-  articles_source <- file.path(pkg_path, "inst", "starlightr")
+  articles_source <- file.path(pkg_path, "vignettes")
 
   if (!dir.exists(articles_source)) {
-    message("No inst/starlightr/ directory found, skipping articles")
+    cli::cli_alert_info("No vignettes/ directory found, skipping articles")
     return()
   }
 
@@ -465,18 +570,18 @@ process_articles <- function(pkg_path, output_path, config) {
   rmd_files <- list.files(articles_source, pattern = "\\.Rmd$", full.names = TRUE)
 
   if (length(rmd_files) == 0) {
-    message("No .Rmd files found in inst/starlightr/")
+    cli::cli_alert_info("No .Rmd files found in vignettes/")
     return()
   }
 
-  message("Processing articles...")
+  cli::cli_alert_info("Processing articles...")
   articles_dir <- file.path(output_path, "src", "content", "docs", "articles")
 
   for (rmd_file in rmd_files) {
     process_rmd_file(rmd_file, articles_dir)
   }
 
-  message("Generated ", length(rmd_files), " article(s)")
+  cli::cli_alert_success("Generated {length(rmd_files)} article{?s}")
 }
 
 #' Process a single .Rmd file to Markdown
@@ -484,27 +589,59 @@ process_articles <- function(pkg_path, output_path, config) {
 #' @param rmd_path Path to .Rmd file
 #' @param output_dir Output directory for markdown file
 process_rmd_file <- function(rmd_path, output_dir) {
-  # For now, simple conversion - in the future we could use knitr/rmarkdown
+  # Properly render Rmd using rmarkdown/knitr
   base_name <- tools::file_path_sans_ext(basename(rmd_path))
+
+  # Create temporary directory for rendering
+  temp_dir <- tempdir()
+  temp_md <- file.path(temp_dir, paste0(base_name, ".md"))
+
+  # Render Rmd to Markdown using GFM variant (fenced code blocks for MDX compatibility)
+  if (requireNamespace("rmarkdown", quietly = TRUE)) {
+    rmarkdown::render(
+      input = rmd_path,
+      output_format = rmarkdown::md_document(variant = "gfm", preserve_yaml = FALSE),
+      output_file = temp_md,
+      quiet = TRUE
+    )
+  } else if (requireNamespace("knitr", quietly = TRUE)) {
+    # Fallback to knitr if rmarkdown not available
+    knitr::knit(input = rmd_path, output = temp_md, quiet = TRUE)
+  } else {
+    stop("Neither rmarkdown nor knitr is available. Install one of these packages to process vignettes.")
+  }
+
+  # Read the rendered markdown
+  rendered_content <- readLines(temp_md, warn = FALSE)
+
+  # Post-process markdown for MDX compatibility
+  rendered_md <- paste(rendered_content, collapse = "\n")
+
+  # Fix lifecycle badge image paths (use CDN)
+  rendered_md <- gsub(
+    "\\.\\./help/figures/lifecycle-([a-z]+)\\.svg",
+    "https://lifecycle.r-lib.org/articles/figures/lifecycle-\\1.svg",
+    rendered_md
+  )
+  rendered_md <- gsub("\\.\\./help/figures/", "/figures/", rendered_md)
+
+  # Escape angle brackets for MDX compatibility
+  rendered_md <- escape_angle_brackets(rendered_md)
+  rendered_content <- strsplit(rendered_md, "\n", fixed = TRUE)[[1]]
+
+  # Convert to MDX and clean up frontmatter
   output_file <- file.path(output_dir, paste0(base_name, ".mdx"))
 
-  # Read the .Rmd file
-  content <- readLines(rmd_path)
+  # Add simple frontmatter since we stripped the original
+  title <- tools::toTitleCase(gsub("[-_]", " ", base_name))
+  final_content <- c("---", paste0("title: \"", title, "\""), "---", "", rendered_content)
 
-  # Process frontmatter - keep existing or add default
-  has_frontmatter <- length(content) > 0 && grepl("^---", content[1])
+  writeLines(final_content, output_file)
 
-  if (has_frontmatter) {
-    # Keep existing frontmatter
-    writeLines(content, output_file)
-  } else {
-    # Add default frontmatter
-    title <- tools::toTitleCase(gsub("[-_]", " ", base_name))
-    frontmatter <- c("---", paste0("title: \"", title, "\""), "---", "")
-    full_content <- c(frontmatter, content)
-    writeLines(full_content, output_file)
+  # Clean up temp file
+  if (file.exists(temp_md)) {
+    unlink(temp_md)
   }
-  message("Processed: ", basename(rmd_path))
 }
 
 #' Create default index.mdx page
@@ -595,7 +732,7 @@ import { Card, CardGrid } from "@astrojs/starlight/components";
   )
 
   writeLines(index_content, index_path)
-  message("Created default index.mdx")
+  cli::cli_alert_success("Created {.file index.mdx}")
 }
 
 #' Create directory index pages for articles and reference
@@ -606,11 +743,12 @@ import { Card, CardGrid } from "@astrojs/starlight/components";
 create_directory_indexes <- function(pkg_path, output_path, config) {
   docs_path <- file.path(output_path, "src", "content", "docs")
 
-  # Create articles index
-  articles_index_path <- file.path(docs_path, "articles", "index.mdx")
-  if (!file.exists(articles_index_path)) {
-    pkg_name <- get_package_name(pkg_path)
-    articles_content <- sprintf('---
+  # Create articles index only if articles configured
+  if (!is.null(config$sidebar$articles)) {
+    articles_index_path <- file.path(docs_path, "articles", "index.mdx")
+    if (!file.exists(articles_index_path)) {
+      pkg_name <- get_package_name(pkg_path)
+      articles_content <- sprintf('---
 title: "Articles & Guides"
 description: "Learn how to use %s with step-by-step guides and tutorials"
 ---
@@ -625,8 +763,9 @@ Browse the articles in the sidebar to get started!
 
 ', pkg_name, pkg_name)
 
-    writeLines(articles_content, articles_index_path)
-    message("Created articles/index.mdx")
+      writeLines(articles_content, articles_index_path)
+      cli::cli_alert_success("Created {.file articles/index.mdx}")
+    }
   }
 
   # Create reference index
@@ -649,7 +788,7 @@ Browse the functions in the sidebar to explore the complete API documentation.
 ', pkg_name, pkg_name)
 
     writeLines(reference_content, reference_index_path)
-    message("Created reference/index.mdx")
+    cli::cli_alert_success("Created {.file reference/index.mdx}")
   }
 }
 
@@ -661,8 +800,8 @@ Browse the functions in the sidebar to explore the complete API documentation.
 copy_assets <- function(pkg_path, output_path, config) {
   # Copy common assets if they exist
   assets_to_check <- c(
-    "inst/starlightr/assets",
-    "inst/starlightr/public",
+    "vignettes/assets",
+    "vignettes/public",
     "man/figures"
   )
 
@@ -672,7 +811,7 @@ copy_assets <- function(pkg_path, output_path, config) {
     full_path <- file.path(pkg_path, asset_path)
     if (dir.exists(full_path)) {
       file.copy(full_path, public_dir, recursive = TRUE)
-      message("Copied assets from: ", asset_path)
+      cli::cli_alert_success("Copied assets from {.path {asset_path}}")
     }
   }
 }
@@ -681,14 +820,199 @@ copy_assets <- function(pkg_path, output_path, config) {
 #'
 #' @param output_path Path to built site
 preview_site <- function(output_path) {
-  message("To preview your site:")
-  message("1. cd ", output_path)
-  message("2. npm install")
-  message("3. npm run dev")
+  cli::cli_h2("To preview your site")
+  cli::cli_ol(c(
+    "cd {.path {output_path}}",
+    "npm install",
+    "npm run dev"
+  ))
 }
 
 # Utility function for null-or-default assignment
 `%||%` <- function(a, b) if (is.null(a)) b else a
+
+#' Expand pkgdown selector functions to actual function names
+#'
+#' @param contents Vector of function names and selectors
+#' @param output_path Path to output directory to find available functions
+#'
+#' @return Vector with selectors expanded to actual function names
+expand_pkgdown_selectors <- function(contents, output_path = NULL) {
+  if (is.null(contents) || length(contents) == 0) {
+    return(character(0))
+  }
+
+  # Get all available functions from the reference directory
+  available_functions <- character(0)
+  if (!is.null(output_path)) {
+    ref_dir <- file.path(output_path, "src", "content", "docs", "reference")
+    if (dir.exists(ref_dir)) {
+      ref_files <- list.files(ref_dir, pattern = "\\.mdx?$", full.names = FALSE)
+      available_functions <- tools::file_path_sans_ext(ref_files)
+    }
+  }
+
+  expanded <- character(0)
+
+  for (content in contents) {
+    # Check if this is a selector function
+    if (is_pkgdown_selector(content)) {
+      # Expand the selector
+      matches <- expand_selector(content, available_functions)
+      expanded <- c(expanded, matches)
+    } else {
+      # Keep as-is
+      expanded <- c(expanded, content)
+    }
+  }
+
+  # Remove duplicates and return
+  unique(expanded)
+}
+
+#' Check if a string is a pkgdown selector function
+#'
+#' @param content String to check
+#'
+#' @return Logical indicating if it's a selector
+is_pkgdown_selector <- function(content) {
+  grepl("^(starts_with|ends_with|contains|matches)\\s*\\(", content)
+}
+
+#' Expand a single selector to matching function names
+#'
+#' @param selector Selector string like 'ends_with("_at")'
+#' @param available_functions Vector of available function names
+#'
+#' @return Vector of matching function names
+expand_selector <- function(selector, available_functions) {
+  if (length(available_functions) == 0) {
+    return(character(0))
+  }
+
+  # Extract the selector type and pattern
+  if (grepl("^starts_with\\s*\\(", selector)) {
+    pattern <- extract_quoted_pattern(selector)
+    if (!is.null(pattern)) {
+      regex <- paste0("^", escape_regex(pattern))
+      return(available_functions[grepl(regex, available_functions)])
+    }
+  } else if (grepl("^ends_with\\s*\\(", selector)) {
+    pattern <- extract_quoted_pattern(selector)
+    if (!is.null(pattern)) {
+      regex <- paste0(escape_regex(pattern), "$")
+      return(available_functions[grepl(regex, available_functions)])
+    }
+  } else if (grepl("^contains\\s*\\(", selector)) {
+    pattern <- extract_quoted_pattern(selector)
+    if (!is.null(pattern)) {
+      regex <- escape_regex(pattern)
+      return(available_functions[grepl(regex, available_functions)])
+    }
+  } else if (grepl("^matches\\s*\\(", selector)) {
+    pattern <- extract_quoted_pattern(selector)
+    if (!is.null(pattern)) {
+      # For matches, use the pattern as-is (it's already a regex)
+      return(available_functions[grepl(pattern, available_functions)])
+    }
+  }
+
+  # If we can't parse the selector, return empty
+  character(0)
+}
+
+#' Extract the quoted pattern from a selector function
+#'
+#' @param selector Selector string like 'ends_with("_at")'
+#'
+#' @return The extracted pattern or NULL if not found
+extract_quoted_pattern <- function(selector) {
+  # Match patterns like: ends_with("pattern") or ends_with('pattern')
+  matches <- regexec('\\(\\s*["\']([^"\']+)["\']\\s*\\)', selector)
+  if (matches[[1]][1] != -1) {
+    captures <- regmatches(selector, matches)[[1]]
+    if (length(captures) >= 2) {
+      return(captures[2])
+    }
+  }
+  return(NULL)
+}
+
+#' Escape special regex characters in a pattern
+#'
+#' @param pattern String to escape
+#'
+#' @return Escaped string
+escape_regex <- function(pattern) {
+  gsub("([.^$*+?{}\\[\\]\\(\\)|\\\\])", "\\\\\\1", pattern)
+}
+
+#' Find the actual documentation file for a function using Rd database
+#'
+#' Handles @rdname cases where functions are documented in different files
+#'
+#' @param function_name Name of the function to find
+#' @param pkg_name Package name (for accessing Rd database)
+#'
+#' @return The base name of the Rd file containing the function's documentation, or NULL
+find_function_doc_file <- function(function_name, pkg_name) {
+  if (is.null(function_name) || is.null(pkg_name) || nchar(function_name) == 0) {
+    return(NULL)
+  }
+
+  tryCatch({
+    # Get the Rd database for the package
+    rd_db <- tools::Rd_db(pkg_name)
+
+    # Search through all Rd files for the function
+    for (rd_file_name in names(rd_db)) {
+      rd_obj <- rd_db[[rd_file_name]]
+
+      # Check if this Rd object documents the function we're looking for
+      if (rd_contains_function(rd_obj, function_name)) {
+        # Return the base name without .Rd extension
+        return(tools::file_path_sans_ext(rd_file_name))
+      }
+    }
+
+    return(NULL)
+  }, error = function(e) {
+    # If we can't access Rd database, return NULL
+    return(NULL)
+  })
+}
+
+#' Check if an Rd object contains documentation for a specific function
+#'
+#' @param rd_obj Rd object from tools::Rd_db
+#' @param function_name Function name to look for
+#'
+#' @return Logical indicating if the function is documented in this Rd object
+rd_contains_function <- function(rd_obj, function_name) {
+  # Check the \name section first
+  name_section <- get_rd_section(rd_obj, "name")
+  if (!is.null(name_section)) {
+    name_text <- trimws(paste(unlist(name_section), collapse = ""))
+    if (name_text == function_name) {
+      return(TRUE)
+    }
+  }
+
+  # Check \alias sections (functions documented via @rdname appear as aliases)
+  aliases <- character()
+  for (element in rd_obj) {
+    el_tag <- attr(element, "Rd_tag")
+    if (!is.null(el_tag) && el_tag == "\\alias") {
+      alias_content <- paste(unlist(element), collapse = "")
+      alias_content <- trimws(alias_content)
+      aliases <- c(aliases, alias_content)
+    }
+  }
+
+  # Check if our function is in the aliases
+  return(function_name %in% aliases)
+}
+
 
 #' Check if a path is absolute
 #'
@@ -733,7 +1057,7 @@ get_package_name <- function(pkg_path) {
 #'
 #' Sets up the necessary files and configuration for using starlightr.
 #' Creates a default _starlightr.yaml configuration file, updates .Rbuildignore,
-#' and creates the inst/starlightr/ directory structure.
+#' and creates the vignettes/ directory structure.
 #'
 #' @param pkg Path to package directory, defaults to current directory
 #' @param open Logical, whether to open the configuration file for editing
@@ -752,7 +1076,7 @@ use_starlightr <- function(pkg = ".", open = interactive()) {
   # Resolve package path
   pkg_path <- normalizePath(pkg, mustWork = TRUE)
 
-  message("Setting up starlightr for package: ", basename(pkg_path))
+  cli::cli_h1("Setting up starlightr for {.pkg {basename(pkg_path)}}")
 
   # Create _starlightr.yaml if it doesn't exist
   config_path <- file.path(pkg_path, "_starlightr.yaml")
@@ -766,22 +1090,24 @@ use_starlightr <- function(pkg = ".", open = interactive()) {
   # Update .Rbuildignore
   update_rbuildignore(pkg_path)
 
-  # Create inst/starlightr directory
-  articles_dir <- file.path(pkg_path, "inst", "starlightr")
+  # Create vignettes directory
+  articles_dir <- file.path(pkg_path, "vignettes")
   if (!dir.exists(articles_dir)) {
     dir.create(articles_dir, recursive = TRUE)
 
     # Create a sample article
     create_sample_article(articles_dir)
-    cli::cli_alert_success("Created inst/starlightr/ directory with sample article")
+    cli::cli_alert_success("Created vignettes/ directory with sample article")
   } else {
-    cli::cli_alert_info("inst/starlightr/ directory already exists")
+    cli::cli_alert_info("vignettes/ directory already exists")
   }
 
   cli::cli_alert_success("starlightr setup complete!")
-  message("  - Edit _starlightr.yaml to customize your site")
-  message("  - Add .Rmd files to inst/starlightr/ for articles")
-  message("  - Run build_site() to generate your documentation")
+  cli::cli_bullets(c(
+    "*" = "Edit {.file _starlightr.yaml} to customize your site",
+    "*" = "Add {.file .Rmd} files to {.path vignettes/} for articles",
+    "*" = "Run {.fn build_site} to generate your documentation"
+  ))
 
   if (open && file.exists(config_path)) {
     utils::file.edit(config_path)
@@ -934,9 +1260,9 @@ update_rbuildignore <- function(pkg_path) {
   }
 }
 
-#' Create a sample article in inst/starlightr/
+#' Create a sample article in vignettes/
 #'
-#' @param articles_dir Path to inst/starlightr directory
+#' @param articles_dir Path to vignettes directory
 create_sample_article <- function(articles_dir) {
   sample_content <- '---
 title: "Getting Started"
@@ -970,7 +1296,7 @@ result <- main_function()
 ## Next Steps
 
 - Edit this file to add your own content
-- Create additional .Rmd files in inst/starlightr/
+- Create additional .Rmd files in vignettes/
 - Run `starlightr::build_site()` to generate your documentation site
 '
 

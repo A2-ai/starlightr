@@ -1,66 +1,76 @@
-#' Writes the parsed and formatted Rd file to a new file in output_dir
+#' Write Rd objects to Markdown files
 #'
-#' @param rd_files list of rd_objects to create md file for
-#' @param output_dir path to directory to save new md files
-#' @param file_ext either .md or .mdx. extension to use for files, default .md
-#' @param code_sections character vector of sections to format as code blocks
-#' @param skip_sections character vector of sections to skip entirely
+#' Converts Rd documentation objects to Markdown and writes them to files
+#' using the Rd -> HTML -> Markdown conversion pipeline.
 #'
+#' @param rd_db An Rd database from [tools::Rd_db()].
+#' @param output_dir Path to directory to save markdown files.
+#' @param file_ext File extension, either ".md" or ".mdx" (default ".mdx").
+#' @param config Configuration list for conversion (see [rd_to_markdown()]).
+#' @param site_output_path Path to site output directory (for embedding example outputs).
+#' @param pkg_name Package name (for link resolution).
+#'
+#' @return Invisibly returns a character vector of written file paths.
 #' @export
 #'
-#' @examples \dontrun{
-#' rd_files <- extract_package_rd_content("starlightr")
-#' output_dir <- file.path("path/to/starlightr/docs/content/rd_files")
+#' @examples
+#' \dontrun{
+#' rd_db <- tools::Rd_db("mypackage")
+#' write_md_files(rd_db, "docs/reference")
 #'
-#' write_md_files(rd_files, output_dir)
-#'
-#' # Custom sections
+#' # With configuration
 #' write_md_files(
-#'   rd_files,
-#'   output_dir,
-#'   sections = c("description", "usage", "examples")
+#'   rd_db,
+#'   "docs/reference",
+#'   config = list(skip_sections = c("author", "source"))
 #' )
 #' }
 write_md_files <- function(
-    rd_files,
+    rd_db,
     output_dir,
     file_ext = ".mdx",
-    code_sections = c("usage", "examples"),
-    skip_sections = c("name", "alias", "title", "seealso")) {
-  checkmate::assert_choice(file_ext, c(".md", ".mdx"))
+    config = list(),
+    site_output_path = NULL,
+    pkg_name = NULL) {
+  if (!file_ext %in% c(".md", ".mdx")) {
+    cli::cli_abort("file_ext must be '.md' or '.mdx', not {.val {file_ext}}")
+  }
 
+  # Create output directory if needed
   if (!dir.exists(output_dir)) {
-    if (interactive()) {
-      continue <- readline(paste0(
-        "output_dir: ",
-        output_dir,
-        " does not exists. Would you like to create it? [Y/n]"
-      ))
-    } else {
-			continue <- "y"
-		}
-
-    if (tolower(continue) == "y") {
-      dir.create(output_dir, recursive = TRUE)
-      message(paste("created output_dir:", output_dir))
-    } else {
-      stop("Please supply output_dir to path that exists")
-    }
+    dir.create(output_dir, recursive = TRUE)
+    cli::cli_alert_info("Created output directory: {.path {output_dir}}")
   }
 
-  for (file in names(rd_files)) {
-    md_content <- format_md(
-      content = rd_files[[file]],
-      code_sections,
-      skip_sections
-    )
+  written_files <- character()
+  cli::cli_progress_bar("Writing markdown files", total = length(rd_db))
 
-    writeLines(
-      md_content,
-      con = file.path(
-        output_dir,
-        paste0(tools::file_path_sans_ext(basename(file)), file_ext)
-      )
+  for (file in names(rd_db)) {
+    cli::cli_progress_update()
+
+    tryCatch(
+      {
+        md_content <- rd_to_markdown(
+          rd_obj = rd_db[[file]],
+          config = config,
+          output_path = site_output_path,
+          pkg_name = pkg_name
+        )
+
+        out_path <- file.path(
+          output_dir,
+          paste0(tools::file_path_sans_ext(basename(file)), file_ext)
+        )
+        writeLines(md_content, con = out_path)
+        written_files <- c(written_files, out_path)
+      },
+      error = function(e) {
+        cli::cli_warn("Failed to convert {.file {file}}: {e$message}")
+      }
     )
   }
+
+  cli::cli_progress_done()
+  cli::cli_alert_success("Wrote {length(written_files)} markdown files to {.path {output_dir}}")
+  invisible(written_files)
 }

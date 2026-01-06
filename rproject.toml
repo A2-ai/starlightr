@@ -11,5 +11,6 @@ repositories = [
 dependencies = [
   "devtools",
 	"covr",
+	{ name = "roxygen2md", git = "https://github.com/r-lib/roxygen2md", tag = "v1.0.1" },
   {name = "starlightr", path = ".", dependencies_only = true, install_suggestions = true}
 ]

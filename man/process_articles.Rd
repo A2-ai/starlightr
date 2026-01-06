@@ -2,7 +2,7 @@
 % Please edit documentation in R/build_site.R
 \name{process_articles}
 \alias{process_articles}
-\title{Process articles from inst/starlightr/*.Rmd}
+\title{Process articles from vignettes/*.Rmd}
 \usage{
 process_articles(pkg_path, output_path, config)
 }
@@ -14,5 +14,5 @@ process_articles(pkg_path, output_path, config)
 \item{config}{Configuration list}
 }
 \description{
-Process articles from inst/starlightr/*.Rmd
+Process articles from vignettes/*.Rmd
 }

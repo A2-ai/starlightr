@@ -1,6 +1,10 @@
 ---
 title: "Configuration Guide"
-description: "How to configure starlightr for your package"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Configuration Guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 # Configuration Guide
