@@ -78,6 +78,9 @@ build_site <- function(pkg = ".",
   # Copy assets if they exist
   copy_assets(pkg_path, output_path, config)
 
+  # Copy logo and favicon if configured
+  copy_branding_assets(pkg_path, output_path, config)
+
   # Create default index.mdx if it doesn't exist
   create_index_page(pkg_path, output_path, config)
 
@@ -216,6 +219,18 @@ generate_astro_config <- function(output_path, config, pkg_path = NULL) {
     social_config <- sprintf("social: [{ icon: 'github', label: 'GitHub', href: '%s' }],", github_url)
   }
 
+  # Logo configuration
+  logo_config <- ""
+  if (!is.null(config$site$logo)) {
+    logo_config <- 'logo: { src: "./src/assets/logo.png", alt: "Logo" },'
+  }
+
+  # Favicon configuration
+  favicon_config <- ""
+  if (!is.null(config$site$favicon)) {
+    favicon_config <- 'favicon: "/images/favicon.png",'
+  }
+
   # Generate sidebar configuration from YAML
   pkg_name <- if (!is.null(pkg_path)) get_package_name(pkg_path) else NULL
   sidebar_config <- generate_sidebar_config(config, output_path, pkg_name)
@@ -230,12 +245,16 @@ export default defineConfig({
     starlight({
       title: "%s",
       %s
+      %s
+      %s
       sidebar: %s
     })
   ]
 });
 ',
     config$site$title %||% "Package Documentation",
+    logo_config,
+    favicon_config,
     social_config,
     sidebar_config
   )
@@ -644,6 +663,40 @@ process_rmd_file <- function(rmd_path, output_dir) {
   }
 }
 
+#' Update hero image in existing index.mdx
+#'
+#' @param index_path Path to index.mdx file
+#' @param config Configuration list
+update_index_hero_image <- function(index_path, config) {
+  if (is.null(config$site$logo)) {
+    return()  # No logo configured, nothing to update
+  }
+
+  content <- readLines(index_path, warn = FALSE)
+  content_str <- paste(content, collapse = "\n")
+
+  # Check if hero image already exists
+  if (grepl("image:\\s*\\n\\s*file:", content_str)) {
+    return()  # Already has hero image
+  }
+
+  # Find the hero section and add image after tagline
+  # Pattern: find "hero:\n  tagline: ..." and add image after
+  hero_image_yaml <- "  image:\n    file: /src/assets/logo.png"
+
+  # Insert image section after tagline line (before actions or other hero content)
+  updated <- sub(
+    "(hero:\\s*\\n\\s*tagline:[^\\n]*)",
+    paste0("\\1\n", hero_image_yaml),
+    content_str
+  )
+
+  if (updated != content_str) {
+    writeLines(updated, index_path)
+    cli::cli_alert_success("Updated {.file index.mdx} with hero image")
+  }
+}
+
 #' Create default index.mdx page
 #'
 #' @param pkg_path Path to package directory
@@ -652,8 +705,9 @@ process_rmd_file <- function(rmd_path, output_dir) {
 create_index_page <- function(pkg_path, output_path, config) {
   index_path <- file.path(output_path, "src", "content", "docs", "index.mdx")
 
-  # Don't overwrite existing index
-  if (file.exists(index_path)) {
+  # If index exists, just update the hero image if needed
+ if (file.exists(index_path)) {
+    update_index_hero_image(index_path, config)
     return()
   }
 
@@ -689,6 +743,13 @@ create_index_page <- function(pkg_path, output_path, config) {
       variant: minimal', github_url)
   }
 
+  # Build hero image section if logo configured
+
+  hero_image <- ""
+  if (!is.null(config$site$logo)) {
+    hero_image <- "  image:\n    file: /src/assets/logo.png\n"
+  }
+
   # Create default index content with Starlight components
   index_content <- sprintf('---
 title: "Welcome to %s"
@@ -696,7 +757,7 @@ description: "%s"
 template: splash
 hero:
   tagline: %s
-  actions:
+%s  actions:
 %s
 ---
 
@@ -726,6 +787,7 @@ import { Card, CardGrid } from "@astrojs/starlight/components";
     pkg_name,
     pkg_desc,
     hero_tagline,
+    hero_image,
     hero_actions,
     get_github_url(config) %||% "https://github.com/user/repo",
     get_github_url(config) %||% "https://github.com/user/repo"
@@ -812,6 +874,39 @@ copy_assets <- function(pkg_path, output_path, config) {
     if (dir.exists(full_path)) {
       file.copy(full_path, public_dir, recursive = TRUE)
       cli::cli_alert_success("Copied assets from {.path {asset_path}}")
+    }
+  }
+}
+
+#' Copy logo and favicon to site
+#'
+#' @param pkg_path Path to package directory
+#' @param output_path Path to output directory
+#' @param config Configuration list
+copy_branding_assets <- function(pkg_path, output_path, config) {
+  # Copy logo to src/assets/ (Astro imports this as a module)
+  if (!is.null(config$site$logo)) {
+    logo_src <- file.path(pkg_path, config$site$logo)
+    if (file.exists(logo_src)) {
+      assets_dir <- file.path(output_path, "src", "assets")
+      if (!dir.exists(assets_dir)) dir.create(assets_dir, recursive = TRUE)
+      file.copy(logo_src, file.path(assets_dir, "logo.png"), overwrite = TRUE)
+      cli::cli_alert_success("Copied logo to {.path src/assets/}")
+    } else {
+      cli::cli_warn("Logo file not found: {.path {logo_src}}")
+    }
+  }
+
+  # Copy favicon to public/images/ (served as static file)
+  if (!is.null(config$site$favicon)) {
+    favicon_src <- file.path(pkg_path, config$site$favicon)
+    if (file.exists(favicon_src)) {
+      images_dir <- file.path(output_path, "public", "images")
+      if (!dir.exists(images_dir)) dir.create(images_dir, recursive = TRUE)
+      file.copy(favicon_src, file.path(images_dir, "favicon.png"), overwrite = TRUE)
+      cli::cli_alert_success("Copied favicon to {.path public/images/}")
+    } else {
+      cli::cli_warn("Favicon file not found: {.path {favicon_src}}")
     }
   }
 }
@@ -1153,6 +1248,8 @@ create_default_config <- function(config_path, pkg_path) {
 site:
   title: "%s"
   description: "%s"
+  # logo: "man/figures/logo.png"       # Path to logo image (relative to package root)
+  # favicon: "man/figures/favicon.png" # Path to favicon (can be same as logo)
 
 # Home page configuration
 home:
