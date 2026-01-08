@@ -12,3 +12,5 @@
 ^.*\.*-docs\.R$
 
 ^_starlightr\.yaml$
+
+^\.claude$
