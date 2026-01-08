@@ -741,23 +741,7 @@ rd_to_markdown <- function(
     }
   }
 
-  # Add example outputs after Examples section
-  if (!is.null(output_path)) {
-    func_name <- fm_data$title
-    example_outputs <- get_example_outputs(func_name, output_path)
-    if (!is.null(example_outputs)) {
-      # Find end of Examples section and insert outputs
-      if (grepl("## Examples", md)) {
-        # Add after the code block in examples
-        md <- sub(
-          "(## Examples.*?```\n)",
-          paste0("\\1\n", example_outputs, "\n"),
-          md,
-          perl = TRUE
-        )
-      }
-    }
-  }
+  # Note: Example outputs are now appended in write_md_files using MDX imports
 
   # Escape < outside code blocks for MDX compatibility
   # Match < followed by a letter (looks like a tag) but not inside ```

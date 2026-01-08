@@ -72,6 +72,11 @@ build_site <- function(pkg = ".",
     process_articles(pkg_path, output_path, config)
   }
 
+  # Process NEWS.md if configured
+  if (!is.null(config$sidebar$news)) {
+    process_news(pkg_path, output_path, config)
+  }
+
   # Generate astro.config.mjs now that files exist for pattern matching
   generate_astro_config(output_path, config, pkg_path)
 
@@ -231,6 +236,15 @@ generate_astro_config <- function(output_path, config, pkg_path = NULL) {
     favicon_config <- 'favicon: "/images/favicon.png",'
   }
 
+  # KaTeX support (enabled by default for R packages with math)
+  use_katex <- config$features$katex %||% TRUE
+  katex_import <- ""
+  katex_plugin <- ""
+  if (use_katex) {
+    katex_import <- 'import { starlightKatex } from "starlight-katex";'
+    katex_plugin <- "plugins: [starlightKatex()],"
+  }
+
   # Generate sidebar configuration from YAML
   pkg_name <- if (!is.null(pkg_path)) get_package_name(pkg_path) else NULL
   sidebar_config <- generate_sidebar_config(config, output_path, pkg_name)
@@ -238,6 +252,7 @@ generate_astro_config <- function(output_path, config, pkg_path = NULL) {
   astro_config <- sprintf('// @ts-check
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
+%s
 
 // https://astro.build/config
 export default defineConfig({
@@ -247,12 +262,15 @@ export default defineConfig({
       %s
       %s
       %s
+      %s
       sidebar: %s
     })
   ]
 });
 ',
+    katex_import,
     config$site$title %||% "Package Documentation",
+    katex_plugin,
     logo_config,
     favicon_config,
     social_config,
@@ -355,13 +373,29 @@ generate_sidebar_config <- function(config, output_path = NULL, pkg_name = NULL)
             if (!grepl("\\*", content)) {
               # Map function to its actual documentation file
               doc_file <- find_function_doc_file(content, pkg_name)
-              if (!is.null(doc_file)) {
-                slug <- paste0("reference/", doc_file)
-                # Escape quotes for JavaScript
-                escaped_content <- gsub('"', '\\"', content, fixed = TRUE)
-                escaped_slug <- gsub('"', '\\"', slug, fixed = TRUE)
-                group_items <- c(group_items, sprintf('{ label: "%s", slug: "%s" }', escaped_content, escaped_slug))
+              file_exists <- FALSE
+
+              # Check if file exists (Rd-generated or manual)
+              if (!is.null(output_path)) {
+                ref_dir <- file.path(output_path, "src", "content", "docs", "reference")
+                file_exists <- file.exists(file.path(ref_dir, paste0(content, ".mdx"))) ||
+                               file.exists(file.path(ref_dir, paste0(content, ".md")))
               }
+
+              # Use doc_file if found in Rd, otherwise use content name
+              if (is.null(doc_file)) {
+                doc_file <- content
+              }
+
+              # Warn if file doesn't exist
+              if (!file_exists && is.null(find_function_doc_file(content, pkg_name))) {
+                cli::cli_warn("Reference file missing: {.file {content}.mdx} - create manually or check config")
+              }
+
+              slug <- paste0("reference/", doc_file)
+              escaped_content <- gsub('"', '\\"', content, fixed = TRUE)
+              escaped_slug <- gsub('"', '\\"', slug, fixed = TRUE)
+              group_items <- c(group_items, sprintf('{ label: "%s", slug: "%s" }', escaped_content, escaped_slug))
             }
           }
         }
@@ -392,13 +426,29 @@ generate_sidebar_config <- function(config, output_path = NULL, pkg_name = NULL)
             for (content in expanded_contents) {
               # Map function to its actual documentation file
               doc_file <- find_function_doc_file(content, pkg_name)
-              if (!is.null(doc_file)) {
-                slug <- paste0("reference/", doc_file)
-                # Escape quotes for JavaScript
-                escaped_content <- gsub('"', '\\"', content, fixed = TRUE)
-                escaped_slug <- gsub('"', '\\"', slug, fixed = TRUE)
-                subgroup_items <- c(subgroup_items, sprintf('{ label: "%s", slug: "%s" }', escaped_content, escaped_slug))
+              file_exists <- FALSE
+
+              # Check if file exists (Rd-generated or manual)
+              if (!is.null(output_path)) {
+                ref_dir <- file.path(output_path, "src", "content", "docs", "reference")
+                file_exists <- file.exists(file.path(ref_dir, paste0(content, ".mdx"))) ||
+                               file.exists(file.path(ref_dir, paste0(content, ".md")))
               }
+
+              # Use doc_file if found in Rd, otherwise use content name
+              if (is.null(doc_file)) {
+                doc_file <- content
+              }
+
+              # Warn if file doesn't exist
+              if (!file_exists && is.null(find_function_doc_file(content, pkg_name))) {
+                cli::cli_warn("Reference file missing: {.file {content}.mdx} - create manually or check config")
+              }
+
+              slug <- paste0("reference/", doc_file)
+              escaped_content <- gsub('"', '\\"', content, fixed = TRUE)
+              escaped_slug <- gsub('"', '\\"', slug, fixed = TRUE)
+              subgroup_items <- c(subgroup_items, sprintf('{ label: "%s", slug: "%s" }', escaped_content, escaped_slug))
             }
 
             # Handle collapsed field for subgroups
@@ -441,6 +491,13 @@ generate_sidebar_config <- function(config, output_path = NULL, pkg_name = NULL)
     sidebar_parts <- c(sidebar_parts, '{\n      label: "Reference",\n      autogenerate: { directory: "reference" }\n    }')
   }
 
+  # Handle news/changelog section
+  if (!is.null(config$sidebar$news)) {
+    news_label <- config$sidebar$news$label %||% "Changelog"
+    news_section <- sprintf('{ label: "%s", slug: "news" }', news_label)
+    sidebar_parts <- c(sidebar_parts, news_section)
+  }
+
   # Combine all parts
   sidebar_config <- sprintf('[\n    %s\n  ]', paste(sidebar_parts, collapse = ",\n    "))
   return(sidebar_config)
@@ -451,7 +508,24 @@ generate_sidebar_config <- function(config, output_path = NULL, pkg_name = NULL)
 #' @param output_path Path to output directory
 #' @param config Configuration list
 generate_package_json <- function(output_path, config) {
-  package_json <- '{
+  package_json_path <- file.path(output_path, "package.json")
+
+  # Don't overwrite existing package.json
+  if (file.exists(package_json_path)) {
+    cli::cli_alert_info("Skipping {.file package.json} (already exists)")
+    return(invisible(NULL))
+  }
+
+  # Check if KaTeX is enabled (default TRUE)
+  use_katex <- config$features$katex %||% TRUE
+
+  katex_dep <- ""
+  if (use_katex) {
+    katex_dep <- ',
+    "starlight-katex": "^0.0.4"'
+  }
+
+  package_json <- sprintf('{
   "name": "starlight-docs",
   "type": "module",
   "version": "0.0.1",
@@ -465,11 +539,11 @@ generate_package_json <- function(output_path, config) {
   "dependencies": {
     "@astrojs/starlight": "^0.36.0",
     "astro": "^5.6.1",
-    "sharp": "^0.34.2"
+    "sharp": "^0.34.2"%s
   }
-}'
+}', katex_dep)
 
-  writeLines(package_json, file.path(output_path, "package.json"))
+  writeLines(package_json, package_json_path)
   cli::cli_alert_success("Generated {.file package.json}")
 }
 
@@ -661,6 +735,51 @@ process_rmd_file <- function(rmd_path, output_dir) {
   if (file.exists(temp_md)) {
     unlink(temp_md)
   }
+}
+
+#' Process NEWS.md file
+#'
+#' @param pkg_path Path to package directory
+#' @param output_path Path to output directory
+#' @param config Configuration list
+process_news <- function(pkg_path, output_path, config) {
+  news_config <- config$sidebar$news
+
+  # Get source file (default NEWS.md)
+  source_file <- news_config$source %||% "NEWS.md"
+  news_path <- file.path(pkg_path, source_file)
+
+  if (!file.exists(news_path)) {
+    cli::cli_warn("NEWS file not found: {.path {news_path}}")
+    return()
+  }
+
+  cli::cli_alert_info("Processing {.file {source_file}}...")
+
+  # Read the NEWS.md content
+  news_content <- readLines(news_path, warn = FALSE)
+
+  # Check if it already has frontmatter
+  has_frontmatter <- length(news_content) > 0 && news_content[1] == "---"
+
+  if (!has_frontmatter) {
+    # Add frontmatter
+    label <- news_config$label %||% "Changelog"
+    news_content <- c(
+      "---",
+      paste0('title: "', label, '"'),
+      "---",
+      "",
+      news_content
+    )
+  }
+
+  # Write to docs directory
+  docs_dir <- file.path(output_path, "src", "content", "docs")
+  output_file <- file.path(docs_dir, "news.mdx")
+
+  writeLines(news_content, output_file)
+  cli::cli_alert_success("Generated {.file news.mdx}")
 }
 
 #' Update hero image in existing index.mdx
@@ -1299,6 +1418,11 @@ sidebar:
         - "write_*"
         - "clean_text"
 
+  # Changelog from NEWS.md
+  news:
+    label: "Changelog"
+    source: "NEWS.md"
+
 # Theme and appearance
 theme:
   color_mode: "auto"  # light, dark, or auto
@@ -1435,4 +1559,206 @@ result <- main_function()
   if (!file.exists(intro_path)) {
     writeLines(intro_content, intro_path)
   }
+}
+
+#' Audit configuration against NAMESPACE exports
+#'
+#' Compares exported functions in NAMESPACE against functions referenced in
+#' the _starlightr.yaml configuration file. Reports any exported functions
+#' that are not covered by the sidebar reference configuration.
+#'
+#' @param pkg Path to package directory, defaults to current directory
+#' @param config_file Path to _starlightr.yaml configuration file
+#'
+#' @return Invisibly returns a list with:
+#'   - missing: character vector of exported functions not in config
+#'   - covered: character vector of exported functions covered by config
+#'   - config_only: character vector of config references that don't match exports
+#' @export
+#'
+#' @examples \dontrun{
+#' # Audit current package
+#' audit_config()
+#'
+#' # Audit specific package
+#' audit_config("/path/to/package")
+#' }
+audit_config <- function(pkg = ".", config_file = "_starlightr.yaml") {
+  pkg_path <- normalizePath(pkg, mustWork = TRUE)
+
+  # Parse NAMESPACE to get exported functions
+  namespace_path <- file.path(pkg_path, "NAMESPACE")
+  if (!file.exists(namespace_path)) {
+    cli::cli_abort("NAMESPACE file not found at {.path {namespace_path}}")
+  }
+
+  exported <- parse_namespace_exports(namespace_path)
+
+  # Read configuration
+ config_path <- file.path(pkg_path, config_file)
+  if (!file.exists(config_path)) {
+    cli::cli_abort("Configuration file not found at {.path {config_path}}")
+  }
+
+  config <- yaml::yaml.load_file(config_path)
+
+  # Extract all function references from sidebar.reference
+  config_refs <- extract_config_references(config)
+
+  # Match config references against exports
+  matched <- match_config_to_exports(config_refs, exported)
+
+  # Find missing (exported but not in config)
+  missing <- setdiff(exported, matched$covered)
+
+  # Find config references that don't match any export
+  config_only <- matched$unmatched
+
+  # Report results
+  cli::cli_h1("Configuration Audit")
+  cli::cli_alert_info("Package: {.pkg {basename(pkg_path)}}")
+  cli::cli_alert_info("Exported functions: {length(exported)}")
+  cli::cli_alert_info("Config references: {length(config_refs)}")
+
+  if (length(missing) == 0) {
+    cli::cli_alert_success("All exported functions are covered by configuration")
+  } else {
+    cli::cli_alert_warning("{length(missing)} exported function{?s} not in config:")
+    for (fn in sort(missing)) {
+      cli::cli_bullets(c("*" = "{.fn {fn}}"))
+    }
+  }
+
+  if (length(config_only) > 0) {
+    cli::cli_alert_info("{length(config_only)} config reference{?s} don't match exports:")
+    for (ref in sort(config_only)) {
+      cli::cli_bullets(c("!" = "{.val {ref}}"))
+    }
+  }
+
+  invisible(list(
+    missing = missing,
+    covered = matched$covered,
+    config_only = config_only
+  ))
+}
+
+#' Parse NAMESPACE file to extract exported functions
+#'
+#' @param namespace_path Path to NAMESPACE file
+#' @return Character vector of exported function names
+#' @keywords internal
+parse_namespace_exports <- function(namespace_path) {
+  lines <- readLines(namespace_path, warn = FALSE)
+
+  exports <- character()
+
+  for (line in lines) {
+    line <- trimws(line)
+
+    # Skip comments and empty lines
+    if (nchar(line) == 0 || startsWith(line, "#")) {
+      next
+    }
+
+    # Match export(function_name)
+    if (grepl("^export\\(", line)) {
+      match <- regmatches(line, regexec("^export\\(([^)]+)\\)", line))[[1]]
+      if (length(match) >= 2) {
+        exports <- c(exports, trimws(match[2]))
+      }
+    }
+
+    # Match exportPattern("pattern") - less common but valid
+    if (grepl("^exportPattern\\(", line)) {
+      # For patterns, we can't enumerate them here - would need actual function list
+      # Skip for now, could be enhanced later
+    }
+  }
+
+  unique(exports)
+}
+
+#' Extract all function references from config sidebar.reference
+#'
+#' @param config Parsed YAML configuration list
+#' @return Character vector of function names and patterns
+#' @keywords internal
+extract_config_references <- function(config) {
+  refs <- character()
+
+  if (is.null(config$sidebar$reference)) {
+    return(refs)
+  }
+
+  for (group in config$sidebar$reference) {
+    if (!is.null(group$contents)) {
+      refs <- c(refs, group$contents)
+    }
+
+    # Handle nested items structure
+    if (!is.null(group$items)) {
+      for (subgroup in group$items) {
+        if (!is.null(subgroup$contents)) {
+          refs <- c(refs, subgroup$contents)
+        }
+      }
+    }
+  }
+
+  unique(refs)
+}
+
+#' Match config references against exported functions
+#'
+#' @param config_refs Character vector of config references (names and patterns)
+#' @param exports Character vector of exported function names
+#' @return List with covered (matched exports) and unmatched (config refs that don't match)
+#' @keywords internal
+match_config_to_exports <- function(config_refs, exports) {
+  covered <- character()
+  unmatched <- character()
+
+  for (ref in config_refs) {
+    matched_exports <- match_single_reference(ref, exports)
+
+    if (length(matched_exports) > 0) {
+      covered <- c(covered, matched_exports)
+    } else {
+      unmatched <- c(unmatched, ref)
+    }
+  }
+
+  list(
+    covered = unique(covered),
+    unmatched = unique(unmatched)
+  )
+}
+
+#' Match a single config reference against exports
+#'
+#' Handles exact names, glob patterns (e.g., extract_*), and pkgdown selectors
+#'
+#' @param ref Single reference string
+#' @param exports Character vector of exported function names
+#' @return Character vector of matching export names
+#' @keywords internal
+match_single_reference <- function(ref, exports) {
+  # Check for pkgdown selector functions
+  if (is_pkgdown_selector(ref)) {
+    return(expand_selector(ref, exports))
+  }
+
+  # Check for glob pattern (ends with *)
+  if (grepl("\\*$", ref)) {
+    pattern <- paste0("^", gsub("\\*", ".*", ref), "$")
+    return(exports[grepl(pattern, exports)])
+  }
+
+  # Exact match
+  if (ref %in% exports) {
+    return(ref)
+  }
+
+  character()
 }

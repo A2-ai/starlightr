@@ -57,10 +57,14 @@ write_md_files <- function(
           pkg_name = pkg_name
         )
 
-        out_path <- file.path(
-          output_dir,
-          paste0(tools::file_path_sans_ext(basename(file)), file_ext)
-        )
+        func_name <- tools::file_path_sans_ext(basename(file))
+        out_path <- file.path(output_dir, paste0(func_name, file_ext))
+
+        # Append example outputs if they exist
+        if (!is.null(site_output_path)) {
+          md_content <- append_example_outputs(md_content, func_name, site_output_path)
+        }
+
         writeLines(md_content, con = out_path)
         written_files <- c(written_files, out_path)
       },
@@ -73,4 +77,110 @@ write_md_files <- function(
   cli::cli_progress_done()
   cli::cli_alert_success("Wrote {length(written_files)} markdown files to {.path {output_dir}}")
   invisible(written_files)
+}
+
+#' Append example outputs to markdown content using MDX imports
+#'
+#' Checks for png and txt example output files and appends MDX import
+#' statements after the Examples section.
+#'
+#' @param md_content Markdown content string
+#' @param func_name Function name to look for outputs
+#' @param site_output_path Path to site output directory
+#' @return Updated markdown content with example outputs appended
+#' @keywords internal
+append_example_outputs <- function(md_content, func_name, site_output_path) {
+  # Check for example output files
+  png_path <- file.path(site_output_path, "public", "examples", paste0(func_name, ".png"))
+  txt_path <- file.path(site_output_path, "public", "examples", "text", paste0(func_name, ".txt"))
+  html_path <- file.path(site_output_path, "public", "examples", paste0(func_name, ".html"))
+
+  has_png <- file.exists(png_path)
+  has_txt <- file.exists(txt_path)
+  has_html <- file.exists(html_path)
+
+  if (!has_png && !has_txt && !has_html) {
+    return(md_content)
+  }
+
+  # Build the import statements and JSX components
+  imports <- character()
+  components <- character()
+
+  if (has_txt) {
+    imports <- c(imports, sprintf("import exampleOutput from '/examples/text/%s.txt?raw';", func_name))
+    components <- c(components, '<pre style="overflow-x: auto;">{exampleOutput}</pre>')
+  }
+
+  if (has_png) {
+    components <- c(components, sprintf('![Example plot](/examples/%s.png)', func_name))
+  }
+
+  if (has_html) {
+    # Use iframe for gt tables / HTML output
+    components <- c(components, sprintf('<iframe
+  src={`${import.meta.env.BASE_URL}examples/%s.html`}
+  style="width: 100%%; border: none;"
+  onload="this.style.height=(this.contentWindow.document.body.scrollHeight + 50)+\'px\';"
+></iframe>', func_name))
+  }
+
+  # Build the output block
+  output_block <- paste0(
+    "\n### Output\n\n",
+    if (length(imports) > 0) paste0(paste(imports, collapse = "\n"), "\n\n") else "",
+    paste(components, collapse = "\n\n"),
+    "\n"
+  )
+
+  # Find the Examples section and insert after the closing ```
+  if (grepl("## Examples", md_content)) {
+    lines <- strsplit(md_content, "\n")[[1]]
+    examples_start <- grep("^## Examples", lines)
+
+    if (length(examples_start) > 0) {
+      # Find all closing ``` after Examples section
+      # We need to find the last ``` before the next ## section (or end of file)
+      next_section <- grep("^## ", lines[(examples_start[1] + 1):length(lines)])
+      if (length(next_section) > 0) {
+        section_end <- examples_start[1] + next_section[1] - 1
+      } else {
+        section_end <- length(lines)
+      }
+
+      # Find the last ``` within the Examples section
+      examples_lines <- lines[(examples_start[1]):section_end]
+      closing_backticks <- grep("^```$", examples_lines)
+
+      if (length(closing_backticks) > 0) {
+        # Insert after the last closing ```
+        insert_pos <- examples_start[1] + closing_backticks[length(closing_backticks)] - 1
+
+        lines <- c(
+          lines[1:insert_pos],
+          strsplit(output_block, "\n")[[1]],
+          if (insert_pos < length(lines)) lines[(insert_pos + 1):length(lines)] else character()
+        )
+        md_content <- paste(lines, collapse = "\n")
+      } else {
+        # No code block found, insert before next section
+        lines <- c(
+          lines[1:(section_end - 1)],
+          strsplit(output_block, "\n")[[1]],
+          lines[section_end:length(lines)]
+        )
+        md_content <- paste(lines, collapse = "\n")
+      }
+    }
+  } else {
+    # No Examples section, append at end
+    md_content <- paste0(
+      md_content,
+      "\n\n## Output\n\n",
+      if (length(imports) > 0) paste0(paste(imports, collapse = "\n"), "\n\n") else "",
+      paste(components, collapse = "\n\n")
+    )
+  }
+
+  md_content
 }

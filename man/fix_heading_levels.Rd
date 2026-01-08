@@ -13,6 +13,7 @@ fix_heading_levels(md)
 Markdown string with adjusted headings
 }
 \description{
-Rd2HTML produces h3 headings; we want h2 for main sections.
+Removes the first h1 (title duplicate). Keeps sections as h2 for Starlight TOC.
+Rd2HTML produces h3 headings which become h2 after pandoc.
 }
 \keyword{internal}
