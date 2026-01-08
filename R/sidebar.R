@@ -45,6 +45,20 @@ generate_sidebar_config <- function(config, output_path = NULL, pkg_name = NULL)
   if (!is.null(config$sidebar$reference)) {
     reference_items <- c()
     for (group in config$sidebar$reference) {
+      # Handle bare string - direct link without group wrapper
+      if (is.character(group) && length(group) == 1) {
+        content <- group
+        doc_file <- find_function_doc_file(content, pkg_name)
+        if (is.null(doc_file)) {
+          doc_file <- content
+        }
+        slug <- paste0("reference/", doc_file)
+        escaped_content <- gsub('"', '\\"', content, fixed = TRUE)
+        escaped_slug <- gsub('"', '\\"', slug, fixed = TRUE)
+        reference_items <- c(reference_items, sprintf('{ label: "%s", slug: "%s" }', escaped_content, escaped_slug))
+        next
+      }
+
       # Handle flat structure: label + contents
       if (!is.null(group$label) && !is.null(group$contents)) {
         group_items <- c()

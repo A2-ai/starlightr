@@ -131,6 +131,12 @@ extract_config_references <- function(config) {
   }
 
   for (group in config$sidebar$reference) {
+    # Handle bare string - direct reference
+    if (is.character(group) && length(group) == 1) {
+      refs <- c(refs, group)
+      next
+    }
+
     if (!is.null(group$contents)) {
       refs <- c(refs, group$contents)
     }

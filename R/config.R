@@ -52,6 +52,9 @@ default_config <- function() {
     output = list(
       dir = "docs",
       include_build_files = TRUE
+    ),
+    versions = list(
+      enabled = FALSE
     )
   )
 }

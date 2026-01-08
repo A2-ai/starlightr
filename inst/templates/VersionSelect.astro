@@ -1,0 +1,98 @@
+---
+import type { Props } from "@astrojs/starlight/props";
+import Default from "@astrojs/starlight/components/SiteTitle.astro";
+import { VERSIONS, CURRENT_VERSION } from "../data/versions";
+
+const currentVersionData = VERSIONS.find((v) => v.tag === CURRENT_VERSION);
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<div class="site-title-wrapper">
+  <Default {...Astro.props} />
+  <div class="version-select-wrapper">
+    <label class="sr-only" for="version-select">Select version</label>
+    <select id="version-select" class="version-select">
+      {VERSIONS.map((version) => (
+        <option
+          value={version.tag}
+          selected={version.tag === CURRENT_VERSION}
+        >
+          {version.label}
+        </option>
+      ))}
+    </select>
+  </div>
+</div>
+
+<script>
+  const select = document.getElementById("version-select") as HTMLSelectElement;
+  if (select) {
+    select.addEventListener("change", (e) => {
+      const target = e.target as HTMLSelectElement;
+      const selectedTag = target.value;
+
+      const currentPath = window.location.pathname;
+      const pathParts = currentPath.split("/versions/");
+
+      if (pathParts.length > 1) {
+        // Already on a versioned path (e.g., /versions/1.0.1/reference/func)
+        // Replace version: keep base + /versions/{newTag}/ + everything after old version
+        const afterVersion = pathParts[1].split("/").slice(1).join("/");
+        window.location.href = pathParts[0] + "/versions/" + selectedTag + "/" + afterVersion;
+      } else {
+        // Not on versioned path (e.g., /reference/func or just /)
+        // Prepend /versions/{tag} to current path
+        window.location.href = "/versions/" + selectedTag + currentPath;
+      }
+    });
+  }
+</script>
+
+<style>
+  .site-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .version-select-wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  .version-select {
+    appearance: none;
+    background: var(--sl-color-bg-nav);
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 0.25rem;
+    color: var(--sl-color-text);
+    font-size: var(--sl-text-sm);
+    padding: 0.25rem 1.75rem 0.25rem 0.5rem;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+    background-position: right 0.25rem center;
+    background-repeat: no-repeat;
+    background-size: 1.25rem;
+  }
+
+  .version-select:hover {
+    border-color: var(--sl-color-text-accent);
+  }
+
+  .version-select:focus {
+    outline: 2px solid var(--sl-color-text-accent);
+    outline-offset: 2px;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+</style>

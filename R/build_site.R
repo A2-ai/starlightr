@@ -64,6 +64,18 @@ build_site <- function(pkg = ".",
     generate_package_json(output_path, config)
   }
 
+  # Add version support files if configured
+  if (has_version_support(config)) {
+    validate_version_config(config)
+    generate_versions_ts(output_path, config)
+    generate_version_select_component(output_path, config)
+
+    # Generate GitHub workflow if requested
+    if (config$versions$workflow$generate %||% FALSE) {
+      generate_deploy_workflow(output_path, config)
+    }
+  }
+
   # Extract and process R documentation
   process_package_documentation(pkg_path, output_path, config)
 

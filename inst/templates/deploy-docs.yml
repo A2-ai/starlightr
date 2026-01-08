@@ -1,0 +1,91 @@
+name: Build & Deploy Docs (Multi-Version)
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get all version tags
+        id: all-tags
+        run: |
+          ALL_TAGS=$(git tag -l 'v*' | sort -V | tr '\n' ' ' | sed 's/[[:space:]]*$//')
+          echo "tags=$ALL_TAGS" >> $GITHUB_OUTPUT
+          echo "Found tags: $ALL_TAGS"
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Build all versions
+        run: |
+          # Get the latest versions.ts from main
+          git fetch origin main --depth=1
+          LATEST_VERSIONS=$(git show origin/main:src/data/versions.ts)
+
+          # Create site directory structure
+          mkdir -p site/versions
+
+          # Build each version
+          for tag in ${{ steps.all-tags.outputs.tags }}; do
+            echo "Building version $tag..."
+
+            # Reset and checkout the tag
+            git checkout .
+            git checkout $tag
+
+            # Clean this version's directory
+            TAG_SLUG=${tag#v}
+            rm -rf site/versions/$TAG_SLUG
+
+            # Install dependencies
+            bun install
+
+            # Replace versions.ts with latest from main
+            echo "$LATEST_VERSIONS" > src/data/versions.ts
+
+            # Build this version
+            ASTRO_BASE="/${{ github.event.repository.name }}/versions/$TAG_SLUG/" \
+            ASTRO_SITE="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/versions/$TAG_SLUG/" \
+            bun run build
+
+            # Copy to site tree
+            mkdir -p site/versions/$TAG_SLUG
+            cp -a dist/. site/versions/$TAG_SLUG/
+
+            echo "Completed build for $tag"
+          done
+
+          # Create redirect to latest version
+          LATEST_TAG=$(echo "${{ steps.all-tags.outputs.tags }}" | tr ' ' '\n' | grep -v '^[[:space:]]*$' | tail -n1)
+          LATEST_SLUG=${LATEST_TAG#v}
+
+          cat > site/index.html <<EOF
+          <!doctype html>
+          <meta http-equiv="refresh" content="0; url=/${{ github.event.repository.name }}/versions/$LATEST_SLUG/">
+          <title>Redirecting…</title>
+          <p>Redirecting to documentation $LATEST_SLUG…</p>
+          EOF
+
+          # Add .nojekyll file for GitHub Pages
+          touch site/.nojekyll
+
+      - name: Publish to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: site
+          keep_files: true

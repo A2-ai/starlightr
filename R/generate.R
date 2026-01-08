@@ -21,6 +21,14 @@ setup_starlight_structure <- function(output_path, config) {
     dirs <- c(dirs, file.path(output_path, "src", "content", "docs", "articles"))
   }
 
+  # Add version support directories if enabled
+  if (has_version_support(config)) {
+    dirs <- c(dirs,
+      file.path(output_path, "src", "components"),
+      file.path(output_path, "src", "data")
+    )
+  }
+
   for (dir in dirs) {
     if (!dir.exists(dir)) {
       dir.create(dir, recursive = TRUE)
@@ -82,6 +90,12 @@ generate_astro_config <- function(output_path, config, pkg_path = NULL) {
     katex_plugin <- "plugins: [starlightKatex()],"
   }
 
+  # Version selector component override
+  components_config <- ""
+  if (has_version_support(config)) {
+    components_config <- 'components: { SiteTitle: "./src/components/VersionSelect.astro" },'
+  }
+
   # Generate sidebar configuration from YAML
   pkg_name <- if (!is.null(pkg_path)) get_package_name(pkg_path) else NULL
   sidebar_config <- generate_sidebar_config(config, output_path, pkg_name)
@@ -93,9 +107,12 @@ import starlight from "@astrojs/starlight";
 
 // https://astro.build/config
 export default defineConfig({
+  site: process.env.ASTRO_SITE || "http://localhost",
+  base: process.env.ASTRO_BASE || "/",
   integrations: [
     starlight({
       title: "%s",
+      %s
       %s
       %s
       %s
@@ -108,6 +125,7 @@ export default defineConfig({
     katex_import,
     config$site$title %||% "Package Documentation",
     katex_plugin,
+    components_config,
     logo_config,
     favicon_config,
     social_config,
