@@ -58,7 +58,14 @@ write_md_files <- function(
         )
 
         func_name <- tools::file_path_sans_ext(basename(file))
-        out_path <- file.path(output_dir, paste0(func_name, file_ext))
+        func_name_lower <- tolower(func_name)
+
+        # Warn if function name contains capitals (Astro requires lowercase)
+        if (func_name != func_name_lower) {
+          cli::cli_warn("Function {.fn {func_name}} contains capitals - MDX filename will be lowercased to {.file {func_name_lower}.mdx}")
+        }
+
+        out_path <- file.path(output_dir, paste0(func_name_lower, file_ext))
 
         # Append example outputs if they exist
         if (!is.null(site_output_path)) {

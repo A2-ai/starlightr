@@ -52,7 +52,7 @@ generate_sidebar_config <- function(config, output_path = NULL, pkg_name = NULL)
         if (is.null(doc_file)) {
           doc_file <- content
         }
-        slug <- paste0("reference/", doc_file)
+        slug <- paste0("reference/", tolower(doc_file))
         escaped_content <- gsub('"', '\\"', content, fixed = TRUE)
         escaped_slug <- gsub('"', '\\"', slug, fixed = TRUE)
         reference_items <- c(reference_items, sprintf('{ label: "%s", slug: "%s" }', escaped_content, escaped_slug))
@@ -93,7 +93,7 @@ generate_sidebar_config <- function(config, output_path = NULL, pkg_name = NULL)
 
             # Create items for matched files
             for (file in matched_files) {
-              slug <- paste0("reference/", file)
+              slug <- paste0("reference/", tolower(file))
               # Escape quotes for JavaScript
               escaped_file <- gsub('"', '\\"', file, fixed = TRUE)
               escaped_slug <- gsub('"', '\\"', slug, fixed = TRUE)
@@ -109,11 +109,12 @@ generate_sidebar_config <- function(config, output_path = NULL, pkg_name = NULL)
               doc_file <- find_function_doc_file(content, pkg_name)
               file_exists <- FALSE
 
-              # Check if file exists (Rd-generated or manual)
+              # Check if file exists (Rd-generated or manual) - use lowercase since Astro requires it
               if (!is.null(output_path)) {
                 ref_dir <- file.path(output_path, "src", "content", "docs", "reference")
-                file_exists <- file.exists(file.path(ref_dir, paste0(content, ".mdx"))) ||
-                               file.exists(file.path(ref_dir, paste0(content, ".md")))
+                content_lower <- tolower(content)
+                file_exists <- file.exists(file.path(ref_dir, paste0(content_lower, ".mdx"))) ||
+                               file.exists(file.path(ref_dir, paste0(content_lower, ".md")))
               }
 
               # Use doc_file if found in Rd, otherwise use content name
@@ -126,7 +127,7 @@ generate_sidebar_config <- function(config, output_path = NULL, pkg_name = NULL)
                 cli::cli_warn("Reference file missing: {.file {content}.mdx} - create manually or check config")
               }
 
-              slug <- paste0("reference/", doc_file)
+              slug <- paste0("reference/", tolower(doc_file))
               escaped_content <- gsub('"', '\\"', content, fixed = TRUE)
               escaped_slug <- gsub('"', '\\"', slug, fixed = TRUE)
               group_items <- c(group_items, sprintf('{ label: "%s", slug: "%s" }', escaped_content, escaped_slug))
@@ -162,11 +163,12 @@ generate_sidebar_config <- function(config, output_path = NULL, pkg_name = NULL)
               doc_file <- find_function_doc_file(content, pkg_name)
               file_exists <- FALSE
 
-              # Check if file exists (Rd-generated or manual)
+              # Check if file exists (Rd-generated or manual) - use lowercase since Astro requires it
               if (!is.null(output_path)) {
                 ref_dir <- file.path(output_path, "src", "content", "docs", "reference")
-                file_exists <- file.exists(file.path(ref_dir, paste0(content, ".mdx"))) ||
-                               file.exists(file.path(ref_dir, paste0(content, ".md")))
+                content_lower <- tolower(content)
+                file_exists <- file.exists(file.path(ref_dir, paste0(content_lower, ".mdx"))) ||
+                               file.exists(file.path(ref_dir, paste0(content_lower, ".md")))
               }
 
               # Use doc_file if found in Rd, otherwise use content name
@@ -179,7 +181,7 @@ generate_sidebar_config <- function(config, output_path = NULL, pkg_name = NULL)
                 cli::cli_warn("Reference file missing: {.file {content}.mdx} - create manually or check config")
               }
 
-              slug <- paste0("reference/", doc_file)
+              slug <- paste0("reference/", tolower(doc_file))
               escaped_content <- gsub('"', '\\"', content, fixed = TRUE)
               escaped_slug <- gsub('"', '\\"', slug, fixed = TRUE)
               subgroup_items <- c(subgroup_items, sprintf('{ label: "%s", slug: "%s" }', escaped_content, escaped_slug))

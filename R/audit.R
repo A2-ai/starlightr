@@ -182,7 +182,8 @@ match_config_to_exports <- function(config_refs, exports) {
 
 #' Match a single config reference against exports
 #'
-#' Handles exact names, glob patterns (e.g., extract_*), and pkgdown selectors
+#' Handles exact names, glob patterns (e.g., extract_*), and pkgdown selectors.
+#' Matching is case-insensitive since MDX filenames are lowercased.
 #'
 #' @param ref Single reference string
 #' @param exports Character vector of exported function names
@@ -197,12 +198,13 @@ match_single_reference <- function(ref, exports) {
   # Check for glob pattern (ends with *)
   if (grepl("\\*$", ref)) {
     pattern <- paste0("^", gsub("\\*", ".*", ref), "$")
-    return(exports[grepl(pattern, exports)])
+    return(exports[grepl(pattern, exports, ignore.case = TRUE)])
   }
 
-  # Exact match
-  if (ref %in% exports) {
-    return(ref)
+  # Case-insensitive exact match
+  matches <- exports[tolower(exports) == tolower(ref)]
+  if (length(matches) > 0) {
+    return(matches)
   }
 
   character()
