@@ -109,7 +109,6 @@ import starlight from "@astrojs/starlight";
 export default defineConfig({
   site: process.env.ASTRO_SITE || "http://localhost",
   base: process.env.ASTRO_BASE || "/",
-  trailingSlash: "always",
   integrations: [
     starlight({
       title: "%s",

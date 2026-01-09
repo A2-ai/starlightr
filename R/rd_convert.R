@@ -487,9 +487,12 @@ seealso_to_md <- function(rd_obj, pkg_name = NULL) {
     }
 
     if (is_internal && !is.null(target)) {
-      link_text <- if (code_wrap) paste0("`", text, "`") else text
-      # Use ../ to go up from /reference/current/ to /reference/target/
-      return(paste0("[", link_text, "](../", tolower(target), ")"))
+      # Use JSX with BASE_URL for absolute paths that work in dev and prod
+      if (code_wrap) {
+        return(paste0('<a href={`${import.meta.env.BASE_URL}reference/', tolower(target), '`}><code>', text, '</code></a>'))
+      } else {
+        return(paste0('<a href={`${import.meta.env.BASE_URL}reference/', tolower(target), '`}>', text, '</a>'))
+      }
     } else {
       # External or couldn't determine - just code format
       return(paste0("`", text, "`"))
