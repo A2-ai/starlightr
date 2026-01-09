@@ -488,8 +488,8 @@ seealso_to_md <- function(rd_obj, pkg_name = NULL) {
 
     if (is_internal && !is.null(target)) {
       link_text <- if (code_wrap) paste0("`", text, "`") else text
-      # Use ./ since trailingSlash: "never" makes pages siblings
-      return(paste0("[", link_text, "](./", tolower(target), ")"))
+      # Use ../ to go up from /reference/current/ to /reference/target/
+      return(paste0("[", link_text, "](../", tolower(target), ")"))
     } else {
       # External or couldn't determine - just code format
       return(paste0("`", text, "`"))
@@ -564,12 +564,12 @@ seealso_to_md <- function(rd_obj, pkg_name = NULL) {
 #' @return Markdown string with fixed links
 #' @keywords internal
 fix_internal_links <- function(md, pkg_name = NULL) {
-  # Internal help links: [text](../help/topic.html) → [`text`](./lowercase-topic)
-  # Use ./ since trailingSlash: "never" makes pages siblings
+  # Internal help links: [text](../help/topic.html) → [`text`](../lowercase-topic)
+  # Use ../ to go up from /reference/current/ to /reference/target/
   # Wrap link text in backticks for code formatting
   md <- gsub(
     "\\[([^]]+)\\]\\(\\.\\./help/([^)]+)\\.html\\)",
-    "[`\\1`](./\\L\\2)",
+    "[`\\1`](../\\L\\2)",
     md,
     perl = TRUE
   )
@@ -577,7 +577,7 @@ fix_internal_links <- function(md, pkg_name = NULL) {
   # Also handle: [text](../../pkgname/help/topic.html) for same package
   if (!is.null(pkg_name)) {
     pattern <- paste0("\\[([^]]+)\\]\\(\\.\\./\\.\\./", pkg_name, "/help/([^)]+)\\.html\\)")
-    md <- gsub(pattern, "[`\\1`](./\\L\\2)", md, perl = TRUE)
+    md <- gsub(pattern, "[`\\1`](../\\L\\2)", md, perl = TRUE)
   }
 
   # External package links become plain code text (no link)
