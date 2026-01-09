@@ -3,8 +3,7 @@
 #' Initialize starlightr for a package
 #'
 #' Sets up the necessary files and configuration for using starlightr.
-#' Creates a default _starlightr.yaml configuration file, updates .Rbuildignore,
-#' and creates the vignettes/ directory structure.
+#' Creates a default _starlightr.yaml configuration file and updates .Rbuildignore.
 #'
 #' @param pkg Path to package directory, defaults to current directory
 #' @param open Logical, whether to open the configuration file for editing
@@ -37,22 +36,9 @@ use_starlightr <- function(pkg = ".", open = interactive()) {
   # Update .Rbuildignore
   update_rbuildignore(pkg_path)
 
-  # Create vignettes directory
-  articles_dir <- file.path(pkg_path, "vignettes")
-  if (!dir.exists(articles_dir)) {
-    dir.create(articles_dir, recursive = TRUE)
-
-    # Create a sample article
-    create_sample_article(articles_dir)
-    cli::cli_alert_success("Created vignettes/ directory with sample article")
-  } else {
-    cli::cli_alert_info("vignettes/ directory already exists")
-  }
-
   cli::cli_alert_success("starlightr setup complete!")
   cli::cli_bullets(c(
     "*" = "Edit {.file _starlightr.yaml} to customize your site",
-    "*" = "Add {.file .Rmd} files to {.path vignettes/} for articles",
     "*" = "Run {.fn build_site} to generate your documentation"
   ))
 
@@ -216,82 +202,3 @@ update_rbuildignore <- function(pkg_path) {
   }
 }
 
-#' Create a sample article in vignettes/
-#'
-#' @param articles_dir Path to vignettes directory
-#' @keywords internal
-create_sample_article <- function(articles_dir) {
-  sample_content <- '---
-title: "Getting Started"
-description: "Introduction to using this package"
----
-
-# Getting Started
-
-This is a sample article created by starlightr.
-
-## Installation
-
-You can install this package from GitHub:
-```r
-# Install from GitHub
-devtools::install_github("user/repo")
-```
-
-## Basic Usage
-
-Here\'s how to use the main functions:
-
-```r
-library(packagename)
-
-# Example usage
-result <- main_function()
-```
-
-## Next Steps
-
-- Edit this file to add your own content
-- Create additional .Rmd files in vignettes/
-- Run `starlightr::build_site()` to generate your documentation site
-'
-
-  sample_path <- file.path(articles_dir, "getting-started.Rmd")
-  writeLines(sample_content, sample_path)
-
-  # Also create an introduction article as backup
-  intro_content <- '---
-title: "Introduction"
-description: "Introduction to using this package"
----
-
-# Introduction
-
-Welcome to the package documentation!
-
-## Overview
-
-This package provides tools for [describe main functionality].
-
-## Quick Start
-
-Here\'s a simple example to get you started:
-
-```r
-library(packagename)
-
-# Your first example
-result <- main_function()
-```
-
-## Next Steps
-
-- Browse the [Function Reference](/reference/) for detailed API documentation
-- Check out more [Articles & Guides](/articles/) for advanced usage
-'
-
-  intro_path <- file.path(articles_dir, "introduction.Rmd")
-  if (!file.exists(intro_path)) {
-    writeLines(intro_content, intro_path)
-  }
-}

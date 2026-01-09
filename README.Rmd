@@ -23,11 +23,15 @@ knitr::opts_chunk$set(
 **starlightr** generates beautiful, modern documentation sites for R packages using [Starlight](https://starlight.astro.build/) (built on [Astro](https://astro.build/)). Think of it as an alternative to pkgdown that produces fast, accessible documentation with a polished UI out of the box.
 
 ## Features
+
 - Converts Rd documentation to clean Markdown/MDX
 - Processes vignettes into articles
 - Generates Astro/Starlight configuration automatically
 - Supports lifecycle badges, code examples, and complex documentation
-- Produces static sites that can be hosted anywhere (GitHub Pages, Netlify, Vercel, etc.)
+- **Example output embedding** - automatically captures and displays plot outputs, text results, and HTML widgets
+- **Multi-version documentation** - deploy multiple versions with a version selector dropdown
+- **KaTeX math support** - render LaTeX equations out of the box
+- Produces static sites that can be hosted anywhere (GitHub Pages, Netlify, Vercel, Cloudflare Pages, etc.)
 
 ## Installation
 
@@ -56,7 +60,6 @@ use_starlightr()
 
 This creates:
 - `_starlightr.yaml` - configuration file
-- `vignettes/` directory with a sample article (if it doesn't exist)
 - Updates `.Rbuildignore`
 
 ### 2. Build the documentation site
@@ -82,11 +85,15 @@ Open http://localhost:4321 to see your documentation!
 ## Configuration
 
 The `_starlightr.yaml` file controls how your site is generated:
+
 ```yaml
 # Site metadata
 site:
   title: "My Package"
   description: "A brief description of your package"
+  github: "https://github.com/user/repo"  # Adds GitHub link to header
+  logo: "man/figures/logo.png"            # Optional logo
+  favicon: "man/figures/favicon.png"      # Optional favicon
 
 # Homepage hero section
 home:
@@ -116,10 +123,19 @@ sidebar:
       autogenerate:
         directory: reference
 
+  # Changelog (from NEWS.md)
+  news:
+    label: "Changelog"
+    source: "NEWS.md"
+
+# Features
+features:
+  katex: true  # LaTeX math rendering (enabled by default)
+
 # Content options
 content:
   skip_sections:
-    - "seealso"  # Sections to exclude from output
+    - "author"  # Sections to exclude from function docs
 
 # Output settings
 output:
@@ -127,75 +143,79 @@ output:
   include_build_files: true
 ```
 
+## Example Output Embedding
+
+starlightr automatically captures outputs from your `@examples` and embeds them in the documentation:
+
+- **Plots** - ggplot2 and base R plots are saved as PNGs and displayed
+- **Text output** - Console output is captured and shown in a code block
+- **HTML widgets** - gt tables, htmlwidgets, etc. are embedded as iframes
+
+This happens automatically when you run `build_site()`. Examples are evaluated in a clean R session and outputs are saved to `public/examples/`.
+
+To skip example evaluation for specific functions, use `\dontrun{}` in your Rd files.
+
+## Multi-Version Documentation
+
+starlightr supports deploying multiple versions of your documentation with a version selector dropdown.
+
+### Configuration
+
+Add a `versions` section to your `_starlightr.yaml`:
+
+```yaml
+versions:
+  enabled: true
+  current: "1.2.0"  # Current/default version
+  list:
+    - version: "dev"
+      label: "Development"
+      path: "/"
+    - version: "1.2.0"
+      label: "v1.2.0 (latest)"
+      path: "/versions/1.2.0/"
+    - version: "1.1.0"
+      label: "v1.1.0"
+      path: "/versions/1.1.0/"
+```
+
+### How It Works
+
+1. Each git tag gets its own documentation build at `/versions/<tag>/`
+2. The version selector dropdown lets users switch between versions
+3. Links use `import.meta.env.BASE_URL` so they work correctly at any path
+
+### GitHub Actions Workflow
+
+Generate a deployment workflow that builds and deploys versioned docs:
+
+```yaml
+versions:
+  enabled: true
+  workflow:
+    generate: true
+    provider: "cloudflare"  # or "github-pages"
+```
+
+Run `build_site()` and the workflow will be created at `.github/workflows/deploy-docs.yml`.
+
 ## Converting from pkgdown
 
 If you already have a `_pkgdown.yml` file, you can convert it:
+
 ```r
 pkgdown_to_starlight()
 ```
 
 This reads your pkgdown configuration and creates a `_starlightr.yaml` with equivalent settings.
 
-## Building for Production
-
-To build a production-ready static site:
-
-```bash
-cd ../my-package-docs
-npm install
-npm run build
-```
-
-The built site will be in the `dist/` folder, ready to deploy to any static hosting service.
-
-### Deploying to GitHub Pages
-
-1. Build your site
-2. Copy the `dist/` folder contents to your `gh-pages` branch, or
-3. Use a GitHub Action to automate the build and deploy
-
 ## API Reference
-
-### Main Functions
 
 | Function | Description |
 |----------|-------------|
 | `use_starlightr()` | Initialize starlightr in a package |
 | `build_site()` | Build the documentation site |
 | `pkgdown_to_starlight()` | Convert pkgdown config to starlightr |
-
-### Lower-Level Functions
-
-| Function | Description |
-|----------|-------------|
-| `rd_to_markdown()` | Convert a single Rd object to Markdown |
-| `package_rd_to_markdown()` | Convert all Rd files in a package |
-| `write_md_files()` | Write converted Markdown to files |
-
-## Troubleshooting
-
-### "pandoc not found"
-
-Install pandoc or use RStudio (which includes pandoc):
-```r
-# Check if pandoc is available
-rmarkdown::pandoc_available()
-
-# See pandoc location
-rmarkdown::pandoc_exec()
-```
-
-### Site builds but styles are missing
-
-Make sure you ran `npm install` before `npm run dev` or `npm run build`.
-
-### Function documentation is missing
-
-Ensure your package is installed and has Rd files:
-```r
-# Check if Rd files exist
-tools::Rd_db("yourpackage")
-```
 
 ## License
 
