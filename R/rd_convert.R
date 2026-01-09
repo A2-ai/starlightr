@@ -435,6 +435,7 @@ get_example_outputs <- function(func_name, output_path) {
 #' Fix internal package links in Markdown
 #'
 #' Transforms links produced by Rd2HTML to work within the Starlight site.
+#' Internal links get lowercase slugs without extension for Starlight compatibility.
 #'
 #' @param md Markdown string
 #' @param pkg_name Package name (optional, for context)
@@ -442,23 +443,23 @@ get_example_outputs <- function(func_name, output_path) {
 #' @return Markdown string with fixed links
 #' @keywords internal
 fix_internal_links <- function(md, pkg_name = NULL) {
-  # Internal help links: [text](../help/topic.html) → [text](./topic.md)
+  # Internal help links: [text](../help/topic.html) → [`text`](./lowercase-topic)
+  # Use lowercase slugs without extension for Starlight compatibility
+  # Wrap link text in backticks for code formatting
   md <- gsub(
-    "\\]\\(\\.\\./help/([^)]+)\\.html\\)",
-    "](./\\1.md)",
-    md
+    "\\[([^]]+)\\]\\(\\.\\./help/([^)]+)\\.html\\)",
+    "[`\\1`](./\\L\\2)",
+    md,
+    perl = TRUE
   )
 
   # Also handle: [text](../../pkgname/help/topic.html) for same package
   if (!is.null(pkg_name)) {
-    pattern <- paste0("\\]\\(\\.\\./\\.\\./", pkg_name, "/help/([^)]+)\\.html\\)")
-    md <- gsub(pattern, "](./\\1.md)", md)
+    pattern <- paste0("\\[([^]]+)\\]\\(\\.\\./\\.\\./", pkg_name, "/help/([^)]+)\\.html\\)")
+    md <- gsub(pattern, "[`\\1`](./\\L\\2)", md, perl = TRUE)
   }
 
-  # External package links: [text](../../otherpkg/help/topic.html)
- # Option 1: Link to rdrr.io (universal R documentation)
-  # Option 2: Remove link, keep text
-  # Going with option 2 for simplicity - external links become plain text
+  # External package links become plain code text (no link)
   md <- gsub(
     "\\[([^]]+)\\]\\(\\.\\./\\.\\./[^)]+\\)",
     "`\\1`",

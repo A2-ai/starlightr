@@ -63,6 +63,7 @@ build_site <- function(pkg = ".",
   if (config$output$include_build_files %||% TRUE) {
     generate_package_json(output_path, config)
     generate_gitignore(output_path)
+    generate_custom_css(output_path)
   }
 
   # Add version support files if configured

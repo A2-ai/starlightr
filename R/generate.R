@@ -112,6 +112,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: "%s",
+      customCss: ["./src/styles/custom.css"],
       %s
       %s
       %s
@@ -237,4 +238,29 @@ pnpm-debug.log*
 
   writeLines(gitignore_content, gitignore_path)
   cli::cli_alert_success("Generated {.file .gitignore}")
+}
+
+#' Generate custom.css file for Starlight site
+#'
+#' @param output_path Path to output directory
+#' @keywords internal
+generate_custom_css <- function(output_path) {
+  template_path <- system.file("templates/custom.css", package = "starlightr")
+
+  # Create styles directory
+  styles_dir <- file.path(output_path, "src", "styles")
+  if (!dir.exists(styles_dir)) {
+    dir.create(styles_dir, recursive = TRUE)
+  }
+
+  css_path <- file.path(styles_dir, "custom.css")
+
+  # Don't overwrite existing custom.css
+  if (file.exists(css_path)) {
+    cli::cli_alert_info("Skipping {.file custom.css} (already exists)")
+    return(invisible(NULL))
+  }
+
+  file.copy(template_path, css_path)
+  cli::cli_alert_success("Generated {.file src/styles/custom.css}")
 }

@@ -1,0 +1,9 @@
+.sl-markdown-content table td:first-child {
+  min-width: 160px;
+  white-space: nowrap;
+}
+
+.sl-markdown-content table td:not(:first-child) {
+  width: 100%;
+  white-space: normal;
+}
