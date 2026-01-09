@@ -1081,6 +1081,9 @@ rd_to_markdown <- function(
   # Convert HTML to Markdown
   md <- html_to_md(html_content)
 
+  # Normalize R language identifier to lowercase (pandoc may output uppercase)
+  md <- gsub("```R\\b", "```r", md, perl = TRUE)
+
   # Post-processing
   md <- fix_heading_levels(md)
   md <- fix_internal_links(md, pkg_name)
