@@ -10,6 +10,11 @@ permissions:
   pages: write
   id-token: write
 
+env:
+  # For private repos: leave empty
+  # For public repos: set to "/${{ github.event.repository.name }}"
+  BASE_PREFIX: ""
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -53,12 +58,12 @@ jobs:
             # Install dependencies
             bun install
 
-            # Replace versions.ts with latest from main
+            # Replace versions.ts and VersionSelect.astro with latest from main
             echo "$LATEST_VERSIONS" > src/data/versions.ts
+            git show origin/main:src/components/VersionSelect.astro > src/components/VersionSelect.astro 2>/dev/null || true
 
             # Build this version
-            ASTRO_BASE="/${{ github.event.repository.name }}/versions/$TAG_SLUG/" \
-            ASTRO_SITE="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/versions/$TAG_SLUG/" \
+            ASTRO_BASE="${BASE_PREFIX}/versions/$TAG_SLUG/" \
             bun run build
 
             # Copy to site tree
@@ -74,7 +79,7 @@ jobs:
 
           cat > site/index.html <<EOF
           <!doctype html>
-          <meta http-equiv="refresh" content="0; url=/${{ github.event.repository.name }}/versions/$LATEST_SLUG/">
+          <meta http-equiv="refresh" content="0; url=${BASE_PREFIX}/versions/$LATEST_SLUG/">
           <title>Redirecting…</title>
           <p>Redirecting to documentation $LATEST_SLUG…</p>
           EOF
