@@ -15,6 +15,7 @@ match_single_reference(ref, exports)
 Character vector of matching export names
 }
 \description{
-Handles exact names, glob patterns (e.g., extract_*), and pkgdown selectors
+Handles exact names, glob patterns (e.g., extract_*), and pkgdown selectors.
+Matching is case-insensitive since MDX filenames are lowercased.
 }
 \keyword{internal}

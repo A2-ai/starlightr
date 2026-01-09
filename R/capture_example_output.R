@@ -38,13 +38,14 @@ extract_examples_code <- function(examples_section) {
 #' @param pkg_name  name of package to collect Rd objects for
 #' @param artifact_output_dir path to directory to save ggplots and gt tables
 #' @param text_output_dir path to directory to save text output files
+#' @param verbose Logical, whether to print debug messages (default FALSE)
 #'
 #' @export
 #'
 #' @examples \dontrun{
 #' capture_example_output("pkg", "pkg-docs/public")
 #' }
-capture_example_output <- function(pkg_name, artifact_output_dir, text_output_dir) {
+capture_example_output <- function(pkg_name, artifact_output_dir, text_output_dir, verbose = FALSE) {
 
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
     stop("Package 'ggplot2' is required for 'capture_example_outputs()'.")
@@ -99,16 +100,28 @@ capture_example_output <- function(pkg_name, artifact_output_dir, text_output_di
 
     if (is.null(ex_exprs)) next
 
-    env <- new.env(parent = globalenv())
-    
+    if (verbose) {
+      message("Processing examples for: ", fn_name)
+      message("Number of expressions: ", length(ex_exprs))
+      message("Code:\n", ex_code, "\n---")
+    }
+
+    # Track existing global objects so we can clean up after
+    # We evaluate in globalenv() because model objects (lme, lm, etc.) store
+    # references to variables in their call, and re-evaluate them in parent.frame()
+    existing_objs <- ls(globalenv(), all.names = TRUE)
+
     # Track if this is the first write to the text file for this function
     first_write <- TRUE
-    
+
     for (i in seq_along(ex_exprs)) {
+      if (verbose) {
+        message("  Evaluating expression ", i, ": ", deparse(ex_exprs[[i]])[1])
+      }
       val <- tryCatch(
-        withVisible(eval(ex_exprs[i], envir = env)),
+        withVisible(eval(ex_exprs[[i]], envir = globalenv())),
         error = function(e) {
-          message("Error in example ", i, " for ", fn_name, ": ", e$message)
+          message("  Error in example ", i, " for ", fn_name, ": ", e$message)
           return(NULL)
         }
       )
@@ -129,7 +142,7 @@ capture_example_output <- function(pkg_name, artifact_output_dir, text_output_di
               message("  Error saving ggplot for", fn_name, ":", e$message, "\n")
             }
           )
-          message("Saved ggplot -> ", out_file)
+          if (verbose) message("Saved ggplot -> ", out_file)
 
           # If it's a gt table, save HTML
         } else if (inherits(result, "gt_tbl")) {
@@ -137,24 +150,32 @@ capture_example_output <- function(pkg_name, artifact_output_dir, text_output_di
           tryCatch(
             gt::gtsave(result, out_file),
             error = function(e) {
-              cat("  Error saving gt table for", fn_name, ":", e$message, "\n")
+              message("  Error saving gt table for ", fn_name, ": ", e$message)
             }
           )
-          message("Saved gt table ->", out_file)
+          if (verbose) message("Saved gt table -> ", out_file)
         } else {
           # First write overwrites, subsequent writes append
           out_file <- file.path(text_output_dir, paste0(fn_name, ".txt"))
           printed_text <- utils::capture.output(print(result))
           cat(paste(printed_text, collapse = "\n"), "\n", file = out_file, append = !first_write)
-          
-          if (first_write) {
-            message("WROTE output to -> ", out_file)
-            first_write <- FALSE
-          } else {
-            message("APPENDED output to -> ", out_file)
+
+          if (verbose) {
+            if (first_write) {
+              message("WROTE output to -> ", out_file)
+            } else {
+              message("APPENDED output to -> ", out_file)
+            }
           }
+          first_write <- FALSE
         }
       }
+    }
+
+    # Clean up objects created during this function's examples
+    new_objs <- setdiff(ls(globalenv(), all.names = TRUE), existing_objs)
+    if (length(new_objs) > 0) {
+      rm(list = new_objs, envir = globalenv())
     }
   }
 }

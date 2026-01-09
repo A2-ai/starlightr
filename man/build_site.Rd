@@ -8,7 +8,8 @@ build_site(
   pkg = ".",
   config_file = "_starlightr.yaml",
   output_dir = NULL,
-  preview = FALSE
+  preview = FALSE,
+  verbose = FALSE
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ build_site(
 \item{output_dir}{Directory to build the site in}
 
 \item{preview}{Logical, whether to open preview after building}
+
+\item{verbose}{Logical, whether to print debug messages for example capture}
 }
 \value{
 Invisibly returns the path to the built site
@@ -40,5 +43,8 @@ build_site(config_file = "my_config.yaml")
 
 # Build to relative directory (not recommended due to Starlight bloat)
 build_site(output_dir = "docs")
+
+# Build with verbose example output
+build_site(verbose = TRUE)
 }
 }

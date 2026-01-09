@@ -5,8 +5,9 @@
 #' @param pkg_path Path to package directory
 #' @param output_path Path to output directory
 #' @param config Configuration list
+#' @param verbose Logical, whether to print debug messages for example capture
 #' @keywords internal
-process_package_documentation <- function(pkg_path, output_path, config) {
+process_package_documentation <- function(pkg_path, output_path, config, verbose = FALSE) {
   cli::cli_alert_info("Processing R documentation...")
 
   # Get the actual package name from DESCRIPTION
@@ -34,7 +35,7 @@ process_package_documentation <- function(pkg_path, output_path, config) {
   text_output_dir <- file.path(output_path, "public", "examples", "text")
 
   tryCatch({
-    capture_example_output(pkg_name, artifact_dir, text_output_dir)
+    capture_example_output(pkg_name, artifact_dir, text_output_dir, verbose = verbose)
     cli::cli_alert_success("Example outputs captured successfully")
   }, error = function(e) {
     cli::cli_warn(c(

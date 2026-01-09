@@ -39,7 +39,8 @@ for (const version of VERSIONS) {
     <select
       id="version-select"
       class="version-select"
-      onchange="window.location.href = this.value"
+      data-base-prefix={basePrefix}
+      onchange="handleVersionChange(this)"
     >
       {VERSIONS.map(version => {
         const versionUrl = `${basePrefix}/versions/${version.tag}${currentPage}`;
@@ -52,6 +53,31 @@ for (const version of VERSIONS) {
     </select>
   </div>
 </div>
+
+<script is:inline>
+async function handleVersionChange(select) {
+  const targetUrl = select.value;
+
+  try {
+    const response = await fetch(targetUrl, { method: 'HEAD' });
+    if (response.ok) {
+      window.location.href = targetUrl;
+    } else {
+      // Page doesn't exist, fallback to version root
+      const basePrefix = select.dataset.basePrefix;
+      const versionMatch = targetUrl.match(/\/versions\/([^/]+)/);
+      if (versionMatch) {
+        window.location.href = `${basePrefix}/versions/${versionMatch[1]}/`;
+      } else {
+        window.location.href = targetUrl;
+      }
+    }
+  } catch (e) {
+    // On error, try navigating anyway
+    window.location.href = targetUrl;
+  }
+}
+</script>
 
 <style>
   .site-title-wrapper {

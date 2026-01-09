@@ -16,5 +16,6 @@ Markdown string with fixed links
 }
 \description{
 Transforms links produced by Rd2HTML to work within the Starlight site.
+Internal links get lowercase slugs without extension for Starlight compatibility.
 }
 \keyword{internal}

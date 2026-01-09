@@ -4,7 +4,12 @@
 \alias{capture_example_output}
 \title{Runs example code and capture output to a file}
 \usage{
-capture_example_output(pkg_name, artifact_output_dir, text_output_dir)
+capture_example_output(
+  pkg_name,
+  artifact_output_dir,
+  text_output_dir,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{pkg_name}{name of package to collect Rd objects for}
@@ -12,6 +17,8 @@ capture_example_output(pkg_name, artifact_output_dir, text_output_dir)
 \item{artifact_output_dir}{path to directory to save ggplots and gt tables}
 
 \item{text_output_dir}{path to directory to save text output files}
+
+\item{verbose}{Logical, whether to print debug messages (default FALSE)}
 }
 \description{
 Runs example code and capture output to a file

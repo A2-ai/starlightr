@@ -4,6 +4,7 @@
 #' @param config_file Path to _starlightr.yaml configuration file
 #' @param output_dir Directory to build the site in
 #' @param preview Logical, whether to open preview after building
+#' @param verbose Logical, whether to print debug messages for example capture
 #'
 #' @return Invisibly returns the path to the built site
 #' @export
@@ -21,11 +22,15 @@
 #'
 #' # Build to relative directory (not recommended due to Starlight bloat)
 #' build_site(output_dir = "docs")
+#'
+#' # Build with verbose example output
+#' build_site(verbose = TRUE)
 #' }
 build_site <- function(pkg = ".",
                       config_file = "_starlightr.yaml",
                       output_dir = NULL,
-                      preview = FALSE) {
+                      preview = FALSE,
+                      verbose = FALSE) {
 
   # Resolve package path
   pkg_path <- normalizePath(pkg, mustWork = TRUE)
@@ -79,7 +84,7 @@ build_site <- function(pkg = ".",
   }
 
   # Extract and process R documentation
-  process_package_documentation(pkg_path, output_path, config)
+  process_package_documentation(pkg_path, output_path, config, verbose = verbose)
 
   # Process vignettes/articles only if configured in sidebar
   if (!is.null(config$sidebar$articles)) {

@@ -434,7 +434,7 @@ get_example_outputs <- function(func_name, output_path) {
 
 #' Convert seealso section to Markdown with proper links
 #'
-#' Rd2HTML strips \link tags, so we need to process seealso directly
+#' Rd2HTML strips link tags, so we need to process seealso directly
 #' from the Rd object to preserve internal links.
 #'
 #' @param rd_obj Rd object
