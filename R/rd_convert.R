@@ -432,6 +432,126 @@ get_example_outputs <- function(func_name, output_path) {
   NULL
 }
 
+#' Convert seealso section to Markdown with proper links
+#'
+#' Rd2HTML strips \link tags, so we need to process seealso directly
+#' from the Rd object to preserve internal links.
+#'
+#' @param rd_obj Rd object
+#' @param pkg_name Package name for resolving internal links
+#' @return Markdown string or NULL if no seealso section
+#' @keywords internal
+seealso_to_md <- function(rd_obj, pkg_name = NULL) {
+  seealso <- get_rd_section(rd_obj, "seealso")
+  if (is.null(seealso)) return(NULL)
+
+  # Find \link child within an element (for \code{\link{...}} pattern)
+  find_link_child <- function(el) {
+    if (!is.list(el)) return(NULL)
+    for (child in el) {
+      if (is.list(child)) {
+        child_tag <- attr(child, "Rd_tag")
+        if (!is.null(child_tag) && child_tag == "\\link") {
+          return(child)
+        }
+      }
+    }
+    NULL
+  }
+
+  # Process a \link element into markdown
+  process_link <- function(link_el, code_wrap = FALSE) {
+    option <- attr(link_el, "Rd_option")
+    text <- convert_children(link_el)
+    text <- trimws(text)
+
+    # Determine if internal or external link
+    is_internal <- TRUE
+    target <- NULL
+
+    if (!is.null(option)) {
+      option_text <- as.character(option)
+      if (startsWith(option_text, "=")) {
+        # \link[=topic]{text} - internal link
+        target <- substring(option_text, 2)
+      } else if (grepl(":", option_text, fixed = TRUE)) {
+        # \link[pkg:topic]{text} - external
+        is_internal <- FALSE
+      } else {
+        # \link[pkg]{func} - external
+        is_internal <- FALSE
+      }
+    } else {
+      # \link{topic} - internal, target is the text (without parentheses)
+      target <- gsub("[()]", "", text)
+    }
+
+    if (is_internal && !is.null(target)) {
+      link_text <- if (code_wrap) paste0("`", text, "`") else text
+      return(paste0("[", link_text, "](./", tolower(target), ")"))
+    } else {
+      # External or couldn't determine - just code format
+      return(paste0("`", text, "`"))
+    }
+  }
+
+  # Recursively convert Rd elements to markdown
+  convert_element <- function(el) {
+    if (is.character(el)) return(el)
+
+    tag <- attr(el, "Rd_tag")
+
+    if (is.null(tag)) {
+      # List without tag - recurse into children
+      return(convert_children(el))
+    }
+
+    if (tag == "TEXT") {
+      return(paste(unlist(el), collapse = ""))
+    }
+
+    if (tag == "\\link") {
+      return(process_link(el, code_wrap = FALSE))
+    }
+
+    if (tag == "\\code") {
+      # Check if this is \code{\link{...}} pattern
+      link_child <- find_link_child(el)
+      if (!is.null(link_child)) {
+        return(process_link(link_child, code_wrap = TRUE))
+      }
+      # Regular code - wrap in backticks
+      inner <- convert_children(el)
+      return(paste0("`", inner, "`"))
+    }
+
+    if (tag == "\\emph") {
+      inner <- convert_children(el)
+      return(paste0("*", inner, "*"))
+    }
+
+    if (tag == "\\strong") {
+      inner <- convert_children(el)
+      return(paste0("**", inner, "**"))
+    }
+
+    # Default: just process children
+    return(convert_children(el))
+  }
+
+  convert_children <- function(el) {
+    if (!is.list(el)) return(as.character(el))
+    paste(sapply(el, convert_element), collapse = "")
+  }
+
+  md_content <- convert_children(seealso)
+  md_content <- trimws(md_content)
+
+  if (nchar(md_content) == 0) return(NULL)
+
+  md_content
+}
+
 #' Fix internal package links in Markdown
 #'
 #' Transforms links produced by Rd2HTML to work within the Starlight site.
@@ -743,6 +863,19 @@ rd_to_markdown <- function(
   }
 
   # Note: Example outputs are now appended in write_md_files using MDX imports
+
+  # Handle seealso section specially to preserve \link tags
+  # (Rd2HTML strips them, so we process directly from Rd object)
+  seealso_md <- seealso_to_md(rd_obj, pkg_name)
+  if (!is.null(seealso_md)) {
+    # Replace existing See Also section with our version that has proper links
+    md <- gsub(
+      "(?s)## See Also\\s*\\n+.*?(?=\\n## |$)",
+      paste0("## See Also\n\n", seealso_md, "\n\n"),
+      md,
+      perl = TRUE
+    )
+  }
 
   # Escape < outside code blocks for MDX compatibility
   # Match < followed by a letter (looks like a tag) but not inside ```
