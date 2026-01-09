@@ -868,8 +868,13 @@ rd_to_markdown <- function(
 
   # Note: Example outputs are now appended in write_md_files using MDX imports
 
+  # Escape < outside code blocks for MDX compatibility
+  # Must happen BEFORE seealso replacement so our intentional JSX isn't escaped
+  md <- escape_angle_brackets(md)
+
   # Handle seealso section specially to preserve \link tags
   # (Rd2HTML strips them, so we process directly from Rd object)
+  # Done AFTER escape_angle_brackets so our JSX links aren't escaped
   seealso_md <- seealso_to_md(rd_obj, pkg_name)
   if (!is.null(seealso_md)) {
     # Replace existing See Also section with our version that has proper links
@@ -880,10 +885,6 @@ rd_to_markdown <- function(
       perl = TRUE
     )
   }
-
-  # Escape < outside code blocks for MDX compatibility
-  # Match < followed by a letter (looks like a tag) but not inside ```
-  md <- escape_angle_brackets(md)
 
   # Clean up excessive whitespace
   md <- gsub("\n{3,}", "\n\n", md)
