@@ -199,3 +199,42 @@ export const collections = {
   writeLines(content_config, file.path(src_path, "content.config.ts"))
   cli::cli_alert_success("Generated {.file content.config.ts}")
 }
+
+#' Generate .gitignore file for Starlight site
+#'
+#' @param output_path Path to output directory
+#' @keywords internal
+generate_gitignore <- function(output_path) {
+  gitignore_path <- file.path(output_path, ".gitignore")
+
+  # Don't overwrite existing .gitignore
+  if (file.exists(gitignore_path)) {
+    cli::cli_alert_info("Skipping {.file .gitignore} (already exists)")
+    return(invisible(NULL))
+  }
+
+  gitignore_content <- "# build output
+dist/
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+"
+
+  writeLines(gitignore_content, gitignore_path)
+  cli::cli_alert_success("Generated {.file .gitignore}")
+}
