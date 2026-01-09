@@ -488,6 +488,7 @@ seealso_to_md <- function(rd_obj, pkg_name = NULL) {
 
     if (is_internal && !is.null(target)) {
       link_text <- if (code_wrap) paste0("`", text, "`") else text
+      # Use ./ since trailingSlash: "never" makes pages siblings
       return(paste0("[", link_text, "](./", tolower(target), ")"))
     } else {
       # External or couldn't determine - just code format
@@ -564,7 +565,7 @@ seealso_to_md <- function(rd_obj, pkg_name = NULL) {
 #' @keywords internal
 fix_internal_links <- function(md, pkg_name = NULL) {
   # Internal help links: [text](../help/topic.html) → [`text`](./lowercase-topic)
-  # Use lowercase slugs without extension for Starlight compatibility
+  # Use ./ since trailingSlash: "never" makes pages siblings
   # Wrap link text in backticks for code formatting
   md <- gsub(
     "\\[([^]]+)\\]\\(\\.\\./help/([^)]+)\\.html\\)",
