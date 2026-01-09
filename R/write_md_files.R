@@ -120,7 +120,7 @@ append_example_outputs <- function(md_content, func_name, site_output_path) {
   }
 
   if (has_png) {
-    components <- c(components, sprintf('![Example plot](/examples/%s.png)', func_name))
+    components <- c(components, sprintf('<img src={`${import.meta.env.BASE_URL}examples/%s.png`} alt="Example plot" style="max-width: 100%%;" />', func_name))
   }
 
   if (has_html) {
