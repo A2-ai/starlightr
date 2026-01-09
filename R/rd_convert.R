@@ -634,6 +634,268 @@ convert_sourcecode_divs <- function(md) {
   md
 }
 
+#' Extract LaTeX content from Rd element
+#'
+#' Rd parses LaTeX commands inside \\eqn/\\deqn as Rd tags.
+#' This function reconstructs the original LaTeX by preserving
+#' tag names as LaTeX commands.
+#'
+#' @param el Rd element
+#' @return Character string with LaTeX content
+#' @keywords internal
+extract_latex_from_rd <- function(el) {
+
+  if (is.character(el)) return(el)
+
+  tag <- attr(el, "Rd_tag")
+
+  if (is.list(el)) {
+    # Get content from children
+    content <- paste(vapply(el, extract_latex_from_rd, character(1)), collapse = "")
+
+    # If this has a tag that looks like a LaTeX command, reconstruct it
+    if (!is.null(tag) && nchar(tag) > 0) {
+      # Skip Rd-specific tags that aren't LaTeX commands
+      if (tag %in% c("TEXT", "RCODE", "VERB", "COMMENT", "LIST")) {
+        return(content)
+      }
+
+      # Check if tag starts with backslash (LaTeX command)
+      if (substring(tag, 1, 1) == "\\") {
+        # Get the command name (without backslash)
+        cmd_name <- substring(tag, 2)
+        # Reconstruct with explicit backslash
+        if (nchar(content) > 0) {
+          return(paste0("\\", cmd_name, "{", content, "}"))
+        } else {
+          # Command without content (like \theta, \alpha)
+          return(paste0("\\", cmd_name))
+        }
+      }
+    }
+
+    return(content)
+  }
+
+  ""
+}
+
+#' Convert equations from Rd to KaTeX format
+#'
+#' Rd2HTML converts eqn/deqn to HTML that pandoc doesn't recognize as math.
+#' This function processes the Rd object directly to extract equations
+#' and convert them to KaTeX-compatible format.
+#'
+#' @param rd_section An Rd section that may contain equations
+#' @return Markdown string with equations in KaTeX format
+#' @keywords internal
+convert_equations_in_section <- function(rd_section) {
+  if (is.null(rd_section)) return(NULL)
+
+  convert_element <- function(el) {
+    if (is.character(el)) {
+      return(el)
+    }
+
+    tag <- attr(el, "Rd_tag")
+
+    if (!is.null(tag)) {
+      if (tag == "\\eqn") {
+        # \eqn{latex}{ascii} - use first argument (latex)
+        latex <- if (length(el) >= 1) extract_latex_from_rd(el[[1]]) else ""
+        return(paste0("$", trimws(latex), "$"))
+      } else if (tag == "\\deqn") {
+        # \deqn{latex}{ascii} - display math with $$, preserve internal newlines
+        latex <- if (length(el) >= 1) extract_latex_from_rd(el[[1]]) else ""
+        return(paste0("\n\n$$\n", latex, "\n$$\n\n"))
+      }
+    }
+
+    # Recurse for lists
+    if (is.list(el)) {
+      parts <- vapply(el, convert_element, character(1))
+      return(paste(parts, collapse = ""))
+    }
+
+    ""
+  }
+
+  result <- convert_element(rd_section)
+  trimws(result)
+}
+
+#' Check if an Rd section contains equations
+#'
+#' @param rd_section An Rd section
+#' @return Logical indicating if equations are present
+#' @keywords internal
+section_has_equations <- function(rd_section) {
+  if (is.null(rd_section)) return(FALSE)
+
+  check_element <- function(el) {
+    if (is.character(el)) return(FALSE)
+
+    tag <- attr(el, "Rd_tag")
+    if (!is.null(tag) && tag %in% c("\\eqn", "\\deqn")) {
+      return(TRUE)
+    }
+
+    if (is.list(el)) {
+      return(any(vapply(el, check_element, logical(1))))
+    }
+
+    FALSE
+  }
+
+  check_element(rd_section)
+}
+
+#' Process an Rd section with equations to markdown
+#'
+#' Converts an Rd section that contains equations directly to markdown,
+#' bypassing Rd2HTML which doesn't preserve LaTeX equations.
+#'
+#' @param rd_section An Rd section
+#' @return Markdown string
+#' @keywords internal
+rd_section_to_md_with_equations <- function(rd_section) {
+  if (is.null(rd_section)) return(NULL)
+
+  # Helper to normalize inline content (collapse all whitespace to single space)
+  normalize_inline <- function(text) {
+    text <- gsub("[\n\r\t ]+", " ", text, perl = TRUE)
+    trimws(text)
+  }
+
+  convert_element <- function(el) {
+    if (is.character(el)) {
+      # Return character content with whitespace normalized
+      return(gsub("[\n\r\t ]+", " ", el, perl = TRUE))
+    }
+
+    tag <- attr(el, "Rd_tag")
+
+    if (!is.null(tag)) {
+      if (tag == "\\eqn") {
+        latex <- if (length(el) >= 1) extract_latex_from_rd(el[[1]]) else ""
+        # Inline math - single line, no surrounding whitespace
+        return(paste0("$", trimws(latex), "$"))
+      } else if (tag == "\\deqn") {
+        latex <- if (length(el) >= 1) extract_latex_from_rd(el[[1]]) else ""
+        # Display math with $$ - preserve internal newlines
+        return(paste0("\n\n$$\n", latex, "\n$$\n\n"))
+      } else if (tag == "\\code") {
+        inner <- paste0(vapply(el, convert_element, character(1)), collapse = "")
+        return(paste0("`", normalize_inline(inner), "`"))
+      } else if (tag == "\\emph" || tag == "\\var") {
+        inner <- paste0(vapply(el, convert_element, character(1)), collapse = "")
+        return(paste0("*", normalize_inline(inner), "*"))
+      } else if (tag == "\\strong" || tag == "\\bold") {
+        inner <- paste0(vapply(el, convert_element, character(1)), collapse = "")
+        return(paste0("**", normalize_inline(inner), "**"))
+      } else if (tag == "\\link" || tag == "\\linkS4class") {
+        inner <- paste0(vapply(el, convert_element, character(1)), collapse = "")
+        return(paste0("`", normalize_inline(inner), "`"))
+      } else if (tag == "\\sQuote") {
+        inner <- paste0(vapply(el, convert_element, character(1)), collapse = "")
+        return(paste0("'", normalize_inline(inner), "'"))
+      } else if (tag == "\\dQuote") {
+        inner <- paste0(vapply(el, convert_element, character(1)), collapse = "")
+        return(paste0("\"", normalize_inline(inner), "\""))
+      } else if (tag == "TEXT" || tag == "RCODE") {
+        text <- paste(unlist(el), collapse = "")
+        return(gsub("[\n\r\t ]+", " ", text, perl = TRUE))
+      } else if (grepl("itemize|enumerate", tag, ignore.case = TRUE)) {
+        # In Rd itemize/enumerate, \item is a marker tag and content follows as siblings
+        # Group content between \item markers into list items
+        items <- character()
+        current_content <- character()
+        in_item <- FALSE
+
+        for (child in el) {
+          child_tag <- attr(child, "Rd_tag")
+          is_item_marker <- !is.null(child_tag) && grepl("^\\\\?item$", child_tag, ignore.case = TRUE)
+
+          if (is_item_marker) {
+            # Save previous item if we have content
+            if (in_item && length(current_content) > 0) {
+              item_text <- paste(current_content, collapse = "")
+              item_text <- gsub("[\n\r\t ]+", " ", item_text, perl = TRUE)
+              item_text <- trimws(item_text)
+              if (nchar(item_text) > 0) {
+                items <- c(items, paste0("- ", item_text))
+              }
+            }
+            current_content <- character()
+            in_item <- TRUE
+          } else if (in_item) {
+            # Accumulate content for current item
+            current_content <- c(current_content, convert_element(child))
+          }
+          # Content before first \item is ignored (usually just whitespace)
+        }
+
+        # Handle last item
+        if (in_item && length(current_content) > 0) {
+          item_text <- paste(current_content, collapse = "")
+          item_text <- gsub("[\n\r\t ]+", " ", item_text, perl = TRUE)
+          item_text <- trimws(item_text)
+          if (nchar(item_text) > 0) {
+            items <- c(items, paste0("- ", item_text))
+          }
+        }
+
+        if (length(items) > 0) {
+          return(paste0("\n", paste(items, collapse = "\n"), "\n"))
+        }
+        return("")
+      } else if (grepl("^\\\\?item$", tag, ignore.case = TRUE)) {
+        # For describe-style items where content is in children (e.g., \describe)
+        # For itemize-style, this is just a marker handled above
+        parts <- vapply(el, convert_element, character(1))
+        inner <- paste0(parts, collapse = "")
+        inner <- gsub("[\n\r\t ]+", " ", inner, perl = TRUE)
+        inner <- trimws(inner)
+        if (nchar(inner) == 0) return("")
+        return(paste0("- ", inner))
+      } else if (tag == "\\cr") {
+        return(" ")  # Convert to space in inline context
+      } else if (tag == "\\dots" || tag == "\\ldots") {
+        return("...")
+      } else if (tag == "\\file" || tag == "\\pkg" || tag == "\\samp") {
+        inner <- paste0(vapply(el, convert_element, character(1)), collapse = "")
+        return(paste0("`", normalize_inline(inner), "`"))
+      } else if (tag == "\\url") {
+        url <- paste(unlist(el), collapse = "")
+        return(paste0("[", url, "](", url, ")"))
+      } else if (tag == "\\href") {
+        url <- if (length(el) >= 1) paste(unlist(el[[1]]), collapse = "") else ""
+        text <- if (length(el) >= 2) paste0(vapply(el[[2]], convert_element, character(1)), collapse = "") else url
+        return(paste0("[", normalize_inline(text), "](", url, ")"))
+      } else if (tag == "\\describe") {
+        items <- vapply(el, convert_element, character(1))
+        return(paste(items, collapse = "\n\n"))
+      }
+    }
+
+    # Default: recurse but preserve newlines from list items
+    if (is.list(el)) {
+      parts <- vapply(el, convert_element, character(1))
+      inner <- paste0(parts, collapse = "")
+      # Only normalize spaces/tabs, preserve newlines
+      inner <- gsub("[ \t]+", " ", inner, perl = TRUE)
+      return(inner)
+    }
+
+    ""
+  }
+
+  result <- convert_element(rd_section)
+  # Clean up multiple newlines but preserve paragraph breaks
+  result <- gsub("\n{3,}", "\n\n", result, perl = TRUE)
+  trimws(result)
+}
+
 #' Evaluate unevaluated Sexpr expressions in HTML
 #'
 #' Rd2HTML doesn't evaluate stage=render Sexprs when converting statically.
@@ -884,6 +1146,36 @@ rd_to_markdown <- function(
       md,
       perl = TRUE
     )
+  }
+
+  # Handle sections with equations - Rd2HTML doesn't preserve LaTeX
+  # Process Description, Details, and Value sections directly from Rd if they have equations
+  equation_sections <- c("description", "details", "value")
+  section_headings <- c("Description", "Details", "Value")
+
+  for (i in seq_along(equation_sections)) {
+    section_name <- equation_sections[i]
+    section_heading <- section_headings[i]
+    rd_section <- get_rd_section(rd_obj, section_name)
+
+    if (!is.null(rd_section) && section_has_equations(rd_section)) {
+      section_md <- rd_section_to_md_with_equations(rd_section)
+      if (!is.null(section_md) && nchar(section_md) > 0) {
+        # Find and replace section using string manipulation (safer than gsub replacement)
+        pattern <- paste0("(?s)## ", section_heading, "\\s*\\n+.*?(?=\\n## |$)")
+        match_info <- regexpr(pattern, md, perl = TRUE)
+        if (match_info > 0) {
+          match_start <- match_info
+          match_len <- attr(match_info, "match.length")
+          new_section <- paste0("## ", section_heading, "\n\n", section_md, "\n\n")
+          md <- paste0(
+            substr(md, 1, match_start - 1),
+            new_section,
+            substr(md, match_start + match_len, nchar(md))
+          )
+        }
+      }
+    }
   }
 
   # Clean up excessive whitespace
