@@ -206,3 +206,49 @@ process_news <- function(pkg_path, output_path, config) {
   writeLines(news_content, output_file)
   cli::cli_alert_success("Generated {.file news.mdx}")
 }
+
+#' Process README.md file
+#'
+#' @param pkg_path Path to package directory
+#' @param output_path Path to output directory
+#' @param config Configuration list
+#' @keywords internal
+process_readme <- function(pkg_path, output_path, config) {
+  readme_path <- file.path(pkg_path, "README.md")
+
+  if (!file.exists(readme_path)) {
+    return()
+  }
+
+  cli::cli_alert_info("Processing {.file README.md}...")
+
+  # Read the README.md content
+  readme_content <- readLines(readme_path, warn = FALSE)
+
+  # Check if it already has frontmatter
+  has_frontmatter <- length(readme_content) > 0 && readme_content[1] == "---"
+
+  if (!has_frontmatter) {
+    # Add frontmatter
+    title <- config$readme$title %||% "Getting Started"
+    readme_content <- c(
+      "---",
+      paste0('title: "', title, '"'),
+      "pagefind: true",
+      "---",
+      "",
+      readme_content
+    )
+  }
+
+  # Write to articles directory
+  articles_dir <- file.path(output_path, "src", "content", "docs", "articles")
+  if (!dir.exists(articles_dir)) {
+    dir.create(articles_dir, recursive = TRUE)
+  }
+
+  output_file <- file.path(articles_dir, "readme.mdx")
+
+  writeLines(readme_content, output_file)
+  cli::cli_alert_success("Generated {.file articles/readme.mdx}")
+}

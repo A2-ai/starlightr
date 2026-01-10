@@ -91,6 +91,9 @@ build_site <- function(pkg = ".",
     process_articles(pkg_path, output_path, config)
   }
 
+  # Process README.md as articles/readme
+  process_readme(pkg_path, output_path, config)
+
   # Process NEWS.md if configured
   if (!is.null(config$sidebar$news)) {
     process_news(pkg_path, output_path, config)
