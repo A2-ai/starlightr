@@ -93,7 +93,7 @@ process_articles <- function(pkg_path, output_path, config) {
   articles_dir <- file.path(output_path, "src", "content", "docs", "articles")
 
   for (rmd_file in rmd_files) {
-    process_rmd_file(rmd_file, articles_dir)
+    process_rmd_file(rmd_file, articles_dir, output_path)
   }
 
   cli::cli_alert_success("Generated {length(rmd_files)} article{?s}")
@@ -103,8 +103,9 @@ process_articles <- function(pkg_path, output_path, config) {
 #'
 #' @param rmd_path Path to .Rmd file
 #' @param output_dir Output directory for markdown file
+#' @param output_path Root output path for the site (for copying figures)
 #' @keywords internal
-process_rmd_file <- function(rmd_path, output_dir) {
+process_rmd_file <- function(rmd_path, output_dir, output_path = NULL) {
   # Properly render Rmd using rmarkdown/knitr
   base_name <- tools::file_path_sans_ext(basename(rmd_path))
 
@@ -132,6 +133,32 @@ process_rmd_file <- function(rmd_path, output_dir) {
 
   # Post-process markdown for MDX compatibility
   rendered_md <- paste(rendered_content, collapse = "\n")
+
+  # Handle rmarkdown-generated figures
+  figures_dir <- file.path(temp_dir, paste0(base_name, "_files"))
+  if (dir.exists(figures_dir) && !is.null(output_path)) {
+    # Copy figures to public/figures/{base_name}/
+    dest_figures <- file.path(output_path, "public", "figures", base_name)
+    if (!dir.exists(dest_figures)) {
+      dir.create(dest_figures, recursive = TRUE)
+    }
+
+    # Copy all contents recursively
+    figure_files <- list.files(figures_dir, full.names = TRUE, recursive = FALSE)
+    for (fig_item in figure_files) {
+      file.copy(fig_item, dest_figures, recursive = TRUE, overwrite = TRUE)
+    }
+
+    # Rewrite image paths in markdown
+    rendered_md <- gsub(
+      paste0(base_name, "_files/"),
+      paste0("/figures/", base_name, "/"),
+      rendered_md
+    )
+
+    # Clean up temp figures
+    unlink(figures_dir, recursive = TRUE)
+  }
 
   # Fix lifecycle badge image paths (use CDN)
   rendered_md <- gsub(
@@ -216,30 +243,93 @@ process_news <- function(pkg_path, output_path, config) {
 process_readme <- function(pkg_path, output_path, config) {
   readme_path <- file.path(pkg_path, "README.md")
 
-  if (!file.exists(readme_path)) {
+  # Also check for README.Rmd
+  readme_rmd_path <- file.path(pkg_path, "README.Rmd")
+
+  if (!file.exists(readme_path) && !file.exists(readme_rmd_path)) {
     return()
   }
 
-  cli::cli_alert_info("Processing {.file README.md}...")
+  cli::cli_alert_info("Processing README...")
 
-  # Read the README.md content
-  readme_content <- readLines(readme_path, warn = FALSE)
+  # If README.Rmd exists, render it first
+  if (file.exists(readme_rmd_path)) {
+    temp_dir <- tempdir()
+    temp_md <- file.path(temp_dir, "README.md")
 
-  # Check if it already has frontmatter
-  has_frontmatter <- length(readme_content) > 0 && readme_content[1] == "---"
+    if (requireNamespace("rmarkdown", quietly = TRUE)) {
+      rmarkdown::render(
+        input = readme_rmd_path,
+        output_format = rmarkdown::md_document(variant = "gfm", preserve_yaml = FALSE),
+        output_file = temp_md,
+        quiet = TRUE
+      )
+    } else if (requireNamespace("knitr", quietly = TRUE)) {
+      knitr::knit(input = readme_rmd_path, output = temp_md, quiet = TRUE)
+    } else {
+      cli::cli_warn("Neither rmarkdown nor knitr available, using README.md instead")
+      temp_md <- readme_path
+    }
 
-  if (!has_frontmatter) {
-    # Add frontmatter
-    title <- config$readme$title %||% "Getting Started"
-    readme_content <- c(
-      "---",
-      paste0('title: "', title, '"'),
-      "pagefind: true",
-      "---",
-      "",
-      readme_content
-    )
+    readme_content <- readLines(temp_md, warn = FALSE)
+
+    # Handle rmarkdown-generated figures
+    figures_dir <- file.path(temp_dir, "README_files")
+    if (dir.exists(figures_dir)) {
+      # Copy figures to public/figures/readme/
+      dest_figures <- file.path(output_path, "public", "figures", "readme")
+      if (!dir.exists(dest_figures)) {
+        dir.create(dest_figures, recursive = TRUE)
+      }
+
+      # Copy all contents recursively
+      figure_files <- list.files(figures_dir, full.names = TRUE, recursive = FALSE)
+      for (fig_item in figure_files) {
+        file.copy(fig_item, dest_figures, recursive = TRUE, overwrite = TRUE)
+      }
+
+      # Clean up temp figures
+      unlink(figures_dir, recursive = TRUE)
+    }
+  } else {
+    readme_content <- readLines(readme_path, warn = FALSE)
   }
+
+  # Post-process markdown for MDX compatibility
+  readme_md <- paste(readme_content, collapse = "\n")
+
+  # Rewrite README_files paths to /figures/readme/
+  readme_md <- gsub("README_files/", "/figures/readme/", readme_md)
+
+  # Fix lifecycle badge image paths (use CDN)
+  readme_md <- gsub(
+    "\\.\\./help/figures/lifecycle-([a-z]+)\\.svg",
+    "https://lifecycle.r-lib.org/articles/figures/lifecycle-\\1.svg",
+    readme_md
+  )
+  readme_md <- gsub(
+    "man/figures/lifecycle-([a-z]+)\\.svg",
+    "https://lifecycle.r-lib.org/articles/figures/lifecycle-\\1.svg",
+    readme_md
+  )
+
+  # Fix other man/figures paths to /figures/
+  readme_md <- gsub("man/figures/", "/figures/", readme_md)
+
+  # Escape angle brackets for MDX compatibility
+  readme_md <- escape_angle_brackets(readme_md)
+  readme_content <- strsplit(readme_md, "\n", fixed = TRUE)[[1]]
+
+  # Add frontmatter
+  title <- config$readme$title %||% "Getting Started"
+  final_content <- c(
+    "---",
+    paste0('title: "', title, '"'),
+    "pagefind: true",
+    "---",
+    "",
+    readme_content
+  )
 
   # Write to articles directory
   articles_dir <- file.path(output_path, "src", "content", "docs", "articles")
@@ -249,6 +339,6 @@ process_readme <- function(pkg_path, output_path, config) {
 
   output_file <- file.path(articles_dir, "readme.mdx")
 
-  writeLines(readme_content, output_file)
+  writeLines(final_content, output_file)
   cli::cli_alert_success("Generated {.file articles/readme.mdx}")
 }
