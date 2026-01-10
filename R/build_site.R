@@ -108,9 +108,6 @@ build_site <- function(pkg = ".",
   # Create default index.mdx if it doesn't exist
   create_index_page(pkg_path, output_path, config)
 
-  # Create directory index pages
-  create_directory_indexes(pkg_path, output_path, config)
-
   cli::cli_alert_success("Site built successfully!")
 
   if (preview) {

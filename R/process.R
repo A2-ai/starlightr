@@ -150,7 +150,7 @@ process_rmd_file <- function(rmd_path, output_dir) {
 
   # Add simple frontmatter since we stripped the original
   title <- tools::toTitleCase(gsub("[-_]", " ", base_name))
-  final_content <- c("---", paste0("title: \"", title, "\""), "---", "", rendered_content)
+  final_content <- c("---", paste0("title: \"", title, "\""), "pagefind: true", "---", "", rendered_content)
 
   writeLines(final_content, output_file)
 
@@ -192,6 +192,7 @@ process_news <- function(pkg_path, output_path, config) {
     news_content <- c(
       "---",
       paste0('title: "', label, '"'),
+      "pagefind: true",
       "---",
       "",
       news_content

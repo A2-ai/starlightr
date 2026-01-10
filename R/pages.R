@@ -88,107 +88,48 @@ create_index_page <- function(pkg_path, output_path, config) {
     hero_image <- "  image:\n    file: /src/assets/logo.png\n"
   }
 
-  # Create default index content with Starlight components
-  index_content <- sprintf('---
-title: "Welcome to %s"
-description: "%s"
-template: splash
-hero:
-  tagline: %s
-%s  actions:
-%s
----
+  # Build cards section if configured
+  cards_content <- ""
+  if (!is.null(config$home$cards) && length(config$home$cards) > 0) {
+    card_items <- vapply(config$home$cards, function(card) {
+      icon_attr <- if (!is.null(card$icon)) sprintf(' icon="%s"', card$icon) else ""
+      sprintf('  <Card title="%s"%s>\n    %s\n    [Learn more >](%s)\n  </Card>',
+              card$title %||% "Untitled",
+              icon_attr,
+              card$description %||% "",
+              card$link %||% "/")
+    }, character(1))
 
+    cards_content <- sprintf('
 import { Card, CardGrid } from "@astrojs/starlight/components";
 
 ## Quick links
 
 <CardGrid stagger>
-  <Card title="Function Reference" icon="list-format">
-    Complete API documentation for all functions.
-    [Browse Reference >](/reference/)
-  </Card>
-  <Card title="Articles & Guides" icon="open-book">
-    Learn how to use the package with step-by-step guides.
-    [Read Articles >](/articles/)
-  </Card>
-  <Card title="View Source" icon="github">
-    Explore the source code and contribute to the project.
-    [GitHub Repository >](%s)
-  </Card>
-  <Card title="Get Help" icon="information">
-    Found a bug or need help? Open an issue or discussion.
-    [Get Support >](%s/issues)
-  </Card>
+%s
 </CardGrid>
-',
+', paste(card_items, collapse = "\n"))
+  }
+
+  # Create default index content with Starlight components
+  index_content <- sprintf('---
+title: "Welcome to %s"
+description: "%s"
+template: splash
+pagefind: true
+hero:
+  tagline: %s
+%s  actions:
+%s
+---%s',
     pkg_name,
     pkg_desc,
     hero_tagline,
     hero_image,
     hero_actions,
-    get_github_url(config) %||% "https://github.com/user/repo",
-    get_github_url(config) %||% "https://github.com/user/repo"
+    cards_content
   )
 
   writeLines(index_content, index_path)
   cli::cli_alert_success("Created {.file index.mdx}")
-}
-
-#' Create directory index pages for articles and reference
-#'
-#' @param pkg_path Path to package directory
-#' @param output_path Path to output directory
-#' @param config Configuration list
-#' @keywords internal
-create_directory_indexes <- function(pkg_path, output_path, config) {
-  docs_path <- file.path(output_path, "src", "content", "docs")
-
-  # Create articles index only if articles configured
-  if (!is.null(config$sidebar$articles)) {
-    articles_index_path <- file.path(docs_path, "articles", "index.mdx")
-    if (!file.exists(articles_index_path)) {
-      pkg_name <- get_package_name(pkg_path)
-      articles_content <- sprintf('---
-title: "Articles & Guides"
-description: "Learn how to use %s with step-by-step guides and tutorials"
----
-
-# Articles & Guides
-
-This section contains guides and tutorials to help you get started with %s and learn about its advanced features.
-
-## Available Articles
-
-Browse the articles in the sidebar to get started!
-
-', pkg_name, pkg_name)
-
-      writeLines(articles_content, articles_index_path)
-      cli::cli_alert_success("Created {.file articles/index.mdx}")
-    }
-  }
-
-  # Create reference index
-  reference_index_path <- file.path(docs_path, "reference", "index.mdx")
-  if (!file.exists(reference_index_path)) {
-    pkg_name <- get_package_name(pkg_path)
-    reference_content <- sprintf('---
-title: "Function Reference"
-description: "Complete API documentation for all %s functions"
----
-
-# Function Reference
-
-This section contains detailed documentation for all functions in the %s package.
-
-## Available Functions
-
-Browse the functions in the sidebar to explore the complete API documentation.
-
-', pkg_name, pkg_name)
-
-    writeLines(reference_content, reference_index_path)
-    cli::cli_alert_success("Created {.file reference/index.mdx}")
-  }
 }

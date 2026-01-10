@@ -199,6 +199,9 @@ build_frontmatter <- function(frontmatter_data) {
     lines <- c(lines, paste0('description: "', desc, '"'))
   }
 
+  # Enable pagefind indexing
+  lines <- c(lines, "pagefind: true")
+
   lines <- c(lines, "---", "")
   paste(lines, collapse = "\n")
 }
@@ -567,12 +570,13 @@ seealso_to_md <- function(rd_obj, pkg_name = NULL) {
 #' @return Markdown string with fixed links
 #' @keywords internal
 fix_internal_links <- function(md, pkg_name = NULL) {
-  # Internal help links: [text](../help/topic.html) → [`text`](../lowercase-topic)
+  # Internal help links: [text](../help/topic.html) → [`text`](../lowercase-topic/)
   # Use ../ to go up from /reference/current/ to /reference/target/
   # Wrap link text in backticks for code formatting
+  # Trailing slash required for trailingSlash: 'always' compatibility
   md <- gsub(
     "\\[([^]]+)\\]\\(\\.\\./help/([^)]+)\\.html\\)",
-    "[`\\1`](../\\L\\2)",
+    "[`\\1`](../\\L\\2/)",
     md,
     perl = TRUE
   )
@@ -580,7 +584,7 @@ fix_internal_links <- function(md, pkg_name = NULL) {
   # Also handle: [text](../../pkgname/help/topic.html) for same package
   if (!is.null(pkg_name)) {
     pattern <- paste0("\\[([^]]+)\\]\\(\\.\\./\\.\\./", pkg_name, "/help/([^)]+)\\.html\\)")
-    md <- gsub(pattern, "[`\\1`](../\\L\\2)", md, perl = TRUE)
+    md <- gsub(pattern, "[`\\1`](../\\L\\2/)", md, perl = TRUE)
   }
 
   # External package links become plain code text (no link)
