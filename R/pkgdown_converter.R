@@ -49,7 +49,7 @@ pkgdown_to_starlight <- function(pkgdown_file = "_pkgdown.yml",
     ),
     content = list(
       code_sections = c("usage", "examples"),
-      skip_sections = c("name", "seealso")
+      skip_sections = c("name", "alias", "title")
     ),
     theme = list(
       color_mode = "auto"

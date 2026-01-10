@@ -156,8 +156,7 @@ content:
 
   # Sections to skip entirely
   skip_sections:
-    - "seealso"
-    - "name"
+    - "author"
 
 # Output directory for generated site
 output:

@@ -47,7 +47,7 @@ default_config <- function() {
     ),
     content = list(
       code_sections = c("usage", "examples"),
-      skip_sections = c("name", "alias", "title", "seealso")
+      skip_sections = c("name", "alias", "title")
     ),
     output = list(
       dir = "docs",
