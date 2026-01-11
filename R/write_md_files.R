@@ -62,7 +62,7 @@ write_md_files <- function(
 
         # Warn if function name contains capitals (Astro requires lowercase)
         if (func_name != func_name_lower) {
-          cli::cli_warn("Function {.fn {func_name}} contains capitals - MDX filename will be lowercased to {.file {func_name_lower}.mdx}")
+          cli::cli_warn("Function {.fn {func_name}} contains capitals - filename will be lowercased to {.file {func_name_lower}{file_ext}}")
         }
 
         out_path <- file.path(output_dir, paste0(func_name_lower, file_ext))
@@ -86,10 +86,10 @@ write_md_files <- function(
   invisible(written_files)
 }
 
-#' Append example outputs to markdown content using MDX imports
+#' Append example outputs to markdown content
 #'
-#' Checks for png and txt example output files and appends MDX import
-#' statements after the Examples section.
+#' Checks for png, txt, and html example output files and appends them
+#' after the Examples section using standard markdown/HTML (no JSX).
 #'
 #' @param md_content Markdown content string
 #' @param func_name Function name to look for outputs
@@ -110,32 +110,31 @@ append_example_outputs <- function(md_content, func_name, site_output_path) {
     return(md_content)
   }
 
-  # Build the import statements and JSX components
-  imports <- character()
+  # Build output components using standard markdown/HTML (no JSX)
   components <- character()
 
   if (has_txt) {
-    imports <- c(imports, sprintf("import exampleOutput from '/examples/text/%s.txt?raw';", func_name))
-    components <- c(components, '<pre style="overflow-x: auto;">{exampleOutput}</pre>')
+    # Read text content and include in code block
+    txt_content <- paste(readLines(txt_path, warn = FALSE), collapse = "\n")
+    components <- c(components, paste0("```\n", txt_content, "\n```"))
   }
 
   if (has_png) {
-    components <- c(components, sprintf('<img src={`${import.meta.env.BASE_URL}examples/%s.png`} alt="Example plot" style="max-width: 100%%;" />', func_name))
+    # Standard markdown image
+    components <- c(components, sprintf("![Example plot](/examples/%s.png)", func_name))
   }
 
   if (has_html) {
-    # Use iframe for gt tables / HTML output
-    components <- c(components, sprintf('<iframe
-  src={`${import.meta.env.BASE_URL}examples/%s.html`}
-  style="width: 100%%; border: none;"
-  onload="this.style.height=(this.contentWindow.document.body.scrollHeight + 50)+\'px\';"
-></iframe>', func_name))
+    # Standard HTML iframe (no JSX)
+    components <- c(components, sprintf(
+      '<iframe src="/examples/%s.html" style="width: 100%%; min-height: 300px; border: none;"></iframe>',
+      func_name
+    ))
   }
 
   # Build the output block
   output_block <- paste0(
     "\n### Output\n\n",
-    if (length(imports) > 0) paste0(paste(imports, collapse = "\n"), "\n\n") else "",
     paste(components, collapse = "\n\n"),
     "\n"
   )
@@ -184,7 +183,6 @@ append_example_outputs <- function(md_content, func_name, site_output_path) {
     md_content <- paste0(
       md_content,
       "\n\n## Output\n\n",
-      if (length(imports) > 0) paste0(paste(imports, collapse = "\n"), "\n\n") else "",
       paste(components, collapse = "\n\n")
     )
   }

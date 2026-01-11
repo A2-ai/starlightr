@@ -1,5 +1,24 @@
 # Content processing functions for starlightr
 
+#' Clean markdown content for standard markdown
+#'
+#' Light cleaning for markdown files:
+#' - Remove HTML comments (can cause issues in some parsers)
+#'
+#' NOTE: Articles use .md (not .mdx) so complex HTML like gt tables with
+#' KaTeX passes through unchanged. MDX's strict JSX parsing breaks on this
+#' content, but standard markdown just passes HTML through.
+#'
+#' @param md Markdown content string
+#' @return Cleaned markdown string
+#' @keywords internal
+clean_md_for_articles <- function(md) {
+  # Remove HTML comments (can cause issues in some markdown parsers)
+  md <- gsub("(?s)<!--.*?-->", "", md, perl = TRUE)
+
+  md
+}
+
 #' Process package documentation into Starlight format
 #'
 #' @param pkg_path Path to package directory
@@ -67,124 +86,172 @@ process_package_documentation <- function(pkg_path, output_path, config, verbose
   cli::cli_alert_success("Generated reference documentation for {length(rd_db)} functions")
 }
 
-#' Process articles from vignettes/*.Rmd
+#' Process articles (vignettes) and README together
+#'
+#' Builds all Rmd files in a single devtools::build_rmd() call to avoid
+#' multiple package installs. Processes vignettes from config and README.Rmd.
+#' "readme" in the config is treated specially - maps to README.Rmd at package root.
 #'
 #' @param pkg_path Path to package directory
 #' @param output_path Path to output directory
 #' @param config Configuration list
 #' @keywords internal
-process_articles <- function(pkg_path, output_path, config) {
-  articles_source <- file.path(pkg_path, "vignettes")
-
-  if (!dir.exists(articles_source)) {
-    cli::cli_alert_info("No vignettes/ directory found, skipping articles")
-    return()
-  }
-
-  # Find all .Rmd files
-  rmd_files <- list.files(articles_source, pattern = "\\.Rmd$", full.names = TRUE)
-
-  if (length(rmd_files) == 0) {
-    cli::cli_alert_info("No .Rmd files found in vignettes/")
-    return()
-  }
-
-  cli::cli_alert_info("Processing articles...")
+process_articles_and_readme <- function(pkg_path, output_path, config) {
+  vignettes_dir <- file.path(pkg_path, "vignettes")
   articles_dir <- file.path(output_path, "src", "content", "docs", "articles")
+  dir.create(articles_dir, recursive = TRUE, showWarnings = FALSE)
 
-  for (rmd_file in rmd_files) {
-    process_rmd_file(rmd_file, articles_dir, output_path)
+  # Collect article names from config
+  article_names <- character(0)
+  if (!is.null(config$sidebar$articles)) {
+    articles_config <- config$sidebar$articles
+    article_names <- unlist(lapply(articles_config, function(g) g$contents))
   }
 
-  cli::cli_alert_success("Generated {length(rmd_files)} article{?s}")
+  if (length(article_names) == 0) {
+    cli::cli_alert_info("No articles configured in sidebar.articles")
+    return()
+  }
+
+  # Map article names to Rmd file paths
+  # "readme" is special - maps to README.Rmd at package root
+  rmd_paths <- character(length(article_names))
+  for (i in seq_along(article_names)) {
+    name <- article_names[i]
+    if (tolower(name) == "readme") {
+      # Check package root, then inst/
+      readme_path <- file.path(pkg_path, "README.Rmd")
+      if (!file.exists(readme_path)) {
+        readme_path <- file.path(pkg_path, "inst", "README.Rmd")
+      }
+      rmd_paths[i] <- readme_path
+    } else {
+      rmd_paths[i] <- file.path(vignettes_dir, paste0(name, ".Rmd"))
+    }
+  }
+
+  # Check which files exist
+  existing <- file.exists(rmd_paths)
+  if (any(!existing)) {
+    for (f in rmd_paths[!existing]) {
+      cli::cli_warn("Article Rmd not found: {.file {f}}")
+    }
+  }
+
+  rmd_paths <- rmd_paths[existing]
+  article_names <- article_names[existing]
+
+  if (length(rmd_paths) == 0) {
+    cli::cli_alert_info("No article Rmd files found")
+    return()
+  }
+
+  # Collect all Rmd files to build
+  all_rmds <- rmd_paths
+
+  # Build all Rmds in one call (single install)
+  # Explicitly use md_document to preserve raw LaTeX (not render to HTML)
+  cli::cli_alert_info("Building {length(all_rmds)} Rmd file{?s}...")
+  devtools::build_rmd(
+    all_rmds,
+    output_format = rmarkdown::md_document(
+      variant = "gfm",
+      preserve_yaml = FALSE
+    ),
+    quiet = TRUE
+  )
+
+  # Process each article output
+  for (i in seq_along(article_names)) {
+    name <- article_names[i]
+    rmd_path <- rmd_paths[i]
+
+    # Determine source directory based on where the Rmd was
+    if (tolower(name) == "readme") {
+      # README.md is generated in package root
+      source_dir <- pkg_path
+      md_name <- "README"
+    } else {
+      source_dir <- vignettes_dir
+      md_name <- name
+    }
+
+    process_article_output(name, md_name, source_dir, output_path, articles_dir, config)
+  }
+
+  cli::cli_alert_success("Generated {length(article_names)} article{?s}")
 }
 
-#' Process a single .Rmd file to Markdown
+#' Process a single article's built output (vignette or README)
 #'
-#' @param rmd_path Path to .Rmd file
-#' @param output_dir Output directory for markdown file
-#' @param output_path Root output path for the site (for copying figures)
+#' @param output_name Name for the output file (e.g., "readme", "introduction")
+#' @param md_name Name of the .md file without extension (e.g., "README", "introduction")
+#' @param source_dir Directory containing the .md file and _files folder
+#' @param output_path Root output path for the site
+#' @param articles_dir Output directory for article markdown files
+#' @param config Configuration list
 #' @keywords internal
-process_rmd_file <- function(rmd_path, output_dir, output_path = NULL) {
-  # Properly render Rmd using rmarkdown/knitr
-  base_name <- tools::file_path_sans_ext(basename(rmd_path))
-
-  # Create temporary directory for rendering
-  temp_dir <- tempdir()
-  temp_md <- file.path(temp_dir, paste0(base_name, ".md"))
-
-  # Render Rmd to Markdown using GFM variant (fenced code blocks for MDX compatibility)
-  if (requireNamespace("rmarkdown", quietly = TRUE)) {
-    rmarkdown::render(
-      input = rmd_path,
-      output_format = rmarkdown::md_document(variant = "gfm", preserve_yaml = FALSE),
-      output_file = temp_md,
-      quiet = TRUE
-    )
-  } else if (requireNamespace("knitr", quietly = TRUE)) {
-    # Fallback to knitr if rmarkdown not available
-    knitr::knit(input = rmd_path, output = temp_md, quiet = TRUE)
-  } else {
-    stop("Neither rmarkdown nor knitr is available. Install one of these packages to process vignettes.")
+process_article_output <- function(output_name, md_name, source_dir, output_path, articles_dir, config) {
+  md_file <- file.path(source_dir, paste0(md_name, ".md"))
+  if (!file.exists(md_file)) {
+    cli::cli_warn("Built markdown not found: {.file {md_file}}")
+    return()
   }
 
-  # Read the rendered markdown
-  rendered_content <- readLines(temp_md, warn = FALSE)
+  md_content <- paste(readLines(md_file, warn = FALSE), collapse = "\n")
 
-  # Post-process markdown for MDX compatibility
-  rendered_md <- paste(rendered_content, collapse = "\n")
+  # Copy figures from {md_name}_files/
+  figures_dir <- file.path(source_dir, paste0(md_name, "_files"))
+  if (dir.exists(figures_dir)) {
+    dest_figures <- file.path(output_path, "public", "figures", tolower(output_name))
+    dir.create(dest_figures, recursive = TRUE, showWarnings = FALSE)
 
-  # Handle rmarkdown-generated figures
-  figures_dir <- file.path(temp_dir, paste0(base_name, "_files"))
-  if (dir.exists(figures_dir) && !is.null(output_path)) {
-    # Copy figures to public/figures/{base_name}/
-    dest_figures <- file.path(output_path, "public", "figures", base_name)
-    if (!dir.exists(dest_figures)) {
-      dir.create(dest_figures, recursive = TRUE)
+    figure_gfm <- file.path(figures_dir, "figure-gfm")
+    if (dir.exists(figure_gfm)) {
+      file.copy(list.files(figure_gfm, full.names = TRUE), dest_figures, overwrite = TRUE)
     }
-
-    # Copy all contents recursively
-    figure_files <- list.files(figures_dir, full.names = TRUE, recursive = FALSE)
-    for (fig_item in figure_files) {
-      file.copy(fig_item, dest_figures, recursive = TRUE, overwrite = TRUE)
-    }
-
-    # Rewrite image paths in markdown
-    rendered_md <- gsub(
-      paste0(base_name, "_files/"),
-      paste0("/figures/", base_name, "/"),
-      rendered_md
-    )
-
-    # Clean up temp figures
-    unlink(figures_dir, recursive = TRUE)
   }
 
-  # Fix lifecycle badge image paths (use CDN)
-  rendered_md <- gsub(
-    "\\.\\./help/figures/lifecycle-([a-z]+)\\.svg",
-    "https://lifecycle.r-lib.org/articles/figures/lifecycle-\\1.svg",
-    rendered_md
+  # Rewrite figure paths
+  md_content <- gsub(
+    paste0(md_name, "_files/figure-gfm/"),
+    paste0("/figures/", tolower(output_name), "/"),
+    md_content, fixed = TRUE
   )
-  rendered_md <- gsub("\\.\\./help/figures/", "/figures/", rendered_md)
 
-  # Escape angle brackets for MDX compatibility
-  rendered_md <- escape_angle_brackets(rendered_md)
-  rendered_content <- strsplit(rendered_md, "\n", fixed = TRUE)[[1]]
+  # Also handle man/figures/ paths (common in READMEs)
+  md_content <- gsub("man/figures/", "/figures/", md_content, fixed = TRUE)
 
-  # Convert to MDX and clean up frontmatter
-  output_file <- file.path(output_dir, paste0(base_name, ".mdx"))
+  # Fix lifecycle badges
+  md_content <- gsub(
+    "man/figures/lifecycle-([a-z]+)\\.svg",
+    "https://lifecycle.r-lib.org/articles/figures/lifecycle-\\1.svg",
+    md_content
+  )
+  md_content <- gsub(
+    "../help/figures/lifecycle-([a-z]+)\\.svg",
+    "https://lifecycle.r-lib.org/articles/figures/lifecycle-\\1.svg",
+    md_content
+  )
 
-  # Add simple frontmatter since we stripped the original
-  title <- tools::toTitleCase(gsub("[-_]", " ", base_name))
-  final_content <- c("---", paste0("title: \"", title, "\""), "pagefind: true", "---", "", rendered_content)
+  # Light cleaning for articles (using .md, not .mdx, so HTML passes through)
+  md_content <- clean_md_for_articles(md_content)
 
-  writeLines(final_content, output_file)
-
-  # Clean up temp file
-  if (file.exists(temp_md)) {
-    unlink(temp_md)
+  # Add frontmatter - use config title for readme, otherwise generate from name
+  if (tolower(output_name) == "readme") {
+    title <- config$readme$title %||% "Getting Started"
+  } else {
+    title <- tools::toTitleCase(gsub("[-_]", " ", output_name))
   }
+  final_content <- paste0("---\ntitle: \"", title, "\"\npagefind: true\n---\n\n", md_content)
+
+  # Use .md (not .mdx) so complex HTML like gt tables with KaTeX passes through
+  # MDX's strict JSX parsing breaks on this content
+  writeLines(final_content, file.path(articles_dir, paste0(tolower(output_name), ".md")))
+
+  # Clean up generated files
+  unlink(md_file)
+  unlink(figures_dir, recursive = TRUE)
 }
 
 #' Process NEWS.md file
@@ -234,111 +301,3 @@ process_news <- function(pkg_path, output_path, config) {
   cli::cli_alert_success("Generated {.file news.mdx}")
 }
 
-#' Process README.md file
-#'
-#' @param pkg_path Path to package directory
-#' @param output_path Path to output directory
-#' @param config Configuration list
-#' @keywords internal
-process_readme <- function(pkg_path, output_path, config) {
-  readme_path <- file.path(pkg_path, "README.md")
-
-  # Also check for README.Rmd
-  readme_rmd_path <- file.path(pkg_path, "README.Rmd")
-
-  if (!file.exists(readme_path) && !file.exists(readme_rmd_path)) {
-    return()
-  }
-
-  cli::cli_alert_info("Processing README...")
-
-  # If README.Rmd exists, render it first
-  if (file.exists(readme_rmd_path)) {
-    temp_dir <- tempdir()
-    temp_md <- file.path(temp_dir, "README.md")
-
-    if (requireNamespace("rmarkdown", quietly = TRUE)) {
-      rmarkdown::render(
-        input = readme_rmd_path,
-        output_format = rmarkdown::md_document(variant = "gfm", preserve_yaml = FALSE),
-        output_file = temp_md,
-        quiet = TRUE
-      )
-    } else if (requireNamespace("knitr", quietly = TRUE)) {
-      knitr::knit(input = readme_rmd_path, output = temp_md, quiet = TRUE)
-    } else {
-      cli::cli_warn("Neither rmarkdown nor knitr available, using README.md instead")
-      temp_md <- readme_path
-    }
-
-    readme_content <- readLines(temp_md, warn = FALSE)
-
-    # Handle rmarkdown-generated figures
-    figures_dir <- file.path(temp_dir, "README_files")
-    if (dir.exists(figures_dir)) {
-      # Copy figures to public/figures/readme/
-      dest_figures <- file.path(output_path, "public", "figures", "readme")
-      if (!dir.exists(dest_figures)) {
-        dir.create(dest_figures, recursive = TRUE)
-      }
-
-      # Copy all contents recursively
-      figure_files <- list.files(figures_dir, full.names = TRUE, recursive = FALSE)
-      for (fig_item in figure_files) {
-        file.copy(fig_item, dest_figures, recursive = TRUE, overwrite = TRUE)
-      }
-
-      # Clean up temp figures
-      unlink(figures_dir, recursive = TRUE)
-    }
-  } else {
-    readme_content <- readLines(readme_path, warn = FALSE)
-  }
-
-  # Post-process markdown for MDX compatibility
-  readme_md <- paste(readme_content, collapse = "\n")
-
-  # Rewrite README_files paths to /figures/readme/
-  readme_md <- gsub("README_files/", "/figures/readme/", readme_md)
-
-  # Fix lifecycle badge image paths (use CDN)
-  readme_md <- gsub(
-    "\\.\\./help/figures/lifecycle-([a-z]+)\\.svg",
-    "https://lifecycle.r-lib.org/articles/figures/lifecycle-\\1.svg",
-    readme_md
-  )
-  readme_md <- gsub(
-    "man/figures/lifecycle-([a-z]+)\\.svg",
-    "https://lifecycle.r-lib.org/articles/figures/lifecycle-\\1.svg",
-    readme_md
-  )
-
-  # Fix other man/figures paths to /figures/
-  readme_md <- gsub("man/figures/", "/figures/", readme_md)
-
-  # Escape angle brackets for MDX compatibility
-  readme_md <- escape_angle_brackets(readme_md)
-  readme_content <- strsplit(readme_md, "\n", fixed = TRUE)[[1]]
-
-  # Add frontmatter
-  title <- config$readme$title %||% "Getting Started"
-  final_content <- c(
-    "---",
-    paste0('title: "', title, '"'),
-    "pagefind: true",
-    "---",
-    "",
-    readme_content
-  )
-
-  # Write to articles directory
-  articles_dir <- file.path(output_path, "src", "content", "docs", "articles")
-  if (!dir.exists(articles_dir)) {
-    dir.create(articles_dir, recursive = TRUE)
-  }
-
-  output_file <- file.path(articles_dir, "readme.mdx")
-
-  writeLines(final_content, output_file)
-  cli::cli_alert_success("Generated {.file articles/readme.mdx}")
-}

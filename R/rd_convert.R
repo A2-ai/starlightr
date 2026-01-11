@@ -206,11 +206,11 @@ build_frontmatter <- function(frontmatter_data) {
   paste(lines, collapse = "\n")
 }
 
-#' Convert Rd arguments section to Markdown table
+#' Convert Rd arguments section to HTML table
 #'
 #' @param rd_obj Rd object
 #'
-#' @return Markdown table string or NULL if no arguments
+#' @return HTML table string or NULL if no arguments
 #' @keywords internal
 arguments_to_md_table <- function(rd_obj) {
   args_el <- get_rd_section(rd_obj, "arguments")
@@ -276,16 +276,13 @@ arguments_to_md_table <- function(rd_obj) {
       desc_md <- gsub("\n+", " ", desc_md)
       desc_md <- trimws(gsub("\\s+", " ", desc_md))
 
-      # Escape pipe characters for markdown table
-      desc_md <- gsub("\\|", "\\\\|", desc_md)
-
-      # Escape < and > for MDX using HTML entities
-      desc_md <- gsub("<", "&lt;", desc_md)
-      desc_md <- gsub(">", "&gt;", desc_md)
+      # For HTML table, convert markdown formatting to HTML
+      # Code: `text` -> <code>text</code>
+      desc_html <- gsub("`([^`]+)`", "<code>\\1</code>", desc_md)
 
       args_list[[length(args_list) + 1]] <- list(
         name = name,
-        description = desc_md
+        description = desc_html
       )
     }
   }
@@ -294,17 +291,37 @@ arguments_to_md_table <- function(rd_obj) {
     return(NULL)
   }
 
-  # Build markdown table
+  # Build HTML table wrapped in div for CSS targeting
+  # MDX doesn't parse markdown inside HTML blocks, so we use pure HTML
   lines <- c(
-    "| Argument | Description |",
-    "|----------|-------------|"
+    "",
+    "<div class=\"arg-table\">",
+    "<table>",
+    "<thead>",
+    "<tr>",
+    "<th>Argument</th>",
+    "<th>Description</th>",
+    "</tr>",
+    "</thead>",
+    "<tbody>"
   )
 
   for (arg in args_list) {
-    # Escape backticks in name if needed, wrap in code
-    name_clean <- gsub("`", "\\\\`", arg$name)
-    lines <- c(lines, sprintf("| `%s` | %s |", name_clean, arg$description))
+    # Escape HTML special chars in name
+    name_escaped <- gsub("&", "&amp;", arg$name)
+    name_escaped <- gsub("<", "&lt;", name_escaped)
+    name_escaped <- gsub(">", "&gt;", name_escaped)
+
+    lines <- c(
+      lines,
+      "<tr>",
+      paste0("<td><code>", name_escaped, "</code></td>"),
+      paste0("<td>", arg$description, "</td>"),
+      "</tr>"
+    )
   }
+
+  lines <- c(lines, "</tbody>", "</table>", "</div>", "")
 
   paste(lines, collapse = "\n")
 }
@@ -490,11 +507,12 @@ seealso_to_md <- function(rd_obj, pkg_name = NULL) {
     }
 
     if (is_internal && !is.null(target)) {
-      # Use JSX with BASE_URL for absolute paths that work in dev and prod
+      # Use relative paths from /reference/current/ to /reference/target/
+      # Trailing slash for trailingSlash: 'always' compatibility
       if (code_wrap) {
-        return(paste0('<a href={`${import.meta.env.BASE_URL}reference/', tolower(target), '`}><code>', text, '</code></a>'))
+        return(paste0('[`', text, '`](../', tolower(target), '/)'))
       } else {
-        return(paste0('<a href={`${import.meta.env.BASE_URL}reference/', tolower(target), '`}>', text, '</a>'))
+        return(paste0('[', text, '](../', tolower(target), '/)'))
       }
     } else {
       # External or couldn't determine - just code format
@@ -754,6 +772,25 @@ section_has_equations <- function(rd_section) {
   check_element(rd_section)
 }
 
+#' Check if an Rd section contains describe blocks
+#'
+#' @param rd_section An Rd section
+#' @return Logical indicating if describe blocks are present
+#' @keywords internal
+section_has_describe <- function(rd_section) {
+  if (is.null(rd_section)) return(FALSE)
+
+  check_element <- function(el) {
+    if (is.character(el)) return(FALSE)
+    tag <- attr(el, "Rd_tag")
+    if (!is.null(tag) && tag == "\\describe") return(TRUE)
+    if (is.list(el)) return(any(vapply(el, check_element, logical(1))))
+    FALSE
+  }
+
+  check_element(rd_section)
+}
+
 #' Process an Rd section with equations to markdown
 #'
 #' Converts an Rd section that contains equations directly to markdown,
@@ -854,14 +891,31 @@ rd_section_to_md_with_equations <- function(rd_section) {
         }
         return("")
       } else if (grepl("^\\\\?item$", tag, ignore.case = TRUE)) {
-        # For describe-style items where content is in children (e.g., \describe)
-        # For itemize-style, this is just a marker handled above
-        parts <- vapply(el, convert_element, character(1))
-        inner <- paste0(parts, collapse = "")
-        inner <- gsub("[\n\r\t ]+", " ", inner, perl = TRUE)
-        inner <- trimws(inner)
-        if (nchar(inner) == 0) return("")
-        return(paste0("- ", inner))
+        # For describe-style items: \item{term}{definition}
+        # First child is term, rest is definition
+        if (length(el) >= 2) {
+          term <- paste0(vapply(el[[1]], convert_element, character(1)), collapse = "")
+          term <- trimws(term)
+
+          def_parts <- vapply(el[-1], convert_element, character(1))
+          definition <- paste0(def_parts, collapse = "")
+          definition <- gsub("[\n\r\t ]+", " ", definition, perl = TRUE)
+          definition <- trimws(definition)
+
+          if (nchar(term) > 0) {
+            return(paste0("- **", term, "**: ", definition))
+          } else {
+            return(paste0("- ", definition))
+          }
+        } else if (length(el) >= 1) {
+          # Just content, no separate term
+          inner <- paste0(vapply(el, convert_element, character(1)), collapse = "")
+          inner <- gsub("[\n\r\t ]+", " ", inner, perl = TRUE)
+          inner <- trimws(inner)
+          if (nchar(inner) == 0) return("")
+          return(paste0("- ", inner))
+        }
+        return("")
       } else if (tag == "\\cr") {
         return(" ")  # Convert to space in inline context
       } else if (tag == "\\dots" || tag == "\\ldots") {
@@ -1113,6 +1167,10 @@ rd_to_markdown <- function(
   # Remove other skipped sections
   md <- remove_sections(md, config$skip_sections)
 
+  # Escape < outside code blocks for MDX compatibility
+  # Must happen BEFORE argument table insertion so our HTML table isn't escaped
+  md <- escape_angle_brackets(md)
+
   # Handle arguments section specially if requested
   if (config$arguments_format == "table") {
     args_table <- arguments_to_md_table(rd_obj)
@@ -1137,13 +1195,8 @@ rd_to_markdown <- function(
 
   # Note: Example outputs are now appended in write_md_files using MDX imports
 
-  # Escape < outside code blocks for MDX compatibility
-  # Must happen BEFORE seealso replacement so our intentional JSX isn't escaped
-  md <- escape_angle_brackets(md)
-
   # Handle seealso section specially to preserve \link tags
   # (Rd2HTML strips them, so we process directly from Rd object)
-  # Done AFTER escape_angle_brackets so our JSX links aren't escaped
   seealso_md <- seealso_to_md(rd_obj, pkg_name)
   if (!is.null(seealso_md)) {
     # Replace existing See Also section with our version that has proper links
@@ -1180,6 +1233,35 @@ rd_to_markdown <- function(
             new_section,
             substr(md, match_start + match_len, nchar(md))
           )
+        }
+      }
+    }
+  }
+
+  # Handle custom sections with \describe blocks
+  # These are defined with \section{Name}{content} and don't get proper list formatting from Rd2HTML
+  for (element in rd_obj) {
+    el_tag <- attr(element, "Rd_tag")
+    if (!is.null(el_tag) && el_tag == "\\section" && length(element) >= 2) {
+      # Custom section - title is in first child, content in second
+      section_title <- trimws(paste(unlist(element[[1]]), collapse = ""))
+      section_content <- element[[2]]
+      if (nchar(section_title) > 0 && section_has_describe(section_content)) {
+        section_md <- rd_section_to_md_with_equations(section_content)
+        if (!is.null(section_md) && nchar(section_md) > 0) {
+          # Replace section in markdown
+          pattern <- paste0("(?s)## ", section_title, "\\s*\\n+.*?(?=\\n## |$)")
+          match_info <- regexpr(pattern, md, perl = TRUE)
+          if (match_info > 0) {
+            match_start <- match_info
+            match_len <- attr(match_info, "match.length")
+            new_section <- paste0("## ", section_title, "\n\n", section_md, "\n\n")
+            md <- paste0(
+              substr(md, 1, match_start - 1),
+              new_section,
+              substr(md, match_start + match_len, nchar(md))
+            )
+          }
         }
       }
     }

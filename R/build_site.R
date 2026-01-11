@@ -86,13 +86,8 @@ build_site <- function(pkg = ".",
   # Extract and process R documentation
   process_package_documentation(pkg_path, output_path, config, verbose = verbose)
 
-  # Process vignettes/articles only if configured in sidebar
-  if (!is.null(config$sidebar$articles)) {
-    process_articles(pkg_path, output_path, config)
-  }
-
-  # Process README.md as articles/readme
-  process_readme(pkg_path, output_path, config)
+  # Process vignettes and README together (single install)
+  process_articles_and_readme(pkg_path, output_path, config)
 
   # Process NEWS.md if configured
   if (!is.null(config$sidebar$news)) {
