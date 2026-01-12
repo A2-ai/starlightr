@@ -1,24 +1,5 @@
 # Content processing functions for starlightr
 
-#' Clean markdown content for standard markdown
-#'
-#' Light cleaning for markdown files:
-#' - Remove HTML comments (can cause issues in some parsers)
-#'
-#' NOTE: Articles use .md (not .mdx) so complex HTML like gt tables with
-#' KaTeX passes through unchanged. MDX's strict JSX parsing breaks on this
-#' content, but standard markdown just passes HTML through.
-#'
-#' @param md Markdown content string
-#' @return Cleaned markdown string
-#' @keywords internal
-clean_md_for_articles <- function(md) {
-  # Remove HTML comments (can cause issues in some markdown parsers)
-  md <- gsub("(?s)<!--.*?-->", "", md, perl = TRUE)
-
-  md
-}
-
 #' Process package documentation into Starlight format
 #'
 #' @param pkg_path Path to package directory
@@ -234,8 +215,8 @@ process_article_output <- function(output_name, md_name, source_dir, output_path
     md_content
   )
 
-  # Light cleaning for articles (using .md, not .mdx, so HTML passes through)
-  md_content <- clean_md_for_articles(md_content)
+  # Remove HTML comments (can cause issues in some markdown parsers)
+  md_content <- gsub("(?s)<!--.*?-->", "", md_content, perl = TRUE)
 
   # Add frontmatter - use config title for readme, otherwise generate from name
   if (tolower(output_name) == "readme") {

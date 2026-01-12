@@ -11,7 +11,7 @@
 #' @param pkg_name Package name (for link resolution).
 #'
 #' @return Invisibly returns a character vector of written file paths.
-#' @export
+#' @keywords internal
 #'
 #' @examples
 #' \dontrun{

@@ -32,3 +32,4 @@ md <- rd_to_markdown(rd_db[["filter.Rd"]])
 cat(md)
 }
 }
+\keyword{internal}

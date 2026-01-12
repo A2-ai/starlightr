@@ -40,7 +40,7 @@ extract_examples_code <- function(examples_section) {
 #' @param text_output_dir path to directory to save text output files
 #' @param verbose Logical, whether to print debug messages (default FALSE)
 #'
-#' @export
+#' @keywords internal
 #'
 #' @examples \dontrun{
 #' capture_example_output("pkg", "pkg-docs/public")

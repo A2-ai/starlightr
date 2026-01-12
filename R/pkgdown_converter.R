@@ -338,6 +338,3 @@ convert_articles_structure <- function(articles) {
 
   result
 }
-
-# Utility function for null-or-default assignment
-`%||%` <- function(a, b) if (is.null(a)) b else a

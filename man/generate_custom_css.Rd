@@ -4,10 +4,12 @@
 \alias{generate_custom_css}
 \title{Generate custom.css file for Starlight site}
 \usage{
-generate_custom_css(output_path)
+generate_custom_css(output_path, overwrite = FALSE)
 }
 \arguments{
 \item{output_path}{Path to output directory}
+
+\item{overwrite}{Logical, whether to overwrite existing file}
 }
 \description{
 Generate custom.css file for Starlight site

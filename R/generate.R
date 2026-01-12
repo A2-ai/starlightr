@@ -36,25 +36,6 @@ setup_starlight_structure <- function(output_path, config) {
   }
 }
 
-#' Generate Starlight configuration files
-#'
-#' @param output_path Path to output directory
-#' @param config Configuration list
-#' @param pkg_path Path to package directory
-#' @keywords internal
-generate_starlight_config <- function(output_path, config, pkg_path) {
-  # Generate astro.config.mjs
-  generate_astro_config(output_path, config, pkg_path)
-
-  # Generate content.config.ts (required for Astro content collections)
-  generate_content_config(output_path)
-
-  # Generate package.json if requested
-  if (config$output$include_build_files %||% TRUE) {
-    generate_package_json(output_path, config)
-  }
-}
-
 #' Generate astro.config.mjs file
 #'
 #' @param output_path Path to output directory
@@ -142,12 +123,13 @@ export default defineConfig({
 #'
 #' @param output_path Path to output directory
 #' @param config Configuration list
+#' @param overwrite Logical, whether to overwrite existing file
 #' @keywords internal
-generate_package_json <- function(output_path, config) {
+generate_package_json <- function(output_path, config, overwrite = FALSE) {
   package_json_path <- file.path(output_path, "package.json")
 
-  # Don't overwrite existing package.json
-  if (file.exists(package_json_path)) {
+  # Don't overwrite existing package.json unless requested
+  if (file.exists(package_json_path) && !overwrite) {
     cli::cli_alert_info("Skipping {.file package.json} (already exists)")
     return(invisible(NULL))
   }
@@ -205,12 +187,13 @@ export const collections = {
 #' Generate .gitignore file for Starlight site
 #'
 #' @param output_path Path to output directory
+#' @param overwrite Logical, whether to overwrite existing file
 #' @keywords internal
-generate_gitignore <- function(output_path) {
+generate_gitignore <- function(output_path, overwrite = FALSE) {
   gitignore_path <- file.path(output_path, ".gitignore")
 
-  # Don't overwrite existing .gitignore
-  if (file.exists(gitignore_path)) {
+  # Don't overwrite existing .gitignore unless requested
+  if (file.exists(gitignore_path) && !overwrite) {
     cli::cli_alert_info("Skipping {.file .gitignore} (already exists)")
     return(invisible(NULL))
   }
@@ -244,8 +227,9 @@ pnpm-debug.log*
 #' Generate custom.css file for Starlight site
 #'
 #' @param output_path Path to output directory
+#' @param overwrite Logical, whether to overwrite existing file
 #' @keywords internal
-generate_custom_css <- function(output_path) {
+generate_custom_css <- function(output_path, overwrite = FALSE) {
   template_path <- system.file("templates/custom.css", package = "starlightr")
 
   # Create styles directory
@@ -256,8 +240,8 @@ generate_custom_css <- function(output_path) {
 
   css_path <- file.path(styles_dir, "custom.css")
 
-  # Don't overwrite existing custom.css
-  if (file.exists(css_path)) {
+  # Don't overwrite existing custom.css unless requested
+  if (file.exists(css_path) && !overwrite) {
     cli::cli_alert_info("Skipping {.file custom.css} (already exists)")
     return(invisible(NULL))
   }

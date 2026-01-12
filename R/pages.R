@@ -40,12 +40,14 @@ update_index_hero_image <- function(index_path, config) {
 #' @param pkg_path Path to package directory
 #' @param output_path Path to output directory
 #' @param config Configuration list
+#' @param overwrite Logical, whether to overwrite existing index.mdx
 #' @keywords internal
-create_index_page <- function(pkg_path, output_path, config) {
+create_index_page <- function(pkg_path, output_path, config, overwrite = FALSE) {
   index_path <- file.path(output_path, "src", "content", "docs", "index.mdx")
+  file_existed <- file.exists(index_path)
 
-  # If index exists, just update the hero image if needed
-  if (file.exists(index_path)) {
+  # If index exists and not overwriting, just update the hero image if needed
+  if (file_existed && !overwrite) {
     update_index_hero_image(index_path, config)
     return()
   }
@@ -131,5 +133,9 @@ hero:
   )
 
   writeLines(index_content, index_path)
-  cli::cli_alert_success("Created {.file index.mdx}")
+  if (file_existed) {
+    cli::cli_alert_success("Overwrote {.file index.mdx}")
+  } else {
+    cli::cli_alert_success("Created {.file index.mdx}")
+  }
 }

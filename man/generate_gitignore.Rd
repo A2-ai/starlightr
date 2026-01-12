@@ -4,10 +4,12 @@
 \alias{generate_gitignore}
 \title{Generate .gitignore file for Starlight site}
 \usage{
-generate_gitignore(output_path)
+generate_gitignore(output_path, overwrite = FALSE)
 }
 \arguments{
 \item{output_path}{Path to output directory}
+
+\item{overwrite}{Logical, whether to overwrite existing file}
 }
 \description{
 Generate .gitignore file for Starlight site

@@ -4,12 +4,14 @@
 \alias{generate_package_json}
 \title{Generate package.json file}
 \usage{
-generate_package_json(output_path, config)
+generate_package_json(output_path, config, overwrite = FALSE)
 }
 \arguments{
 \item{output_path}{Path to output directory}
 
 \item{config}{Configuration list}
+
+\item{overwrite}{Logical, whether to overwrite existing file}
 }
 \description{
 Generate package.json file

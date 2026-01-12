@@ -28,3 +28,4 @@ Runs example code and capture output to a file
 capture_example_output("pkg", "pkg-docs/public")
 }
 }
+\keyword{internal}

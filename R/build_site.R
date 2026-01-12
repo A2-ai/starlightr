@@ -5,6 +5,7 @@
 #' @param output_dir Directory to build the site in
 #' @param preview Logical, whether to open preview after building
 #' @param verbose Logical, whether to print debug messages for example capture
+#' @param overwrite Logical, whether to overwrite existing files like index.mdx
 #'
 #' @return Invisibly returns the path to the built site
 #' @export
@@ -25,12 +26,16 @@
 #'
 #' # Build with verbose example output
 #' build_site(verbose = TRUE)
+#'
+#' # Rebuild and overwrite existing index.mdx
+#' build_site(overwrite = TRUE)
 #' }
 build_site <- function(pkg = ".",
                       config_file = "_starlightr.yaml",
                       output_dir = NULL,
                       preview = FALSE,
-                      verbose = FALSE) {
+                      verbose = FALSE,
+                      overwrite = FALSE) {
 
   # Resolve package path
   pkg_path <- normalizePath(pkg, mustWork = TRUE)
@@ -66,9 +71,9 @@ build_site <- function(pkg = ".",
   # Generate initial configuration files (without astro.config.mjs since we need files first)
   generate_content_config(output_path)
   if (config$output$include_build_files %||% TRUE) {
-    generate_package_json(output_path, config)
-    generate_gitignore(output_path)
-    generate_custom_css(output_path)
+    generate_package_json(output_path, config, overwrite = overwrite)
+    generate_gitignore(output_path, overwrite = overwrite)
+    generate_custom_css(output_path, overwrite = overwrite)
   }
 
   # Add version support files if configured
@@ -103,8 +108,8 @@ build_site <- function(pkg = ".",
   # Copy logo and favicon if configured
   copy_branding_assets(pkg_path, output_path, config)
 
-  # Create default index.mdx if it doesn't exist
-  create_index_page(pkg_path, output_path, config)
+  # Create default index.mdx if it doesn't exist (or overwrite if requested)
+  create_index_page(pkg_path, output_path, config, overwrite = overwrite)
 
   cli::cli_alert_success("Site built successfully!")
 

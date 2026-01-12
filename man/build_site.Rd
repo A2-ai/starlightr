@@ -9,7 +9,8 @@ build_site(
   config_file = "_starlightr.yaml",
   output_dir = NULL,
   preview = FALSE,
-  verbose = FALSE
+  verbose = FALSE,
+  overwrite = FALSE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ build_site(
 \item{preview}{Logical, whether to open preview after building}
 
 \item{verbose}{Logical, whether to print debug messages for example capture}
+
+\item{overwrite}{Logical, whether to overwrite existing files like index.mdx}
 }
 \value{
 Invisibly returns the path to the built site
@@ -46,5 +49,8 @@ build_site(output_dir = "docs")
 
 # Build with verbose example output
 build_site(verbose = TRUE)
+
+# Rebuild and overwrite existing index.mdx
+build_site(overwrite = TRUE)
 }
 }

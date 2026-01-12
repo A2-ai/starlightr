@@ -2,7 +2,7 @@
 % Please edit documentation in R/write_md_files.R
 \name{append_example_outputs}
 \alias{append_example_outputs}
-\title{Append example outputs to markdown content using MDX imports}
+\title{Append example outputs to markdown content}
 \usage{
 append_example_outputs(md_content, func_name, site_output_path)
 }
@@ -17,7 +17,7 @@ append_example_outputs(md_content, func_name, site_output_path)
 Updated markdown content with example outputs appended
 }
 \description{
-Checks for png and txt example output files and appends MDX import
-statements after the Examples section.
+Checks for png, txt, and html example output files and appends them
+after the Examples section using standard markdown/HTML (no JSX).
 }
 \keyword{internal}

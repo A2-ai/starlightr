@@ -2,9 +2,5 @@
 
 export(audit_config)
 export(build_site)
-export(capture_example_output)
-export(package_rd_to_markdown)
 export(pkgdown_to_starlight)
-export(rd_to_markdown)
 export(use_starlightr)
-export(write_md_files)

@@ -25,3 +25,4 @@ md_files <- package_rd_to_markdown("starlightr")
 names(md_files)
 }
 }
+\keyword{internal}

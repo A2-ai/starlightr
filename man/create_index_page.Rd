@@ -4,7 +4,7 @@
 \alias{create_index_page}
 \title{Create default index.mdx page}
 \usage{
-create_index_page(pkg_path, output_path, config)
+create_index_page(pkg_path, output_path, config, overwrite = FALSE)
 }
 \arguments{
 \item{pkg_path}{Path to package directory}
@@ -12,6 +12,8 @@ create_index_page(pkg_path, output_path, config)
 \item{output_path}{Path to output directory}
 
 \item{config}{Configuration list}
+
+\item{overwrite}{Logical, whether to overwrite existing index.mdx}
 }
 \description{
 Create default index.mdx page
