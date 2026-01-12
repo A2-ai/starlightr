@@ -75,6 +75,27 @@ audit_config <- function(pkg = ".", config_file = "_starlightr.yaml") {
     }
   }
 
+  # Check internal links for trailing slash and expected prefix
+  link_entries <- find_link_entries(config)
+  if (length(link_entries) > 0) {
+    for (entry in link_entries) {
+      link <- entry$link
+      context <- entry$context
+
+      if (!is_internal_link(link)) {
+        next
+      }
+
+      if (!startsWith(link, "./")) {
+        cli::cli_warn("Link does not start with './': {.val {link}} ({context})")
+      }
+
+      if (link_needs_trailing_slash(link)) {
+        cli::cli_warn("Link does not end with '/': {.val {link}} ({context})")
+      }
+    }
+  }
+
   invisible(list(
     missing = missing,
     covered = matched$covered,
@@ -208,4 +229,72 @@ match_single_reference <- function(ref, exports) {
   }
 
   character()
+}
+
+#' Recursively find link fields in config for audits
+#'
+#' @param config Parsed YAML configuration list
+#' @return List of link entries (link + context)
+#' @keywords internal
+find_link_entries <- function(config) {
+  entries <- list()
+
+  add_link <- function(link, context) {
+    if (!is.null(link) && is.character(link) && nchar(link) > 0) {
+      entries[[length(entries) + 1]] <<- list(link = link, context = context)
+    }
+  }
+
+  visit <- function(node, path = character()) {
+    if (is.list(node)) {
+      node_names <- names(node)
+      for (i in seq_along(node)) {
+        name <- if (!is.null(node_names) && nzchar(node_names[i])) node_names[i] else as.character(i)
+        child <- node[[i]]
+        child_path <- c(path, name)
+
+        if (!is.null(node_names) && node_names[i] %in% c("href", "link")) {
+          add_link(child, paste(child_path, collapse = "."))
+        }
+
+        visit(child, child_path)
+      }
+    }
+  }
+
+  visit(config, character())
+  entries
+}
+
+#' Determine if a link is internal
+#'
+#' @param link Link string
+#' @return Logical indicating if link is internal
+#' @keywords internal
+is_internal_link <- function(link) {
+  if (is.null(link) || !is.character(link) || nchar(link) == 0) {
+    return(FALSE)
+  }
+
+  if (startsWith(link, "http://") || startsWith(link, "https://")) {
+    return(FALSE)
+  }
+  if (startsWith(link, "mailto:") || startsWith(link, "tel:")) {
+    return(FALSE)
+  }
+  if (startsWith(link, "#")) {
+    return(FALSE)
+  }
+
+  TRUE
+}
+
+#' Check if an internal link needs a trailing slash
+#'
+#' @param link Link string
+#' @return Logical indicating if link should end with '/'
+#' @keywords internal
+link_needs_trailing_slash <- function(link) {
+  path <- sub("[?#].*$", "", link)
+  nchar(path) > 0 && !grepl("/$", path)
 }

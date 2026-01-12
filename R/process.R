@@ -130,8 +130,12 @@ process_articles_and_readme <- function(pkg_path, output_path, config) {
   # Collect all Rmd files to build
   all_rmds <- rmd_paths
 
-  # Build all Rmds in one call (single install)
+  # Build all Rmds in one call (single install) into a temp directory
   # Explicitly use md_document to preserve raw LaTeX (not render to HTML)
+  build_dir <- tempfile("starlightr-rmd-")
+  dir.create(build_dir, recursive = TRUE, showWarnings = FALSE)
+  on.exit(unlink(build_dir, recursive = TRUE), add = TRUE)
+
   cli::cli_alert_info("Building {length(all_rmds)} Rmd file{?s}...")
   devtools::build_rmd(
     all_rmds,
@@ -139,23 +143,16 @@ process_articles_and_readme <- function(pkg_path, output_path, config) {
       variant = "gfm",
       preserve_yaml = FALSE
     ),
+    output_dir = build_dir,
     quiet = TRUE
   )
 
   # Process each article output
   for (i in seq_along(article_names)) {
     name <- article_names[i]
-    rmd_path <- rmd_paths[i]
-
-    # Determine source directory based on where the Rmd was
-    if (tolower(name) == "readme") {
-      # README.md is generated in package root
-      source_dir <- pkg_path
-      md_name <- "README"
-    } else {
-      source_dir <- vignettes_dir
-      md_name <- name
-    }
+    # Build output is in the temp directory
+    source_dir <- build_dir
+    md_name <- if (tolower(name) == "readme") "README" else name
 
     process_article_output(name, md_name, source_dir, output_path, articles_dir, config)
   }
@@ -230,9 +227,7 @@ process_article_output <- function(output_name, md_name, source_dir, output_path
   # MDX's strict JSX parsing breaks on this content
   writeLines(final_content, file.path(articles_dir, paste0(tolower(output_name), ".md")))
 
-  # Clean up generated files
-  unlink(md_file)
-  unlink(figures_dir, recursive = TRUE)
+  # Cleanup happens at the build directory level.
 }
 
 #' Process NEWS.md file
@@ -281,4 +276,3 @@ process_news <- function(pkg_path, output_path, config) {
   writeLines(news_content, output_file)
   cli::cli_alert_success("Generated {.file news.mdx}")
 }
-

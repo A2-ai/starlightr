@@ -84,7 +84,8 @@ capture_example_output <- function(pkg_name, artifact_output_dir, text_output_di
   if (!dir.exists(text_output_dir)) dir.create(text_output_dir, recursive = TRUE)
 
   for (fn in names(rd_content)) {
-    fn_name <- strsplit(fn, ".Rd")[[1]]
+    # Rd filenames are like "foo.Rd"; strip extension safely.
+    fn_name <- tools::file_path_sans_ext(fn)
 
     ex_code <- rd_content[[fn]]$examples
 

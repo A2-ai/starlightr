@@ -40,8 +40,17 @@ build_site <- function(pkg = ".",
   # Resolve package path
   pkg_path <- normalizePath(pkg, mustWork = TRUE)
 
+  # Require config file for builds
+  config_path <- file.path(pkg_path, config_file)
+  if (!file.exists(config_path)) {
+    cli::cli_abort("Configuration file not found at {.path {config_path}}")
+  }
+
+  # Audit configuration early so users see issues before generation starts
+  audit_config(pkg_path, config_file)
+
   # Read configuration
-  config <- read_config(file.path(pkg_path, config_file))
+  config <- read_config(config_path)
 
   # Determine output directory
   if (is.null(output_dir)) {

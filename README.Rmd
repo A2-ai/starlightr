@@ -72,6 +72,9 @@ build_site(output_dir = "../my-package-docs")
 build_site(output_dir = "docs")
 ```
 
+Note: your package should be installed and up to date before running `build_site()`
+so starlightr can read Rd documentation and capture example outputs.
+
 ### 3. Preview your site
 
 ```bash
