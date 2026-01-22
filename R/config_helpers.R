@@ -169,6 +169,90 @@ add_card <- function(title, description, link, icon = "document", overwrite = FA
   invisible(TRUE)
 }
 
+#' Add a hero action to the home page
+#'
+#' Adds an action button to the home page hero section in the starlightr configuration file.
+#'
+#' @param text Button text
+#' @param link Link URL for the action
+#' @param icon Icon name (e.g., "right-arrow", "external")
+#' @param variant Button variant ("primary" or "minimal")
+#' @param overwrite Logical, whether to overwrite existing action with same text
+#' @param config_path Path to config file (default: "_starlightr.toml")
+#'
+#' @return Invisibly returns TRUE if successful
+#' @export
+#'
+#' @examples \dontrun{
+#' # Add primary action
+#' add_action(
+#'   text = "Get Started",
+#'   link = "./articles/readme/",
+#'   icon = "right-arrow",
+#'   variant = "primary"
+#' )
+#'
+#' # Add external link action
+#' add_action(
+#'   text = "View on GitHub",
+#'   link = "https://github.com/user/repo",
+#'   icon = "external",
+#'   variant = "minimal"
+#' )
+#' }
+add_action <- function(text, link, icon = "right-arrow", variant = "primary",
+                       overwrite = FALSE, config_path = "_starlightr.toml") {
+  config <- read_config_toml(config_path)
+
+  # Initialize home.hero.actions if needed
+  if (is.null(config$home)) {
+    config$home <- list()
+  }
+  if (is.null(config$home$hero)) {
+    config$home$hero <- list()
+  }
+  if (is.null(config$home$hero$actions)) {
+    config$home$hero$actions <- list()
+  }
+
+  # Check for duplicate by text
+  existing_idx <- NULL
+  for (i in seq_along(config$home$hero$actions)) {
+    if (!is.null(config$home$hero$actions[[i]]$text) &&
+        config$home$hero$actions[[i]]$text == text) {
+      existing_idx <- i
+      break
+    }
+  }
+
+  if (!is.null(existing_idx) && !overwrite) {
+    cli::cli_alert_info("Action with text {.val {text}} already exists (use overwrite = TRUE to update)")
+    return(invisible(TRUE))
+  }
+
+  # Normalize local links to lowercase
+  link <- normalize_local_link(link)
+
+  # Create new action
+  new_action <- list(
+    text = text,
+    link = link,
+    icon = icon,
+    variant = variant
+  )
+
+  if (!is.null(existing_idx)) {
+    config$home$hero$actions[[existing_idx]] <- new_action
+    cli::cli_alert_success("Updated action {.val {text}}")
+  } else {
+    config$home$hero$actions <- c(config$home$hero$actions, list(new_action))
+    cli::cli_alert_success("Added action {.val {text}}")
+  }
+
+  write_config_toml(config, config_path)
+  invisible(TRUE)
+}
+
 #' Add a function to a reference section
 #'
 #' Adds a function name to the specified reference section in the starlightr
