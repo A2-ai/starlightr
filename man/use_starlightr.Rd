@@ -16,7 +16,7 @@ Invisibly returns TRUE if successful
 }
 \description{
 Sets up the necessary files and configuration for using starlightr.
-Creates a default _starlightr.yaml configuration file and updates .Rbuildignore.
+Creates a default _starlightr.toml configuration file and updates .Rbuildignore.
 }
 \examples{
 \dontrun{

@@ -82,11 +82,23 @@ process_articles_and_readme <- function(pkg_path, output_path, config) {
   articles_dir <- file.path(output_path, "src", "content", "docs", "articles")
   dir.create(articles_dir, recursive = TRUE, showWarnings = FALSE)
 
-  # Collect article names from config
+  # Collect article names from config (extract slugs from content items)
   article_names <- character(0)
   if (!is.null(config$sidebar$articles)) {
     articles_config <- config$sidebar$articles
-    article_names <- unlist(lapply(articles_config, function(g) g$contents))
+    for (group in articles_config) {
+      if (!is.null(group$contents)) {
+        for (item in group$contents) {
+          # Handle both string and list {slug, label} formats
+          if (is.list(item)) {
+            article_names <- c(article_names, item$slug %||% item$label %||% "")
+          } else {
+            article_names <- c(article_names, item)
+          }
+        }
+      }
+    }
+    article_names <- article_names[nchar(article_names) > 0]
   }
 
   if (length(article_names) == 0) {
@@ -197,10 +209,7 @@ process_article_output <- function(output_name, md_name, source_dir, output_path
     md_content, fixed = TRUE
   )
 
-  # Also handle man/figures/ paths (common in READMEs)
-  md_content <- gsub("man/figures/", "/figures/", md_content, fixed = TRUE)
-
-  # Fix lifecycle badges
+  # Fix lifecycle badges (must come BEFORE generic man/figures/ rewrite)
   md_content <- gsub(
     "man/figures/lifecycle-([a-z]+)\\.svg",
     "https://lifecycle.r-lib.org/articles/figures/lifecycle-\\1.svg",
@@ -211,6 +220,9 @@ process_article_output <- function(output_name, md_name, source_dir, output_path
     "https://lifecycle.r-lib.org/articles/figures/lifecycle-\\1.svg",
     md_content
   )
+
+  # Also handle man/figures/ paths (common in READMEs)
+  md_content <- gsub("man/figures/", "/figures/", md_content, fixed = TRUE)
 
   # Remove HTML comments (can cause issues in some markdown parsers)
   md_content <- gsub("(?s)<!--.*?-->", "", md_content, perl = TRUE)

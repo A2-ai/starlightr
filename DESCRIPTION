@@ -15,6 +15,7 @@ Imports:
     cli,
     devtools,
     rmarkdown,
+    tomledit,
     whisker,
     yaml
 Suggests:

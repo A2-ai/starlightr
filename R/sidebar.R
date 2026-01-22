@@ -13,6 +13,21 @@ make_sidebar_item <- function(label, slug) {
   sprintf('{ label: "%s", slug: "%s" }', escaped_label, escaped_slug)
 }
 
+#' Parse a content item which can be a string or a list with slug/label
+#'
+#' @param content Content item (string or list)
+#' @return List with slug and label
+#' @keywords internal
+parse_content_item <- function(content) {
+  if (is.list(content)) {
+    slug <- content$slug %||% content$label %||% ""
+    label <- content$label %||% content$slug %||% ""
+    list(slug = slug, label = label)
+  } else {
+    list(slug = content, label = content)
+  }
+}
+
 #' Create a sidebar group JSON string
 #'
 #' @param label Group label
@@ -33,15 +48,15 @@ make_sidebar_group <- function(label, items, collapsed = FALSE, indent = 10) {
 #'
 #' Handles doc file lookup, file existence checks, and warnings.
 #'
-#' @param content Function/content name
+#' @param content Function/content name (used for slug)
 #' @param output_path Output path for file existence checks
 #' @param pkg_name Package name for Rd lookups
 #' @param warn Whether to warn about missing files
+#' @param label Optional display label (defaults to content)
 #' @return Sidebar item JSON string or NULL if should skip
 #' @keywords internal
-resolve_reference_item <- function(content, output_path, pkg_name, warn = TRUE) {
+resolve_reference_item <- function(content, output_path, pkg_name, warn = TRUE, label = NULL) {
   # Map function to its actual documentation file
-
   doc_file <- find_function_doc_file(content, pkg_name)
 
   # Check if file exists
@@ -63,8 +78,11 @@ resolve_reference_item <- function(content, output_path, pkg_name, warn = TRUE) 
     cli::cli_warn("Reference file missing: {.file {content}.mdx} - create manually or check config")
   }
 
+  # Use provided label or default to content name
+  display_label <- label %||% content
+
   slug <- paste0("reference/", tolower(doc_file))
-  make_sidebar_item(content, slug)
+  make_sidebar_item(display_label, slug)
 }
 
 #' Get available reference files
@@ -121,8 +139,9 @@ generate_sidebar_config <- function(config, output_path = NULL, pkg_name = NULL)
     for (group in config$sidebar$articles) {
       if (!is.null(group$label) && !is.null(group$contents)) {
         group_items <- vapply(group$contents, function(content) {
-          slug <- paste0("articles/", tolower(content))
-          make_sidebar_item(content, slug)
+          parsed <- parse_content_item(content)
+          slug <- paste0("articles/", tolower(parsed$slug))
+          make_sidebar_item(parsed$label, slug)
         }, character(1))
 
         group_js <- make_sidebar_group(group$label, group_items, group$collapsed %||% FALSE)
@@ -151,22 +170,33 @@ generate_sidebar_config <- function(config, output_path = NULL, pkg_name = NULL)
       # Handle flat structure: label + contents
       if (!is.null(group$label) && !is.null(group$contents)) {
         group_items <- c()
-        has_patterns <- any(grepl("\\*", group$contents))
+        # Extract slugs for pattern detection (handles both string and list items)
+        content_slugs <- vapply(group$contents, function(c) {
+          if (is.list(c)) c$slug %||% "" else c
+        }, character(1))
+        has_patterns <- any(grepl("\\*", content_slugs))
 
         if (has_patterns && length(available_files) > 0) {
           # Handle pattern matching
-          matched_files <- expand_glob_patterns(group$contents, available_files)
+          matched_files <- expand_glob_patterns(content_slugs, available_files)
           group_items <- vapply(matched_files, function(file) {
             slug <- paste0("reference/", tolower(file))
             make_sidebar_item(file, slug)
           }, character(1))
         } else {
           # Handle exact names and selectors
-          expanded_contents <- expand_pkgdown_selectors(group$contents, output_path)
-          for (content in expanded_contents) {
-            if (!grepl("\\*", content)) {
-              item <- resolve_reference_item(content, output_path, pkg_name)
+          for (content in group$contents) {
+            parsed <- parse_content_item(content)
+            if (!grepl("\\*", parsed$slug) && !is_pkgdown_selector(parsed$slug)) {
+              item <- resolve_reference_item(parsed$slug, output_path, pkg_name, label = parsed$label)
               group_items <- c(group_items, item)
+            } else if (is_pkgdown_selector(parsed$slug)) {
+              # Expand selector
+              expanded <- expand_selector(parsed$slug, available_files)
+              for (fn in expanded) {
+                item <- resolve_reference_item(fn, output_path, pkg_name)
+                group_items <- c(group_items, item)
+              }
             }
           }
         }

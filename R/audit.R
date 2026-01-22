@@ -3,11 +3,11 @@
 #' Audit configuration against NAMESPACE exports
 #'
 #' Compares exported functions in NAMESPACE against functions referenced in
-#' the _starlightr.yaml configuration file. Reports any exported functions
+#' the _starlightr.toml configuration file. Reports any exported functions
 #' that are not covered by the sidebar reference configuration.
 #'
 #' @param pkg Path to package directory, defaults to current directory
-#' @param config_file Path to _starlightr.yaml configuration file
+#' @param config_file Path to _starlightr.toml configuration file
 #'
 #' @return Invisibly returns a list with:
 #'   - missing: character vector of exported functions not in config
@@ -22,7 +22,7 @@
 #' # Audit specific package
 #' audit_config("/path/to/package")
 #' }
-audit_config <- function(pkg = ".", config_file = "_starlightr.yaml") {
+audit_config <- function(pkg = ".", config_file = "_starlightr.toml") {
   pkg_path <- normalizePath(pkg, mustWork = TRUE)
 
   # Parse NAMESPACE to get exported functions
@@ -33,13 +33,9 @@ audit_config <- function(pkg = ".", config_file = "_starlightr.yaml") {
 
   exported <- parse_namespace_exports(namespace_path)
 
-  # Read configuration
+  # Read configuration using shared helper
   config_path <- file.path(pkg_path, config_file)
-  if (!file.exists(config_path)) {
-    cli::cli_abort("Configuration file not found at {.path {config_path}}")
-  }
-
-  config <- yaml::yaml.load_file(config_path)
+  config <- read_config_toml(config_path)
 
   # Extract all function references from sidebar.reference
   config_refs <- extract_config_references(config)
@@ -75,8 +71,11 @@ audit_config <- function(pkg = ".", config_file = "_starlightr.yaml") {
     }
   }
 
-  # Check internal links for trailing slash and expected prefix
+  # Check internal links for trailing slash, expected prefix, and valid targets
   link_entries <- find_link_entries(config)
+  link_issues <- 0
+  internal_link_count <- 0
+
   if (length(link_entries) > 0) {
     for (entry in link_entries) {
       link <- entry$link
@@ -86,14 +85,27 @@ audit_config <- function(pkg = ".", config_file = "_starlightr.yaml") {
         next
       }
 
+      internal_link_count <- internal_link_count + 1
+
       if (!startsWith(link, "./")) {
         cli::cli_warn("Link does not start with './': {.val {link}} ({context})")
+        link_issues <- link_issues + 1
       }
 
       if (link_needs_trailing_slash(link)) {
         cli::cli_warn("Link does not end with '/': {.val {link}} ({context})")
+        link_issues <- link_issues + 1
+      }
+
+      # Validate link targets (returns TRUE if issue found)
+      if (validate_link_target(link, context, pkg_path, exported)) {
+        link_issues <- link_issues + 1
       }
     }
+  }
+
+  if (internal_link_count > 0 && link_issues == 0) {
+    cli::cli_alert_success("All {internal_link_count} internal link{?s} are valid")
   }
 
   invisible(list(
@@ -159,14 +171,20 @@ extract_config_references <- function(config) {
     }
 
     if (!is.null(group$contents)) {
-      refs <- c(refs, group$contents)
+      slugs <- vapply(group$contents, function(item) {
+        parse_content_item(item)$slug
+      }, character(1))
+      refs <- c(refs, slugs)
     }
 
     # Handle nested items structure
     if (!is.null(group$items)) {
       for (subgroup in group$items) {
         if (!is.null(subgroup$contents)) {
-          refs <- c(refs, subgroup$contents)
+          slugs <- vapply(subgroup$contents, function(item) {
+            parse_content_item(item)$slug
+          }, character(1))
+          refs <- c(refs, slugs)
         }
       }
     }
@@ -229,72 +247,4 @@ match_single_reference <- function(ref, exports) {
   }
 
   character()
-}
-
-#' Recursively find link fields in config for audits
-#'
-#' @param config Parsed YAML configuration list
-#' @return List of link entries (link + context)
-#' @keywords internal
-find_link_entries <- function(config) {
-  entries <- list()
-
-  add_link <- function(link, context) {
-    if (!is.null(link) && is.character(link) && nchar(link) > 0) {
-      entries[[length(entries) + 1]] <<- list(link = link, context = context)
-    }
-  }
-
-  visit <- function(node, path = character()) {
-    if (is.list(node)) {
-      node_names <- names(node)
-      for (i in seq_along(node)) {
-        name <- if (!is.null(node_names) && nzchar(node_names[i])) node_names[i] else as.character(i)
-        child <- node[[i]]
-        child_path <- c(path, name)
-
-        if (!is.null(node_names) && node_names[i] %in% c("href", "link")) {
-          add_link(child, paste(child_path, collapse = "."))
-        }
-
-        visit(child, child_path)
-      }
-    }
-  }
-
-  visit(config, character())
-  entries
-}
-
-#' Determine if a link is internal
-#'
-#' @param link Link string
-#' @return Logical indicating if link is internal
-#' @keywords internal
-is_internal_link <- function(link) {
-  if (is.null(link) || !is.character(link) || nchar(link) == 0) {
-    return(FALSE)
-  }
-
-  if (startsWith(link, "http://") || startsWith(link, "https://")) {
-    return(FALSE)
-  }
-  if (startsWith(link, "mailto:") || startsWith(link, "tel:")) {
-    return(FALSE)
-  }
-  if (startsWith(link, "#")) {
-    return(FALSE)
-  }
-
-  TRUE
-}
-
-#' Check if an internal link needs a trailing slash
-#'
-#' @param link Link string
-#' @return Logical indicating if link should end with '/'
-#' @keywords internal
-link_needs_trailing_slash <- function(link) {
-  path <- sub("[?#].*$", "", link)
-  nchar(path) > 0 && !grepl("/$", path)
 }

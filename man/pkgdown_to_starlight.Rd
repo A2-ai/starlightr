@@ -2,18 +2,18 @@
 % Please edit documentation in R/pkgdown_converter.R
 \name{pkgdown_to_starlight}
 \alias{pkgdown_to_starlight}
-\title{Convert pkgdown YAML configuration to starlightr YAML}
+\title{Convert pkgdown YAML configuration to starlightr TOML}
 \usage{
 pkgdown_to_starlight(
   pkgdown_file = "_pkgdown.yml",
-  output_file = "_starlightr.yaml",
+  output_file = "_starlightr.toml",
   pkg_path = "."
 )
 }
 \arguments{
 \item{pkgdown_file}{Path to pkgdown YAML file (default: "_pkgdown.yml")}
 
-\item{output_file}{Path for output starlightr YAML file (default: "_starlightr.yaml")}
+\item{output_file}{Path for output starlightr TOML file (default: "_starlightr.toml")}
 
 \item{pkg_path}{Path to package directory (default: ".")}
 }
@@ -22,7 +22,7 @@ List with conversion results and any warnings
 }
 \description{
 This function reads a pkgdown _pkgdown.yml file and converts it to the
-starlightr YAML format, handling the title/subtitle structure for references
+starlightr TOML format, handling the title/subtitle structure for references
 and articles.
 }
 \examples{
@@ -31,6 +31,6 @@ and articles.
 pkgdown_to_starlight()
 
 # Specify custom paths
-pkgdown_to_starlight("my_pkgdown.yml", "my_starlightr.yaml")
+pkgdown_to_starlight("my_pkgdown.yml", "my_starlightr.toml")
 }
 }

@@ -7,7 +7,7 @@
 read_config(config_path)
 }
 \arguments{
-\item{config_path}{Path to the _starlightr.yaml file}
+\item{config_path}{Path to the _starlightr.toml file}
 }
 \value{
 List containing parsed configuration

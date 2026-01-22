@@ -2,21 +2,20 @@
 
 #' Read and parse starlightr configuration
 #'
-#' @param config_path Path to the _starlightr.yaml file
+#' @param config_path Path to the _starlightr.toml file
 #'
 #' @return List containing parsed configuration
 #' @keywords internal
 read_config <- function(config_path) {
   if (!file.exists(config_path)) {
-    cli::cli_alert_info("No _starlightr.yaml found, using default configuration")
+    cli::cli_alert_info("No _starlightr.toml found, using default configuration")
     cli::cli_alert("Tip: Run {.fn use_starlightr} to create a configuration file")
     return(default_config())
   }
 
-  # For now, use a simple YAML reader
-  # In the future, we might want to add schema validation
   tryCatch({
-    config <- yaml::yaml.load_file(config_path)
+    # Use shared helper from config_helpers.R
+    config <- read_config_toml(config_path)
 
     # Merge with defaults to ensure all required fields exist
     merge_config(config, default_config())

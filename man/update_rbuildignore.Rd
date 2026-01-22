@@ -2,7 +2,7 @@
 % Please edit documentation in R/use_starlightr.R
 \name{update_rbuildignore}
 \alias{update_rbuildignore}
-\title{Update .Rbuildignore to include _starlightr.yaml}
+\title{Update .Rbuildignore to include _starlightr.toml}
 \usage{
 update_rbuildignore(pkg_path)
 }
@@ -10,6 +10,6 @@ update_rbuildignore(pkg_path)
 \item{pkg_path}{Path to package directory}
 }
 \description{
-Update .Rbuildignore to include _starlightr.yaml
+Update .Rbuildignore to include _starlightr.toml
 }
 \keyword{internal}

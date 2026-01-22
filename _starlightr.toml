@@ -1,0 +1,58 @@
+[site]
+title = "starlightr"
+description = "Build beautiful Starlight documentation sites for R packages"
+
+[home]
+hero = { tagline = "Build beautiful Starlight documentation sites for R packages", actions = [
+	{ text = "Get Started", link = "./articles/introduction/", icon = "right-arrow", variant = "primary" },
+	{ text = "View on GitHub", link = "https://github.com/A2-ai/starlightr", icon = "external", variant = "minimal" },
+] }
+cards = [
+	{ icon = "starlight", title = "Welcome to starlightr", description = "R Pacakge site generator", link = "./articles/readme/" },
+	{ icon = "document", title = "Configuration File", description = "configure your site with _starlightr.toml", link = "./articles/configuration/" },
+	{ icon = "document", title = "Build your site", description = "build_site reference", link = "./reference/build_site/" },
+]
+
+[sidebar]
+articles = [
+	{ label = "Getting Started", contents = [
+		{ slug = "README", label = "Welcome" },
+		"introduction",
+		"configuration",
+	] },
+]
+reference = [
+	{ label = "Site Building", contents = [
+		"build_site",
+		"use_starlightr",
+		"audit_config",
+	] },
+	{ label = "Configuration Helpers", contents = [
+		"add_card",
+		"add_reference",
+		"add_article",
+		"add_version",
+	] },
+	{ label = "Migration", contents = [
+		"pkgdown_to_starlight",
+	] },
+]
+
+[navbar]
+right = [{ icon = "github", href = "https://github.com/A2-ai/starlightr" }]
+
+[theme]
+color_mode = "auto"
+
+[content]
+code_sections = ["usage", "examples"]
+skip_sections = ["name"]
+reference = { exclude = ["internal_function", "deprecated_*"] }
+
+[output]
+dir = "../Docs/starlightr-docs"
+include_build_files = true
+
+[versions]
+enabled = true
+list = [{ tag = "0.1.0", label = "v0.1.0", default = true }]

@@ -4,16 +4,24 @@
 \alias{resolve_reference_item}
 \title{Resolve a reference content item to a sidebar item}
 \usage{
-resolve_reference_item(content, output_path, pkg_name, warn = TRUE)
+resolve_reference_item(
+  content,
+  output_path,
+  pkg_name,
+  warn = TRUE,
+  label = NULL
+)
 }
 \arguments{
-\item{content}{Function/content name}
+\item{content}{Function/content name (used for slug)}
 
 \item{output_path}{Output path for file existence checks}
 
 \item{pkg_name}{Package name for Rd lookups}
 
 \item{warn}{Whether to warn about missing files}
+
+\item{label}{Optional display label (defaults to content)}
 }
 \value{
 Sidebar item JSON string or NULL if should skip

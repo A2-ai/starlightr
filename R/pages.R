@@ -63,9 +63,12 @@ create_index_page <- function(pkg_path, output_path, config, overwrite = FALSE) 
   if (!is.null(config$home$hero$actions)) {
     actions_yaml <- c()
     for (action in config$home$hero$actions) {
-      action_yaml <- sprintf('    - text: %s\n      link: %s\n      icon: %s\n      variant: %s',
-                            action$text %||% "Get Started",
-                            action$link %||% "/articles/getting-started/",
+      # Escape embedded quotes in text/link values for YAML safety
+      action_text <- gsub('"', '\\"', action$text %||% "Get Started", fixed = TRUE)
+      action_link <- gsub('"', '\\"', action$link %||% "/articles/getting-started/", fixed = TRUE)
+      action_yaml <- sprintf('    - text: "%s"\n      link: "%s"\n      icon: %s\n      variant: %s',
+                            action_text,
+                            action_link,
                             action$icon %||% "right-arrow",
                             action$variant %||% "primary")
       actions_yaml <- c(actions_yaml, action_yaml)
@@ -114,19 +117,23 @@ import { Card, CardGrid } from "@astrojs/starlight/components";
   }
 
   # Create default index content with Starlight components
+  site_title <- config$site$title %||% pkg_name
+  # Escape embedded quotes in YAML values
+  hero_tagline_escaped <- gsub('"', '\\"', hero_tagline, fixed = TRUE)
+  pkg_desc_escaped <- gsub('"', '\\"', pkg_desc, fixed = TRUE)
   index_content <- sprintf('---
-title: "Welcome to %s"
+title: "%s"
 description: "%s"
 template: splash
 pagefind: true
 hero:
-  tagline: %s
+  tagline: "%s"
 %s  actions:
 %s
 ---%s',
-    pkg_name,
-    pkg_desc,
-    hero_tagline,
+    site_title,
+    pkg_desc_escaped,
+    hero_tagline_escaped,
     hero_image,
     hero_actions,
     cards_content

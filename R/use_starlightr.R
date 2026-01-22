@@ -3,7 +3,7 @@
 #' Initialize starlightr for a package
 #'
 #' Sets up the necessary files and configuration for using starlightr.
-#' Creates a default _starlightr.yaml configuration file and updates .Rbuildignore.
+#' Creates a default _starlightr.toml configuration file and updates .Rbuildignore.
 #'
 #' @param pkg Path to package directory, defaults to current directory
 #' @param open Logical, whether to open the configuration file for editing
@@ -24,13 +24,13 @@ use_starlightr <- function(pkg = ".", open = interactive()) {
 
   cli::cli_h1("Setting up starlightr for {.pkg {basename(pkg_path)}}")
 
-  # Create _starlightr.yaml if it doesn't exist
-  config_path <- file.path(pkg_path, "_starlightr.yaml")
+  # Create _starlightr.toml if it doesn't exist
+  config_path <- file.path(pkg_path, "_starlightr.toml")
   if (!file.exists(config_path)) {
     create_default_config(config_path, pkg_path)
-    cli::cli_alert_success("Created _starlightr.yaml")
+    cli::cli_alert_success("Created _starlightr.toml")
   } else {
-    cli::cli_alert_info("_starlightr.yaml already exists")
+    cli::cli_alert_info("_starlightr.toml already exists")
   }
 
   # Update .Rbuildignore
@@ -38,7 +38,7 @@ use_starlightr <- function(pkg = ".", open = interactive()) {
 
   cli::cli_alert_success("starlightr setup complete!")
   cli::cli_bullets(c(
-    "*" = "Edit {.file _starlightr.yaml} to customize your site",
+    "*" = "Edit {.file _starlightr.toml} to customize your site",
     "*" = "Run {.fn build_site} to generate your documentation"
   ))
 
@@ -49,7 +49,7 @@ use_starlightr <- function(pkg = ".", open = interactive()) {
   invisible(TRUE)
 }
 
-#' Create default _starlightr.yaml configuration
+#' Create default _starlightr.toml configuration
 #'
 #' @param config_path Path where to create the config file
 #' @param pkg_path Path to package directory
@@ -80,98 +80,22 @@ create_default_config <- function(config_path, pkg_path) {
     })
   }
 
+  # Build minimal config - users add sidebar/cards via helpers
   config_content <- sprintf('# starlightr configuration file
-# This file defines how your R package documentation will be built into a Starlight site
+# Run add_card(), add_article(), add_reference() to build your site config
 
-# Site metadata
-site:
-  title: "%s"
-  description: "%s"
-  # logo: "man/figures/logo.png"       # Path to logo image (relative to package root)
-  # favicon: "man/figures/favicon.png" # Path to favicon (can be same as logo)
+[site]
+title = "%s"
+description = "%s"
 
-# Home page configuration
-home:
-  hero:
-    tagline: "%s"
-    actions:
-      - text: "Get Started"
-        link: "/articles/getting-started/"
-        icon: "right-arrow"
-        variant: "primary"
-      - text: "View on GitHub"
-        link: "https://github.com/user/repo"  # Update this!
-        icon: "external"
-        variant: "minimal"
-
-# Sidebar configuration for different sections
-sidebar:
-  articles:
-    # Custom organization of vignettes/articles
-    - label: "Getting Started"
-      contents:
-        - "introduction"
-        - "getting-started"
-    # Example of collapsed group:
-    # - label: "Advanced Topics"
-    #   collapsed: true
-    #   contents:
-    #     - "advanced-usage"
-    #     - "customization"
-
-  reference:
-    # Organize functions into groups
-    - label: "Site Building"
-      contents:
-        - "build_site"
-        - "use_starlightr"
-    - label: "Documentation Processing"
-      collapsed: true  # Start this group collapsed
-      contents:
-        - "extract_*"  # Functions matching pattern will use autogenerate
-        - "process_*"
-        - "get_rd_tags"
-    - label: "Formatting & Output"
-      collapsed: true  # Start this group collapsed
-      contents:
-        - "format_*"
-        - "write_*"
-        - "clean_text"
-
-  # Changelog from NEWS.md
-  news:
-    label: "Changelog"
-    source: "NEWS.md"
-
-# Theme and appearance
-theme:
-  color_mode: "auto"  # light, dark, or auto
-
-# Content processing options
-content:
-  # Custom sections to format as code
-  code_sections:
-    - "usage"
-    - "examples"
-
-  # Sections to skip entirely
-  skip_sections:
-    - "author"
-
-# Output directory for generated site
-output:
-  dir: "../%s-docs"  # External directory (recommended)
-  # dir: "docs"       # Internal directory (not recommended due to bloat)
-  include_build_files: true
-', pkg_name, pkg_desc, pkg_desc, pkg_name)
+[output]
+dir = "../%s-docs"
+', pkg_name, pkg_desc, pkg_name)
 
   writeLines(config_content, config_path)
-
-  # Ensure file ends with newline to avoid warnings
-  cat("\n", file = config_path, append = TRUE)
 }
 
-#' Update .Rbuildignore to include _starlightr.yaml
+#' Update .Rbuildignore to include _starlightr.toml
 #'
 #' @param pkg_path Path to package directory
 #' @keywords internal
@@ -180,24 +104,24 @@ update_rbuildignore <- function(pkg_path) {
 
   # Create .Rbuildignore if it doesn't exist
   if (!file.exists(rbuildignore_path)) {
-    writeLines("^_starlightr\\.yaml$", rbuildignore_path)
-    cli::cli_alert_success("Created .Rbuildignore with _starlightr.yaml")
+    writeLines("^_starlightr\\.toml$", rbuildignore_path)
+    cli::cli_alert_success("Created .Rbuildignore with _starlightr.toml")
     return()
   }
 
   # Read existing .Rbuildignore
   existing_lines <- readLines(rbuildignore_path)
 
-  # Check if _starlightr.yaml is already ignored
+  # Check if _starlightr.toml is already ignored
   pattern_exists <- any(grepl("_starlightr", existing_lines, fixed = TRUE))
 
   if (!pattern_exists) {
     # Add the pattern
-    updated_lines <- c(existing_lines, "^_starlightr\\.yaml$")
+    updated_lines <- c(existing_lines, "^_starlightr\\.toml$")
     writeLines(updated_lines, rbuildignore_path)
-    cli::cli_alert_success("Updated .Rbuildignore to include _starlightr.yaml")
+    cli::cli_alert_success("Updated .Rbuildignore to include _starlightr.toml")
   } else {
-    cli::cli_alert_info(".Rbuildignore already includes _starlightr.yaml pattern")
+    cli::cli_alert_info(".Rbuildignore already includes _starlightr.toml pattern")
   }
 }
 

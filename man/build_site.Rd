@@ -6,7 +6,7 @@
 \usage{
 build_site(
   pkg = ".",
-  config_file = "_starlightr.yaml",
+  config_file = "_starlightr.toml",
   output_dir = NULL,
   preview = FALSE,
   verbose = FALSE,
@@ -16,7 +16,7 @@ build_site(
 \arguments{
 \item{pkg}{Path to package directory, defaults to current directory}
 
-\item{config_file}{Path to _starlightr.yaml configuration file}
+\item{config_file}{Path to _starlightr.toml configuration file}
 
 \item{output_dir}{Directory to build the site in}
 
@@ -42,7 +42,7 @@ build_site(output_dir = "/path/to/my-package-docs")
 build_site(output_dir = "../my-package-docs")
 
 # Build with custom configuration
-build_site(config_file = "my_config.yaml")
+build_site(config_file = "my_config.toml")
 
 # Build to relative directory (not recommended due to Starlight bloat)
 build_site(output_dir = "docs")

@@ -1,11 +1,11 @@
-#' Convert pkgdown YAML configuration to starlightr YAML
+#' Convert pkgdown YAML configuration to starlightr TOML
 #'
 #' This function reads a pkgdown _pkgdown.yml file and converts it to the
-#' starlightr YAML format, handling the title/subtitle structure for references
+#' starlightr TOML format, handling the title/subtitle structure for references
 #' and articles.
 #'
 #' @param pkgdown_file Path to pkgdown YAML file (default: "_pkgdown.yml")
-#' @param output_file Path for output starlightr YAML file (default: "_starlightr.yaml")
+#' @param output_file Path for output starlightr TOML file (default: "_starlightr.toml")
 #' @param pkg_path Path to package directory (default: ".")
 #'
 #' @return List with conversion results and any warnings
@@ -16,10 +16,10 @@
 #' pkgdown_to_starlight()
 #'
 #' # Specify custom paths
-#' pkgdown_to_starlight("my_pkgdown.yml", "my_starlightr.yaml")
+#' pkgdown_to_starlight("my_pkgdown.yml", "my_starlightr.toml")
 #' }
 pkgdown_to_starlight <- function(pkgdown_file = "_pkgdown.yml",
-                                output_file = "_starlightr.yaml",
+                                output_file = "_starlightr.toml",
                                 pkg_path = ".") {
 
   # Check if pkgdown file exists
@@ -27,7 +27,7 @@ pkgdown_to_starlight <- function(pkgdown_file = "_pkgdown.yml",
     stop("pkgdown file not found: ", file.path(pkg_path, pkgdown_file))
   }
 
-  # Parse pkgdown YAML
+  # Parse pkgdown YAML (still read YAML from pkgdown)
   pkgdown <- yaml::yaml.load_file(file.path(pkg_path, pkgdown_file))
 
   # Extract basic site information
@@ -60,9 +60,10 @@ pkgdown_to_starlight <- function(pkgdown_file = "_pkgdown.yml",
     )
   )
 
-  # Write the converted YAML
+  # Write the converted TOML
   output_path <- file.path(pkg_path, output_file)
-  yaml::write_yaml(starlightr_config, output_path)
+  toml_obj <- tomledit::as_toml(starlightr_config)
+  tomledit::write_toml(toml_obj, output_path)
 
   # Return conversion report
   list(

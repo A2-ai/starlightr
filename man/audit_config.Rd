@@ -4,12 +4,12 @@
 \alias{audit_config}
 \title{Audit configuration against NAMESPACE exports}
 \usage{
-audit_config(pkg = ".", config_file = "_starlightr.yaml")
+audit_config(pkg = ".", config_file = "_starlightr.toml")
 }
 \arguments{
 \item{pkg}{Path to package directory, defaults to current directory}
 
-\item{config_file}{Path to _starlightr.yaml configuration file}
+\item{config_file}{Path to _starlightr.toml configuration file}
 }
 \value{
 Invisibly returns a list with:
@@ -19,7 +19,7 @@ Invisibly returns a list with:
 }
 \description{
 Compares exported functions in NAMESPACE against functions referenced in
-the _starlightr.yaml configuration file. Reports any exported functions
+the _starlightr.toml configuration file. Reports any exported functions
 that are not covered by the sidebar reference configuration.
 }
 \examples{

@@ -66,13 +66,15 @@ extract_frontmatter_data <- function(rd_obj) {
 build_frontmatter <- function(frontmatter_data) {
   lines <- c("---")
 
-  # Title (required)
-  title <- gsub('"', '\\"', frontmatter_data$title)
+  # Title (required) - escape backslashes first, then quotes for YAML
+  title <- gsub("\\\\", "\\\\\\\\", frontmatter_data$title)
+  title <- gsub('"', '\\"', title)
   lines <- c(lines, paste0('title: "', title, '"'))
 
-  # Description (optional)
+  # Description (optional) - escape backslashes first, then quotes for YAML
   if (!is.null(frontmatter_data$description)) {
-    desc <- gsub('"', '\\"', frontmatter_data$description)
+    desc <- gsub("\\\\", "\\\\\\\\", frontmatter_data$description)
+    desc <- gsub('"', '\\"', desc)
     lines <- c(lines, paste0('description: "', desc, '"'))
   }
 

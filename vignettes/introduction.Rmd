@@ -16,7 +16,7 @@ starlightr is a modern R package documentation generator that creates beautiful 
 starlightr bridges the gap between R package documentation and modern web documentation by:
 
 - Converting R documentation (.Rd files) to clean markdown
-- Processing vignettes from `inst/starlightr/*.Rmd` files
+- Processing vignettes from `vignettes/*.Rmd` files
 - Generating a complete Starlight documentation site
 - Providing a `pkgdown`-like workflow with modern aesthetics
 
@@ -24,9 +24,8 @@ starlightr bridges the gap between R package documentation and modern web docume
 
 To get started with starlightr:
 
-1. Add a `_starlightr.yaml` configuration file to your package root
-2. Put your vignettes in `inst/starlightr/` as `.Rmd` files
-3. Run `starlightr::build_site()` to generate your documentation site
+1. Run `starlightr::use_starlightr()` to create a `_starlightr.toml` configuration file
+2. Run `starlightr::build_site()` to generate your documentation site
 
 ```r
 # Build documentation site for current package
@@ -38,4 +37,4 @@ starlightr::build_site()
 
 ## Configuration
 
-The `_starlightr.yaml` file controls how your documentation site is generated. See the configuration guide for more details.
+The `_starlightr.toml` file controls how your documentation site is generated. See the configuration guide for more details.

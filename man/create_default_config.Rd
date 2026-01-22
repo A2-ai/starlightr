@@ -2,7 +2,7 @@
 % Please edit documentation in R/use_starlightr.R
 \name{create_default_config}
 \alias{create_default_config}
-\title{Create default _starlightr.yaml configuration}
+\title{Create default _starlightr.toml configuration}
 \usage{
 create_default_config(config_path, pkg_path)
 }
@@ -12,6 +12,6 @@ create_default_config(config_path, pkg_path)
 \item{pkg_path}{Path to package directory}
 }
 \description{
-Create default _starlightr.yaml configuration
+Create default _starlightr.toml configuration
 }
 \keyword{internal}

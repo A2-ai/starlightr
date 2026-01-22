@@ -59,7 +59,7 @@ use_starlightr()
 ```
 
 This creates:
-- `_starlightr.yaml` - configuration file
+- `_starlightr.toml` - configuration file
 - Updates `.Rbuildignore`
 
 ### 2. Build the documentation site
@@ -87,63 +87,60 @@ Open http://localhost:4321 to see your documentation!
 
 ## Configuration
 
-The `_starlightr.yaml` file controls how your site is generated:
+The `_starlightr.toml` file controls how your site is generated:
 
-```yaml
+```toml
 # Site metadata
-site:
-  title: "My Package"
-  description: "A brief description of your package"
-  github: "https://github.com/user/repo"  # Adds GitHub link to header
-  logo: "man/figures/logo.png"            # Optional logo
-  favicon: "man/figures/favicon.png"      # Optional favicon
+[site]
+title = "My Package"
+description = "A brief description of your package"
+github = "https://github.com/user/repo"  # Adds GitHub link to header
+logo = "man/figures/logo.png"            # Optional logo
+favicon = "man/figures/favicon.png"      # Optional favicon
 
 # Homepage hero section
-home:
-  hero:
-    tagline: "What your package does in one sentence"
-    actions:
-      - text: "Get Started"
-        link: "/articles/"
-        icon: "right-arrow"
-        variant: "primary"
-      - text: "View on GitHub"
-        link: "https://github.com/user/repo"
-        icon: "external"
-        variant: "minimal"
+[home.hero]
+tagline = "What your package does in one sentence"
 
-# Sidebar navigation
-sidebar:
-  # Articles section (from vignettes/)
-  articles:
-    - label: "Guides"
-      autogenerate:
-        directory: articles
+[[home.hero.actions]]
+text = "Get Started"
+link = "./articles/"
+icon = "right-arrow"
+variant = "primary"
 
-  # Reference section (auto-generated from Rd files)
-  reference:
-    - label: "All Functions"
-      autogenerate:
-        directory: reference
+[[home.hero.actions]]
+text = "View on GitHub"
+link = "https://github.com/user/repo"
+icon = "external"
+variant = "minimal"
 
-  # Changelog (from NEWS.md)
-  news:
-    label: "Changelog"
-    source: "NEWS.md"
+# Sidebar navigation - Articles section (from vignettes/)
+[[sidebar.articles]]
+label = "Guides"
+autogenerate = { directory = "articles" }
+
+# Reference section (auto-generated from Rd files)
+[[sidebar.reference]]
+label = "All Functions"
+autogenerate = { directory = "reference" }
+
+# Changelog (from NEWS.md)
+[sidebar.news]
+label = "Changelog"
+source = "NEWS.md"
 
 # Features
-features:
-  katex: true  # LaTeX math rendering (enabled by default)
+[features]
+katex = true  # LaTeX math rendering (enabled by default)
 
 # Content options
-content:
-  skip_sections:
-    - "author"  # Sections to exclude from function docs
+[content]
+skip_sections = ["name"]  # Sections to exclude from function docs
 
 # Output settings
-output:
-  dir: "docs"
-  include_build_files: true
+[output]
+dir = "docs"
+include_build_files = true
 ```
 
 ## Example Output Embedding
@@ -164,22 +161,25 @@ starlightr supports deploying multiple versions of your documentation with a ver
 
 ### Configuration
 
-Add a `versions` section to your `_starlightr.yaml`:
+Add a `versions` section to your `_starlightr.toml`:
 
-```yaml
-versions:
-  enabled: true
-  current: "1.2.0"  # Current/default version
-  list:
-    - version: "dev"
-      label: "Development"
-      path: "/"
-    - version: "1.2.0"
-      label: "v1.2.0 (latest)"
-      path: "/versions/1.2.0/"
-    - version: "1.1.0"
-      label: "v1.1.0"
-      path: "/versions/1.1.0/"
+```toml
+[versions]
+enabled = true
+current = "v1.2.0"  # Current/default version
+
+[[versions.list]]
+tag = "dev"
+label = "Development"
+
+[[versions.list]]
+tag = "v1.2.0"
+label = "v1.2.0 (latest)"
+default = true
+
+[[versions.list]]
+tag = "v1.1.0"
+label = "v1.1.0"
 ```
 
 ### How It Works
@@ -190,17 +190,13 @@ versions:
 
 ### GitHub Actions Workflow
 
-Generate a deployment workflow that builds and deploys versioned docs:
+When versioning is enabled, `build_site()` automatically generates a workflow at `.github/workflows/deploy-docs.yml`. To disable workflow generation:
 
-```yaml
-versions:
-  enabled: true
-  workflow:
-    generate: true
-    provider: "cloudflare"  # or "github-pages"
+```toml
+[versions]
+enabled = true
+workflow = false
 ```
-
-Run `build_site()` and the workflow will be created at `.github/workflows/deploy-docs.yml`.
 
 ## Converting from pkgdown
 
@@ -210,7 +206,7 @@ If you already have a `_pkgdown.yml` file, you can convert it:
 pkgdown_to_starlight()
 ```
 
-This reads your pkgdown configuration and creates a `_starlightr.yaml` with equivalent settings.
+This reads your pkgdown configuration and creates a `_starlightr.toml` with equivalent settings.
 
 ## API Reference
 
@@ -218,7 +214,12 @@ This reads your pkgdown configuration and creates a `_starlightr.yaml` with equi
 |----------|-------------|
 | `use_starlightr()` | Initialize starlightr in a package |
 | `build_site()` | Build the documentation site |
+| `audit_config()` | Check configuration for issues |
 | `pkgdown_to_starlight()` | Convert pkgdown config to starlightr |
+| `add_card()` | Add a card to the home page |
+| `add_reference()` | Add a function to a reference section |
+| `add_article()` | Add a vignette to an articles section |
+| `add_version()` | Add a version to the versions list |
 
 ## License
 

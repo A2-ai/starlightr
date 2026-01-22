@@ -1,7 +1,7 @@
 #' Build a Starlight documentation site for an R package
 #'
 #' @param pkg Path to package directory, defaults to current directory
-#' @param config_file Path to _starlightr.yaml configuration file
+#' @param config_file Path to _starlightr.toml configuration file
 #' @param output_dir Directory to build the site in
 #' @param preview Logical, whether to open preview after building
 #' @param verbose Logical, whether to print debug messages for example capture
@@ -19,7 +19,7 @@
 #' build_site(output_dir = "../my-package-docs")
 #'
 #' # Build with custom configuration
-#' build_site(config_file = "my_config.yaml")
+#' build_site(config_file = "my_config.toml")
 #'
 #' # Build to relative directory (not recommended due to Starlight bloat)
 #' build_site(output_dir = "docs")
@@ -31,7 +31,7 @@
 #' build_site(overwrite = TRUE)
 #' }
 build_site <- function(pkg = ".",
-                      config_file = "_starlightr.yaml",
+                      config_file = "_starlightr.toml",
                       output_dir = NULL,
                       preview = FALSE,
                       verbose = FALSE,
@@ -92,7 +92,8 @@ build_site <- function(pkg = ".",
     generate_version_select_component(output_path, config)
 
     # Generate GitHub workflow if requested
-    if (config$versions$workflow$generate %||% FALSE) {
+    # Generate workflow by default unless explicitly disabled
+    if (!isFALSE(config$versions$workflow)) {
       generate_deploy_workflow(output_path, config)
     }
   }
