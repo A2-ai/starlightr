@@ -5,8 +5,7 @@
 ^README\.Rmd$
 
 ^rv$
-^rproject.toml$
-^rv\.toml$
+^rproject\.toml$
 ^\.Rprofile$
 
 ^.*\.*-docs\.R$
