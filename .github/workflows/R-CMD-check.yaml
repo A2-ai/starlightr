@@ -80,7 +80,7 @@ jobs:
         if: runner.os != 'Windows'
 
       - name: rv-sync (Windows)
-        run: rv.exe sync
+        run: rv.exe sync -vvv
         shell: cmd
         if: runner.os == 'Windows'
 
