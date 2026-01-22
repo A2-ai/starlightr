@@ -71,15 +71,42 @@ audit_config <- function(pkg = ".", config_file = "_starlightr.toml") {
     }
   }
 
+  # Validate article slugs against vignette files
+  article_result <- validate_article_slugs(config, pkg_path)
+
+  if (article_result$valid_count > 0) {
+    cli::cli_alert_success("{article_result$valid_count} article slug{?s} validated")
+  }
+
+  if (length(article_result$missing) > 0) {
+    cli::cli_alert_warning("{length(article_result$missing)} article{?s} in config not found:")
+    for (slug in article_result$missing) {
+      if (tolower(slug) == "readme") {
+        cli::cli_bullets(c("!" = "{.val {slug}} - no {.file README.Rmd}"))
+      } else {
+        cli::cli_bullets(c("!" = "{.val {slug}} - no {.file vignettes/{slug}.Rmd}"))
+      }
+    }
+  }
+
   # Check internal links for trailing slash, expected prefix, and valid targets
   link_entries <- find_link_entries(config)
   link_issues <- 0
   internal_link_count <- 0
+  external_links <- list()
+  non_relative_links <- list()
+  external_urls <- list()
 
   if (length(link_entries) > 0) {
     for (entry in link_entries) {
       link <- entry$link
       context <- entry$context
+
+      # Collect external URLs (http/https) for informational reporting
+      if (startsWith(link, "http://") || startsWith(link, "https://")) {
+        external_urls[[length(external_urls) + 1]] <- list(link = link, context = context)
+        next
+      }
 
       if (!is_internal_link(link)) {
         next
@@ -87,14 +114,21 @@ audit_config <- function(pkg = ".", config_file = "_starlightr.toml") {
 
       internal_link_count <- internal_link_count + 1
 
+      # Collect non-relative links (don't start with ./)
       if (!startsWith(link, "./")) {
-        cli::cli_warn("Link does not start with './': {.val {link}} ({context})")
-        link_issues <- link_issues + 1
+        non_relative_links[[length(non_relative_links) + 1]] <- list(link = link, context = context)
+        next
       }
 
       if (link_needs_trailing_slash(link)) {
-        cli::cli_warn("Link does not end with '/': {.val {link}} ({context})")
+        cli::cli_warn("Link missing trailing slash: {.val {link}} ({context})")
         link_issues <- link_issues + 1
+      }
+
+      # Check if this is an external doc link (not articles/reference)
+      if (is_external_doc_link(link)) {
+        external_links[[length(external_links) + 1]] <- list(link = link, context = context)
+        next
       }
 
       # Validate link targets (returns TRUE if issue found)
@@ -104,8 +138,33 @@ audit_config <- function(pkg = ".", config_file = "_starlightr.toml") {
     }
   }
 
-  if (internal_link_count > 0 && link_issues == 0) {
-    cli::cli_alert_success("All {internal_link_count} internal link{?s} are valid")
+  validated_count <- internal_link_count - length(external_links) - length(non_relative_links)
+  if (validated_count > 0 && link_issues == 0) {
+    cli::cli_alert_success("{validated_count} internal link{?s} validated")
+  }
+
+  # Report non-relative links
+  if (length(non_relative_links) > 0) {
+    cli::cli_alert_warning("{length(non_relative_links)} non-relative link{?s} found (should start with './'):")
+    for (nrl in non_relative_links) {
+      cli::cli_bullets(c("!" = "{.val {nrl$link}} ({nrl$context})"))
+    }
+  }
+
+  # Report external links (not validated)
+  if (length(external_links) > 0) {
+    cli::cli_alert_info("{length(external_links)} external doc link{?s} found (not validated):")
+    for (ext in external_links) {
+      cli::cli_bullets(c("*" = "{.val {ext$link}} ({ext$context})"))
+    }
+  }
+
+  # Report external URLs (http/https)
+  if (length(external_urls) > 0) {
+    cli::cli_alert_info("{length(external_urls)} external URL{?s} found:")
+    for (ext in external_urls) {
+      cli::cli_bullets(c("*" = "{.url {ext$link}} ({ext$context})"))
+    }
   }
 
   invisible(list(

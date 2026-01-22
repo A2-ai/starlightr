@@ -104,6 +104,34 @@ find_link_entries <- function(config) {
   entries
 }
 
+#' Check if a link path points to external (non-R-package) content
+#'
+#' External content is anything not in articles/ or reference/ directories,
+#' which are the paths starlightr generates from R package sources.
+#'
+#' @param link Link string
+#' @return TRUE if link points to external content, FALSE otherwise
+#' @keywords internal
+is_external_doc_link <- function(link) {
+  if (!startsWith(link, "./")) {
+    return(FALSE)
+  }
+
+  path <- sub("^\\./", "", link)
+  path <- sub("/$", "", path)
+
+
+  # Links to articles/, reference/, or news are R-package content
+  if (startsWith(path, "articles/") ||
+      startsWith(path, "reference/") ||
+      path == "news") {
+    return(FALSE)
+  }
+
+  # Everything else (e.g., ./guides/, ./tutorials/) is external
+  TRUE
+}
+
 #' Validate that an internal link points to existing content
 #'
 #' @param link Link string
@@ -113,6 +141,7 @@ find_link_entries <- function(config) {
 #' @return TRUE if an issue was found, FALSE otherwise
 #' @keywords internal
 validate_link_target <- function(link, context, pkg_path, exported) {
+
   # Only validate links starting with ./
   if (!startsWith(link, "./")) {
     return(FALSE)
@@ -159,4 +188,44 @@ validate_link_target <- function(link, context, pkg_path, exported) {
   }
 
   FALSE
+}
+
+#' Validate article slugs from sidebar.articles against vignette files
+#'
+#' @param config Parsed config list
+#' @param pkg_path Path to package directory
+#' @return List with missing (character vector) and valid_count (integer)
+#' @keywords internal
+validate_article_slugs <- function(config, pkg_path) {
+  missing <- character()
+  valid_count <- 0
+
+  if (is.null(config$sidebar$articles)) {
+    return(list(missing = missing, valid_count = valid_count))
+  }
+
+  # Extract all slugs from sidebar.articles
+  for (group in config$sidebar$articles) {
+    if (!is.null(group$contents)) {
+      for (item in group$contents) {
+        parsed <- parse_content_item(item)
+        slug <- parsed$slug
+
+        # Check if source file exists
+        if (tolower(slug) == "readme") {
+          exists <- file.exists(file.path(pkg_path, "README.Rmd"))
+        } else {
+          exists <- file.exists(file.path(pkg_path, "vignettes", paste0(slug, ".Rmd")))
+        }
+
+        if (exists) {
+          valid_count <- valid_count + 1
+        } else {
+          missing <- c(missing, slug)
+        }
+      }
+    }
+  }
+
+  list(missing = unique(missing), valid_count = valid_count)
 }

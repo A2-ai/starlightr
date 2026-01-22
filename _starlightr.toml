@@ -20,6 +20,9 @@ articles = [
 		"introduction",
 		"configuration",
 	] },
+	{ label = "Guides", contents = [
+		{ slug = "using-hyperion", label = "Using hyperion" },
+	] },
 ]
 reference = [
 	{ label = "Site Building", contents = [
@@ -35,6 +38,9 @@ reference = [
 	] },
 	{ label = "Migration", contents = [
 		"pkgdown_to_starlight",
+	] },
+	{ label = "Unknown", contents = [
+			{ slug = "starlightr", label = "starlightr reference" },
 	] },
 ]
 
