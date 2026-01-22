@@ -210,20 +210,21 @@ remove_sections <- function(md, skip_sections) {
 #' @return Markdown with lifecycle badges pointing to CDN
 #' @keywords internal
 fix_lifecycle_badges <- function(md) {
-  cdn_url <- "https://lifecycle.r-lib.org/articles/figures/lifecycle-\\1.svg"
-
+  cdn_base <- "https://lifecycle.r-lib.org/articles/figures/lifecycle-"
 
   # man/figures/lifecycle-*.svg (common in READMEs)
   md <- gsub(
     "man/figures/lifecycle-([a-z]+)\\.svg",
-    cdn_url,
+    paste0(cdn_base, "\\1.svg"),
     md
   )
 
   # ../help/figures/lifecycle-*.svg and similar relative paths
+  # Note: \2 because first group captures optional path segment
+
   md <- gsub(
     "\\.\\.(/[^)\\s]+)?/lifecycle-([a-z]+)\\.svg",
-    "https://lifecycle.r-lib.org/articles/figures/lifecycle-\\2.svg",
+    paste0(cdn_base, "\\2.svg"),
     md,
     perl = TRUE
   )
