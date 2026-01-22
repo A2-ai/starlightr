@@ -391,13 +391,7 @@ arguments_to_md_table <- function(rd_obj) {
       desc_md <- html_to_md(desc_html)
 
       # Fix lifecycle badge paths to use CDN
-      # Match paths like ../help/figures/lifecycle-*.svg (careful not to eat markdown syntax)
-      desc_md <- gsub(
-        "\\.\\.(/[^)\\s]+)?/lifecycle-([a-z]+)\\.svg",
-        "https://lifecycle.r-lib.org/articles/figures/lifecycle-\\2.svg",
-        desc_md,
-        perl = TRUE
-      )
+      desc_md <- fix_lifecycle_badges(desc_md)
 
       # Flatten description to single line for table cell
       # Replace newlines with spaces, clean up

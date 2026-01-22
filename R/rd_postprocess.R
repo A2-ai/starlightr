@@ -200,16 +200,35 @@ remove_sections <- function(md, skip_sections) {
 
 #' Fix lifecycle badge paths to use CDN
 #'
+#' Rewrites lifecycle badge image paths from various local/relative formats
+#' to the canonical r-lib CDN URL. Handles:
+#' - man/figures/lifecycle-*.svg (README badges)
+#' - ../help/figures/lifecycle-*.svg (Rd-generated)
+#' - ../*/lifecycle-*.svg (other relative paths)
+#'
 #' @param md Markdown string
 #' @return Markdown with lifecycle badges pointing to CDN
 #' @keywords internal
 fix_lifecycle_badges <- function(md) {
-  gsub(
+  cdn_url <- "https://lifecycle.r-lib.org/articles/figures/lifecycle-\\1.svg"
+
+
+  # man/figures/lifecycle-*.svg (common in READMEs)
+  md <- gsub(
+    "man/figures/lifecycle-([a-z]+)\\.svg",
+    cdn_url,
+    md
+  )
+
+  # ../help/figures/lifecycle-*.svg and similar relative paths
+  md <- gsub(
     "\\.\\.(/[^)\\s]+)?/lifecycle-([a-z]+)\\.svg",
     "https://lifecycle.r-lib.org/articles/figures/lifecycle-\\2.svg",
     md,
     perl = TRUE
   )
+
+  md
 }
 
 #' Fix figure paths for Starlight

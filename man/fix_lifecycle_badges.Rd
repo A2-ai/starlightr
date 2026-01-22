@@ -13,6 +13,10 @@ fix_lifecycle_badges(md)
 Markdown with lifecycle badges pointing to CDN
 }
 \description{
-Fix lifecycle badge paths to use CDN
+Rewrites lifecycle badge image paths from various local/relative formats
+to the canonical r-lib CDN URL. Handles:
+- man/figures/lifecycle-*.svg (README badges)
+- ../help/figures/lifecycle-*.svg (Rd-generated)
+- ../*/lifecycle-*.svg (other relative paths)
 }
 \keyword{internal}

@@ -172,7 +172,7 @@ generate_sidebar_config <- function(config, output_path = NULL, pkg_name = NULL)
         group_items <- c()
         # Extract slugs for pattern detection (handles both string and list items)
         content_slugs <- vapply(group$contents, function(c) {
-          if (is.list(c)) c$slug %||% "" else c
+          parse_content_item(c)$slug
         }, character(1))
         has_patterns <- any(grepl("\\*", content_slugs))
 

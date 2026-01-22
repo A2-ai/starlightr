@@ -89,12 +89,8 @@ process_articles_and_readme <- function(pkg_path, output_path, config) {
     for (group in articles_config) {
       if (!is.null(group$contents)) {
         for (item in group$contents) {
-          # Handle both string and list {slug, label} formats
-          if (is.list(item)) {
-            article_names <- c(article_names, item$slug %||% item$label %||% "")
-          } else {
-            article_names <- c(article_names, item)
-          }
+          parsed <- parse_content_item(item)
+          article_names <- c(article_names, parsed$slug)
         }
       }
     }
@@ -210,16 +206,7 @@ process_article_output <- function(output_name, md_name, source_dir, output_path
   )
 
   # Fix lifecycle badges (must come BEFORE generic man/figures/ rewrite)
-  md_content <- gsub(
-    "man/figures/lifecycle-([a-z]+)\\.svg",
-    "https://lifecycle.r-lib.org/articles/figures/lifecycle-\\1.svg",
-    md_content
-  )
-  md_content <- gsub(
-    "../help/figures/lifecycle-([a-z]+)\\.svg",
-    "https://lifecycle.r-lib.org/articles/figures/lifecycle-\\1.svg",
-    md_content
-  )
+  md_content <- fix_lifecycle_badges(md_content)
 
   # Also handle man/figures/ paths (common in READMEs)
   md_content <- gsub("man/figures/", "/figures/", md_content, fixed = TRUE)

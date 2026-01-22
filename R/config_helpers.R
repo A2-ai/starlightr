@@ -71,9 +71,9 @@ add_sidebar_item <- function(kind, slug, section, label = NULL, config_path = "_
   }
 
   # Check for duplicates by slug
- existing_contents <- config$sidebar[[kind]][[section_idx]]$contents
+  existing_contents <- config$sidebar[[kind]][[section_idx]]$contents
   existing_slugs <- vapply(existing_contents, function(c) {
-    if (is.list(c)) c$slug %||% "" else c
+    parse_content_item(c)$slug
   }, character(1))
 
   if (slug %in% existing_slugs) {
