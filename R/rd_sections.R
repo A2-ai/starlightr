@@ -82,6 +82,10 @@ rd_section_to_md <- function(rd_section) {
         return(paste0("\n\n$$\n", latex, "\n$$\n\n"))
       } else if (tag == "\\code") {
         inner <- paste0(vapply(el, convert_element, character(1)), collapse = "")
+        # If inner already contains a markdown link (from \link), don't double-wrap
+        if (grepl("\\]\\(", inner)) {
+          return(inner)
+        }
         return(paste0("`", normalize_inline(inner), "`"))
       } else if (tag == "\\emph" || tag == "\\var") {
         inner <- paste0(vapply(el, convert_element, character(1)), collapse = "")

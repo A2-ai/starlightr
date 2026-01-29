@@ -236,7 +236,7 @@ rd_to_markdown <- function(
     if (!is.null(el_tag) && el_tag == "\\section" && length(element) >= 2) {
       section_title <- trimws(paste(unlist(element[[1]]), collapse = ""))
       section_content <- element[[2]]
-      if (nchar(section_title) > 0 && section_has_tag(section_content, "\\describe")) {
+      if (nchar(section_title) > 0 && section_has_tag(section_content, c("\\describe", "\\itemize", "\\enumerate"))) {
         section_md <- rd_section_to_md(section_content)
         if (!is.null(section_md) && nchar(section_md) > 0) {
           pattern <- paste0("(?s)## ", section_title, "\\s*\\n+.*?(?=\\n## |$)")
