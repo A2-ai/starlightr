@@ -201,11 +201,14 @@ parse_namespace_exports <- function(namespace_path) {
     }
 
     # Match S3method(generic, class) -> generic.class
+    # Also handles S3method(pkg::generic, class) by stripping the package prefix
     if (grepl("^S3method\\(", line)) {
       match <- regmatches(line, regexec("^S3method\\(([^,]+),\\s*([^)]+)\\)", line))[[1]]
       if (length(match) >= 3) {
         generic <- trimws(match[2])
         class <- trimws(match[3])
+        # Strip package prefix if present (e.g., base::print -> print)
+        generic <- sub("^[a-zA-Z0-9.]+::", "", generic)
         exports <- c(exports, paste0(generic, ".", class))
       }
     }
