@@ -58,14 +58,22 @@ write_md_files <- function(
         )
 
         func_name <- tools::file_path_sans_ext(basename(file))
-        func_name_lower <- tolower(func_name)
+        func_name_slug <- tolower(func_name)
 
         # Warn if function name contains capitals (Astro requires lowercase)
-        if (func_name != func_name_lower) {
-          cli::cli_warn("Function {.fn {func_name}} contains capitals - filename will be lowercased to {.file {func_name_lower}{file_ext}}")
+        if (func_name != func_name_slug) {
+          cli::cli_warn("Function {.fn {func_name}} contains capitals - filename will be lowercased to {.file {func_name_slug}{file_ext}}")
         }
 
-        out_path <- file.path(output_dir, paste0(func_name_lower, file_ext))
+        # Replace dots with hyphens (Astro slugs cannot contain dots)
+        # This affects S3 methods like summary.myclass -> summary-myclass
+        if (grepl(".", func_name_slug, fixed = TRUE)) {
+          func_name_sanitized <- gsub(".", "-", func_name_slug, fixed = TRUE)
+          cli::cli_warn("Function {.fn {func_name}} contains dots - filename will be sanitized to {.file {func_name_sanitized}{file_ext}}")
+          func_name_slug <- func_name_sanitized
+        }
+
+        out_path <- file.path(output_dir, paste0(func_name_slug, file_ext))
 
         # Append example outputs if they exist
         if (!is.null(site_output_path)) {

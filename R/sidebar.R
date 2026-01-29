@@ -81,7 +81,9 @@ resolve_reference_item <- function(content, output_path, pkg_name, warn = TRUE, 
   # Use provided label or default to content name
   display_label <- label %||% content
 
-  slug <- paste0("reference/", tolower(doc_file))
+  # Sanitize slug: lowercase and replace dots with hyphens (Astro requirement)
+  slug_name <- gsub(".", "-", tolower(doc_file), fixed = TRUE)
+  slug <- paste0("reference/", slug_name)
   make_sidebar_item(display_label, slug)
 }
 
@@ -140,7 +142,7 @@ generate_sidebar_config <- function(config, output_path = NULL, pkg_name = NULL)
       if (!is.null(group$label) && !is.null(group$contents)) {
         group_items <- vapply(group$contents, function(content) {
           parsed <- parse_content_item(content)
-          slug <- paste0("articles/", tolower(parsed$slug))
+          slug <- paste0("articles/", gsub(".", "-", tolower(parsed$slug), fixed = TRUE))
           make_sidebar_item(parsed$label, slug)
         }, character(1))
 
@@ -180,7 +182,7 @@ generate_sidebar_config <- function(config, output_path = NULL, pkg_name = NULL)
           # Handle pattern matching
           matched_files <- expand_glob_patterns(content_slugs, available_files)
           group_items <- vapply(matched_files, function(file) {
-            slug <- paste0("reference/", tolower(file))
+            slug <- paste0("reference/", gsub(".", "-", tolower(file), fixed = TRUE))
             make_sidebar_item(file, slug)
           }, character(1))
         } else {

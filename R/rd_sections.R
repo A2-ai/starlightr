@@ -91,7 +91,12 @@ rd_section_to_md <- function(rd_section) {
         return(paste0("**", normalize_inline(inner), "**"))
       } else if (tag == "\\link" || tag == "\\linkS4class") {
         inner <- paste0(vapply(el, convert_element, character(1)), collapse = "")
-        return(paste0("`", normalize_inline(inner), "`"))
+        inner <- normalize_inline(inner)
+        # Extract target from link text (remove parentheses for function calls)
+        target <- gsub("[()]", "", inner)
+        # Sanitize: lowercase and replace dots with hyphens for Astro slugs
+        target_slug <- gsub(".", "-", tolower(target), fixed = TRUE)
+        return(paste0("[`", inner, "`](../", target_slug, "/)"))
       } else if (tag == "\\sQuote") {
         inner <- paste0(vapply(el, convert_element, character(1)), collapse = "")
         return(paste0("'", normalize_inline(inner), "'"))

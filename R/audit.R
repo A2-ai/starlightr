@@ -200,6 +200,16 @@ parse_namespace_exports <- function(namespace_path) {
       }
     }
 
+    # Match S3method(generic, class) -> generic.class
+    if (grepl("^S3method\\(", line)) {
+      match <- regmatches(line, regexec("^S3method\\(([^,]+),\\s*([^)]+)\\)", line))[[1]]
+      if (length(match) >= 3) {
+        generic <- trimws(match[2])
+        class <- trimws(match[3])
+        exports <- c(exports, paste0(generic, ".", class))
+      }
+    }
+
     # Match exportPattern("pattern") - less common but valid
     if (grepl("^exportPattern\\(", line)) {
       # For patterns, we can't enumerate them here - would need actual function list
@@ -282,12 +292,19 @@ match_config_to_exports <- function(config_refs, exports) {
 #'
 #' Handles exact names, glob patterns (e.g., extract_*), and pkgdown selectors.
 #' Matching is case-insensitive since MDX filenames are lowercased.
+#' Package documentation files (ending in -package) are treated as valid.
 #'
 #' @param ref Single reference string
 #' @param exports Character vector of exported function names
 #' @return Character vector of matching export names
 #' @keywords internal
 match_single_reference <- function(ref, exports) {
+  # Package documentation files (e.g., "mypackage-package") are valid references
+  # but not exports - return the ref itself to mark as "covered"
+  if (grepl("-package$", ref)) {
+    return(ref)
+  }
+
   # Check for pkgdown selector functions
   if (is_pkgdown_selector(ref)) {
     return(expand_selector(ref, exports))
