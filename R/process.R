@@ -188,21 +188,47 @@ process_article_output <- function(output_name, md_name, source_dir, output_path
 
   # Copy figures from {md_name}_files/
   figures_dir <- file.path(source_dir, paste0(md_name, "_files"))
-  if (dir.exists(figures_dir)) {
-    dest_figures <- file.path(output_path, "public", "figures", tolower(output_name))
-    dir.create(dest_figures, recursive = TRUE, showWarnings = FALSE)
+  dest_figures <- file.path(output_path, "public", "figures", tolower(output_name))
+  dir.create(dest_figures, recursive = TRUE, showWarnings = FALSE)
 
+  if (dir.exists(figures_dir)) {
     figure_gfm <- file.path(figures_dir, "figure-gfm")
     if (dir.exists(figure_gfm)) {
       file.copy(list.files(figure_gfm, full.names = TRUE), dest_figures, overwrite = TRUE)
     }
   }
 
-  # Rewrite figure paths
+  # Also check for custom fig.path figures (e.g., figures/{name}/)
+  custom_figures_dir <- file.path(source_dir, "figures")
+  if (dir.exists(custom_figures_dir)) {
+    fig_subdirs <- list.dirs(custom_figures_dir, recursive = FALSE, full.names = TRUE)
+    for (subdir in fig_subdirs) {
+      subdir_name <- basename(subdir)
+      subdir_dest <- file.path(output_path, "public", "figures", subdir_name)
+      dir.create(subdir_dest, recursive = TRUE, showWarnings = FALSE)
+      file.copy(list.files(subdir, full.names = TRUE), subdir_dest, overwrite = TRUE)
+    }
+    # Also copy any files directly in figures/
+    fig_files <- list.files(custom_figures_dir, full.names = TRUE, recursive = FALSE)
+    fig_files <- fig_files[!dir.exists(fig_files)]
+    if (length(fig_files) > 0) {
+      file.copy(fig_files, dest_figures, overwrite = TRUE)
+    }
+  }
+
+  # Rewrite figure paths - standard pattern
   md_content <- gsub(
     paste0(md_name, "_files/figure-gfm/"),
     paste0("/figures/", tolower(output_name), "/"),
     md_content, fixed = TRUE
+  )
+
+  # Rewrite temp directory figure paths (cross-platform: matches starlightr-rmd- marker)
+  # Capture the markdown image prefix ![...]( and restore it
+  md_content <- gsub(
+    "(!\\[[^]]*\\]\\()[^)]*starlightr-rmd-[^/\\\\]+[/\\\\]+figures[/\\\\]",
+    "\\1/figures/",
+    md_content, perl = TRUE
   )
 
   # Fix lifecycle badges (must come BEFORE generic man/figures/ rewrite)
