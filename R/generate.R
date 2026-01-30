@@ -84,6 +84,7 @@ generate_astro_config <- function(output_path, config, pkg_path = NULL) {
   astro_config <- sprintf('// @ts-check
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
+import { remarkBaseUrl } from "./remark-base-url.mjs";
 %s
 
 // https://astro.build/config
@@ -91,6 +92,9 @@ export default defineConfig({
   site: process.env.ASTRO_SITE || "http://localhost",
   base: process.env.ASTRO_BASE || "/",
   trailingSlash: "always",
+  markdown: {
+    remarkPlugins: [remarkBaseUrl],
+  },
   integrations: [
     starlight({
       title: "%s",
@@ -157,7 +161,8 @@ generate_package_json <- function(output_path, config, overwrite = FALSE) {
   "dependencies": {
     "@astrojs/starlight": "^0.36.0",
     "astro": "^5.6.1",
-    "sharp": "^0.34.2"%s
+    "sharp": "^0.34.2",
+    "unist-util-visit": "^5.0.0"%s
   }
 }', katex_dep)
 
@@ -222,6 +227,37 @@ pnpm-debug.log*
 
   writeLines(gitignore_content, gitignore_path)
   cli::cli_alert_success("Generated {.file .gitignore}")
+}
+
+#' Generate remark-base-url.mjs plugin for versioned docs
+#'
+#' This remark plugin prepends ASTRO_BASE to image paths starting with /figures/
+#' so that images work correctly in versioned documentation.
+#'
+#' @param output_path Path to output directory
+#' @keywords internal
+generate_remark_plugin <- function(output_path) {
+  plugin_content <- 'import { visit } from "unist-util-visit";
+
+/**
+ * Remark plugin to prepend ASTRO_BASE to image paths.
+ * This ensures images work correctly in versioned documentation.
+ */
+export function remarkBaseUrl() {
+  const base = (process.env.ASTRO_BASE || "/").replace(/\\/$/, "");
+
+  return (tree) => {
+    visit(tree, "image", (node) => {
+      if (node.url && node.url.startsWith("/figures/")) {
+        node.url = base + node.url;
+      }
+    });
+  };
+}
+'
+
+  writeLines(plugin_content, file.path(output_path, "remark-base-url.mjs"))
+  cli::cli_alert_success("Generated {.file remark-base-url.mjs}")
 }
 
 #' Generate custom.css file for Starlight site

@@ -117,8 +117,9 @@ generate_version_select_component <- function(output_path, config) {
 #'
 #' @param output_path Path to docs output directory
 #' @param config Configuration list
+#' @param overwrite Logical, whether to overwrite existing file
 #' @keywords internal
-generate_deploy_workflow <- function(output_path, config) {
+generate_deploy_workflow <- function(output_path, config, overwrite = FALSE) {
   template_path <- system.file("templates/deploy-docs.yml", package = "starlightr")
 
   # Create .github/workflows directory in docs output
@@ -127,8 +128,14 @@ generate_deploy_workflow <- function(output_path, config) {
     dir.create(workflows_dir, recursive = TRUE)
   }
 
-  # Copy template directly (no templating needed - uses GitHub context variables)
   workflow_path <- file.path(workflows_dir, "deploy-docs.yml")
+
+  # Don't overwrite existing workflow unless requested
+  if (file.exists(workflow_path) && !overwrite) {
+    cli::cli_alert_info("Skipping {.file .github/workflows/deploy-docs.yml} (already exists)")
+    return(invisible(NULL))
+  }
+
   file.copy(template_path, workflow_path, overwrite = TRUE)
   cli::cli_alert_success("Generated {.file .github/workflows/deploy-docs.yml}")
 }

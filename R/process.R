@@ -228,7 +228,7 @@ process_article_output <- function(output_name, md_name, source_dir, output_path
     }
   }
 
-  # Rewrite figure paths - standard pattern
+  # Rewrite figure paths - use absolute paths (Astro base config handles versioning)
   md_content <- gsub(
     paste0(md_name, "_files/figure-gfm/"),
     paste0("/figures/", tolower(output_name), "/"),
@@ -262,6 +262,7 @@ process_article_output <- function(output_name, md_name, source_dir, output_path
 
   # Use .md (not .mdx) so complex HTML like gt tables with KaTeX passes through
   # MDX's strict JSX parsing breaks on this content
+  # Image paths are rewritten by remark plugin to include BASE_URL
   writeLines(final_content, file.path(articles_dir, paste0(tolower(output_name), ".md")))
 
   # Cleanup happens at the build directory level.

@@ -83,6 +83,7 @@ build_site <- function(pkg = ".",
     generate_package_json(output_path, config, overwrite = overwrite)
     generate_gitignore(output_path, overwrite = overwrite)
     generate_custom_css(output_path, overwrite = overwrite)
+    generate_remark_plugin(output_path)
   }
 
   # Add version support files if configured
@@ -94,7 +95,7 @@ build_site <- function(pkg = ".",
     # Generate GitHub workflow if requested
     # Generate workflow by default unless explicitly disabled
     if (!isFALSE(config$versions$workflow)) {
-      generate_deploy_workflow(output_path, config)
+      generate_deploy_workflow(output_path, config, overwrite = overwrite)
     }
   }
 
