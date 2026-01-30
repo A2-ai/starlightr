@@ -155,6 +155,18 @@ process_articles_and_readme <- function(pkg_path, output_path, config) {
     quiet = TRUE
   )
 
+  # Copy man/figures/ from package to output (common for README badges/images)
+  man_figures <- file.path(pkg_path, "man", "figures")
+  if (dir.exists(man_figures)) {
+    dest_figures <- file.path(output_path, "public", "figures")
+    dir.create(dest_figures, recursive = TRUE, showWarnings = FALSE)
+    file.copy(
+      list.files(man_figures, full.names = TRUE),
+      dest_figures,
+      overwrite = TRUE
+    )
+  }
+
   # Process each article output
   for (i in seq_along(article_names)) {
     name <- article_names[i]
