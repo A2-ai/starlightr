@@ -17,5 +17,6 @@ Character vector of matching export names
 \description{
 Handles exact names, glob patterns (e.g., extract_*), and pkgdown selectors.
 Matching is case-insensitive since MDX filenames are lowercased.
+Package documentation files (ending in -package) are treated as valid.
 }
 \keyword{internal}

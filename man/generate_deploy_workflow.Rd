@@ -4,12 +4,14 @@
 \alias{generate_deploy_workflow}
 \title{Generate deploy-docs.yml GitHub Actions workflow}
 \usage{
-generate_deploy_workflow(output_path, config)
+generate_deploy_workflow(output_path, config, overwrite = FALSE)
 }
 \arguments{
 \item{output_path}{Path to docs output directory}
 
 \item{config}{Configuration list}
+
+\item{overwrite}{Logical, whether to overwrite existing file}
 }
 \description{
 Generate deploy-docs.yml GitHub Actions workflow
