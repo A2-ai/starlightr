@@ -556,6 +556,7 @@ add_package <- function(name, version, config_path = "_starlightr.toml") {
     if (!is.null(dep$name) && dep$name == name) {
       if (dep$version == version) {
         cli::cli_alert_info("{.pkg {name}} already at version {.val {version}}")
+        patch_package_json(config, config_path)
         return(invisible(TRUE))
       }
       # Different version — update in place
