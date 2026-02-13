@@ -87,12 +87,6 @@ create_index_page <- function(pkg_path, output_path, config, overwrite = FALSE) 
       variant: minimal', github_url)
   }
 
-  # Build hero image section if logo configured
-  hero_image <- ""
-  if (!is.null(config$site$logo)) {
-    hero_image <- "  image:\n    file: /src/assets/logo.png\n"
-  }
-
   # Build cards section if configured
   cards_content <- ""
   if (!is.null(config$home$cards) && length(config$home$cards) > 0) {
@@ -118,26 +112,19 @@ import { Card, CardGrid } from "@astrojs/starlight/components";
 
   # Create default index content with Starlight components
   site_title <- config$site$title %||% pkg_name
-  # Escape embedded quotes in YAML values
   hero_tagline_escaped <- gsub('"', '\\"', hero_tagline, fixed = TRUE)
   pkg_desc_escaped <- gsub('"', '\\"', pkg_desc, fixed = TRUE)
-  index_content <- sprintf('---
-title: "%s"
-description: "%s"
-template: splash
-pagefind: true
-hero:
-  tagline: "%s"
-%s  actions:
-%s
----%s',
-    site_title,
-    pkg_desc_escaped,
-    hero_tagline_escaped,
-    hero_image,
-    hero_actions,
-    cards_content
+
+  data <- list(
+    title = site_title,
+    description = pkg_desc_escaped,
+    tagline = hero_tagline_escaped,
+    has_hero_image = !is.null(config$site$logo),
+    hero_actions = hero_actions,
+    cards_content = cards_content
   )
+
+  index_content <- render_template("index.mdx", data)
 
   writeLines(index_content, index_path)
   if (file_existed) {

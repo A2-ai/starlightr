@@ -4,7 +4,13 @@
 \alias{add_reference}
 \title{Add a function to a reference section}
 \usage{
-add_reference(fn_name, section, label = NULL, config_path = "_starlightr.toml")
+add_reference(
+  fn_name,
+  section,
+  label = NULL,
+  collapsed = NULL,
+  config_path = "_starlightr.toml"
+)
 }
 \arguments{
 \item{fn_name}{Function name to add}
@@ -12,6 +18,8 @@ add_reference(fn_name, section, label = NULL, config_path = "_starlightr.toml")
 \item{section}{Section label to add to (creates if doesn't exist)}
 
 \item{label}{Optional display label (if different from fn_name)}
+
+\item{collapsed}{Optional logical to set collapsed state of the section}
 
 \item{config_path}{Path to config file (default: "_starlightr.toml")}
 }
@@ -29,5 +37,8 @@ add_reference("my_function", "Site Building")
 
 # Add with a custom display label
 add_reference("my_function", "Site Building", label = "My Function")
+
+# Add to a collapsed section
+add_reference("my_function", "Internals", collapsed = TRUE)
 }
 }

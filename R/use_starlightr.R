@@ -81,16 +81,12 @@ create_default_config <- function(config_path, pkg_path) {
   }
 
   # Build minimal config - users add sidebar/cards via helpers
-  config_content <- sprintf('# starlightr configuration file
-# Run add_card(), add_article(), add_reference() to build your site config
+  data <- list(
+    pkg_name = pkg_name,
+    pkg_desc = pkg_desc
+  )
 
-[site]
-title = "%s"
-description = "%s"
-
-[output]
-dir = "../%s-docs"
-', pkg_name, pkg_desc, pkg_name)
+  config_content <- render_template("starlightr.toml", data)
 
   writeLines(config_content, config_path)
 }

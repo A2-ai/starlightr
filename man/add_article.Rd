@@ -8,6 +8,7 @@ add_article(
   vignette_name,
   section,
   label = NULL,
+  collapsed = NULL,
   config_path = "_starlightr.toml"
 )
 }
@@ -17,6 +18,8 @@ add_article(
 \item{section}{Section label to add to (creates if doesn't exist)}
 
 \item{label}{Optional display label (if different from vignette_name)}
+
+\item{collapsed}{Optional logical to set collapsed state of the section}
 
 \item{config_path}{Path to config file (default: "_starlightr.toml")}
 }
@@ -34,5 +37,8 @@ add_article("my-vignette", "Getting Started")
 
 # Add with a custom display label
 add_article("README", "Getting Started", label = "About")
+
+# Add to a collapsed section
+add_article("advanced-usage", "Advanced", collapsed = TRUE)
 }
 }

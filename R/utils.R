@@ -61,6 +61,36 @@ get_github_url <- function(config) {
   return(NULL)
 }
 
+#' Render a whisker template from inst/templates/
+#'
+#' @param name Template filename (e.g. "astro.config.mjs")
+#' @param data Named list of variables for whisker interpolation
+#' @return Rendered template as a character string
+#' @keywords internal
+render_template <- function(name, data = list()) {
+  template_path <- system.file("templates", name, package = "starlightr")
+  if (template_path == "") {
+    stop("Template not found: ", name)
+  }
+  template <- paste(readLines(template_path, warn = FALSE), collapse = "\n")
+  whisker::whisker.render(template, data)
+}
+
+#' Copy a static template from inst/templates/ to a destination
+#'
+#' @param name Template filename (e.g. "gitignore")
+#' @param dest Destination file path
+#' @keywords internal
+copy_template <- function(name, dest) {
+  template_path <- system.file("templates", name, package = "starlightr")
+  if (template_path == "") {
+    stop("Template not found: ", name)
+  }
+  if (!file.copy(template_path, dest, overwrite = TRUE)) {
+    stop("Failed to copy template '", name, "' to: ", dest)
+  }
+}
+
 #' Preview the generated site
 #'
 #' @param output_path Path to built site

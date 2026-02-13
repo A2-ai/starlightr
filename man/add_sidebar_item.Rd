@@ -9,6 +9,7 @@ add_sidebar_item(
   slug,
   section,
   label = NULL,
+  collapsed = NULL,
   config_path = "_starlightr.toml"
 )
 }

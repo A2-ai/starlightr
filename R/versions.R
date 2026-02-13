@@ -65,9 +65,6 @@ validate_version_config <- function(config) {
 #' @param config Configuration list
 #' @keywords internal
 generate_versions_ts <- function(output_path, config) {
-  template_path <- system.file("templates/versions.ts", package = "starlightr")
-  template <- paste(readLines(template_path, warn = FALSE), collapse = "\n")
-
   # Prepare data for whisker
   versions_data <- lapply(config$versions$list, function(v) {
     list(
@@ -82,7 +79,7 @@ generate_versions_ts <- function(output_path, config) {
     currentVersion = get_current_version(config)
   )
 
-  rendered <- whisker::whisker.render(template, data)
+  rendered <- render_template("versions.ts", data)
 
   # Ensure output directory exists
   data_dir <- file.path(output_path, "src", "data")

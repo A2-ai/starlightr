@@ -34,7 +34,8 @@ write_config_toml <- function(config, config_path = "_starlightr.toml") {
 #' @param config_path Path to config file
 #' @return List with modified config and whether item was added
 #' @keywords internal
-add_sidebar_item <- function(kind, slug, section, label = NULL, config_path = "_starlightr.toml") {
+add_sidebar_item <- function(kind, slug, section, label = NULL,
+                             collapsed = NULL, config_path = "_starlightr.toml") {
   config <- read_config_toml(config_path)
 
   # Initialize sidebar section if it doesn't exist
@@ -48,6 +49,7 @@ add_sidebar_item <- function(kind, slug, section, label = NULL, config_path = "_
   # Find the section by label
   section_idx <- NULL
   for (i in seq_along(config$sidebar[[kind]])) {
+    if (!is.list(config$sidebar[[kind]][[i]])) next
     if (!is.null(config$sidebar[[kind]][[i]]$label) &&
         config$sidebar[[kind]][[i]]$label == section) {
       section_idx <- i
@@ -65,9 +67,19 @@ add_sidebar_item <- function(kind, slug, section, label = NULL, config_path = "_
   if (is.null(section_idx)) {
     # Create new section
     new_section <- list(label = section, contents = list(content_item))
+    if (isTRUE(collapsed)) new_section$collapsed <- TRUE
     config$sidebar[[kind]] <- c(config$sidebar[[kind]], list(new_section))
     write_config_toml(config, config_path)
     return(list(added = TRUE, new_section = TRUE))
+  }
+
+  # Apply collapsed if requested
+  if (!is.null(collapsed)) {
+    if (isTRUE(collapsed)) {
+      config$sidebar[[kind]][[section_idx]]$collapsed <- TRUE
+    } else {
+      config$sidebar[[kind]][[section_idx]]$collapsed <- NULL
+    }
   }
 
   # Check for duplicates by slug
@@ -77,6 +89,8 @@ add_sidebar_item <- function(kind, slug, section, label = NULL, config_path = "_
   }, character(1))
 
   if (slug %in% existing_slugs) {
+    # Still write if collapsed changed
+    if (!is.null(collapsed)) write_config_toml(config, config_path)
     return(list(added = FALSE, new_section = FALSE))
   }
 
@@ -84,6 +98,92 @@ add_sidebar_item <- function(kind, slug, section, label = NULL, config_path = "_
   config$sidebar[[kind]][[section_idx]]$contents <- c(existing_contents, list(content_item))
   write_config_toml(config, config_path)
   return(list(added = TRUE, new_section = FALSE))
+}
+
+#' Get sidebar sections as a data frame (internal helper)
+#'
+#' @param kind "reference" or "articles"
+#' @param config_path Path to config file
+#' @return Data frame with columns: label, collapsed, n_items
+#' @keywords internal
+get_sidebar_sections <- function(kind, config_path = "_starlightr.toml") {
+  config <- read_config_toml(config_path)
+  sections <- config$sidebar[[kind]]
+
+  if (is.null(sections) || length(sections) == 0) {
+    return(data.frame(
+      label = character(0),
+      collapsed = logical(0),
+      n_items = integer(0),
+      stringsAsFactors = FALSE
+    ))
+  }
+
+  labels <- vapply(sections, function(s) {
+    if (is.list(s)) s$label %||% NA_character_ else as.character(s)
+  }, character(1))
+  collapsed <- vapply(sections, function(s) {
+    if (is.list(s)) isTRUE(s$collapsed) else NA
+  }, logical(1))
+  n_items <- vapply(sections, function(s) {
+    if (is.list(s)) length(s$contents) else 1L
+  }, integer(1))
+
+  data.frame(
+    label = labels,
+    collapsed = collapsed,
+    n_items = n_items,
+    stringsAsFactors = FALSE
+  )
+}
+
+#' Set collapsed state for sidebar sections (internal helper)
+#'
+#' @param kind "reference" or "articles"
+#' @param section Character vector of section labels
+#' @param collapsed Logical, whether sections should be collapsed
+#' @param config_path Path to config file
+#' @return Character vector of labels actually modified (invisibly)
+#' @keywords internal
+set_sidebar_section_collapsed <- function(kind, section, collapsed = TRUE,
+                                          config_path = "_starlightr.toml") {
+  config <- read_config_toml(config_path)
+  sections <- config$sidebar[[kind]]
+
+  if (is.null(sections) || length(sections) == 0) {
+    cli::cli_warn("No {.val {kind}} sections found in {.path {config_path}}")
+    return(invisible(character(0)))
+  }
+
+  modified <- character(0)
+
+  for (lbl in section) {
+    found <- FALSE
+    for (i in seq_along(sections)) {
+      if (!is.list(sections[[i]])) next
+      if (!is.null(sections[[i]]$label) && sections[[i]]$label == lbl) {
+        found <- TRUE
+        current <- isTRUE(sections[[i]]$collapsed)
+        if (current == collapsed) next
+        if (collapsed) {
+          config$sidebar[[kind]][[i]]$collapsed <- TRUE
+        } else {
+          config$sidebar[[kind]][[i]]$collapsed <- NULL
+        }
+        modified <- c(modified, lbl)
+        break
+      }
+    }
+    if (!found) {
+      cli::cli_warn("Section {.val {lbl}} not found in {.val {kind}} sidebar")
+    }
+  }
+
+  if (length(modified) > 0) {
+    write_config_toml(config, config_path)
+  }
+
+  invisible(modified)
 }
 
 # ---- Exported helpers ----
@@ -261,6 +361,7 @@ add_action <- function(text, link, icon = "right-arrow", variant = "primary",
 #' @param fn_name Function name to add
 #' @param section Section label to add to (creates if doesn't exist)
 #' @param label Optional display label (if different from fn_name)
+#' @param collapsed Optional logical to set collapsed state of the section
 #' @param config_path Path to config file (default: "_starlightr.toml")
 #'
 #' @return Invisibly returns TRUE if successful
@@ -272,9 +373,13 @@ add_action <- function(text, link, icon = "right-arrow", variant = "primary",
 #'
 #' # Add with a custom display label
 #' add_reference("my_function", "Site Building", label = "My Function")
+#'
+#' # Add to a collapsed section
+#' add_reference("my_function", "Internals", collapsed = TRUE)
 #' }
-add_reference <- function(fn_name, section, label = NULL, config_path = "_starlightr.toml") {
-  result <- add_sidebar_item("reference", fn_name, section, label, config_path)
+add_reference <- function(fn_name, section, label = NULL, collapsed = NULL,
+                          config_path = "_starlightr.toml") {
+  result <- add_sidebar_item("reference", fn_name, section, label, collapsed, config_path)
 
   if (!result$added) {
     cli::cli_alert_info("{.fn {fn_name}} already exists in section {.val {section}}")
@@ -295,6 +400,7 @@ add_reference <- function(fn_name, section, label = NULL, config_path = "_starli
 #' @param vignette_name Vignette name (without .Rmd extension)
 #' @param section Section label to add to (creates if doesn't exist)
 #' @param label Optional display label (if different from vignette_name)
+#' @param collapsed Optional logical to set collapsed state of the section
 #' @param config_path Path to config file (default: "_starlightr.toml")
 #'
 #' @return Invisibly returns TRUE if successful
@@ -306,9 +412,13 @@ add_reference <- function(fn_name, section, label = NULL, config_path = "_starli
 #'
 #' # Add with a custom display label
 #' add_article("README", "Getting Started", label = "About")
+#'
+#' # Add to a collapsed section
+#' add_article("advanced-usage", "Advanced", collapsed = TRUE)
 #' }
-add_article <- function(vignette_name, section, label = NULL, config_path = "_starlightr.toml") {
-  result <- add_sidebar_item("articles", vignette_name, section, label, config_path)
+add_article <- function(vignette_name, section, label = NULL, collapsed = NULL,
+                        config_path = "_starlightr.toml") {
+  result <- add_sidebar_item("articles", vignette_name, section, label, collapsed, config_path)
 
   if (!result$added) {
     cli::cli_alert_info("{.val {vignette_name}} already exists in section {.val {section}}")
@@ -319,6 +429,101 @@ add_article <- function(vignette_name, section, label = NULL, config_path = "_st
   }
 
   invisible(TRUE)
+}
+
+#' Get reference sidebar sections
+#'
+#' Returns a data frame describing each section in the reference sidebar,
+#' including its label, collapsed state, and number of items.
+#'
+#' @param config_path Path to config file (default: "_starlightr.toml")
+#'
+#' @return A data frame with columns: label, collapsed, n_items
+#' @export
+#'
+#' @examples \dontrun{
+#' get_reference_sections()
+#' }
+get_reference_sections <- function(config_path = "_starlightr.toml") {
+  get_sidebar_sections("reference", config_path)
+}
+
+#' Get article sidebar sections
+#'
+#' Returns a data frame describing each section in the articles sidebar,
+#' including its label, collapsed state, and number of items.
+#'
+#' @param config_path Path to config file (default: "_starlightr.toml")
+#'
+#' @return A data frame with columns: label, collapsed, n_items
+#' @export
+#'
+#' @examples \dontrun{
+#' get_article_sections()
+#' }
+get_article_sections <- function(config_path = "_starlightr.toml") {
+  get_sidebar_sections("articles", config_path)
+}
+
+#' Set collapsed state for reference sidebar sections
+#'
+#' Sets the collapsed property for one or more reference sidebar sections
+#' in the starlightr configuration file.
+#'
+#' @param section Character vector of section labels to modify
+#' @param collapsed Logical, whether sections should be collapsed (default: TRUE)
+#' @param config_path Path to config file (default: "_starlightr.toml")
+#'
+#' @return Invisibly returns character vector of labels actually modified
+#' @export
+#'
+#' @examples \dontrun{
+#' # Collapse a section
+#' set_reference_section("Site Building", collapsed = TRUE)
+#'
+#' # Expand a section
+#' set_reference_section("Site Building", collapsed = FALSE)
+#'
+#' # Collapse multiple sections
+#' set_reference_section(c("Site Building", "Migration"), collapsed = TRUE)
+#' }
+set_reference_section <- function(section, collapsed = TRUE,
+                                  config_path = "_starlightr.toml") {
+  modified <- set_sidebar_section_collapsed("reference", section, collapsed, config_path)
+  state <- if (collapsed) "collapsed" else "expanded"
+  for (lbl in modified) {
+    cli::cli_alert_success("Set {.val {lbl}} to {state}")
+  }
+  invisible(modified)
+}
+
+#' Set collapsed state for article sidebar sections
+#'
+#' Sets the collapsed property for one or more article sidebar sections
+#' in the starlightr configuration file.
+#'
+#' @param section Character vector of section labels to modify
+#' @param collapsed Logical, whether sections should be collapsed (default: TRUE)
+#' @param config_path Path to config file (default: "_starlightr.toml")
+#'
+#' @return Invisibly returns character vector of labels actually modified
+#' @export
+#'
+#' @examples \dontrun{
+#' # Collapse a section
+#' set_article_section("Getting Started", collapsed = TRUE)
+#'
+#' # Expand a section
+#' set_article_section("Getting Started", collapsed = FALSE)
+#' }
+set_article_section <- function(section, collapsed = TRUE,
+                                config_path = "_starlightr.toml") {
+  modified <- set_sidebar_section_collapsed("articles", section, collapsed, config_path)
+  state <- if (collapsed) "collapsed" else "expanded"
+  for (lbl in modified) {
+    cli::cli_alert_success("Set {.val {lbl}} to {state}")
+  }
+  invisible(modified)
 }
 
 #' Add a version to the versions list
