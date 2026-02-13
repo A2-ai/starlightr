@@ -17,7 +17,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: "{{{title}}}",
-      customCss: ["./src/styles/custom.css"],
+      customCss: ["./src/styles/starlightr.css", "./src/styles/custom.css"],
 {{#use_katex}}
       plugins: [starlightKatex()],
 {{/use_katex}}

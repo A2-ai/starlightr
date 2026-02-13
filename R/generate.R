@@ -154,12 +154,35 @@ generate_remark_plugin <- function(output_path) {
   cli::cli_alert_success("Generated {.file remark-base-url.mjs}")
 }
 
-#' Generate custom.css file for Starlight site
+#' Generate starlightr.css file for Starlight site
+#'
+#' Copies starlightr's own styles (argument tables, etc.) into the site.
+#' This file is always overwritten because starlightr owns it.
 #'
 #' @param output_path Path to output directory
-#' @param overwrite Logical, whether to overwrite existing file
 #' @keywords internal
-generate_custom_css <- function(output_path, overwrite = FALSE) {
+generate_starlightr_css <- function(output_path) {
+  template_path <- system.file("templates/starlightr.css", package = "starlightr")
+
+  # Create styles directory
+  styles_dir <- file.path(output_path, "src", "styles")
+  if (!dir.exists(styles_dir)) {
+    dir.create(styles_dir, recursive = TRUE)
+  }
+
+  css_path <- file.path(styles_dir, "starlightr.css")
+  file.copy(template_path, css_path, overwrite = TRUE)
+  cli::cli_alert_success("Generated {.file src/styles/starlightr.css}")
+}
+
+#' Generate custom.css file for Starlight site
+#'
+#' Creates a placeholder custom.css for user styles. Only created if missing;
+#' this file is user-owned and never overwritten.
+#'
+#' @param output_path Path to output directory
+#' @keywords internal
+generate_custom_css <- function(output_path) {
   template_path <- system.file("templates/custom.css", package = "starlightr")
 
   # Create styles directory
@@ -170,8 +193,7 @@ generate_custom_css <- function(output_path, overwrite = FALSE) {
 
   css_path <- file.path(styles_dir, "custom.css")
 
-  # Don't overwrite existing custom.css unless requested
-  if (file.exists(css_path) && !overwrite) {
+  if (file.exists(css_path)) {
     cli::cli_alert_info("Skipping {.file custom.css} (already exists)")
     return(invisible(NULL))
   }

@@ -1,0 +1,10 @@
+/* Argument tables in reference documentation */
+.arg-table table td:first-child {
+  min-width: 160px;
+  white-space: nowrap;
+}
+
+.arg-table table td:not(:first-child) {
+  width: 100%;
+  white-space: normal;
+}
