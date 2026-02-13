@@ -586,7 +586,11 @@ add_package <- function(name, version, config_path = "_starlightr.toml") {
 #' @keywords internal
 patch_package_json <- function(config, config_path) {
   output_dir <- config$output$dir %||% "docs"
-  pkg_json <- file.path(dirname(config_path), output_dir, "package.json")
+  if (is_absolute_path(output_dir)) {
+    pkg_json <- file.path(output_dir, "package.json")
+  } else {
+    pkg_json <- file.path(dirname(config_path), output_dir, "package.json")
+  }
 
   if (!file.exists(pkg_json)) return(invisible(NULL))
 
