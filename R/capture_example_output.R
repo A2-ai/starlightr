@@ -107,10 +107,10 @@ capture_example_output <- function(pkg_name, artifact_output_dir, text_output_di
       message("Code:\n", ex_code, "\n---")
     }
 
-    # Track existing global objects so we can clean up after
-    # We evaluate in globalenv() because model objects (lme, lm, etc.) store
-    # references to variables in their call, and re-evaluate them in parent.frame()
-    existing_objs <- ls(globalenv(), all.names = TRUE)
+    # Evaluate examples in an isolated environment.
+    # Parent is the search-path environment so attached packages remain visible
+    # while avoiding mutations to .GlobalEnv.
+    eval_env <- new.env(parent = parent.env(globalenv()))
 
     # Track if this is the first write to the text file for this function
     first_write <- TRUE
@@ -120,7 +120,7 @@ capture_example_output <- function(pkg_name, artifact_output_dir, text_output_di
         message("  Evaluating expression ", i, ": ", deparse(ex_exprs[[i]])[1])
       }
       val <- tryCatch(
-        withVisible(eval(ex_exprs[[i]], envir = globalenv())),
+        withVisible(eval(ex_exprs[[i]], envir = eval_env)),
         error = function(e) {
           message("  Error in example ", i, " for ", fn_name, ": ", e$message)
           return(NULL)
@@ -173,10 +173,5 @@ capture_example_output <- function(pkg_name, artifact_output_dir, text_output_di
       }
     }
 
-    # Clean up objects created during this function's examples
-    new_objs <- setdiff(ls(globalenv(), all.names = TRUE), existing_objs)
-    if (length(new_objs) > 0) {
-      rm(list = new_objs, envir = globalenv())
-    }
   }
 }

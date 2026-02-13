@@ -4,7 +4,7 @@
 \alias{find_function_doc_file}
 \title{Find the actual documentation file for a function using Rd database}
 \usage{
-find_function_doc_file(function_name, pkg_name)
+find_function_doc_file(function_name, pkg_name, rd_db = NULL)
 }
 \arguments{
 \item{function_name}{Name of the function to find}

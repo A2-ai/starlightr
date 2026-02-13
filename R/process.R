@@ -108,12 +108,8 @@ process_articles_and_readme <- function(pkg_path, output_path, config) {
   for (i in seq_along(article_names)) {
     name <- article_names[i]
     if (tolower(name) == "readme") {
-      # Check package root, then inst/
-      readme_path <- file.path(pkg_path, "README.Rmd")
-      if (!file.exists(readme_path)) {
-        readme_path <- file.path(pkg_path, "inst", "README.Rmd")
-      }
-      rmd_paths[i] <- readme_path
+      readme_path <- find_readme(pkg_path)
+      rmd_paths[i] <- readme_path %||% file.path(pkg_path, "README.Rmd")
     } else {
       rmd_paths[i] <- file.path(vignettes_dir, paste0(name, ".Rmd"))
     }

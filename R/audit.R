@@ -196,7 +196,8 @@ parse_namespace_exports <- function(namespace_path) {
     if (grepl("^export\\(", line)) {
       match <- regmatches(line, regexec("^export\\(([^)]+)\\)", line))[[1]]
       if (length(match) >= 2) {
-        exports <- c(exports, trimws(match[2]))
+        symbols <- strsplit(match[2], ",")[[1]]
+        exports <- c(exports, trimws(symbols))
       }
     }
 

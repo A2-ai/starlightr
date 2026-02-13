@@ -44,6 +44,26 @@ get_package_name <- function(pkg_path) {
   return(pkg_name)
 }
 
+#' Find README.Rmd in package root or inst/
+#'
+#' @param pkg_path Path to package directory
+#' @return README path if found, otherwise NULL
+#' @keywords internal
+find_readme <- function(pkg_path) {
+  candidates <- c(
+    file.path(pkg_path, "README.Rmd"),
+    file.path(pkg_path, "inst", "README.Rmd")
+  )
+
+  for (path in candidates) {
+    if (file.exists(path)) {
+      return(path)
+    }
+  }
+
+  NULL
+}
+
 #' Extract GitHub URL from configuration
 #'
 #' @param config Configuration list

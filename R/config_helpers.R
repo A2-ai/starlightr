@@ -379,6 +379,16 @@ add_action <- function(text, link, icon = "right-arrow", variant = "primary",
 #' }
 add_reference <- function(fn_name, section, label = NULL,
                           config_path = "_starlightr.toml", collapsed = NULL) {
+  if (!is.character(fn_name) || length(fn_name) != 1 || !nzchar(trimws(fn_name))) {
+    cli::cli_abort("{.arg fn_name} must be a non-empty string")
+  }
+  if (!is.character(section) || length(section) != 1 || !nzchar(trimws(section))) {
+    cli::cli_abort("{.arg section} must be a non-empty string")
+  }
+  if (!is.null(label) && (!is.character(label) || length(label) != 1 || !nzchar(trimws(label)))) {
+    cli::cli_abort("{.arg label} must be NULL or a non-empty string")
+  }
+
   result <- add_sidebar_item("reference", fn_name, section, label, config_path, collapsed)
 
   if (!result$added) {
@@ -418,6 +428,16 @@ add_reference <- function(fn_name, section, label = NULL,
 #' }
 add_article <- function(vignette_name, section, label = NULL,
                         config_path = "_starlightr.toml", collapsed = NULL) {
+  if (!is.character(vignette_name) || length(vignette_name) != 1 || !nzchar(trimws(vignette_name))) {
+    cli::cli_abort("{.arg vignette_name} must be a non-empty string")
+  }
+  if (!is.character(section) || length(section) != 1 || !nzchar(trimws(section))) {
+    cli::cli_abort("{.arg section} must be a non-empty string")
+  }
+  if (!is.null(label) && (!is.character(label) || length(label) != 1 || !nzchar(trimws(label)))) {
+    cli::cli_abort("{.arg label} must be NULL or a non-empty string")
+  }
+
   result <- add_sidebar_item("articles", vignette_name, section, label, config_path, collapsed)
 
   if (!result$added) {
@@ -543,6 +563,13 @@ set_article_section <- function(section, collapsed = TRUE,
 #' add_package("starlight-links-validator", "^0.12.3")
 #' }
 add_package <- function(name, version, config_path = "_starlightr.toml") {
+  if (!is.character(name) || length(name) != 1 || !nzchar(trimws(name))) {
+    cli::cli_abort("{.arg name} must be a non-empty string")
+  }
+  if (!is.character(version) || length(version) != 1 || !nzchar(trimws(version))) {
+    cli::cli_abort("{.arg version} must be a non-empty string")
+  }
+
   config <- read_config_toml(config_path)
 
   # Initialize dependencies list if absent

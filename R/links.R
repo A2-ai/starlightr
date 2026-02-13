@@ -157,8 +157,7 @@ validate_link_target <- function(link, context, pkg_path, exported) {
     if (nchar(article_name) > 0) {
       # README is special - it's processed from package root
       if (tolower(article_name) == "readme") {
-        readme_path <- file.path(pkg_path, "README.Rmd")
-        if (!file.exists(readme_path)) {
+        if (is.null(find_readme(pkg_path))) {
           cli::cli_warn("Article link target not found: {.val {link}} - no {.file README.Rmd} ({context})")
           return(TRUE)
         }
@@ -213,7 +212,7 @@ validate_article_slugs <- function(config, pkg_path) {
 
         # Check if source file exists
         if (tolower(slug) == "readme") {
-          exists <- file.exists(file.path(pkg_path, "README.Rmd"))
+          exists <- !is.null(find_readme(pkg_path))
         } else {
           exists <- file.exists(file.path(pkg_path, "vignettes", paste0(slug, ".Rmd")))
         }
