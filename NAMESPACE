@@ -3,6 +3,7 @@
 export(add_action)
 export(add_article)
 export(add_card)
+export(add_package)
 export(add_reference)
 export(add_version)
 export(audit_config)

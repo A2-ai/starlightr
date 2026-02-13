@@ -81,14 +81,37 @@ generate_package_json <- function(output_path, config, overwrite = FALSE) {
     return(invisible(NULL))
   }
 
-  data <- list(
-    use_katex = config$features$katex %||% TRUE
-  )
-
-  package_json <- render_template("package.json", data)
-
+  # Render base template (no whisker conditionals)
+  package_json <- render_template("package.json", list())
   writeLines(package_json, package_json_path)
+
+  # Merge additional dependencies into the rendered JSON
+  merge_package_deps(package_json_path, config)
+
   cli::cli_alert_success("Generated {.file package.json}")
+}
+
+#' Merge katex and user dependencies into package.json
+#'
+#' @param package_json_path Path to the package.json file
+#' @param config Configuration list
+#' @keywords internal
+merge_package_deps <- function(package_json_path, config) {
+  pkg <- jsonlite::read_json(package_json_path)
+
+  # Add katex dependency if enabled
+  if (isTRUE(config$features$katex %||% TRUE)) {
+    pkg$dependencies[["starlight-katex"]] <- "^0.0.4"
+  }
+
+  # Add user-managed dependencies from config
+  if (!is.null(config$dependencies)) {
+    for (dep in config$dependencies) {
+      pkg$dependencies[[dep$name]] <- dep$version
+    }
+  }
+
+  jsonlite::write_json(pkg, package_json_path, auto_unbox = TRUE, pretty = TRUE)
 }
 
 #' Generate content.config.ts file for Astro content collections

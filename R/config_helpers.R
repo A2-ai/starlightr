@@ -35,7 +35,7 @@ write_config_toml <- function(config, config_path = "_starlightr.toml") {
 #' @return List with modified config and whether item was added
 #' @keywords internal
 add_sidebar_item <- function(kind, slug, section, label = NULL,
-                             collapsed = NULL, config_path = "_starlightr.toml") {
+                             config_path = "_starlightr.toml", collapsed = NULL) {
   config <- read_config_toml(config_path)
 
   # Initialize sidebar section if it doesn't exist
@@ -361,8 +361,8 @@ add_action <- function(text, link, icon = "right-arrow", variant = "primary",
 #' @param fn_name Function name to add
 #' @param section Section label to add to (creates if doesn't exist)
 #' @param label Optional display label (if different from fn_name)
-#' @param collapsed Optional logical to set collapsed state of the section
 #' @param config_path Path to config file (default: "_starlightr.toml")
+#' @param collapsed Optional logical to set collapsed state of the section
 #'
 #' @return Invisibly returns TRUE if successful
 #' @export
@@ -377,9 +377,9 @@ add_action <- function(text, link, icon = "right-arrow", variant = "primary",
 #' # Add to a collapsed section
 #' add_reference("my_function", "Internals", collapsed = TRUE)
 #' }
-add_reference <- function(fn_name, section, label = NULL, collapsed = NULL,
-                          config_path = "_starlightr.toml") {
-  result <- add_sidebar_item("reference", fn_name, section, label, collapsed, config_path)
+add_reference <- function(fn_name, section, label = NULL,
+                          config_path = "_starlightr.toml", collapsed = NULL) {
+  result <- add_sidebar_item("reference", fn_name, section, label, config_path, collapsed)
 
   if (!result$added) {
     cli::cli_alert_info("{.fn {fn_name}} already exists in section {.val {section}}")
@@ -400,8 +400,8 @@ add_reference <- function(fn_name, section, label = NULL, collapsed = NULL,
 #' @param vignette_name Vignette name (without .Rmd extension)
 #' @param section Section label to add to (creates if doesn't exist)
 #' @param label Optional display label (if different from vignette_name)
-#' @param collapsed Optional logical to set collapsed state of the section
 #' @param config_path Path to config file (default: "_starlightr.toml")
+#' @param collapsed Optional logical to set collapsed state of the section
 #'
 #' @return Invisibly returns TRUE if successful
 #' @export
@@ -416,9 +416,9 @@ add_reference <- function(fn_name, section, label = NULL, collapsed = NULL,
 #' # Add to a collapsed section
 #' add_article("advanced-usage", "Advanced", collapsed = TRUE)
 #' }
-add_article <- function(vignette_name, section, label = NULL, collapsed = NULL,
-                        config_path = "_starlightr.toml") {
-  result <- add_sidebar_item("articles", vignette_name, section, label, collapsed, config_path)
+add_article <- function(vignette_name, section, label = NULL,
+                        config_path = "_starlightr.toml", collapsed = NULL) {
+  result <- add_sidebar_item("articles", vignette_name, section, label, config_path, collapsed)
 
   if (!result$added) {
     cli::cli_alert_info("{.val {vignette_name}} already exists in section {.val {section}}")
@@ -524,6 +524,74 @@ set_article_section <- function(section, collapsed = TRUE,
     cli::cli_alert_success("Set {.val {lbl}} to {state}")
   }
   invisible(modified)
+}
+
+#' Add an npm package dependency
+#'
+#' Adds an npm package to the dependencies section of the starlightr
+#' configuration file. If the output \code{package.json} already exists,
+#' it is patched immediately.
+#'
+#' @param name Package name (e.g., "starlight-links-validator")
+#' @param version Version spec (e.g., "^0.12.3")
+#' @param config_path Path to config file (default: "_starlightr.toml")
+#'
+#' @return Invisibly returns TRUE if successful
+#' @export
+#'
+#' @examples \dontrun{
+#' add_package("starlight-links-validator", "^0.12.3")
+#' }
+add_package <- function(name, version, config_path = "_starlightr.toml") {
+  config <- read_config_toml(config_path)
+
+  # Initialize dependencies list if absent
+  if (is.null(config$dependencies)) {
+    config$dependencies <- list()
+  }
+
+  # Check for duplicate by name
+  for (i in seq_along(config$dependencies)) {
+    dep <- config$dependencies[[i]]
+    if (!is.null(dep$name) && dep$name == name) {
+      if (dep$version == version) {
+        cli::cli_alert_info("{.pkg {name}} already at version {.val {version}}")
+        return(invisible(TRUE))
+      }
+      # Different version — update in place
+      config$dependencies[[i]]$version <- version
+      cli::cli_alert_success("Updated {.pkg {name}} to {.val {version}}")
+      write_config_toml(config, config_path)
+      patch_package_json(config, config_path)
+      return(invisible(TRUE))
+    }
+  }
+
+  # Append new dependency
+
+  config$dependencies <- c(config$dependencies, list(list(name = name, version = version)))
+  cli::cli_alert_success("Added {.pkg {name}} {.val {version}}")
+
+  write_config_toml(config, config_path)
+  patch_package_json(config, config_path)
+  invisible(TRUE)
+}
+
+#' Patch output package.json with current config dependencies
+#'
+#' If the output directory contains a package.json, merge deps into it.
+#'
+#' @param config Configuration list
+#' @param config_path Path to config file (used to resolve output dir)
+#' @keywords internal
+patch_package_json <- function(config, config_path) {
+  output_dir <- config$output$dir %||% "docs"
+  pkg_json <- file.path(dirname(config_path), output_dir, "package.json")
+
+  if (!file.exists(pkg_json)) return(invisible(NULL))
+
+  merge_package_deps(pkg_json, config)
+  cli::cli_alert_success("Patched {.file package.json}")
 }
 
 #' Add a version to the versions list

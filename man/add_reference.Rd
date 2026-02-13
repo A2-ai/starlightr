@@ -8,8 +8,8 @@ add_reference(
   fn_name,
   section,
   label = NULL,
-  collapsed = NULL,
-  config_path = "_starlightr.toml"
+  config_path = "_starlightr.toml",
+  collapsed = NULL
 )
 }
 \arguments{
@@ -19,9 +19,9 @@ add_reference(
 
 \item{label}{Optional display label (if different from fn_name)}
 
-\item{collapsed}{Optional logical to set collapsed state of the section}
-
 \item{config_path}{Path to config file (default: "_starlightr.toml")}
+
+\item{collapsed}{Optional logical to set collapsed state of the section}
 }
 \value{
 Invisibly returns TRUE if successful

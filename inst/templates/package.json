@@ -13,7 +13,6 @@
     "@astrojs/starlight": "^0.36.0",
     "astro": "^5.6.1",
     "sharp": "^0.34.2",
-    "unist-util-visit": "^5.0.0"{{#use_katex}},
-    "starlight-katex": "^0.0.4"{{/use_katex}}
+    "unist-util-visit": "^5.0.0"
   }
 }
