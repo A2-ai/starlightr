@@ -52,7 +52,9 @@ get_package_name <- function(pkg_path) {
 find_readme <- function(pkg_path) {
   candidates <- c(
     file.path(pkg_path, "README.Rmd"),
-    file.path(pkg_path, "inst", "README.Rmd")
+    file.path(pkg_path, "inst", "README.Rmd"),
+    file.path(pkg_path, "README.md"),
+    file.path(pkg_path, "inst", "README.md")
   )
 
   for (path in candidates) {
@@ -62,6 +64,23 @@ find_readme <- function(pkg_path) {
   }
 
   NULL
+}
+
+#' Escape a string for use inside a quoted string ("...")
+#'
+#' Handles backslashes, double quotes, and control characters.
+#' Works for TOML basic strings, YAML double-quoted strings, and JS string literals.
+#'
+#' @param x Character string to escape
+#' @return Escaped string safe for use inside double quotes
+#' @keywords internal
+escape_quoted_string <- function(x) {
+  x <- gsub("\\", "\\\\", x, fixed = TRUE)
+  x <- gsub('"', '\\"', x, fixed = TRUE)
+  x <- gsub("\n", "\\n", x, fixed = TRUE)
+  x <- gsub("\r", "\\r", x, fixed = TRUE)
+  x <- gsub("\t", "\\t", x, fixed = TRUE)
+  x
 }
 
 #' Extract GitHub URL from configuration

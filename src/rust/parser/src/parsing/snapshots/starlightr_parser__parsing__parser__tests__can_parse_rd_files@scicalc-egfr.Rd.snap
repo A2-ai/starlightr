@@ -1,0 +1,629 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/scicalc-egfr.Rd
+---
+Document {
+    children: [
+        NewLine,
+        NewLine,
+        Command {
+            name: "name",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "ckdepi_2021_egfr",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Command {
+            name: "alias",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "ckdepi_2021_egfr",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Command {
+            name: "title",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "Calculate eGFR Using CKD-EPI 2021 Creatinine Equation",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Command {
+            name: "usage",
+            options: None,
+            args: [
+                [
+                    NewLine,
+                    Text(
+                        "ckdepi_2021_egfr(sexf, age, creat)",
+                    ),
+                    NewLine,
+                ],
+            ],
+        },
+        NewLine,
+        ArgumentTable(
+            [
+                Argument {
+                    name: [
+                        Text(
+                            "sexf",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "boolean value of sex Female: TRUE, Male: FALSE",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "age",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "age of subject (years)",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "creat",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "creatinine levels of subject (mg/dL)",
+                        ),
+                    ],
+                },
+            ],
+        ),
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Value",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "the eGFR value (mL/min/1.73m2)",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "Calculate eGFR Using CKD-EPI 2021 Creatinine Equation",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Details",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "The CKD-EPI 2021 creatinine equation (race-free):",
+                ),
+                NewLine,
+                Command {
+                    name: "deqn",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "eGFR = 142 ",
+                            ),
+                            Command {
+                                name: "cdot",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "min",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                "(S_",
+                            ),
+                            Text(
+                                "cr",
+                            ),
+                            Text(
+                                "/",
+                            ),
+                            Command {
+                                name: "kappa",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                ", 1)^",
+                            ),
+                            Command {
+                                name: "alpha",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "cdot",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "max",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                "(S_",
+                            ),
+                            Text(
+                                "cr",
+                            ),
+                            Text(
+                                "/",
+                            ),
+                            Command {
+                                name: "kappa",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                ", 1)^",
+                            ),
+                            Text(
+                                "-1.2",
+                            ),
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "cdot",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " 0.9938^A ",
+                            ),
+                            Command {
+                                name: "cdot",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " 1.012^F",
+                            ),
+                        ],
+                    ],
+                },
+                NewLine,
+                NewLine,
+                Text(
+                    "where:",
+                ),
+                NewLine,
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "eqn",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "S_",
+                                            ),
+                                            Text(
+                                                "cr",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " = serum creatinine (mg/dL)",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "eqn",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Command {
+                                                name: "kappa",
+                                                options: None,
+                                                args: [],
+                                            },
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " = 0.7 (female) or 0.9 (male)",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "eqn",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Command {
+                                                name: "alpha",
+                                                options: None,
+                                                args: [],
+                                            },
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " = -0.241 (female) or -0.302 (male)",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "eqn",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "A",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " = age (years)",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "eqn",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "F",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " = 1 (female) or 0 (male)",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        Command {
+            name: "examples",
+            options: None,
+            args: [
+                [
+                    NewLine,
+                    Text(
+                        "e <- ckdepi_2021_egfr(TRUE, 24, 1)",
+                    ),
+                    NewLine,
+                    NewLine,
+                    Text(
+                        "df <- data.frame(",
+                    ),
+                    NewLine,
+                    Text(
+                        "  \"SEXF\" = c(TRUE, FALSE, TRUE, FALSE),",
+                    ),
+                    NewLine,
+                    Text(
+                        "  \"RACEB\" = c(FALSE, FALSE, TRUE, FALSE),",
+                    ),
+                    NewLine,
+                    Text(
+                        "  \"AGE\" = c(24, 24, 23, 24),",
+                    ),
+                    NewLine,
+                    Text(
+                        "  \"CREAT\" = c(1, 1, 2, 1)",
+                    ),
+                    NewLine,
+                    Text(
+                        ")",
+                    ),
+                    NewLine,
+                    Text(
+                        "df <- dplyr::mutate(df, egfr = ckdepi_2021_egfr(SEXF, AGE, CREAT))",
+                    ),
+                    NewLine,
+                    Text(
+                        "df",
+                    ),
+                    NewLine,
+                ],
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "See Also",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "Other renal_function: ",
+                ),
+                NewLine,
+                Link {
+                    label: [
+                        Text(
+                            "aegfr",
+                        ),
+                        Text(
+                            "()",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "aegfr",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ",",
+                ),
+                NewLine,
+                Link {
+                    label: [
+                        Text(
+                            "ckdepi_2009_egfr",
+                        ),
+                        Text(
+                            "()",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "ckdepi_2009_egfr",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ",",
+                ),
+                NewLine,
+                Link {
+                    label: [
+                        Text(
+                            "ckdepi_2021_egfr_cystatin",
+                        ),
+                        Text(
+                            "()",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "ckdepi_2021_egfr_cystatin",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ",",
+                ),
+                NewLine,
+                Link {
+                    label: [
+                        Text(
+                            "crcl",
+                        ),
+                        Text(
+                            "()",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "crcl",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ",",
+                ),
+                NewLine,
+                Link {
+                    label: [
+                        Text(
+                            "egfr",
+                        ),
+                        Text(
+                            "()",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "egfr",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ",",
+                ),
+                NewLine,
+                Link {
+                    label: [
+                        Text(
+                            "mdrd_egfr",
+                        ),
+                        Text(
+                            "()",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "mdrd_egfr",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ",",
+                ),
+                NewLine,
+                Link {
+                    label: [
+                        Text(
+                            "rfc",
+                        ),
+                        Text(
+                            "()",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "rfc",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ",",
+                ),
+                NewLine,
+                Link {
+                    label: [
+                        Text(
+                            "schwartz_egfr",
+                        ),
+                        Text(
+                            "()",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "schwartz_egfr",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        Command {
+            name: "concept",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "renal_function",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+    ],
+}

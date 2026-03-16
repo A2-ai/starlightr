@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/A2-ai/starlightr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/A2-ai/starlightr/actions/workflows/R-CMD-check.yaml)
+[![extendr](https://img.shields.io/badge/extendr-*-276DC2)](https://extendr.github.io/extendr/extendr_api/)
 <!-- badges: end -->
 
 **starlightr** generates beautiful, modern documentation sites for R packages using [Starlight](https://starlight.astro.build/) (built on [Astro](https://astro.build/)). Think of it as an alternative to pkgdown that produces fast, accessible documentation with a polished UI out of the box.

@@ -1,0 +1,38 @@
+[package]
+name = 'starlightr'
+publish = false
+version = '0.1.0'
+edition = '2024'
+rust-version = '1.85'
+
+[lib]
+crate-type = [ 'staticlib' ]
+name = 'starlightr'
+path = "lib.rs"
+
+[workspace]
+members = ["parser"]
+
+[dependencies]
+extendr-api = { workspace = true }
+starlightr-parser = { path = "parser" }
+
+[workspace.dependencies]
+extendr-api = { git = "https://github.com/extendr/extendr", branch = "main", features = ["serde"] }
+
+# Core utilities
+anyhow = "1.0.100"
+fs-err = "3.1.2"
+serde = { version = "1.0.0", features = ["derive"] }
+serde_json = "1"
+toml = "0.9.7"
+regex = "1"
+
+# Testing and utilities
+insta = { version = "1.43.2", features = ['glob'] }
+tempfile = "3.23.0"
+
+
+[profile.release]
+lto = true
+codegen-units = 1

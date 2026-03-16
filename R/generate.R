@@ -50,7 +50,7 @@ generate_astro_config <- function(output_path, config, pkg_path = NULL) {
   sidebar_config <- generate_sidebar_config(config, output_path, pkg_name)
 
   data <- list(
-    title = config$site$title %||% "Package Documentation",
+    title = escape_quoted_string(config$site$title %||% "Package Documentation"),
     use_katex = config$features$katex %||% TRUE,
     has_versions = has_version_support(config),
     has_logo = !is.null(config$site$logo),

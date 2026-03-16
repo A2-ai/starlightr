@@ -1,0 +1,104 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &EmitOptions::default()).unwrap()"
+input_file: parser/test_data/scicalc-egfr.Rd
+---
+---
+title: "Calculate eGFR Using CKD-EPI 2021 Creatinine Equation"
+description: "Calculate eGFR Using CKD-EPI 2021 Creatinine Equation."
+pagefind: true
+---
+
+
+
+
+
+
+
+## Usage
+
+```r
+
+ckdepi_2021_egfr(sexf, age, creat)
+```
+
+
+## Arguments
+
+<div class="arg-table">
+<table>
+<thead>
+<tr><th>Argument</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sexf</code></td>
+<td>boolean value of sex Female: TRUE, Male: FALSE</td>
+</tr>
+<tr>
+<td><code>age</code></td>
+<td>age of subject (years)</td>
+</tr>
+<tr>
+<td><code>creat</code></td>
+<td>creatinine levels of subject (mg/dL)</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+## Value
+
+the eGFR value (mL/min/1.73m2)
+
+
+## Description
+
+Calculate eGFR Using CKD-EPI 2021 Creatinine Equation
+
+
+## Details
+
+The CKD-EPI 2021 creatinine equation (race-free):
+$$
+eGFR = 142 \cdot \min(S_cr/\kappa, 1)^\alpha \cdot \max(S_cr/\kappa, 1)^-1.2 \cdot 0.9938^A \cdot 1.012^F
+$$
+
+
+where:
+- $S_cr$ = serum creatinine (mg/dL)
+- $\kappa$ = 0.7 (female) or 0.9 (male)
+- $\alpha$ = -0.241 (female) or -0.302 (male)
+- $A$ = age (years)
+- $F$ = 1 (female) or 0 (male)
+
+
+## Examples
+
+```r
+
+e <- ckdepi_2021_egfr(TRUE, 24, 1)
+
+df <- data.frame(
+  "SEXF" = c(TRUE, FALSE, TRUE, FALSE),
+  "RACEB" = c(FALSE, FALSE, TRUE, FALSE),
+  "AGE" = c(24, 24, 23, 24),
+  "CREAT" = c(1, 1, 2, 1)
+)
+df <- dplyr::mutate(df, egfr = ckdepi_2021_egfr(SEXF, AGE, CREAT))
+df
+```
+
+
+## See Also
+
+Other renal_function: 
+[`aegfr()`](../aegfr/),
+[`ckdepi_2009_egfr()`](../ckdepi_2009_egfr/),
+[`ckdepi_2021_egfr_cystatin()`](../ckdepi_2021_egfr_cystatin/),
+[`crcl()`](../crcl/),
+[`egfr()`](../egfr/),
+[`mdrd_egfr()`](../mdrd_egfr/),
+[`rfc()`](../rfc/),
+[`schwartz_egfr()`](../schwartz_egfr/)

@@ -108,9 +108,9 @@ capture_example_output <- function(pkg_name, artifact_output_dir, text_output_di
     }
 
     # Evaluate examples in an isolated environment.
-    # Parent is the search-path environment so attached packages remain visible
-    # while avoiding mutations to .GlobalEnv.
-    eval_env <- new.env(parent = parent.env(globalenv()))
+    # Parent is .GlobalEnv so attached packages, data(), and model variable
+    # lookups all resolve, while new assignments stay in eval_env.
+    eval_env <- new.env(parent = globalenv())
 
     # Track if this is the first write to the text file for this function
     first_write <- TRUE

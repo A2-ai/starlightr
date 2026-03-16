@@ -1,0 +1,10 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &opts).unwrap()"
+input_file: parser/test_data/test-enumerate.Rd
+---
+---
+title: "test function"
+description: "1. First item 1. Second item."
+pagefind: true
+---

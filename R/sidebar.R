@@ -71,12 +71,13 @@ resolve_reference_item <- function(content, output_path, pkg_name, warn = TRUE, 
   }
 
   # Use doc_file if found, otherwise use content name
+  has_rd <- !is.null(doc_file)
   if (is.null(doc_file)) {
     doc_file <- content
   }
 
-  # Warn if file doesn't exist
-  if (warn && !file_exists && is.null(doc_file)) {
+  # Warn if file doesn't exist and no Rd entry was found
+  if (warn && !file_exists && !has_rd) {
     cli::cli_warn("Reference file missing: {.file {content}.mdx} - create manually or check config")
   }
 

@@ -1,0 +1,44 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &opts).unwrap()"
+input_file: parser/test_data/hyperion-tables-section-rules.Rd
+---
+---
+title: "Create section assignment rules"
+description: "Creates rules for assigning parameters to named sections in the output table. Rules are evaluated after name transformation, so you can match on the final displ"
+pagefind: true
+---
+
+
+
+
+
+
+
+
+
+
+
+## Available columns
+
+The following columns are available for use in section rules:
+- `nonmem_name` - NONMEM identifier ("THETA1", "OMEGA(1,1)")
+- `user_name` - User name from control file comments ("CL", "OM1")
+- `name` - Display name (depends on `parameter_names` setting)
+- `kind` - Parameter type: "THETA", "OMEGA", or "SIGMA"
+- `diagonal` - TRUE for diagonal matrix elements (variance), FALSE for off-diagonal (covariance)
+- `fixed` - TRUE if parameter is fixed
+
+
+
+## Examples
+
+```r
+
+section_rules(
+  grepl("~", user_name) ~ "Covariate Effects",
+  kind == "THETA" ~ "Structural Parameters",
+  kind == "OMEGA" & diagonal ~ "Between-Subject Variability",
+  kind == "SIGMA" ~ "Residual Variability"
+)
+```

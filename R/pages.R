@@ -112,8 +112,8 @@ import { Card, CardGrid } from "@astrojs/starlight/components";
 
   # Create default index content with Starlight components
   site_title <- config$site$title %||% pkg_name
-  hero_tagline_escaped <- gsub('"', '\\"', hero_tagline, fixed = TRUE)
-  pkg_desc_escaped <- gsub('"', '\\"', pkg_desc, fixed = TRUE)
+  hero_tagline_escaped <- escape_quoted_string(hero_tagline)
+  pkg_desc_escaped <- escape_quoted_string(pkg_desc)
 
   data <- list(
     title = site_title,

@@ -82,8 +82,8 @@ create_default_config <- function(config_path, pkg_path) {
 
   # Build minimal config - users add sidebar/cards via helpers
   data <- list(
-    pkg_name = pkg_name,
-    pkg_desc = pkg_desc
+    pkg_name = escape_quoted_string(pkg_name),
+    pkg_desc = escape_quoted_string(pkg_desc)
   )
 
   config_content <- render_template("starlightr.toml", data)

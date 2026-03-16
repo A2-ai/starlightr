@@ -81,8 +81,8 @@ build_site <- function(pkg = ".",
   generate_content_config(output_path)
   generate_starlightr_css(output_path)
   generate_custom_css(output_path)
-  generate_remark_plugin(output_path)
   if (config$output$include_build_files %||% TRUE) {
+    generate_remark_plugin(output_path)
     generate_package_json(output_path, config, overwrite = overwrite)
     generate_gitignore(output_path, overwrite = overwrite)
   }

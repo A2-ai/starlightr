@@ -11,5 +11,6 @@ repositories = [
 dependencies = [
   "devtools",
 	"covr",
-  {name = "starlightr", path = ".", dependencies_only = true, install_suggestions = true}
+  {name = "starlightr", path = ".", dependencies_only = true, install_suggestions = true},
+    "rextendr",
 ]

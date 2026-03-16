@@ -1,0 +1,72 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &opts).unwrap()"
+input_file: parser/test_data/scicalc-hfc.Rd
+---
+---
+title: "Categorize Hepatic Function"
+description: "This function categorizes hepatic function impairment using the National Cancer Institute Organ Dysfunction Working Group (NCI-ODWG) criteria. It evaluates aspa"
+pagefind: true
+---
+
+
+
+
+
+
+
+
+
+
+
+## Details
+
+**The NCI-ODWG hepatic function categories are defined as**:
+- 1: Normal: AST ≤ ULN AND bilirubin ≤ ULN
+- 2: Mild impairment: AST > ULN OR bilirubin > ULN but ≤ 1.5 × ULN
+- 3: Moderate impairment: Bilirubin > 1.5 × ULN but ≤ 3 × ULN
+- 4: Severe impairment: Bilirubin > 3 × ULN
+
+
+**Special handling:**
+The function uses `dplyr::near()` for boundary comparisons when bilirubin
+values are very close to 1.5 × ULN or 3 × ULN to handle floating-point precision
+issues that can occur with calculated thresholds.
+
+
+## Examples
+
+```r
+
+# Single patient with normal hepatic function
+hfc(ast = 15, ulnast = 33, bili = 0.6, ulnbili = 1.2)
+
+# Multiple patients with different impairment levels
+hfc(ast = c(25, 45, 30, 20),
+     ulnast = c(33, 33, 33, 33),
+     bili = c(0.8, 1.0, 2.5, 4.0),
+     ulnbili = c(1.2, 1.2, 1.2, 1.2))
+
+# Edge case: bilirubin exactly at boundary
+hfc(ast = 25, ulnast = 33, bili = 1.8, ulnbili = 1.2)  # 1.8 = 1.5 * 1.2
+
+# Pipeline example with realistic data
+library(dplyr)
+
+patients <- data.frame(
+  ID = 1:6,
+  AST = c(15, 45, 28, 35, 22, 30),
+  ULNAST = 33,
+  BILI = c(0.8, 1.0, 2.2, 4.5, 1.8, 0.9),
+  ULNBILI = 1.2
+)
+
+patients %>%
+  mutate(BHFC = hfc(AST, ULNAST, BILI, ULNBILI))
+
+```
+
+
+## References
+
+National Cancer Institute Organ Dysfunction Working Group criteria for hepatic impairment
