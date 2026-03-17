@@ -29,24 +29,20 @@ process_package_documentation <- function(pkg_path, output_path, config, verbose
   })
 
   ref_dir <- file.path(output_path, "src", "content", "docs", "reference")
-	
-	rd_dir <- file.path(pkg_path, "man")
-	config_path <- file.path(pkg_path, "_starlightr.toml")
+  rd_dir <- file.path(pkg_path, "man")
+  config_path <- file.path(pkg_path, "_starlightr.toml")
 
-	if (!dir.exists(rd_dir)) {
-		cli::cli_warn("No Rd files found in package {.pkg {pkg_name}}")
-		return()
-	}
+  if (!dir.exists(rd_dir)) {
+    cli::cli_warn("No Rd files found in package {.pkg {pkg_name}}")
+    return()
+  }
 
-	render_references(
-		rd_dir = rd_dir,
-		output_dir = ref_dir,
-		config_file = config_path
-	)
-	
-	# write example output to mdx files
-
-	cli::cli_alert_success("Generated reference documentation from {.path {rd_dir}}")
+  build_reference_files(
+    rd_dir = rd_dir,
+    output_dir = ref_dir,
+    config_file = config_path,
+    site_output_path = output_path
+  )
 }
 
 #' Process articles (vignettes) and README together
@@ -292,5 +288,4 @@ process_news <- function(pkg_path, output_path, config) {
   writeLines(news_content, output_file)
   cli::cli_alert_success("Generated {.file news.mdx}")
 }
-
 

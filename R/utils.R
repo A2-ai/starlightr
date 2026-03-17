@@ -100,6 +100,54 @@ get_github_url <- function(config) {
   return(NULL)
 }
 
+#' Get a specific section from an Rd object
+#'
+#' @param rd_obj Rd object from tools::Rd_db
+#' @param tag Section tag (e.g., "description", "arguments")
+#'
+#' @return The Rd element for that section, or NULL if not found
+#' @keywords internal
+get_rd_section <- function(rd_obj, tag) {
+  if (!startsWith(tag, "\\")) {
+    tag <- paste0("\\", tag)
+  }
+
+  for (element in rd_obj) {
+    element_tag <- attr(element, "Rd_tag")
+    if (!is.null(element_tag) && element_tag == tag) {
+      return(element)
+    }
+  }
+  NULL
+}
+
+#' Fix lifecycle badge paths to use CDN
+#'
+#' Rewrites lifecycle badge image paths from various local/relative formats
+#' to the canonical r-lib CDN URL.
+#'
+#' @param md Markdown string
+#' @return Markdown with lifecycle badges pointing to CDN
+#' @keywords internal
+fix_lifecycle_badges <- function(md) {
+  cdn_base <- "https://lifecycle.r-lib.org/articles/figures/lifecycle-"
+
+  md <- gsub(
+    "man/figures/lifecycle-([a-z]+)\\.svg",
+    paste0(cdn_base, "\\1.svg"),
+    md
+  )
+
+  md <- gsub(
+    "\\.\\.(/[^)\\s]+)?/lifecycle-([a-z]+)\\.svg",
+    paste0(cdn_base, "\\2.svg"),
+    md,
+    perl = TRUE
+  )
+
+  md
+}
+
 #' Render a whisker template from inst/templates/
 #'
 #' @param name Template filename (e.g. "astro.config.mjs")
