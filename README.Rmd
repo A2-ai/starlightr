@@ -21,207 +21,133 @@ knitr::opts_chunk$set(
 [![extendr](https://img.shields.io/badge/extendr-*-276DC2)](https://extendr.github.io/extendr/extendr_api/)
 <!-- badges: end -->
 
-**starlightr** generates beautiful, modern documentation sites for R packages using [Starlight](https://starlight.astro.build/) (built on [Astro](https://astro.build/)). Think of it as an alternative to pkgdown that produces fast, accessible documentation with a polished UI out of the box.
-
-## Features
-
-- Converts Rd documentation to clean Markdown/MDX
-- Processes vignettes into articles
-- Generates Astro/Starlight configuration automatically
-- Supports lifecycle badges, code examples, and complex documentation
-- **Example output embedding** - automatically captures and displays plot outputs, text results, and HTML widgets
-- **Multi-version documentation** - deploy multiple versions with a version selector dropdown
-- **KaTeX math support** - render LaTeX equations out of the box
-- Produces static sites that can be hosted anywhere (GitHub Pages, Netlify, Vercel, Cloudflare Pages, etc.)
+**starlightr** builds Starlight documentation sites for R packages.
+It converts Rd files to MDX, turns vignettes into articles, and can
+embed captured example outputs directly into reference pages.
 
 ## Installation
 
 ```r
-# Install from GitHub
 # install.packages("devtools")
 devtools::install_github("A2-ai/starlightr")
 ```
 
-### Requirements
+## Requirements
 
-- **R >= 4.0**
-- **pandoc** (comes with RStudio, or install separately)
-- **Node.js >= 18** (for building/previewing the Starlight site)
+- R >= 4.0
+- Node.js >= 18
+- pandoc
 
 ## Quick Start
-
-### 1. Initialize starlightr in your package
 
 ```r
 library(starlightr)
 
 # Run from your package directory
 use_starlightr()
-```
-
-This creates:
-- `_starlightr.toml` - configuration file
-- Updates `.Rbuildignore`
-
-### 2. Build the documentation site
-
-```r
-# Build to an external directory (recommended)
 build_site(output_dir = "../my-package-docs")
-
-# Or build to a subdirectory (adds bloat to your package)
-build_site(output_dir = "docs")
 ```
 
-Note: your package should be installed and up to date before running `build_site()`
-so starlightr can read Rd documentation and capture example outputs.
-
-### 3. Preview your site
+Then preview the site:
 
 ```bash
-cd ../my-package-docs  # or wherever you built to
-npm install
-npm run dev
+cd ../my-package-docs
+bun i
+bun run dev
 ```
 
-Open http://localhost:4321 to see your documentation!
+Your package should be installed and up to date before running `build_site()`
+so starlightr can read Rd documentation and capture example outputs.
+
+## Reference Files Only
+
+If you already have a Starlight site and only want to regenerate
+reference pages from `man/`, use `build_reference_files()`:
+
+```r
+build_reference_files(
+  rd_dir = "man",
+  output_dir = "../my-package-docs/src/content/docs/reference",
+  config_file = "_starlightr.toml",
+  site_output_path = "../my-package-docs"
+)
+```
+
+`site_output_path` should be the root of the Starlight site. It is used
+to find captured example outputs in `public/examples/` and append them to
+the generated reference pages.
 
 ## Configuration
 
-The `_starlightr.toml` file controls how your site is generated:
+starlightr reads `_starlightr.toml`. A minimal example:
 
 ```toml
-# Site metadata
 [site]
 title = "My Package"
 description = "A brief description of your package"
-github = "https://github.com/user/repo"  # Adds GitHub link to header
-logo = "man/figures/logo.png"            # Optional logo
-favicon = "man/figures/favicon.png"      # Optional favicon
+logo = "man/figures/logo.png"
+favicon = "man/figures/favicon.png"
 
-# Homepage hero section
-[home.hero]
-tagline = "What your package does in one sentence"
+[home]
+hero = { tagline = "What your package does in one sentence", actions = [
+    { text = "Get Started", link = "./articles/introduction/", icon = "right-arrow", variant = "primary" },
+    { text = "View on GitHub", link = "https://github.com/user/repo", icon = "external", variant = "minimal" }
+] }
 
-[[home.hero.actions]]
-text = "Get Started"
-link = "./articles/"
-icon = "right-arrow"
-variant = "primary"
+[sidebar]
+articles = [
+    { label = "Guides", contents = ["introduction"] }
+]
+reference = [
+    { label = "Reference", autogenerate = { directory = "reference" } }
+]
+news = { label = "Changelog", source = "NEWS.md" }
 
-[[home.hero.actions]]
-text = "View on GitHub"
-link = "https://github.com/user/repo"
-icon = "external"
-variant = "minimal"
+[navbar]
+right = [
+    { icon = "github", href = "https://github.com/user/repo" }
+]
 
-# Sidebar navigation - Articles section (from vignettes/)
-[[sidebar.articles]]
-label = "Guides"
-autogenerate = { directory = "articles" }
+[reference]
+skip_sections = ["name"]
+include_pagefind = true
 
-# Reference section (auto-generated from Rd files)
-[[sidebar.reference]]
-label = "All Functions"
-autogenerate = { directory = "reference" }
-
-# Changelog (from NEWS.md)
-[sidebar.news]
-label = "Changelog"
-source = "NEWS.md"
-
-# Features
-[features]
-katex = true  # LaTeX math rendering (enabled by default)
-
-# Content options
-[content]
-skip_sections = ["name"]  # Sections to exclude from function docs
-
-# Output settings
 [output]
-dir = "docs"
+dir = "../my-package-docs"
 include_build_files = true
 ```
 
-## Example Output Embedding
+## Example Outputs
 
-starlightr automatically captures outputs from your `@examples` and embeds them in the documentation:
+`build_site()` captures outputs from `@examples` and embeds them into the
+generated reference pages:
 
-- **Plots** - ggplot2 and base R plots are saved as PNGs and displayed
-- **Text output** - Console output is captured and shown in a code block
-- **HTML widgets** - gt tables, htmlwidgets, etc. are embedded as iframes
+- plots as PNGs
+- text output in fenced code blocks
+- HTML outputs such as gt tables via iframes
 
-This happens automatically when you run `build_site()`. Examples are evaluated in a clean R session and outputs are saved to `public/examples/`.
+`\dontrun{}` and `\dontshow{}` in Rd are respected and 
+output is not run or not shown respectively.
 
-To skip example evaluation for specific functions, use `\dontrun{}` in your Rd files.
+## Versions
 
-## Multi-Version Documentation
+Versioned docs are supported through the `[versions]` section in
+`_starlightr.toml`. When enabled, `build_site()` can also generate a
+deployment workflow for multi-version sites.
 
-starlightr supports deploying multiple versions of your documentation with a version selector dropdown.
+## pkgdown Migration
 
-### Configuration
-
-Add a `versions` section to your `_starlightr.toml`:
-
-```toml
-[versions]
-enabled = true
-current = "v1.2.0"  # Current/default version
-
-[[versions.list]]
-tag = "dev"
-label = "Development"
-
-[[versions.list]]
-tag = "v1.2.0"
-label = "v1.2.0 (latest)"
-default = true
-
-[[versions.list]]
-tag = "v1.1.0"
-label = "v1.1.0"
-```
-
-### How It Works
-
-1. Each git tag gets its own documentation build at `/versions/<tag>/`
-2. The version selector dropdown lets users switch between versions
-3. Links use `import.meta.env.BASE_URL` so they work correctly at any path
-
-### GitHub Actions Workflow
-
-When versioning is enabled, `build_site()` automatically generates a workflow at `.github/workflows/deploy-docs.yml`. To disable workflow generation:
-
-```toml
-[versions]
-enabled = true
-workflow = false
-```
-
-## Converting from pkgdown
-
-If you already have a `_pkgdown.yml` file, you can convert it:
+If you already have a `_pkgdown.yml`, you can convert it:
 
 ```r
 pkgdown_to_starlight()
 ```
 
-This reads your pkgdown configuration and creates a `_starlightr.toml` with equivalent settings.
+## Main Functions
 
-## API Reference
-
-| Function | Description |
-|----------|-------------|
+| Function | Purpose |
+|----------|---------|
 | `use_starlightr()` | Initialize starlightr in a package |
-| `build_site()` | Build the documentation site |
-| `audit_config()` | Check configuration for issues |
-| `pkgdown_to_starlight()` | Convert pkgdown config to starlightr |
-| `add_card()` | Add a card to the home page |
-| `add_reference()` | Add a function to a reference section |
-| `add_article()` | Add a vignette to an articles section |
-| `add_version()` | Add a version to the versions list |
-
-## License
-
-MIT
+| `build_site()` | Build a full Starlight site |
+| `build_reference_files()` | Render reference MDX files only |
+| `audit_config()` | Audit config against package exports and links |

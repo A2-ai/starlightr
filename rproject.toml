@@ -11,6 +11,7 @@ repositories = [
 dependencies = [
   "devtools",
 	"covr",
-  { name = "starlightr", path = ".", dependencies_only = true, install_suggestions = true },
-  { name = "rextendr", git = "https://github.com/extendr/rextendr", branch = "main" }, 
+  { name = "starlightr", path = ".", dependencies_only = false, install_suggestions = true },
+  { name = "rextendr", git = "https://github.com/extendr/rextendr", branch = "main" },
+    "languageserver",
 ]
