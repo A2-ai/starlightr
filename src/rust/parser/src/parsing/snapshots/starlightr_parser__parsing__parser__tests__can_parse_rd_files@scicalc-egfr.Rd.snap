@@ -165,7 +165,13 @@ Document {
                                 "(S_",
                             ),
                             Text(
+                                "{",
+                            ),
+                            Text(
                                 "cr",
+                            ),
+                            Text(
+                                "}",
                             ),
                             Text(
                                 "/",
@@ -203,7 +209,13 @@ Document {
                                 "(S_",
                             ),
                             Text(
+                                "{",
+                            ),
+                            Text(
                                 "cr",
+                            ),
+                            Text(
+                                "}",
                             ),
                             Text(
                                 "/",
@@ -217,7 +229,13 @@ Document {
                                 ", 1)^",
                             ),
                             Text(
+                                "{",
+                            ),
+                            Text(
                                 "-1.2",
+                            ),
+                            Text(
+                                "}",
                             ),
                             Text(
                                 " ",
@@ -265,7 +283,13 @@ Document {
                                                 "S_",
                                             ),
                                             Text(
+                                                "{",
+                                            ),
+                                            Text(
                                                 "cr",
+                                            ),
+                                            Text(
+                                                "}",
                                             ),
                                         ],
                                     ],

@@ -386,6 +386,9 @@ Document {
                 Text(
                     "if (requireNamespace(\"ggplot2\", quietly = TRUE)) ",
                 ),
+                Text(
+                    "{",
+                ),
                 NewLine,
                 Text(
                     "  library(ggplot2)",
@@ -411,6 +414,9 @@ Document {
                     "    facet_wrap(~year)",
                 ),
                 NewLine,
+                Text(
+                    "}",
+                ),
                 NewLine,
                 NewLine,
                 Text(

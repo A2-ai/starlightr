@@ -1,97 +1,73 @@
-#' Write Rd objects to Markdown files
+#' Build reference MDX files from Rd files
 #'
-#' Converts Rd documentation objects to Markdown and writes them to files
-#' using the Rd -> HTML -> Markdown conversion pipeline.
+#' Renders all `.Rd` files in a directory to MDX using the Rust parser and,
+#' when example artifacts exist, appends those outputs to the generated pages.
 #'
-#' @param rd_db An Rd database from [tools::Rd_db()].
-#' @param output_dir Path to directory to save markdown files.
-#' @param file_ext File extension, either ".md" or ".mdx" (default ".mdx").
-#' @param config Configuration list for conversion (see [rd_to_markdown()]).
+#' @param rd_dir Path to directory containing `.Rd` files.
+#' @param output_dir Path to directory where reference MDX files are saved.
+#' @param config_file Path to `_starlightr.toml`.
 #' @param site_output_path Path to site output directory (for embedding example outputs).
-#' @param pkg_name Package name (for link resolution).
 #'
 #' @return Invisibly returns a character vector of written file paths.
-#' @keywords internal
+#' @export
 #'
 #' @examples
 #' \dontrun{
-#' rd_db <- tools::Rd_db("mypackage")
-#' write_md_files(rd_db, "docs/reference")
-#'
-#' # With configuration
-#' write_md_files(
-#'   rd_db,
-#'   "docs/reference",
-#'   config = list(skip_sections = c("author", "source"))
+#' build_reference_files(
+#'   rd_dir = "man",
+#'   output_dir = "../pkg-docs/src/content/docs/reference",
+#'   config_file = "_starlightr.toml",
+#'   site_output_path = "../pkg-docs"
 #' )
 #' }
-write_md_files <- function(
-    rd_db,
+build_reference_files <- function(
+    rd_dir,
     output_dir,
-    file_ext = ".mdx",
-    config = list(),
-    site_output_path = NULL,
-    pkg_name = NULL) {
-  if (!file_ext %in% c(".md", ".mdx")) {
-    cli::cli_abort("file_ext must be '.md' or '.mdx', not {.val {file_ext}}")
+    config_file = "_starlightr.toml",
+    site_output_path = NULL) {
+  if (!dir.exists(rd_dir)) {
+    cli::cli_abort("Rd directory not found: {.path {rd_dir}}")
   }
 
-  # Create output directory if needed
-  if (!dir.exists(output_dir)) {
-    dir.create(output_dir, recursive = TRUE)
-    cli::cli_alert_info("Created output directory: {.path {output_dir}}")
+  rd_files <- list.files(rd_dir, pattern = "[.]Rd$", full.names = TRUE)
+  if (length(rd_files) == 0) {
+    cli::cli_warn("No Rd files found in {.path {rd_dir}}")
+    return(invisible(character()))
   }
 
-  written_files <- character()
-  cli::cli_progress_bar("Writing markdown files", total = length(rd_db))
+  render_references(
+    rd_dir = rd_dir,
+    output_dir = output_dir,
+    config_file = config_file
+  )
 
-  for (file in names(rd_db)) {
-    cli::cli_progress_update()
+  written_files <- file.path(
+    output_dir,
+    paste0(vapply(rd_files, rd_file_to_slug, character(1)), ".mdx")
+  )
 
-    tryCatch(
-      {
-        md_content <- rd_to_markdown(
-          rd_obj = rd_db[[file]],
-          config = config,
-          output_path = site_output_path,
-          pkg_name = pkg_name
-        )
-
-        func_name <- tools::file_path_sans_ext(basename(file))
-        func_name_slug <- tolower(func_name)
-
-        # Warn if function name contains capitals (Astro requires lowercase)
-        if (func_name != func_name_slug) {
-          cli::cli_warn("Function {.fn {func_name}} contains capitals - filename will be lowercased to {.file {func_name_slug}{file_ext}}")
-        }
-
-        # Replace dots with hyphens (Astro slugs cannot contain dots)
-        # This affects S3 methods like summary.myclass -> summary-myclass
-        if (grepl(".", func_name_slug, fixed = TRUE)) {
-          func_name_sanitized <- gsub(".", "-", func_name_slug, fixed = TRUE)
-          cli::cli_warn("Function {.fn {func_name}} contains dots - filename will be sanitized to {.file {func_name_sanitized}{file_ext}}")
-          func_name_slug <- func_name_sanitized
-        }
-
-        out_path <- file.path(output_dir, paste0(func_name_slug, file_ext))
-
-        # Append example outputs if they exist
-        if (!is.null(site_output_path)) {
-          md_content <- append_example_outputs(md_content, func_name, site_output_path)
-        }
-
-        writeLines(md_content, con = out_path)
-        written_files <- c(written_files, out_path)
-      },
-      error = function(e) {
-        cli::cli_warn("Failed to convert {.file {file}}: {e$message}")
+  if (!is.null(site_output_path)) {
+    for (i in seq_along(rd_files)) {
+      out_path <- written_files[[i]]
+      if (!file.exists(out_path)) {
+        cli::cli_warn("Expected reference file not found: {.path {out_path}}")
+        next
       }
-    )
+
+      func_name <- tools::file_path_sans_ext(basename(rd_files[[i]]))
+      md_content <- paste(readLines(out_path, warn = FALSE), collapse = "\n")
+      md_content <- append_example_outputs(md_content, func_name, site_output_path)
+      writeLines(md_content, con = out_path)
+    }
   }
 
-  cli::cli_progress_done()
-  cli::cli_alert_success("Wrote {length(written_files)} markdown files to {.path {output_dir}}")
+  cli::cli_alert_success("Wrote {length(written_files)} reference file{?s} to {.path {output_dir}}")
   invisible(written_files)
+}
+
+rd_file_to_slug <- function(path) {
+  stem <- tools::file_path_sans_ext(basename(path))
+  gsub(".", "-", stem, fixed = TRUE)
 }
 
 #' Append example outputs to markdown content

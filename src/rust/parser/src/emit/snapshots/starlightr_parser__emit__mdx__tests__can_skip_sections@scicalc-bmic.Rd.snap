@@ -22,11 +22,11 @@ bmic(bmi, age)
 ## Details
 
 **BMI Categories:**
-- 1: Underweight: BMI < 18.5 kg/m²
-- 2: Normal weight: BMI 18.5 to < 25 kg/m²
-- 3: Overweight: BMI 25 to < 30 kg/m²
-- 4: Obese class 1: BMI 30 to < 35 kg/m²
-- 5: Obese class 2: BMI 35 to < 40 kg/m²
+- 1: Underweight: BMI \< 18.5 kg/m²
+- 2: Normal weight: BMI 18.5 to \< 25 kg/m²
+- 3: Overweight: BMI 25 to \< 30 kg/m²
+- 4: Obese class 1: BMI 30 to \< 35 kg/m²
+- 5: Obese class 2: BMI 35 to \< 40 kg/m²
 - 6: Obese class 3: BMI >= 40 kg/m²
 
 

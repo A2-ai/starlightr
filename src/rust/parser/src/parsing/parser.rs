@@ -70,6 +70,16 @@ impl Parser {
         }
     }
 
+    fn delimiter_text(token: &Token) -> Option<&'static str> {
+        match token {
+            Token::LeftBrace => Some("{"),
+            Token::RightBrace => Some("}"),
+            Token::LeftBracket => Some("["),
+            Token::RightBracket => Some("]"),
+            _ => None,
+        }
+    }
+
     fn parse_group(&mut self, open: &Token, close: &Token) -> Result<Vec<Node>, ParserError> {
         if &self.peek().value == open {
             self.advance();
@@ -90,8 +100,12 @@ impl Parser {
                 self.advance();
                 return Ok(children);
             } else if &self.peek().value == open {
+                let open_text = Self::delimiter_text(open).unwrap_or_default();
+                let close_text = Self::delimiter_text(close).unwrap_or_default();
+                children.push(Node::Text(open_text.to_string()));
                 let sub_group = self.parse_group(open, close)?;
                 children.extend(sub_group);
+                children.push(Node::Text(close_text.to_string()));
             } else if self.is_eof() {
                 return Err(ParserError::new(
                     "Reached EOF unexpectedly".to_string(),

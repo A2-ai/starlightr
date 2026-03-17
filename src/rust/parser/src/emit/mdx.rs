@@ -1,4 +1,4 @@
-use std::collections::BTreeSet;
+use std::{collections::BTreeSet, slice};
 
 use serde::{Deserialize, Serialize};
 
@@ -11,6 +11,7 @@ pub struct Emitter {
     output: String,
     imports: BTreeSet<String>,
     math_mode_depth: usize,
+    code_mode_depth: usize,
 }
 
 impl Emitter {
@@ -19,11 +20,16 @@ impl Emitter {
             output: "".to_string(),
             imports: BTreeSet::new(),
             math_mode_depth: 0,
+            code_mode_depth: 0,
         }
     }
 
     fn in_math_mode(&self) -> bool {
         self.math_mode_depth > 0
+    }
+
+    fn in_code_mode(&self) -> bool {
+        self.code_mode_depth > 0
     }
 
     fn emit_math_nodes(&mut self, args: &[Vec<Node>]) {
@@ -54,6 +60,10 @@ impl Emitter {
             .replace('>', "&gt;")
     }
 
+    fn escape_mdx_text(text: &str) -> String {
+        text.replace('<', "\\<")
+    }
+
     fn render_compact_nodes(&mut self, nodes: &[Node]) -> String {
         self.render_nodes_to_string(nodes)
             .split_whitespace()
@@ -63,9 +73,22 @@ impl Emitter {
 
     fn emit_node(&mut self, node: &Node) {
         match node {
-            Node::Text(s) => self.emit_text(s),
+            Node::Text(s) => {
+                if self.in_code_mode() {
+                    self.emit_text(s);
+                } else {
+                    self.emit_text(&Self::escape_mdx_text(s));
+                }
+            }
             Node::NewLine => self.emit_text("\n"),
-            Node::EscapedChar(c) => self.emit_text(&c.to_string()),
+            Node::EscapedChar(c) => {
+                let text = c.to_string();
+                if self.in_code_mode() {
+                    self.emit_text(&text);
+                } else {
+                    self.emit_text(&Self::escape_mdx_text(&text));
+                }
+            }
             Node::List { kind, items } => self.emit_list(kind, items),
             Node::Command {
                 name,
@@ -137,7 +160,9 @@ impl Emitter {
 
     fn emit_code(&mut self, _option: Option<&[Vec<Node>]>, args: &[Vec<Node>]) {
         self.emit_text("`");
+        self.code_mode_depth += 1;
         self.emit_node_group(args);
+        self.code_mode_depth -= 1;
         self.emit_text("`");
     }
 
@@ -216,13 +241,17 @@ impl Emitter {
 
     fn emit_eqn(&mut self, _option: Option<&[Vec<Node>]>, args: &[Vec<Node>]) {
         self.emit_text("$");
-        self.emit_math_nodes(args);
+        if let Some(math) = args.first() {
+            self.emit_math_nodes(slice::from_ref(math));
+        }
         self.emit_text("$");
     }
 
     fn emit_deqn(&mut self, _option: Option<&[Vec<Node>]>, args: &[Vec<Node>]) {
         self.emit_text("$$\n");
-        self.emit_math_nodes(args);
+        if let Some(math) = args.first() {
+            self.emit_math_nodes(slice::from_ref(math));
+        }
         self.emit_text("\n$$\n");
     }
 
@@ -353,7 +382,9 @@ impl Emitter {
         }
 
         self.emit_text("```r\n");
+        self.code_mode_depth += 1;
         self.emit_code_body_nodes(kind, children);
+        self.code_mode_depth -= 1;
         if !self.output.ends_with('\n') {
             self.emit_text("\n");
         }
@@ -367,7 +398,7 @@ fn clean_description_text(text: String) -> String {
     let sentences = normalized
         .split('.')
         .map(str::trim)
-        .map(|s| s.trim_end_matches(|c: char| matches!(c, ',' | ';' | ':')))
+        .map(|s| s.trim_end_matches([',', ';', ':']))
         .filter(|s| !s.is_empty())
         .filter(|s| s.chars().any(|c| c.is_alphanumeric()))
         .collect::<Vec<_>>();

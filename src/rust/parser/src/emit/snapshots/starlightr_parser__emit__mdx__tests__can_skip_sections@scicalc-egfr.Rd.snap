@@ -23,12 +23,12 @@ ckdepi_2021_egfr(sexf, age, creat)
 
 The CKD-EPI 2021 creatinine equation (race-free):
 $$
-eGFR = 142 \cdot \min(S_cr/\kappa, 1)^\alpha \cdot \max(S_cr/\kappa, 1)^-1.2 \cdot 0.9938^A \cdot 1.012^F
+eGFR = 142 \cdot \min(S_{cr}/\kappa, 1)^\alpha \cdot \max(S_{cr}/\kappa, 1)^{-1.2} \cdot 0.9938^A \cdot 1.012^F
 $$
 
 
 where:
-- $S_cr$ = serum creatinine (mg/dL)
+- $S_{cr}$ = serum creatinine (mg/dL)
 - $\kappa$ = 0.7 (female) or 0.9 (male)
 - $\alpha$ = -0.241 (female) or -0.302 (male)
 - $A$ = age (years)

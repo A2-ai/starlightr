@@ -13,22 +13,6 @@ process_package_documentation <- function(pkg_path, output_path, config, verbose
   # Get the actual package name from DESCRIPTION
   pkg_name <- get_package_name(pkg_path)
 
-  # Get Rd database directly from tools (new approach)
-  rd_db <- tryCatch(
-    tools::Rd_db(pkg_name),
-    error = function(e) {
-      cli::cli_abort(c(
-        "Failed to load Rd documentation for package {.pkg {pkg_name}}",
-        "i" = "Make sure the package is installed: {.code install.packages('{pkg_name}')}"
-      ))
-    }
-  )
-
-  if (length(rd_db) == 0) {
-    cli::cli_warn("No Rd files found in package {.pkg {pkg_name}}")
-    return()
-  }
-
   # Capture example outputs before generating markdown
   cli::cli_alert_info("Capturing example outputs...")
   artifact_dir <- file.path(output_path, "public", "examples")
@@ -44,27 +28,25 @@ process_package_documentation <- function(pkg_path, output_path, config, verbose
     ))
   })
 
-  # Generate markdown files for each function
   ref_dir <- file.path(output_path, "src", "content", "docs", "reference")
+	
+	rd_dir <- file.path(pkg_path, "man")
+	config_path <- file.path(pkg_path, "_starlightr.toml")
 
-  # Build config for rd_to_markdown
-  md_config <- list(
-    skip_sections = config$content$skip_sections %||% c("alias", "keyword", "concept"),
-    arguments_format = "table",
-    include_title = TRUE,
-    include_frontmatter = TRUE
-  )
+	if (!dir.exists(rd_dir)) {
+		cli::cli_warn("No Rd files found in package {.pkg {pkg_name}}")
+		return()
+	}
 
-  write_md_files(
-    rd_db = rd_db,
-    output_dir = ref_dir,
-    file_ext = ".mdx",
-    config = md_config,
-    site_output_path = output_path,
-    pkg_name = pkg_name
-  )
+	render_references(
+		rd_dir = rd_dir,
+		output_dir = ref_dir,
+		config_file = config_path
+	)
+	
+	# write example output to mdx files
 
-  cli::cli_alert_success("Generated reference documentation for {length(rd_db)} functions")
+	cli::cli_alert_success("Generated reference documentation from {.path {rd_dir}}")
 }
 
 #' Process articles (vignettes) and README together
@@ -310,3 +292,5 @@ process_news <- function(pkg_path, output_path, config) {
   writeLines(news_content, output_file)
   cli::cli_alert_success("Generated {.file news.mdx}")
 }
+
+

@@ -10,7 +10,7 @@ NULL
 #' Renders an .Rd file to an mdx file.
 #'
 #' @param rd_file path to Rd file to convert to .mdx
-#' @param output_file path to new mdx file
+#' @param output_dir path to directory where reference mdx files are saved
 #' @param config_file path to _starlightr.toml
 #'
 #' @return NULL
@@ -19,10 +19,12 @@ NULL
 #' @examples \dontrun{
 #' render_reference(
 #'   rd_file = "man/function.Rd",
-#'   output_file = "../Docs/src/content/docs/reference/function.mdx",
+#'   output_dir = "../Docs/pkg-docs/src/content/docs/reference",
 #'   config_file = "_starlightr.toml"
 #' )
 #' }
-render_reference <- function(rd_file, output_file, config_file = '_starlightr.toml') .Call(wrap__render_reference, rd_file, output_file, config_file)
+render_reference <- function(rd_file, output_dir, config_file = '_starlightr.toml') .Call(wrap__render_reference, rd_file, output_dir, config_file)
+
+render_references <- function(rd_dir, output_dir, config_file = '_starlightr.toml') .Call(wrap__render_references, rd_dir, output_dir, config_file)
 
 # nolint end

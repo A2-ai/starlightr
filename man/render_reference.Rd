@@ -4,12 +4,12 @@
 \alias{render_reference}
 \title{render_reference}
 \usage{
-render_reference(rd_file, output_file, config_file = "_starlightr.toml")
+render_reference(rd_file, output_dir, config_file = "_starlightr.toml")
 }
 \arguments{
 \item{rd_file}{path to Rd file to convert to .mdx}
 
-\item{output_file}{path to new mdx file}
+\item{output_dir}{path to directory where reference mdx files are saved}
 
 \item{config_file}{path to _starlightr.toml}
 }
@@ -20,7 +20,7 @@ Renders an .Rd file to an mdx file.
 \dontrun{
 render_reference(
   rd_file = "man/function.Rd",
-  output_file = "../Docs/src/content/docs/reference/function.mdx",
+  output_dir = "../Docs/pkg-docs/src/content/docs/reference",
   config_file = "_starlightr.toml"
 )
 }
