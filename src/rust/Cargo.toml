@@ -6,9 +6,13 @@ edition = '2024'
 rust-version = '1.85'
 
 [lib]
-crate-type = [ 'staticlib' ]
+crate-type = [ 'rlib', 'staticlib' ]
 name = 'starlightr'
 path = "lib.rs"
+
+[[bin]]
+name = 'document'
+path = 'document.rs'
 
 [workspace]
 members = ["parser"]

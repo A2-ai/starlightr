@@ -3,7 +3,7 @@ use std::collections::BTreeSet;
 use serde::{Deserialize, Serialize};
 
 use crate::document::Document;
-use crate::document::{Argument, LinkMode, LinkTarget, ListItem, ListKind, Node};
+use crate::document::{Argument, CodeKind, LinkMode, LinkTarget, ListItem, ListKind, Node};
 use crate::emit::EmitOptions;
 
 #[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
@@ -81,6 +81,7 @@ impl Emitter {
             Node::Href { href, label } => self.emit_href(href, label),
             Node::Section { title, children } => self.emit_section(title, children),
             Node::ArgumentTable(args) => self.emit_argument_table(args),
+            Node::Code { title, kind, children } => self.emit_code_contents(title.as_deref(), kind, children),
         }
     }
 
@@ -106,8 +107,8 @@ impl Emitter {
         match name {
             "code" => self.emit_code(option, args),
             "verb" => self.emit_code(option, args),
-            "usage" => self.emit_titled_code_block("Usage", option, args),
-            "examples" => self.emit_titled_code_block("Examples", option, args),
+            //"usage" => self.emit_titled_code_block("Usage", option, args),
+            //"examples" => self.emit_titled_code_block("Examples", option, args),
             "emph" => self.emit_emph(option, args),
             "strong" => self.emit_strong(option, args),
             "eqn" => self.emit_eqn(option, args),
@@ -138,25 +139,6 @@ impl Emitter {
         self.emit_text("`");
         self.emit_node_group(args);
         self.emit_text("`");
-    }
-
-    fn emit_code_block(&mut self, _option: Option<&[Vec<Node>]>, args: &[Vec<Node>]) {
-        self.emit_text("```r\n");
-        self.emit_node_group(args);
-        self.emit_text("```\n");
-    }
-
-    fn emit_titled_code_block(
-        &mut self,
-        title: &str,
-        option: Option<&[Vec<Node>]>,
-        args: &[Vec<Node>],
-    ) {
-        self.emit_text("## ");
-        self.emit_text(title);
-        self.emit_text("\n\n");
-        self.emit_code_block(option, args);
-        self.emit_text("\n");
     }
 
     fn emit_emph(&mut self, _option: Option<&[Vec<Node>]>, args: &[Vec<Node>]) {
@@ -327,6 +309,56 @@ impl Emitter {
         self.emit_text("</table>\n");
         self.emit_text("</div>\n\n");
     }
+
+    fn emit_code_body_nodes(&mut self, kind: &CodeKind, nodes: &[Node]) {
+        let start = nodes
+            .iter()
+            .position(|node| !matches!(node, Node::NewLine))
+            .unwrap_or(nodes.len());
+        let end = nodes
+            .iter()
+            .rposition(|node| !matches!(node, Node::NewLine))
+            .map(|index| index + 1)
+            .unwrap_or(start);
+        let nodes = &nodes[start..end];
+
+        match kind {
+            CodeKind::Plain => {}
+            CodeKind::DontRun => self.emit_text("# Not run:\n"),
+            CodeKind::DontTest => self.emit_text("# Not tested:\n"),
+            CodeKind::DontShow => return,
+        }
+
+        for node in nodes {
+            match node {
+                Node::Code {
+                    kind: CodeKind::DontShow,
+                    ..
+                } => {}
+                Node::Code { kind, children, .. } => self.emit_code_body_nodes(kind, children),
+                _ => self.emit_node(node),
+            }
+        }
+    }
+
+    fn emit_code_contents(&mut self, title: Option<&str>, kind: &CodeKind, children: &[Node]) {
+        if matches!(kind, CodeKind::DontShow) {
+            return;
+        }
+
+        if let Some(t) = title {
+            self.emit_text("## ");
+            self.emit_text(t);
+            self.emit_text("\n\n");
+        }
+
+        self.emit_text("```r\n");
+        self.emit_code_body_nodes(kind, children);
+        if !self.output.ends_with('\n') {
+            self.emit_text("\n");
+        }
+        self.emit_text("```\n");
+    }
 }
 
 fn clean_description_text(text: String) -> String {
@@ -403,20 +435,18 @@ fn create_frontmatter(document: &Document, pagefind: bool) -> Result<String, Str
 pub fn emit_document(mut document: Document, options: &EmitOptions) -> Result<String, String> {
     let mut emitter = Emitter::new();
 
-    let frontmatter = if options.include_frontmatter {
-        create_frontmatter(&document, options.include_pagefind)?
-    } else {
-        "".to_string()
-    };
+    let frontmatter = create_frontmatter(&document, options.include_pagefind)?;
 
     document.filter_sections(&options.skip_sections);
     emitter.emit_nodes(&document.children);
 
+    let content = emitter.output.trim_start_matches('\n').to_string();
+
     let mdx = if emitter.imports.is_empty() {
-        emitter.output
+        content
     } else {
         let imports = emitter.imports.into_iter().collect::<Vec<_>>().join("\n");
-        format!("{imports}\n{}", emitter.output)
+        format!("{imports}\n{content}")
     };
 
     Ok(format!("{frontmatter}\n{mdx}"))

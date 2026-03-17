@@ -8,8 +8,8 @@ pub struct Argument {
     pub description: Vec<Node>,
 }
 
-fn section_title(name: &str) -> Vec<Node> {
-    let title = match name {
+fn section_title(name: impl AsRef<str>) -> Vec<Node> {
+    let title = match name.as_ref() {
         "description" => "Description",
         "details" => "Details",
         "value" => "Value",
@@ -80,8 +80,8 @@ fn lower_section(node: Node) -> Node {
     Node::Section{ title, children }
 }
 
-pub(crate) fn lower_section_command(name: &str, cmd: Node) -> Node {
-    match name {
+pub(crate) fn lower_section_command(name: impl AsRef<str>, cmd: Node) -> Node {
+    match name.as_ref() {
         "arguments" => lower_arguments(cmd),
         "section" | "subsection" => lower_section(cmd),
         "description" | "details" | "value" | "note" | "seealso" | "author" | "references" => {

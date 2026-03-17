@@ -43,17 +43,17 @@ Document {
             ],
         },
         NewLine,
-        Command {
-            name: "usage",
-            options: None,
-            args: [
-                [
-                    NewLine,
-                    Text(
-                        "bmic(bmi, age)",
-                    ),
-                    NewLine,
-                ],
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "bmic(bmi, age)",
+                ),
+                NewLine,
             ],
         },
         NewLine,
@@ -273,58 +273,58 @@ Document {
             ],
         },
         NewLine,
-        Command {
-            name: "examples",
-            options: None,
-            args: [
-                [
-                    NewLine,
-                    Text(
-                        "patients <- data.frame(",
-                    ),
-                    NewLine,
-                    Text(
-                        "  ID = 1:6,",
-                    ),
-                    NewLine,
-                    Text(
-                        "  AGE = c(25, 45, 17, 55, 30, 65),",
-                    ),
-                    NewLine,
-                    Text(
-                        "  WEIGHT = c(60, 80, 70, 90, 75, 85),",
-                    ),
-                    NewLine,
-                    Text(
-                        "  HEIGHT = c(165, 175, 170, 180, 160, 175)",
-                    ),
-                    NewLine,
-                    Text(
-                        ")",
-                    ),
-                    NewLine,
-                    NewLine,
-                    Text(
-                        "dplyr::mutate(",
-                    ),
-                    NewLine,
-                    Text(
-                        " patients,",
-                    ),
-                    NewLine,
-                    Text(
-                        "  BMI = bmi(WEIGHT, HEIGHT),",
-                    ),
-                    NewLine,
-                    Text(
-                        "  BMIC = bmic(BMI, AGE)",
-                    ),
-                    NewLine,
-                    Text(
-                        ")",
-                    ),
-                    NewLine,
-                ],
+        Code {
+            title: Some(
+                "Examples",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "patients <- data.frame(",
+                ),
+                NewLine,
+                Text(
+                    "  ID = 1:6,",
+                ),
+                NewLine,
+                Text(
+                    "  AGE = c(25, 45, 17, 55, 30, 65),",
+                ),
+                NewLine,
+                Text(
+                    "  WEIGHT = c(60, 80, 70, 90, 75, 85),",
+                ),
+                NewLine,
+                Text(
+                    "  HEIGHT = c(165, 175, 170, 180, 160, 175)",
+                ),
+                NewLine,
+                Text(
+                    ")",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "dplyr::mutate(",
+                ),
+                NewLine,
+                Text(
+                    " patients,",
+                ),
+                NewLine,
+                Text(
+                    "  BMI = bmi(WEIGHT, HEIGHT),",
+                ),
+                NewLine,
+                Text(
+                    "  BMIC = bmic(BMI, AGE)",
+                ),
+                NewLine,
+                Text(
+                    ")",
+                ),
+                NewLine,
             ],
         },
         NewLine,

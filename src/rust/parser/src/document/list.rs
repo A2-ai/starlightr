@@ -117,8 +117,8 @@ fn lower_describe(node: Node) -> Node {
     }
 }
 
-pub(crate) fn lower_list_command(name: &str, cmd: Node) -> Node {
-    match name {
+pub(crate) fn lower_list_command(name: impl AsRef<str>, cmd: Node) -> Node {
+    match name.as_ref() {
         "itemize" => lower_itemize(cmd),
         "enumerate" => lower_enumerate(cmd),
         "describe" => lower_describe(cmd),

@@ -6,22 +6,15 @@ input_file: parser/test_data/scicalc-convert-alb.Rd
 ---
 title: "Convert Albumin Concentration Units"
 description: "Convert Albumin Concentration Units."
-pagefind: true
+pagefind: false
 ---
-
-
-
-
-
 
 
 ## Usage
 
 ```r
-
 convert_alb(alb)
 ```
-
 
 ## Arguments
 
@@ -53,7 +46,6 @@ Convert Albumin Concentration Units
 ## Examples
 
 ```r
-
 convert_alb(40)
 
 df <- data.frame(
@@ -66,7 +58,6 @@ df <- df %>%
   dplyr::mutate(ALBBL = convert_alb(ALB))
 df
 ```
-
 
 ## See Also
 

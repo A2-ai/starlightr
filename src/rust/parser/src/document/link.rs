@@ -185,8 +185,8 @@ fn lower_href(node: Node) -> Node {
     Node::Href { href, label }
 }
 
-pub(crate) fn lower_link_command(name: &str, cmd: Node) -> Node {
-    match name {
+pub(crate) fn lower_link_command(name: impl AsRef<str>, cmd: Node) -> Node {
+    match name.as_ref() {
         "link" => lower_link(cmd),
         "code" => lower_code_link(cmd),
         "url" => lower_url(cmd),

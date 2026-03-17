@@ -2,11 +2,13 @@ mod node;
 mod list;
 mod link;
 mod sections;
+mod code;
 
 pub use node::Node;
 pub use list::{ListItem, ListKind};
 pub use link::{LinkTarget, LinkMode};
 pub use sections::Argument;
+pub use code::CodeKind;
 
 use serde::{Serialize, Deserialize};
 

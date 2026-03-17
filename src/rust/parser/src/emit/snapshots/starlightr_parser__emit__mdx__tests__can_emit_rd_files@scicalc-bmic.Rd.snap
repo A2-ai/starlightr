@@ -6,22 +6,15 @@ input_file: parser/test_data/scicalc-bmic.Rd
 ---
 title: "Categorize Body Mass Index"
 description: "Categorizes individuals based on their Body Mass Index (BMI) according to standard WHO obesity classification criteria. Validates age to ensure appropriate appl"
-pagefind: true
+pagefind: false
 ---
-
-
-
-
-
 
 
 ## Usage
 
 ```r
-
 bmic(bmi, age)
 ```
-
 
 ## Arguments
 
@@ -78,7 +71,6 @@ children and adolescents.
 ## Examples
 
 ```r
-
 patients <- data.frame(
   ID = 1:6,
   AGE = c(25, 45, 17, 55, 30, 65),
@@ -92,7 +84,6 @@ dplyr::mutate(
   BMIC = bmic(BMI, AGE)
 )
 ```
-
 
 ## References
 

@@ -6,15 +6,8 @@ input_file: parser/test_data/hyperion-package.Rd
 ---
 title: "hyperion: Pharmaceutical Model Development and Workflow Tools"
 description: "Hyperion is an R interface to the pharos CLI for pharmaceutical model development workflows. It streamlines the complete workflow from development through clust"
-pagefind: true
+pagefind: false
 ---
-
-
-
-
-
-
-
 
 
 ## Description

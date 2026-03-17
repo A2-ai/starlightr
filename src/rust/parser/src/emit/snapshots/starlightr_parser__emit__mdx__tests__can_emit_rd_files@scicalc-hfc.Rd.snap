@@ -6,22 +6,15 @@ input_file: parser/test_data/scicalc-hfc.Rd
 ---
 title: "Categorize Hepatic Function"
 description: "This function categorizes hepatic function impairment using the National Cancer Institute Organ Dysfunction Working Group (NCI-ODWG) criteria. It evaluates aspa"
-pagefind: true
+pagefind: false
 ---
-
-
-
-
-
 
 
 ## Usage
 
 ```r
-
 hfc(ast, ulnast, bili, ulnbili)
 ```
-
 
 ## Arguments
 
@@ -86,7 +79,6 @@ issues that can occur with calculated thresholds.
 ## Examples
 
 ```r
-
 # Single patient with normal hepatic function
 hfc(ast = 15, ulnast = 33, bili = 0.6, ulnbili = 1.2)
 
@@ -112,9 +104,7 @@ patients <- data.frame(
 
 patients %>%
   mutate(BHFC = hfc(AST, ULNAST, BILI, ULNBILI))
-
 ```
-
 
 ## References
 

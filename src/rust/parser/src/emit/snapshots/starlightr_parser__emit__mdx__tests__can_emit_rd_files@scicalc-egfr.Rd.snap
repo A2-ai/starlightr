@@ -6,22 +6,15 @@ input_file: parser/test_data/scicalc-egfr.Rd
 ---
 title: "Calculate eGFR Using CKD-EPI 2021 Creatinine Equation"
 description: "Calculate eGFR Using CKD-EPI 2021 Creatinine Equation."
-pagefind: true
+pagefind: false
 ---
-
-
-
-
-
 
 
 ## Usage
 
 ```r
-
 ckdepi_2021_egfr(sexf, age, creat)
 ```
-
 
 ## Arguments
 
@@ -77,7 +70,6 @@ where:
 ## Examples
 
 ```r
-
 e <- ckdepi_2021_egfr(TRUE, 24, 1)
 
 df <- data.frame(
@@ -89,7 +81,6 @@ df <- data.frame(
 df <- dplyr::mutate(df, egfr = ckdepi_2021_egfr(SEXF, AGE, CREAT))
 df
 ```
-
 
 ## See Also
 

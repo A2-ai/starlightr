@@ -315,17 +315,17 @@ Document {
             ],
         },
         NewLine,
-        Command {
-            name: "usage",
-            options: None,
-            args: [
-                [
-                    NewLine,
-                    Text(
-                        "storms",
-                    ),
-                    NewLine,
-                ],
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "storms",
+                ),
+                NewLine,
             ],
         },
         NewLine,
@@ -367,56 +367,56 @@ Document {
             ],
         },
         NewLine,
-        Command {
-            name: "examples",
-            options: None,
-            args: [
-                [
-                    NewLine,
-                    Text(
-                        "storms",
-                    ),
-                    NewLine,
-                    NewLine,
-                    Text(
-                        "# Show a few recent storm paths",
-                    ),
-                    NewLine,
-                    Text(
-                        "if (requireNamespace(\"ggplot2\", quietly = TRUE)) ",
-                    ),
-                    NewLine,
-                    Text(
-                        "  library(ggplot2)",
-                    ),
-                    NewLine,
-                    Text(
-                        "  storms |>",
-                    ),
-                    NewLine,
-                    Text(
-                        "    filter(year >= 2000) |>",
-                    ),
-                    NewLine,
-                    Text(
-                        "    ggplot(aes(long, lat, color = paste(year, name))) +",
-                    ),
-                    NewLine,
-                    Text(
-                        "    geom_path(show.legend = FALSE) +",
-                    ),
-                    NewLine,
-                    Text(
-                        "    facet_wrap(~year)",
-                    ),
-                    NewLine,
-                    NewLine,
-                    NewLine,
-                    Text(
-                        "storms",
-                    ),
-                    NewLine,
-                ],
+        Code {
+            title: Some(
+                "Examples",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "storms",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "# Show a few recent storm paths",
+                ),
+                NewLine,
+                Text(
+                    "if (requireNamespace(\"ggplot2\", quietly = TRUE)) ",
+                ),
+                NewLine,
+                Text(
+                    "  library(ggplot2)",
+                ),
+                NewLine,
+                Text(
+                    "  storms |>",
+                ),
+                NewLine,
+                Text(
+                    "    filter(year >= 2000) |>",
+                ),
+                NewLine,
+                Text(
+                    "    ggplot(aes(long, lat, color = paste(year, name))) +",
+                ),
+                NewLine,
+                Text(
+                    "    geom_path(show.legend = FALSE) +",
+                ),
+                NewLine,
+                Text(
+                    "    facet_wrap(~year)",
+                ),
+                NewLine,
+                NewLine,
+                NewLine,
+                Text(
+                    "storms",
+                ),
+                NewLine,
             ],
         },
         NewLine,

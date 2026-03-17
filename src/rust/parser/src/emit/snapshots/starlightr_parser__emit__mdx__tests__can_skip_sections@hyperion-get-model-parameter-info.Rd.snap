@@ -6,15 +6,15 @@ input_file: parser/test_data/hyperion-get-model-parameter-info.Rd
 ---
 title: "Extract all parameter comments from a model as ModelComments object"
 description: "Parses parameter comments and returns structured metadata for theta, omega, and sigma parameters."
-pagefind: true
+pagefind: false
 ---
 
 
+## Usage
 
-
-
-
-
+```r
+get_model_parameter_info(mod, lookup_path = NULL)
+```
 
 
 

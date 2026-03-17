@@ -43,17 +43,17 @@ Document {
             ],
         },
         NewLine,
-        Command {
-            name: "usage",
-            options: None,
-            args: [
-                [
-                    NewLine,
-                    Text(
-                        "hfc(ast, ulnast, bili, ulnbili)",
-                    ),
-                    NewLine,
-                ],
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "hfc(ast, ulnast, bili, ulnbili)",
+                ),
+                NewLine,
             ],
         },
         NewLine,
@@ -304,108 +304,108 @@ Document {
             ],
         },
         NewLine,
-        Command {
-            name: "examples",
-            options: None,
-            args: [
-                [
-                    NewLine,
-                    Text(
-                        "# Single patient with normal hepatic function",
-                    ),
-                    NewLine,
-                    Text(
-                        "hfc(ast = 15, ulnast = 33, bili = 0.6, ulnbili = 1.2)",
-                    ),
-                    NewLine,
-                    NewLine,
-                    Text(
-                        "# Multiple patients with different impairment levels",
-                    ),
-                    NewLine,
-                    Text(
-                        "hfc(ast = c(25, 45, 30, 20),",
-                    ),
-                    NewLine,
-                    Text(
-                        "     ulnast = c(33, 33, 33, 33),",
-                    ),
-                    NewLine,
-                    Text(
-                        "     bili = c(0.8, 1.0, 2.5, 4.0),",
-                    ),
-                    NewLine,
-                    Text(
-                        "     ulnbili = c(1.2, 1.2, 1.2, 1.2))",
-                    ),
-                    NewLine,
-                    NewLine,
-                    Text(
-                        "# Edge case: bilirubin exactly at boundary",
-                    ),
-                    NewLine,
-                    Text(
-                        "hfc(ast = 25, ulnast = 33, bili = 1.8, ulnbili = 1.2)  # 1.8 = 1.5 * 1.2",
-                    ),
-                    NewLine,
-                    NewLine,
-                    Text(
-                        "# Pipeline example with realistic data",
-                    ),
-                    NewLine,
-                    Text(
-                        "library(dplyr)",
-                    ),
-                    NewLine,
-                    NewLine,
-                    Text(
-                        "patients <- data.frame(",
-                    ),
-                    NewLine,
-                    Text(
-                        "  ID = 1:6,",
-                    ),
-                    NewLine,
-                    Text(
-                        "  AST = c(15, 45, 28, 35, 22, 30),",
-                    ),
-                    NewLine,
-                    Text(
-                        "  ULNAST = 33,",
-                    ),
-                    NewLine,
-                    Text(
-                        "  BILI = c(0.8, 1.0, 2.2, 4.5, 1.8, 0.9),",
-                    ),
-                    NewLine,
-                    Text(
-                        "  ULNBILI = 1.2",
-                    ),
-                    NewLine,
-                    Text(
-                        ")",
-                    ),
-                    NewLine,
-                    NewLine,
-                    Text(
-                        "patients ",
-                    ),
-                    EscapedChar(
-                        '%',
-                    ),
-                    Text(
-                        ">",
-                    ),
-                    EscapedChar(
-                        '%',
-                    ),
-                    NewLine,
-                    Text(
-                        "  mutate(BHFC = hfc(AST, ULNAST, BILI, ULNBILI))",
-                    ),
-                    NewLine,
-                    NewLine,
-                ],
+        Code {
+            title: Some(
+                "Examples",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "# Single patient with normal hepatic function",
+                ),
+                NewLine,
+                Text(
+                    "hfc(ast = 15, ulnast = 33, bili = 0.6, ulnbili = 1.2)",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "# Multiple patients with different impairment levels",
+                ),
+                NewLine,
+                Text(
+                    "hfc(ast = c(25, 45, 30, 20),",
+                ),
+                NewLine,
+                Text(
+                    "     ulnast = c(33, 33, 33, 33),",
+                ),
+                NewLine,
+                Text(
+                    "     bili = c(0.8, 1.0, 2.5, 4.0),",
+                ),
+                NewLine,
+                Text(
+                    "     ulnbili = c(1.2, 1.2, 1.2, 1.2))",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "# Edge case: bilirubin exactly at boundary",
+                ),
+                NewLine,
+                Text(
+                    "hfc(ast = 25, ulnast = 33, bili = 1.8, ulnbili = 1.2)  # 1.8 = 1.5 * 1.2",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "# Pipeline example with realistic data",
+                ),
+                NewLine,
+                Text(
+                    "library(dplyr)",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "patients <- data.frame(",
+                ),
+                NewLine,
+                Text(
+                    "  ID = 1:6,",
+                ),
+                NewLine,
+                Text(
+                    "  AST = c(15, 45, 28, 35, 22, 30),",
+                ),
+                NewLine,
+                Text(
+                    "  ULNAST = 33,",
+                ),
+                NewLine,
+                Text(
+                    "  BILI = c(0.8, 1.0, 2.2, 4.5, 1.8, 0.9),",
+                ),
+                NewLine,
+                Text(
+                    "  ULNBILI = 1.2",
+                ),
+                NewLine,
+                Text(
+                    ")",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "patients ",
+                ),
+                EscapedChar(
+                    '%',
+                ),
+                Text(
+                    ">",
+                ),
+                EscapedChar(
+                    '%',
+                ),
+                NewLine,
+                Text(
+                    "  mutate(BHFC = hfc(AST, ULNAST, BILI, ULNBILI))",
+                ),
+                NewLine,
+                NewLine,
             ],
         },
         NewLine,

@@ -4,6 +4,7 @@ use crate::document::{
     link::{LinkMode, LinkTarget, lower_link_command},
     list::{ListItem, ListKind, lower_list_command},
     sections::{Argument, lower_section_command},
+    code::{CodeKind, lower_code_command},
 };
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -37,6 +38,11 @@ pub enum Node {
         children: Vec<Node>,
     },
     ArgumentTable(Vec<Argument>),
+    Code {
+        title: Option<String>,
+        kind: CodeKind,
+        children: Vec<Node>,
+    },
 }
 
 impl Node {
@@ -61,8 +67,11 @@ impl Node {
     }
 
     pub fn in_skipped_sections<S: AsRef<str>>(&self, sections_to_skip: &[S]) -> bool {
-        self.get_section_key()
-            .is_some_and(|k| sections_to_skip.iter().any(|s| s.as_ref().to_lowercase() == k.to_lowercase()))
+        self.get_section_key().is_some_and(|k| {
+            sections_to_skip
+                .iter()
+                .any(|s| s.as_ref().to_lowercase() == k.to_lowercase())
+        })
     }
 
     pub fn is_title(&self) -> bool {
@@ -115,12 +124,13 @@ impl Node {
                     args,
                 };
                 match name.as_str() {
-                    "itemize" | "enumerate" | "describe" => lower_list_command(name.as_str(), cmd),
-                    "link" | "url" | "href" | "code" => lower_link_command(name.as_str(), cmd),
+                    "itemize" | "enumerate" | "describe" => lower_list_command(name, cmd),
+                    "link" | "url" | "href" | "code" => lower_link_command(name, cmd),
                     "section" | "subsection" | "description" | "details" | "value" | "note"
                     | "seealso" | "author" | "references" | "arguments" => {
-                        lower_section_command(name.as_str(), cmd)
+                        lower_section_command(name, cmd)
                     }
+                    "examples" | "example" | "usage" | "dontrun" | "dontshow" | "donttest" => lower_code_command(name, cmd),
                     _ => cmd,
                 }
             }
