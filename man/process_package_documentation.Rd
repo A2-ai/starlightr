@@ -4,14 +4,19 @@
 \alias{process_package_documentation}
 \title{Process package documentation into Starlight format}
 \usage{
-process_package_documentation(pkg_path, output_path, config, verbose = FALSE)
+process_package_documentation(
+  pkg_path,
+  output_path,
+  config_path,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{pkg_path}{Path to package directory}
 
 \item{output_path}{Path to output directory}
 
-\item{config}{Configuration list}
+\item{config_path}{Path to _starlightr.toml configuration file}
 
 \item{verbose}{Logical, whether to print debug messages for example capture}
 }

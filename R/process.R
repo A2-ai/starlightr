@@ -4,10 +4,10 @@
 #'
 #' @param pkg_path Path to package directory
 #' @param output_path Path to output directory
-#' @param config Configuration list
+#' @param config_path Path to _starlightr.toml configuration file
 #' @param verbose Logical, whether to print debug messages for example capture
 #' @keywords internal
-process_package_documentation <- function(pkg_path, output_path, config, verbose = FALSE) {
+process_package_documentation <- function(pkg_path, output_path, config_path, verbose = FALSE) {
   cli::cli_alert_info("Processing R documentation...")
 
   # Get the actual package name from DESCRIPTION
@@ -30,7 +30,6 @@ process_package_documentation <- function(pkg_path, output_path, config, verbose
 
   ref_dir <- file.path(output_path, "src", "content", "docs", "reference")
   rd_dir <- file.path(pkg_path, "man")
-  config_path <- file.path(pkg_path, "_starlightr.toml")
 
   if (!dir.exists(rd_dir)) {
     cli::cli_warn("No Rd files found in package {.pkg {pkg_name}}")
@@ -288,4 +287,3 @@ process_news <- function(pkg_path, output_path, config) {
   writeLines(news_content, output_file)
   cli::cli_alert_success("Generated {.file news.mdx}")
 }
-

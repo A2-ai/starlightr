@@ -58,12 +58,12 @@ Customize the appearance of your site:
 color_mode = "auto"  # light, dark, or auto
 ```
 
-## Content Processing
+## Reference Processing
 
 Control how your documentation is processed:
 
 ```toml
-[content]
-code_sections = ["usage", "examples"]
+[references]
 skip_sections = ["name"]
+include_pagefind = true
 ```

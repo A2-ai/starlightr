@@ -101,7 +101,7 @@ build_site <- function(pkg = ".",
   }
 
   # Extract and process R documentation
-  process_package_documentation(pkg_path, output_path, config, verbose = verbose)
+  process_package_documentation(pkg_path, output_path, config_path, verbose = verbose)
 
   # Process vignettes and README together (single install)
   process_articles_and_readme(pkg_path, output_path, config)
