@@ -44,6 +44,9 @@ default_config <- function() {
     theme = list(
       color_mode = "auto"
     ),
+    features = list(
+      katex = TRUE
+    ),
     reference = list(
       skip_sections = c("name", "alias", "title"),
       include_pagefind = FALSE

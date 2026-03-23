@@ -80,8 +80,8 @@ capture_example_output <- function(pkg_name, artifact_output_dir, text_output_di
     }
   }
 
-  if (!dir.exists(artifact_output_dir)) dir.create(artifact_output_dir, recursive = TRUE)
-  if (!dir.exists(text_output_dir)) dir.create(text_output_dir, recursive = TRUE)
+  ensure_dir(artifact_output_dir)
+  ensure_dir(text_output_dir)
 
   for (fn in names(rd_content)) {
     # Rd filenames are like "foo.Rd"; strip extension safely.
