@@ -1,0 +1,9 @@
+# starlightr configuration file
+# Run add_card(), add_article(), add_reference() to build your site config
+
+[site]
+title = "{{{pkg_name}}}"
+description = "{{{pkg_desc}}}"
+
+[output]
+dir = "../{{{pkg_name}}}-docs"

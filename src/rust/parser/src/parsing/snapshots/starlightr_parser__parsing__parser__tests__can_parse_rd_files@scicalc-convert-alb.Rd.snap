@@ -1,0 +1,242 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/scicalc-convert-alb.Rd
+---
+Document {
+    children: [
+        NewLine,
+        NewLine,
+        Command {
+            name: "name",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "convert_alb",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Command {
+            name: "alias",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "convert_alb",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Command {
+            name: "title",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "Convert Albumin Concentration Units",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "convert_alb(alb)",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        ArgumentTable(
+            [
+                Argument {
+                    name: [
+                        Text(
+                            "alb",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "albumin concentration (g/L)",
+                        ),
+                    ],
+                },
+            ],
+        ),
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Value",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "Albumin concentration (g/dL)",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "Convert Albumin Concentration Units",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Examples",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "convert_alb(40)",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "df <- data.frame(",
+                ),
+                NewLine,
+                Text(
+                    "  ID = c(1, 2, 3, 4),",
+                ),
+                NewLine,
+                Text(
+                    "  ALB = c(35, 40, 28, 45)",
+                ),
+                NewLine,
+                Text(
+                    ")",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "df <- df ",
+                ),
+                EscapedChar(
+                    '%',
+                ),
+                Text(
+                    ">",
+                ),
+                EscapedChar(
+                    '%',
+                ),
+                NewLine,
+                Text(
+                    "  dplyr::group_by(ID) ",
+                ),
+                EscapedChar(
+                    '%',
+                ),
+                Text(
+                    ">",
+                ),
+                EscapedChar(
+                    '%',
+                ),
+                NewLine,
+                Text(
+                    "  dplyr::mutate(ALBBL = convert_alb(ALB))",
+                ),
+                NewLine,
+                Text(
+                    "df",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "See Also",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "Other unit_conversion: ",
+                ),
+                NewLine,
+                Link {
+                    label: [
+                        Text(
+                            "convert_bili",
+                        ),
+                        Text(
+                            "()",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "convert_bili",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ",",
+                ),
+                NewLine,
+                Link {
+                    label: [
+                        Text(
+                            "convert_creat",
+                        ),
+                        Text(
+                            "()",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "convert_creat",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        Command {
+            name: "concept",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "unit_conversion",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+    ],
+}

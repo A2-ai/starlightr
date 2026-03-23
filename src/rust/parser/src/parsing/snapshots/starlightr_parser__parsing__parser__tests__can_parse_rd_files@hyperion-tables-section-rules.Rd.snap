@@ -1,0 +1,387 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/hyperion-tables-section-rules.Rd
+---
+Document {
+    children: [
+        NewLine,
+        NewLine,
+        Command {
+            name: "name",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "section_rules",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Command {
+            name: "alias",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "section_rules",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Command {
+            name: "title",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "Create section assignment rules",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "section_rules(...)",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        ArgumentTable(
+            [
+                Argument {
+                    name: [
+                        Text(
+                            "...",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Formula expressions following ",
+                        ),
+                        Link {
+                            label: [
+                                Text(
+                                    "dplyr::case_when()",
+                                ),
+                            ],
+                            target: Package {
+                                package: [
+                                    Text(
+                                        "dplyr",
+                                    ),
+                                ],
+                                topic: [
+                                    Text(
+                                        "case_when",
+                                    ),
+                                ],
+                            },
+                            mode: Code,
+                        },
+                        Text(
+                            " syntax, ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "kind == \"THETA\" ~ \"Structural Parameters\"",
+                                    ),
+                                ],
+                            ],
+                        },
+                    ],
+                },
+            ],
+        ),
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Value",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "List of quosures for use in TableSpec",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "Creates rules for assigning parameters to named sections in the output table.",
+                ),
+                NewLine,
+                Text(
+                    "Rules are evaluated after name transformation, so you can match on the final",
+                ),
+                NewLine,
+                Text(
+                    "display name or use the preserved ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "nonmem_name",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " and ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "user_name",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " columns.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Available columns",
+                ),
+            ],
+            children: [
+                NewLine,
+                NewLine,
+                Text(
+                    "The following columns are available for use in section rules:",
+                ),
+                NewLine,
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "nonmem_name",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " - NONMEM identifier (\"THETA1\", \"OMEGA(1,1)\")",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "user_name",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " - User name from control file comments (\"CL\", \"OM1\")",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "name",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " - Display name (depends on ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "parameter_names",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " setting)",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "kind",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " - Parameter type: \"THETA\", \"OMEGA\", or \"SIGMA\"",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "diagonal",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " - TRUE for diagonal matrix elements (variance), FALSE for off-diagonal (covariance)",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "fixed",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " - TRUE if parameter is fixed",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        NewLine,
+        Code {
+            title: Some(
+                "Examples",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "section_rules(",
+                ),
+                NewLine,
+                Text(
+                    "  grepl(\"~\", user_name) ~ \"Covariate Effects\",",
+                ),
+                NewLine,
+                Text(
+                    "  kind == \"THETA\" ~ \"Structural Parameters\",",
+                ),
+                NewLine,
+                Text(
+                    "  kind == \"OMEGA\" & diagonal ~ \"Between-Subject Variability\",",
+                ),
+                NewLine,
+                Text(
+                    "  kind == \"SIGMA\" ~ \"Residual Variability\"",
+                ),
+                NewLine,
+                Text(
+                    ")",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+    ],
+}

@@ -30,9 +30,7 @@ setup_starlight_structure <- function(output_path, config) {
   }
 
   for (dir in dirs) {
-    if (!dir.exists(dir)) {
-      dir.create(dir, recursive = TRUE)
-    }
+    ensure_dir(dir)
   }
 }
 
@@ -44,80 +42,24 @@ setup_starlight_structure <- function(output_path, config) {
 #' @keywords internal
 generate_astro_config <- function(output_path, config, pkg_path = NULL) {
   github_url <- get_github_url(config)
-  social_config <- ""
-
-  if (!is.null(github_url)) {
-    social_config <- sprintf("social: [{ icon: 'github', label: 'GitHub', href: '%s' }],", github_url)
-  }
-
-  # Logo configuration
-  logo_config <- ""
-  if (!is.null(config$site$logo)) {
-    logo_config <- 'logo: { src: "./src/assets/logo.png", alt: "Logo" },'
-  }
-
-  # Favicon configuration
-  favicon_config <- ""
-  if (!is.null(config$site$favicon)) {
-    favicon_config <- 'favicon: "/images/favicon.png",'
-  }
-
-  # KaTeX support (enabled by default for R packages with math)
-  use_katex <- config$features$katex %||% TRUE
-  katex_import <- ""
-  katex_plugin <- ""
-  if (use_katex) {
-    katex_import <- 'import { starlightKatex } from "starlight-katex";'
-    katex_plugin <- "plugins: [starlightKatex()],"
-  }
-
-  # Version selector component override
-  components_config <- ""
-  if (has_version_support(config)) {
-    components_config <- 'components: { SiteTitle: "./src/components/VersionSelect.astro" },'
-  }
 
   # Generate sidebar configuration from YAML
   pkg_name <- if (!is.null(pkg_path)) get_package_name(pkg_path) else NULL
   sidebar_config <- generate_sidebar_config(config, output_path, pkg_name)
 
-  astro_config <- sprintf('// @ts-check
-import { defineConfig } from "astro/config";
-import starlight from "@astrojs/starlight";
-import { remarkBaseUrl } from "./remark-base-url.mjs";
-%s
-
-// https://astro.build/config
-export default defineConfig({
-  site: process.env.ASTRO_SITE || "http://localhost",
-  base: process.env.ASTRO_BASE || "/",
-  trailingSlash: "always",
-  markdown: {
-    remarkPlugins: [remarkBaseUrl],
-  },
-  integrations: [
-    starlight({
-      title: "%s",
-      customCss: ["./src/styles/custom.css"],
-      %s
-      %s
-      %s
-      %s
-      %s
-      sidebar: %s
-    })
-  ]
-});
-',
-    katex_import,
-    config$site$title %||% "Package Documentation",
-    katex_plugin,
-    components_config,
-    logo_config,
-    favicon_config,
-    social_config,
-    sidebar_config
+  data <- list(
+    title = escape_quoted_string(config$site$title %||% "Package Documentation"),
+    use_remark = config$output$include_build_files %||% TRUE,
+    use_katex = config$features$katex %||% TRUE,
+    has_versions = has_version_support(config),
+    has_logo = !is.null(config$site$logo),
+    has_favicon = !is.null(config$site$favicon),
+    has_github = !is.null(github_url),
+    github_url = github_url %||% "",
+    sidebar_config = sidebar_config
   )
+
+  astro_config <- render_template("astro.config.mjs", data)
 
   writeLines(astro_config, file.path(output_path, "astro.config.mjs"))
   cli::cli_alert_success("Generated {.file astro.config.mjs}")
@@ -138,36 +80,37 @@ generate_package_json <- function(output_path, config, overwrite = FALSE) {
     return(invisible(NULL))
   }
 
-  # Check if KaTeX is enabled (default TRUE)
-  use_katex <- config$features$katex %||% TRUE
-
-  katex_dep <- ""
-  if (use_katex) {
-    katex_dep <- ',
-    "starlight-katex": "^0.0.4"'
-  }
-
-  package_json <- sprintf('{
-  "name": "starlight-docs",
-  "type": "module",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
-  },
-  "dependencies": {
-    "@astrojs/starlight": "^0.36.0",
-    "astro": "^5.6.1",
-    "sharp": "^0.34.2",
-    "unist-util-visit": "^5.0.0"%s
-  }
-}', katex_dep)
-
+  # Render base template (no whisker conditionals)
+  package_json <- render_template("package.json", list())
   writeLines(package_json, package_json_path)
+
+  # Merge additional dependencies into the rendered JSON
+  merge_package_deps(package_json_path, config)
+
   cli::cli_alert_success("Generated {.file package.json}")
+}
+
+#' Merge katex and user dependencies into package.json
+#'
+#' @param package_json_path Path to the package.json file
+#' @param config Configuration list
+#' @keywords internal
+merge_package_deps <- function(package_json_path, config) {
+  pkg <- jsonlite::read_json(package_json_path)
+
+  # Add katex dependency if enabled
+  if (isTRUE(config$features$katex %||% TRUE)) {
+    pkg$dependencies[["starlight-katex"]] <- "^0.0.4"
+  }
+
+  # Add user-managed dependencies from config
+  if (!is.null(config$dependencies)) {
+    for (dep in config$dependencies) {
+      pkg$dependencies[[dep$name]] <- dep$version
+    }
+  }
+
+  jsonlite::write_json(pkg, package_json_path, auto_unbox = TRUE, pretty = TRUE)
 }
 
 #' Generate content.config.ts file for Astro content collections
@@ -175,17 +118,8 @@ generate_package_json <- function(output_path, config, overwrite = FALSE) {
 #' @param output_path Path to output directory
 #' @keywords internal
 generate_content_config <- function(output_path) {
-  content_config <- 'import { defineCollection } from "astro:content";
-import { docsLoader } from "@astrojs/starlight/loaders";
-import { docsSchema } from "@astrojs/starlight/schema";
-
-export const collections = {
-  docs: defineCollection({ loader: docsLoader(), schema: docsSchema() }),
-};
-'
-
   src_path <- file.path(output_path, "src")
-  writeLines(content_config, file.path(src_path, "content.config.ts"))
+  copy_template("content.config.ts", file.path(src_path, "content.config.ts"))
   cli::cli_alert_success("Generated {.file content.config.ts}")
 }
 
@@ -203,29 +137,7 @@ generate_gitignore <- function(output_path, overwrite = FALSE) {
     return(invisible(NULL))
   }
 
-  gitignore_content <- "# build output
-dist/
-# generated types
-.astro/
-
-# dependencies
-node_modules/
-
-# logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# environment variables
-.env
-.env.production
-
-# macOS-specific files
-.DS_Store
-"
-
-  writeLines(gitignore_content, gitignore_path)
+  copy_template("gitignore", gitignore_path)
   cli::cli_alert_success("Generated {.file .gitignore}")
 }
 
@@ -237,47 +149,45 @@ pnpm-debug.log*
 #' @param output_path Path to output directory
 #' @keywords internal
 generate_remark_plugin <- function(output_path) {
-  plugin_content <- 'import { visit } from "unist-util-visit";
-
-/**
- * Remark plugin to prepend ASTRO_BASE to image paths.
- * This ensures images work correctly in versioned documentation.
- */
-export function remarkBaseUrl() {
-  const base = (process.env.ASTRO_BASE || "/").replace(/\\/$/, "");
-
-  return (tree) => {
-    visit(tree, "image", (node) => {
-      if (node.url && node.url.startsWith("/figures/")) {
-        node.url = base + node.url;
-      }
-    });
-  };
-}
-'
-
-  writeLines(plugin_content, file.path(output_path, "remark-base-url.mjs"))
+  copy_template("remark-base-url.mjs", file.path(output_path, "remark-base-url.mjs"))
   cli::cli_alert_success("Generated {.file remark-base-url.mjs}")
+}
+
+#' Generate starlightr.css file for Starlight site
+#'
+#' Copies starlightr's own styles (argument tables, etc.) into the site.
+#' This file is always overwritten because starlightr owns it.
+#'
+#' @param output_path Path to output directory
+#' @keywords internal
+generate_starlightr_css <- function(output_path) {
+  template_path <- system.file("templates/starlightr.css", package = "starlightr")
+
+  # Create styles directory
+  styles_dir <- file.path(output_path, "src", "styles")
+  ensure_dir(styles_dir)
+
+  css_path <- file.path(styles_dir, "starlightr.css")
+  file.copy(template_path, css_path, overwrite = TRUE)
+  cli::cli_alert_success("Generated {.file src/styles/starlightr.css}")
 }
 
 #' Generate custom.css file for Starlight site
 #'
+#' Creates a placeholder custom.css for user styles. Only created if missing;
+#' this file is user-owned and never overwritten.
+#'
 #' @param output_path Path to output directory
-#' @param overwrite Logical, whether to overwrite existing file
 #' @keywords internal
-generate_custom_css <- function(output_path, overwrite = FALSE) {
+generate_custom_css <- function(output_path) {
   template_path <- system.file("templates/custom.css", package = "starlightr")
 
-  # Create styles directory
   styles_dir <- file.path(output_path, "src", "styles")
-  if (!dir.exists(styles_dir)) {
-    dir.create(styles_dir, recursive = TRUE)
-  }
+  ensure_dir(styles_dir)
 
   css_path <- file.path(styles_dir, "custom.css")
 
-  # Don't overwrite existing custom.css unless requested
-  if (file.exists(css_path) && !overwrite) {
+  if (file.exists(css_path)) {
     cli::cli_alert_info("Skipping {.file custom.css} (already exists)")
     return(invisible(NULL))
   }

@@ -1,0 +1,546 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/scicalc-bmic.Rd
+---
+Document {
+    children: [
+        NewLine,
+        NewLine,
+        Command {
+            name: "name",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "bmic",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Command {
+            name: "alias",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "bmic",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Command {
+            name: "title",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "Categorize Body Mass Index",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "bmic(bmi, age)",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        ArgumentTable(
+            [
+                Argument {
+                    name: [
+                        Text(
+                            "bmi",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Numeric vector of baseline Body Mass Index values (kg/m²)",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "age",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Numeric vector of baseline age in years.",
+                        ),
+                        NewLine,
+                        Text(
+                            "the function will issue warnings for individuals under 18 years old, as",
+                        ),
+                        NewLine,
+                        Text(
+                            "adult BMI categories may not be appropriate for pediatric populations",
+                        ),
+                    ],
+                },
+            ],
+        ),
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Value",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "Integer vector of obesity categories (1-6). Returns the value of",
+                ),
+                NewLine,
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "getOption(\"scicalc.missing_value\")",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " (default ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "-999",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ") for",
+                ),
+                NewLine,
+                Text(
+                    "missing BMI values.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "Categorizes individuals based on their Body Mass Index (BMI) according to",
+                ),
+                NewLine,
+                Text(
+                    "standard WHO obesity classification criteria. Validates age",
+                ),
+                NewLine,
+                Text(
+                    "to ensure appropriate application of adult BMI categories.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Details",
+                ),
+            ],
+            children: [
+                NewLine,
+                Command {
+                    name: "strong",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "BMI Categories:",
+                            ),
+                        ],
+                    ],
+                },
+                NewLine,
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " 1: Underweight: BMI < 18.5 kg/m²",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " 2: Normal weight: BMI 18.5 to < 25 kg/m²",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " 3: Overweight: BMI 25 to < 30 kg/m²",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " 4: Obese class 1: BMI 30 to < 35 kg/m²",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " 5: Obese class 2: BMI 35 to < 40 kg/m²",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " 6: Obese class 3: BMI >= 40 kg/m²",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+                NewLine,
+                Command {
+                    name: "strong",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "Age Considerations:",
+                            ),
+                        ],
+                    ],
+                },
+                NewLine,
+                Text(
+                    "The function will warn if any individuals are under",
+                ),
+                NewLine,
+                Text(
+                    "18 years old, as standard adult BMI categories may not be appropriate for",
+                ),
+                NewLine,
+                Text(
+                    "children and adolescents.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Examples",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "patients <- data.frame(",
+                ),
+                NewLine,
+                Text(
+                    "  ID = 1:6,",
+                ),
+                NewLine,
+                Text(
+                    "  AGE = c(25, 45, 17, 55, 30, 65),",
+                ),
+                NewLine,
+                Text(
+                    "  WEIGHT = c(60, 80, 70, 90, 75, 85),",
+                ),
+                NewLine,
+                Text(
+                    "  HEIGHT = c(165, 175, 170, 180, 160, 175)",
+                ),
+                NewLine,
+                Text(
+                    ")",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "dplyr::mutate(",
+                ),
+                NewLine,
+                Text(
+                    " patients,",
+                ),
+                NewLine,
+                Text(
+                    "  BMI = bmi(WEIGHT, HEIGHT),",
+                ),
+                NewLine,
+                Text(
+                    "  BMIC = bmic(BMI, AGE)",
+                ),
+                NewLine,
+                Text(
+                    ")",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "References",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "World Health Organization.",
+                ),
+                NewLine,
+                Text(
+                    "https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "See Also",
+                ),
+            ],
+            children: [
+                NewLine,
+                Link {
+                    label: [
+                        Text(
+                            "bmi",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "bmi",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " for calculating BMI from weight and height,",
+                ),
+                NewLine,
+                Link {
+                    label: [
+                        Text(
+                            "agec",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "agec",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " for age categorization",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "Other body_composition: ",
+                ),
+                NewLine,
+                Link {
+                    label: [
+                        Text(
+                            "aibw",
+                        ),
+                        Text(
+                            "()",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "aibw",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ",",
+                ),
+                NewLine,
+                Link {
+                    label: [
+                        Text(
+                            "bmi",
+                        ),
+                        Text(
+                            "()",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "bmi",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ",",
+                ),
+                NewLine,
+                Link {
+                    label: [
+                        Text(
+                            "bsa",
+                        ),
+                        Text(
+                            "()",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "bsa",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ",",
+                ),
+                NewLine,
+                Link {
+                    label: [
+                        Text(
+                            "dubois_bsa",
+                        ),
+                        Text(
+                            "()",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "dubois_bsa",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ",",
+                ),
+                NewLine,
+                Link {
+                    label: [
+                        Text(
+                            "ibw",
+                        ),
+                        Text(
+                            "()",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "ibw",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ",",
+                ),
+                NewLine,
+                Link {
+                    label: [
+                        Text(
+                            "mosteller_bsa",
+                        ),
+                        Text(
+                            "()",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "mosteller_bsa",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        Command {
+            name: "concept",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "body_composition",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+    ],
+}

@@ -1,0 +1,30 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &opts).unwrap()"
+input_file: parser/test_data/starlightr-render-reference.Rd
+---
+---
+title: "render_reference"
+description: "Renders an. Rd file to an mdx file."
+pagefind: false
+---
+
+
+## Usage
+
+```r
+render_reference(rd_file, output_file, config_file = "_starlightr.toml")
+```
+
+
+
+## Examples
+
+```r
+# Not run:
+render_reference(
+  rd_file = "man/function.Rd",
+  output_file = "../Docs/src/content/docs/reference/function.mdx",
+  config_file = "_starlightr.toml"
+)
+```

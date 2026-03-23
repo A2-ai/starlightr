@@ -1,0 +1,155 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/starlightr-render-reference.Rd
+---
+Document {
+    children: [
+        NewLine,
+        NewLine,
+        Command {
+            name: "name",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "render_reference",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Command {
+            name: "alias",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "render_reference",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Command {
+            name: "title",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "render_reference",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "render_reference(rd_file, output_file, config_file = \"_starlightr.toml\")",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        ArgumentTable(
+            [
+                Argument {
+                    name: [
+                        Text(
+                            "rd_file",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "path to Rd file to convert to .mdx",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "output_file",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "path to new mdx file",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "config_file",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "path to _starlightr.toml",
+                        ),
+                    ],
+                },
+            ],
+        ),
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "Renders an .Rd file to an mdx file.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Examples",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Code {
+                    title: None,
+                    kind: DontRun,
+                    children: [
+                        NewLine,
+                        Text(
+                            "render_reference(",
+                        ),
+                        NewLine,
+                        Text(
+                            "  rd_file = \"man/function.Rd\",",
+                        ),
+                        NewLine,
+                        Text(
+                            "  output_file = \"../Docs/src/content/docs/reference/function.mdx\",",
+                        ),
+                        NewLine,
+                        Text(
+                            "  config_file = \"_starlightr.toml\"",
+                        ),
+                        NewLine,
+                        Text(
+                            ")",
+                        ),
+                        NewLine,
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+    ],
+}

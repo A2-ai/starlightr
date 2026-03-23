@@ -37,7 +37,7 @@ copy_branding_assets <- function(pkg_path, output_path, config) {
     logo_src <- file.path(pkg_path, config$site$logo)
     if (file.exists(logo_src)) {
       assets_dir <- file.path(output_path, "src", "assets")
-      if (!dir.exists(assets_dir)) dir.create(assets_dir, recursive = TRUE)
+      ensure_dir(assets_dir)
       file.copy(logo_src, file.path(assets_dir, "logo.png"), overwrite = TRUE)
       cli::cli_alert_success("Copied logo to {.path src/assets/}")
     } else {
@@ -50,7 +50,7 @@ copy_branding_assets <- function(pkg_path, output_path, config) {
     favicon_src <- file.path(pkg_path, config$site$favicon)
     if (file.exists(favicon_src)) {
       images_dir <- file.path(output_path, "public", "images")
-      if (!dir.exists(images_dir)) dir.create(images_dir, recursive = TRUE)
+      ensure_dir(images_dir)
       file.copy(favicon_src, file.path(images_dir, "favicon.png"), overwrite = TRUE)
       cli::cli_alert_success("Copied favicon to {.path public/images/}")
     } else {

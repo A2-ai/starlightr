@@ -1,0 +1,21 @@
+pre-commit:
+  parallel: true
+  commands:
+    machete:
+      run: cd src/rust/ && cargo-machete && cd ../../
+    check:
+      run: cargo check --manifest-path ./src/rust/Cargo.toml --all
+    test:
+      run: cargo test --all --manifest-path ./src/rust/Cargo.toml 
+    fmt:
+      run: cargo fmt --manifest-path ./src/rust/Cargo.toml --all
+      stage_fixed: true
+    r-document:
+      run: Rscript -e "rextendr::document()"
+      stage_fixed: true
+    r-fmt:
+      run: air format ./R
+      stage_fixed: true
+    rv-fmt:
+      run: rv fmt --check
+ 

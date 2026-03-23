@@ -1,0 +1,135 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &opts).unwrap()"
+input_file: parser/test_data/hyperion-package.Rd
+---
+---
+title: "hyperion: Pharmaceutical Model Development and Workflow Tools"
+description: "Hyperion is an R interface to the pharos CLI for pharmaceutical model development workflows. It streamlines the complete workflow from development through clust"
+pagefind: false
+---
+
+
+## Model I/O
+
+Functions for reading, writing, and validating NONMEM models:
+- [`read_model()`](../read_model/) - Read a model from a .mod or .ctl file
+- [`copy_model()`](../copy_model/) - Copy a model to a new file with optional parameter updates
+- [`check_model()`](../check_model/) - Validate model syntax
+- [`check_dataset()`](../check_dataset/) - Validate model dataset
+- [`get_model_name()`](../get_model_name/) - Get the model name (filename without extension)
+- [`get_model_dir()`](../get_model_dir/) - Get the model directory path
+- [`get_data_path()`](../get_data_path/) - Get the dataset path from the model
+
+
+
+## Model Summaries
+
+Functions for summarizing model runs:
+- [`summary()`](../summary/) - Get a summary of a completed model run
+- [`get_run_info()`](../get_run_info/) - Get run details and heuristics from .lst file
+
+
+
+## Parameter Extraction
+
+Functions for extracting parameter estimates, gradients, and shrinkage:
+- [`get_parameters()`](../get_parameters/) - Get parameter estimates from .ext file
+- [`get_final_estimates()`](../get_final_estimates/) - Get final parameter estimates
+- [`read_ext_file()`](../read_ext_file/) - Read .ext file directly
+- [`get_gradients()`](../get_gradients/) - Get gradient values
+- [`get_eta_shrinkage()`](../get_eta_shrinkage/) - Get ETA shrinkage
+- [`get_eps_shrinkage()`](../get_eps_shrinkage/) - Get EPS shrinkage
+
+
+
+## Parameter Metadata
+
+S7 classes and functions for structured parameter comments:
+- [`get_model_parameter_info()`](../get_model_parameter_info/) - Extract parameter metadata from a model
+- [`ThetaComment`](../thetacomment/), [`OmegaComment`](../omegacomment/), [`SigmaComment`](../sigmacomment/) - Parameter comment classes
+- [`ModelComments`](../modelcomments/) - Container for all parameter comments
+- [`get_comment()`](../get_comment/) - Get a comment by NONMEM name
+- [`get_parameter_names()`](../get_parameter_names/) - Get user-defined parameter names from model or ModelComments
+- [`get_parameter_transform()`](../get_parameter_transform/) - Get parameterization (transform) type
+- [`get_parameter_unit()`](../get_parameter_unit/) - Get parameter units
+- [`get_theta_names()`](../get_theta_names/) - Get theta parameter names
+- [`get_eta_labels()`](../get_eta_labels/) - Get ETA labels for plots/tables
+- [`update_param_info()`](../update_param_info/) - Update parameter metadata
+- [`audit_parameter_info()`](../audit_parameter_info/) - Audit provenance of metadata fields
+
+
+
+## Lookup Files
+
+Functions for managing TOML lookup files with parameter metadata:
+- [`apply_lookup()`](../apply_lookup/) - Apply lookup file to fill missing metadata
+- [`apply_lookup_defaults()`](../apply_lookup_defaults/) - Apply default values from lookup
+- [`add_parameter_to_lookup()`](../add_parameter_to_lookup/) - Add a parameter to lookup file
+- [`remove_parameter_from_lookup()`](../remove_parameter_from_lookup/) - Remove a parameter from lookup
+- [`list_lookup_parameters()`](../list_lookup_parameters/) - List parameters in a lookup file
+
+
+
+## Transform Calculations
+
+Functions for computing derived statistics with transform awareness:
+- [`compute_cv()`](../compute_cv/) - Compute coefficient of variation
+- [`compute_rse()`](../compute_rse/) - Compute relative standard error
+- [`compute_ci()`](../compute_ci/) - Compute confidence intervals
+- [`transform_value()`](../transform_value/) - Back-transform estimates to natural scale
+
+
+
+## Model Lineage
+
+Functions for tracking model development history:
+- [`get_model_lineage()`](../get_model_lineage/) - Get full lineage tree
+- [`get_model_ancestors()`](../get_model_ancestors/) - Get ancestor models
+- [`get_model_descendants()`](../get_model_descendants/) - Get descendant models
+- [`are_models_in_lineage()`](../are_models_in_lineage/) - Check if models are related
+
+
+
+## Configuration
+
+Functions for pharos configuration:
+- [`init()`](../init/) - Initialize pharos with config file path
+- [`get_pharos_config()`](../get_pharos_config/) - Get current pharos configuration
+- [`get_comment_type()`](../get_comment_type/) - Get comment parsing mode (raw or type1)
+- [`use_type1_comments()`](../use_type1_comments/) - Configure pharos.toml for type1 comment parsing
+
+
+
+## Metadata Files
+
+Functions for managing model metadata JSON files:
+- [`set_metadata_file()`](../set_metadata_file/) - Create or update metadata file
+- [`update_metadata_file()`](../update_metadata_file/) - Update existing metadata
+- [`get_model_metadata()`](../get_model_metadata/) - Load model's metadata
+
+
+
+## Job Submission
+
+Functions for submitting models to compute clusters:
+- [`submit_model_to_slurm()`](../submit_model_to_slurm/) - Submit to SLURM scheduler
+- [`submit_model_to_sge()`](../submit_model_to_sge/) - Submit to SGE scheduler
+
+
+
+## See Also
+
+Useful links:
+- [https://a2-ai.github.io/hyperion-docs](https://a2-ai.github.io/hyperion-docs)
+- [https://github.com/a2-ai/hyperion](https://github.com/a2-ai/hyperion)
+
+
+## Author
+
+**Maintainer**: Matt Smith 
+
+Authors:
+- Vincent Prouillet
+- Mossa M. Reimert
+- Devin Pastoor

@@ -1,0 +1,1691 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/hyperion-get-model-parameter-info.Rd
+---
+Document {
+    children: [
+        NewLine,
+        NewLine,
+        Command {
+            name: "name",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "get_model_parameter_info",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Command {
+            name: "alias",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "get_model_parameter_info",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Command {
+            name: "title",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "Extract all parameter comments from a model as ModelComments object",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "get_model_parameter_info(mod, lookup_path = NULL)",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        ArgumentTable(
+            [
+                Argument {
+                    name: [
+                        Text(
+                            "mod",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "A hyperion_nonmem_model object or path to a run output directory",
+                        ),
+                        NewLine,
+                        Text(
+                            "containing an .lst file.",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "lookup_path",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Optional path to a TOML lookup file. If provided, fills",
+                        ),
+                        NewLine,
+                        Text(
+                            "NULL fields (display, description, unit, parameterization) from the lookup.",
+                        ),
+                    ],
+                },
+            ],
+        ),
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Value",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "A ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "ModelComments",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " object containing theta, omega, and sigma comments.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "Parses parameter comments and returns structured metadata for theta, omega,",
+                ),
+                NewLine,
+                Text(
+                    "and sigma parameters.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Details",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "For model objects sourced from ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                ".mod",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    "/",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                ".ctl",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " files:",
+                ),
+                NewLine,
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " if run status is ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\"run\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", metadata is read from the corresponding ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                ".lst",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " otherwise (",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\"not_run\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    "/",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\"running\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    "), metadata is read from the model file",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Comment Parsing Modes",
+                ),
+            ],
+            children: [
+                NewLine,
+                NewLine,
+                Text(
+                    "The parsing behavior is controlled by the ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "pharos.toml",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " configuration file.",
+                ),
+                NewLine,
+                Text(
+                    "In the ",
+                ),
+                Command {
+                    name: "verb",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "[",
+                            ),
+                            Text(
+                                "nonmem.comments",
+                            ),
+                            Text(
+                                "]",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " section, set ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "type = \"type1\"",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " to enable structured",
+                ),
+                NewLine,
+                Text(
+                    "type1 comment parsing. If this setting is absent or set to any other value,",
+                ),
+                NewLine,
+                Text(
+                    "raw comment parsing is used (the default).",
+                ),
+                NewLine,
+                NewLine,
+                Command {
+                    name: "strong",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "type1 mode",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ": Expects comments in a structured format with explicit field",
+                ),
+                NewLine,
+                Text(
+                    "delimiters. This mode provides more precise extraction but requires comments",
+                ),
+                NewLine,
+                Text(
+                    "to follow the type1 specification.",
+                ),
+                NewLine,
+                NewLine,
+                Command {
+                    name: "strong",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "raw mode",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " (default): Flexibly parses parameter names, units, and",
+                ),
+                NewLine,
+                Text(
+                    "descriptions from free-form comment text. More forgiving but may be less",
+                ),
+                NewLine,
+                Text(
+                    "precise for complex comment structures.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Raw Comment Formats (default)",
+                ),
+            ],
+            children: [
+                NewLine,
+                NewLine,
+                Text(
+                    "Applies to text after ",
+                ),
+                Command {
+                    name: "verb",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                ";",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " on lines within ",
+                ),
+                Command {
+                    name: "verb",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "$THETA",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ", ",
+                ),
+                Command {
+                    name: "verb",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "$OMEGA",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ", and ",
+                ),
+                Command {
+                    name: "verb",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "$SIGMA",
+                            ),
+                        ],
+                    ],
+                },
+                NewLine,
+                Text(
+                    "blocks.",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "Parsing pipeline in raw mode:",
+                ),
+                NewLine,
+                Text(
+                    "extract transform -> strip prefix -> extract unit -> extract name.",
+                ),
+                NewLine,
+                NewLine,
+                Command {
+                    name: "strong",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "THETA/SIGMA",
+                            ),
+                        ],
+                    ],
+                },
+                NewLine,
+                NewLine,
+                Text(
+                    "General form:",
+                ),
+                NewLine,
+                Command {
+                    name: "verb",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "[",
+                            ),
+                            Text(
+                                "PREFIX",
+                            ),
+                            Text(
+                                "]",
+                            ),
+                            Text(
+                                " NAME ",
+                            ),
+                            Text(
+                                "[",
+                            ),
+                            Text(
+                                "(UNIT)",
+                            ),
+                            Text(
+                                "]",
+                            ),
+                            Text(
+                                " ",
+                            ),
+                            Text(
+                                "[",
+                            ),
+                            Text(
+                                "TRANSFORM_SEP TRANSFORM",
+                            ),
+                            Text(
+                                "]",
+                            ),
+                        ],
+                    ],
+                },
+                NewLine,
+                NewLine,
+                Text(
+                    "Common accepted examples:",
+                ),
+                NewLine,
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "CL",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "CL (L/HR)",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "CL ",
+                                            ),
+                                            Text(
+                                                "[",
+                                            ),
+                                            Text(
+                                                "L/HR",
+                                            ),
+                                            Text(
+                                                "]",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "verb",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "CL ;exp",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "CL :LOG",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "verb",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "CL (L/HR) ;exp",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "verb",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "THETA1 CL (L/HR) ;exp",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "verb",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "1: CL (L/HR) ;exp",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+                NewLine,
+                Text(
+                    "Notes:",
+                ),
+                NewLine,
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " Prefixes are case-insensitive; colon after prefix is optional.",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " Numeric prefixes like ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "1",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Command {
+                                    name: "verb",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "1:",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Command {
+                                    name: "verb",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "1-",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "1.",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " are accepted.",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " Units are read from ",
+                                ),
+                                Command {
+                                    name: "verb",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "()",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " or ",
+                                ),
+                                Command {
+                                    name: "verb",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "[",
+                                            ),
+                                            Text(
+                                                "]",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", and can appear anywhere in the string.",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " Colon transform form requires leading whitespace (e.g., ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "CL :EXP",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ").",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " THETA strips trailing punctuation from extracted name tokens; SIGMA",
+                                ),
+                                NewLine,
+                                Text(
+                                    "currently does not.",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " SIGMA also supports unit in transform segment, e.g.",
+                                ),
+                                NewLine,
+                                Command {
+                                    name: "verb",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "Name ;Transform (unit)",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ".",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+                NewLine,
+                Command {
+                    name: "strong",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "OMEGA",
+                            ),
+                        ],
+                    ],
+                },
+                NewLine,
+                NewLine,
+                Text(
+                    "General form:",
+                ),
+                NewLine,
+                Command {
+                    name: "verb",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "[",
+                            ),
+                            Text(
+                                "PREFIX",
+                            ),
+                            Text(
+                                "]",
+                            ),
+                            Text(
+                                " NAME_PART ",
+                            ),
+                            Text(
+                                "[",
+                            ),
+                            Text(
+                                "THETA_REF",
+                            ),
+                            Text(
+                                "]",
+                            ),
+                            Text(
+                                " ",
+                            ),
+                            Text(
+                                "[",
+                            ),
+                            Text(
+                                "TRANSFORM_SEP TRANSFORM",
+                            ),
+                            Text(
+                                "]",
+                            ),
+                        ],
+                    ],
+                },
+                NewLine,
+                NewLine,
+                Text(
+                    "Common accepted examples:",
+                ),
+                NewLine,
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "IIV-CL :EXP",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "verb",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "IIV CL ;exp",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "verb",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "IIV on CL ;exp",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "verb",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "Corr CL-V ;normal",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "verb",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "11: IIV CL ;exp",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "verb",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "OMEGA(1,1): IIV CL ;exp",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+                NewLine,
+                Text(
+                    "Notes:",
+                ),
+                NewLine,
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "THETA_REF",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " may split on ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "-",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "/",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                ":",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Command {
+                                    name: "verb",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                ",",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " into multiple associated",
+                                ),
+                                NewLine,
+                                Text(
+                                    "thetas.",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " If full ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "THETA_REF",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " matches a known theta name (case-insensitive), it is",
+                                ),
+                                NewLine,
+                                Text(
+                                    "kept whole (for example, ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "CL/F",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ").",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " Linking words ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "on",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "for",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "of",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " are skipped in space-separated forms.",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+                NewLine,
+                Command {
+                    name: "strong",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "Transform keyword mapping",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " (case-insensitive):",
+                ),
+                NewLine,
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "exp",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "log",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "lognormal",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " -> ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "LogNormal",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "logit",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " -> ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "Logit",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "add",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "adderr",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "additive",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " -> ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "AddErr",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "logadd",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "logadderr",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "logerr",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " -> ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "LogAddErr",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "prop",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "proportional",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " -> ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "Proportional",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "identity",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "normal",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "none",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " -> ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "Identity",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "See Also",
+                ),
+            ],
+            children: [
+                NewLine,
+                Link {
+                    label: [
+                        Text(
+                            "get_parameter_transform()",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "get_parameter_transform",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ", ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "get_theta_names()",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "get_theta_names",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ", ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "get_comment()",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "get_comment",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+    ],
+}

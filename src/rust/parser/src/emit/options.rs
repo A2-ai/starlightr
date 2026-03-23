@@ -1,0 +1,69 @@
+use anyhow::{Context, Result as AnyhowResult};
+use fs_err as fs;
+use serde::{Deserialize, Serialize};
+use std::path::Path;
+
+#[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
+pub struct EmitOptions {
+    pub skip_sections: Vec<String>,
+    pub include_pagefind: bool,
+}
+
+impl From<Config> for EmitOptions {
+    fn from(config: Config) -> Self {
+        let mut emit_opts = EmitOptions::default();
+        if let Some(r) = config.reference {
+            if let Some(s) = r.skip_sections {
+                emit_opts.skip_sections = s;
+            };
+
+            if let Some(p) = r.include_pagefind {
+                emit_opts.include_pagefind = p;
+            }
+        };
+
+        emit_opts
+    }
+}
+
+impl EmitOptions {
+    pub fn with_skip_sections<S, I>(mut self, sections: I) -> Self
+    where
+        S: Into<String>,
+        I: IntoIterator<Item = S>,
+    {
+        self.skip_sections = sections.into_iter().map(Into::into).collect();
+        self
+    }
+
+    pub fn with_pagefind(mut self) -> Self {
+        self.include_pagefind = true;
+        self
+    }
+
+    pub fn from_file(path: impl AsRef<Path>) -> AnyhowResult<Self> {
+        let config = Config::read_config(path)?;
+        Ok(Self::from(config))
+    }
+}
+
+#[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
+pub struct ReferenceConfig {
+    skip_sections: Option<Vec<String>>,
+    include_pagefind: Option<bool>,
+}
+
+#[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
+struct Config {
+    reference: Option<ReferenceConfig>,
+}
+
+impl Config {
+    pub fn read_config(path: impl AsRef<Path>) -> AnyhowResult<Config> {
+        let contents = fs::read_to_string(path.as_ref()).context("Failed to read config file")?;
+
+        let config: Config = toml::from_str(&contents).context("Failed to parse config file")?;
+
+        Ok(config)
+    }
+}

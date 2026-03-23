@@ -4,30 +4,14 @@
 #'
 #' @param pkg_path Path to package directory
 #' @param output_path Path to output directory
-#' @param config Configuration list
+#' @param config_path Path to _starlightr.toml configuration file
 #' @param verbose Logical, whether to print debug messages for example capture
 #' @keywords internal
-process_package_documentation <- function(pkg_path, output_path, config, verbose = FALSE) {
+process_package_documentation <- function(pkg_path, output_path, config_path, verbose = FALSE) {
   cli::cli_alert_info("Processing R documentation...")
 
   # Get the actual package name from DESCRIPTION
   pkg_name <- get_package_name(pkg_path)
-
-  # Get Rd database directly from tools (new approach)
-  rd_db <- tryCatch(
-    tools::Rd_db(pkg_name),
-    error = function(e) {
-      cli::cli_abort(c(
-        "Failed to load Rd documentation for package {.pkg {pkg_name}}",
-        "i" = "Make sure the package is installed: {.code install.packages('{pkg_name}')}"
-      ))
-    }
-  )
-
-  if (length(rd_db) == 0) {
-    cli::cli_warn("No Rd files found in package {.pkg {pkg_name}}")
-    return()
-  }
 
   # Capture example outputs before generating markdown
   cli::cli_alert_info("Capturing example outputs...")
@@ -44,27 +28,20 @@ process_package_documentation <- function(pkg_path, output_path, config, verbose
     ))
   })
 
-  # Generate markdown files for each function
   ref_dir <- file.path(output_path, "src", "content", "docs", "reference")
+  rd_dir <- file.path(pkg_path, "man")
 
-  # Build config for rd_to_markdown
-  md_config <- list(
-    skip_sections = config$content$skip_sections %||% c("alias", "keyword", "concept"),
-    arguments_format = "table",
-    include_title = TRUE,
-    include_frontmatter = TRUE
-  )
+  if (!dir.exists(rd_dir)) {
+    cli::cli_warn("No Rd files found in package {.pkg {pkg_name}}")
+    return()
+  }
 
-  write_md_files(
-    rd_db = rd_db,
+  build_reference_files(
+    rd_dir = rd_dir,
     output_dir = ref_dir,
-    file_ext = ".mdx",
-    config = md_config,
-    site_output_path = output_path,
-    pkg_name = pkg_name
+    config_file = config_path,
+    site_output_path = output_path
   )
-
-  cli::cli_alert_success("Generated reference documentation for {length(rd_db)} functions")
 }
 
 #' Process articles (vignettes) and README together
@@ -80,7 +57,7 @@ process_package_documentation <- function(pkg_path, output_path, config, verbose
 process_articles_and_readme <- function(pkg_path, output_path, config) {
   vignettes_dir <- file.path(pkg_path, "vignettes")
   articles_dir <- file.path(output_path, "src", "content", "docs", "articles")
-  dir.create(articles_dir, recursive = TRUE, showWarnings = FALSE)
+  ensure_dir(articles_dir)
 
   # Collect article names from config (extract slugs from content items)
   article_names <- character(0)
@@ -108,12 +85,8 @@ process_articles_and_readme <- function(pkg_path, output_path, config) {
   for (i in seq_along(article_names)) {
     name <- article_names[i]
     if (tolower(name) == "readme") {
-      # Check package root, then inst/
-      readme_path <- file.path(pkg_path, "README.Rmd")
-      if (!file.exists(readme_path)) {
-        readme_path <- file.path(pkg_path, "inst", "README.Rmd")
-      }
-      rmd_paths[i] <- readme_path
+      readme_path <- find_readme(pkg_path)
+      rmd_paths[i] <- readme_path %||% file.path(pkg_path, "README.Rmd")
     } else {
       rmd_paths[i] <- file.path(vignettes_dir, paste0(name, ".Rmd"))
     }
@@ -135,31 +108,41 @@ process_articles_and_readme <- function(pkg_path, output_path, config) {
     return()
   }
 
-  # Collect all Rmd files to build
-  all_rmds <- rmd_paths
+  # Split into Rmd files (need building) and pre-rendered Md files (just copy)
+  is_rmd <- grepl("\\.Rmd$", rmd_paths, ignore.case = TRUE)
+  rmd_to_build <- rmd_paths[is_rmd]
+  md_to_copy <- rmd_paths[!is_rmd]
 
   # Build all Rmds in one call (single install) into a temp directory
   # Explicitly use md_document to preserve raw LaTeX (not render to HTML)
   build_dir <- tempfile("starlightr-rmd-")
-  dir.create(build_dir, recursive = TRUE, showWarnings = FALSE)
+  ensure_dir(build_dir)
   on.exit(unlink(build_dir, recursive = TRUE), add = TRUE)
 
-  cli::cli_alert_info("Building {length(all_rmds)} Rmd file{?s}...")
-  devtools::build_rmd(
-    all_rmds,
-    output_format = rmarkdown::md_document(
-      variant = "gfm",
-      preserve_yaml = FALSE
-    ),
-    output_dir = build_dir,
-    quiet = TRUE
-  )
+  if (length(rmd_to_build) > 0) {
+    cli::cli_alert_info("Building {length(rmd_to_build)} Rmd file{?s}...")
+    devtools::build_rmd(
+      rmd_to_build,
+      output_format = rmarkdown::md_document(
+        variant = "gfm",
+        preserve_yaml = FALSE
+      ),
+      output_dir = build_dir,
+      quiet = TRUE
+    )
+  }
+
+  # Copy pre-rendered Markdown files directly to build dir
+  if (length(md_to_copy) > 0) {
+    cli::cli_alert_info("Copying {length(md_to_copy)} pre-rendered Markdown file{?s}...")
+    file.copy(md_to_copy, build_dir, overwrite = TRUE)
+  }
 
   # Copy man/figures/ from package to output (common for README badges/images)
   man_figures <- file.path(pkg_path, "man", "figures")
   if (dir.exists(man_figures)) {
     dest_figures <- file.path(output_path, "public", "figures")
-    dir.create(dest_figures, recursive = TRUE, showWarnings = FALSE)
+    ensure_dir(dest_figures)
     file.copy(
       list.files(man_figures, full.names = TRUE),
       dest_figures,
@@ -201,7 +184,7 @@ process_article_output <- function(output_name, md_name, source_dir, output_path
   # Copy figures from {md_name}_files/
   figures_dir <- file.path(source_dir, paste0(md_name, "_files"))
   dest_figures <- file.path(output_path, "public", "figures", tolower(output_name))
-  dir.create(dest_figures, recursive = TRUE, showWarnings = FALSE)
+  ensure_dir(dest_figures)
 
   if (dir.exists(figures_dir)) {
     figure_gfm <- file.path(figures_dir, "figure-gfm")
@@ -217,7 +200,7 @@ process_article_output <- function(output_name, md_name, source_dir, output_path
     for (subdir in fig_subdirs) {
       subdir_name <- basename(subdir)
       subdir_dest <- file.path(output_path, "public", "figures", subdir_name)
-      dir.create(subdir_dest, recursive = TRUE, showWarnings = FALSE)
+      ensure_dir(subdir_dest)
       file.copy(list.files(subdir, full.names = TRUE), subdir_dest, overwrite = TRUE)
     }
     # Also copy any files directly in figures/

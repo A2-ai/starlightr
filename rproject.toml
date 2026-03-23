@@ -5,11 +5,14 @@ name = "starlightr"
 r_version = "4.5"
 
 repositories = [
-  { alias = "PRISM", url = "https://prism.dev.a2-ai.cloud/rpkgs/stratus/2026-01-14/"},
+  { alias = "PRISM", url = "https://prism.dev.a2-ai.cloud/rpkgs/stratus/2026-01-14/" },
+	{ alias = "ppm", url = "https://packagemanager.posit.co/cran/latest" },
 ]
 
 dependencies = [
   "devtools",
 	"covr",
-  {name = "starlightr", path = ".", dependencies_only = true, install_suggestions = true}
+  { name = "starlightr", path = ".", dependencies_only = false, install_suggestions = true },
+  { name = "rextendr", git = "https://github.com/extendr/rextendr", branch = "main" },
+    "languageserver",
 ]

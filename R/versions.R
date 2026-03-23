@@ -65,9 +65,6 @@ validate_version_config <- function(config) {
 #' @param config Configuration list
 #' @keywords internal
 generate_versions_ts <- function(output_path, config) {
-  template_path <- system.file("templates/versions.ts", package = "starlightr")
-  template <- paste(readLines(template_path, warn = FALSE), collapse = "\n")
-
   # Prepare data for whisker
   versions_data <- lapply(config$versions$list, function(v) {
     list(
@@ -82,13 +79,11 @@ generate_versions_ts <- function(output_path, config) {
     currentVersion = get_current_version(config)
   )
 
-  rendered <- whisker::whisker.render(template, data)
+  rendered <- render_template("versions.ts", data)
 
   # Ensure output directory exists
   data_dir <- file.path(output_path, "src", "data")
-  if (!dir.exists(data_dir)) {
-    dir.create(data_dir, recursive = TRUE)
-  }
+  ensure_dir(data_dir)
 
   writeLines(rendered, file.path(data_dir, "versions.ts"))
   cli::cli_alert_success("Generated {.file src/data/versions.ts}")
@@ -104,9 +99,7 @@ generate_version_select_component <- function(output_path, config) {
 
   # Ensure output directory exists
   components_dir <- file.path(output_path, "src", "components")
-  if (!dir.exists(components_dir)) {
-    dir.create(components_dir, recursive = TRUE)
-  }
+  ensure_dir(components_dir)
 
   # Copy template directly (no templating needed)
   file.copy(template_path, file.path(components_dir, "VersionSelect.astro"), overwrite = TRUE)
@@ -124,9 +117,7 @@ generate_deploy_workflow <- function(output_path, config, overwrite = FALSE) {
 
   # Create .github/workflows directory in docs output
   workflows_dir <- file.path(output_path, ".github", "workflows")
-  if (!dir.exists(workflows_dir)) {
-    dir.create(workflows_dir, recursive = TRUE)
-  }
+  ensure_dir(workflows_dir)
 
   workflow_path <- file.path(workflows_dir, "deploy-docs.yml")
 

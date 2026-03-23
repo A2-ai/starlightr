@@ -44,9 +44,12 @@ default_config <- function() {
     theme = list(
       color_mode = "auto"
     ),
-    content = list(
-      code_sections = c("usage", "examples"),
-      skip_sections = c("name", "alias", "title")
+    features = list(
+      katex = TRUE
+    ),
+    reference = list(
+      skip_sections = c("name", "alias", "title"),
+      include_pagefind = FALSE
     ),
     output = list(
       dir = "docs",

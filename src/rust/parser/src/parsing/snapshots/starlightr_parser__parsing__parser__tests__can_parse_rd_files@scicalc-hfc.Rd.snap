@@ -1,0 +1,440 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/scicalc-hfc.Rd
+---
+Document {
+    children: [
+        NewLine,
+        NewLine,
+        Command {
+            name: "name",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "hfc",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Command {
+            name: "alias",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "hfc",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Command {
+            name: "title",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "Categorize Hepatic Function",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "hfc(ast, ulnast, bili, ulnbili)",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        ArgumentTable(
+            [
+                Argument {
+                    name: [
+                        Text(
+                            "ast",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Numeric vector of aspartate aminotransferase concentrations (IU/L)",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "ulnast",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Numeric vector of upper limit of normal AST values (IU/L).",
+                        ),
+                        NewLine,
+                        Text(
+                            "Typically 33 IU/L for most laboratories",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "bili",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Numeric vector of total bilirubin concentrations (mg/dL)",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "ulnbili",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Numeric vector of upper limit of normal bilirubin values (mg/dL).",
+                        ),
+                        NewLine,
+                        Text(
+                            "Typically 1.2 mg/dL for most laboratories",
+                        ),
+                    ],
+                },
+            ],
+        ),
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Value",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "Integer vector of hepatic function categories (1-4). Returns the value of",
+                ),
+                NewLine,
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "getOption(\"scicalc.missing_value\")",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " (default ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "-999",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ") for",
+                ),
+                NewLine,
+                Text(
+                    "missing values.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "This function categorizes hepatic function impairment using the National Cancer Institute",
+                ),
+                NewLine,
+                Text(
+                    "Organ Dysfunction Working Group (NCI-ODWG) criteria. It evaluates aspartate aminotransferase",
+                ),
+                NewLine,
+                Text(
+                    "(AST) and bilirubin levels relative to their upper limits of normal to determine hepatic",
+                ),
+                NewLine,
+                Text(
+                    "impairment severity. The function handles edge cases where bilirubin values are very close",
+                ),
+                NewLine,
+                Text(
+                    "to category boundaries using floating-point tolerant comparisons.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Details",
+                ),
+            ],
+            children: [
+                NewLine,
+                Command {
+                    name: "strong",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "The NCI-ODWG hepatic function categories are defined as",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ":",
+                ),
+                NewLine,
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " 1: Normal: AST ≤ ULN AND bilirubin ≤ ULN",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " 2: Mild impairment: AST > ULN OR bilirubin > ULN but ≤ 1.5 × ULN",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " 3: Moderate impairment: Bilirubin > 1.5 × ULN but ≤ 3 × ULN",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " 4: Severe impairment: Bilirubin > 3 × ULN",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+                NewLine,
+                Command {
+                    name: "strong",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "Special handling:",
+                            ),
+                        ],
+                    ],
+                },
+                NewLine,
+                Text(
+                    "The function uses ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "dplyr::near()",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " for boundary comparisons when bilirubin",
+                ),
+                NewLine,
+                Text(
+                    "values are very close to 1.5 × ULN or 3 × ULN to handle floating-point precision",
+                ),
+                NewLine,
+                Text(
+                    "issues that can occur with calculated thresholds.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Examples",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "# Single patient with normal hepatic function",
+                ),
+                NewLine,
+                Text(
+                    "hfc(ast = 15, ulnast = 33, bili = 0.6, ulnbili = 1.2)",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "# Multiple patients with different impairment levels",
+                ),
+                NewLine,
+                Text(
+                    "hfc(ast = c(25, 45, 30, 20),",
+                ),
+                NewLine,
+                Text(
+                    "     ulnast = c(33, 33, 33, 33),",
+                ),
+                NewLine,
+                Text(
+                    "     bili = c(0.8, 1.0, 2.5, 4.0),",
+                ),
+                NewLine,
+                Text(
+                    "     ulnbili = c(1.2, 1.2, 1.2, 1.2))",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "# Edge case: bilirubin exactly at boundary",
+                ),
+                NewLine,
+                Text(
+                    "hfc(ast = 25, ulnast = 33, bili = 1.8, ulnbili = 1.2)  # 1.8 = 1.5 * 1.2",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "# Pipeline example with realistic data",
+                ),
+                NewLine,
+                Text(
+                    "library(dplyr)",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "patients <- data.frame(",
+                ),
+                NewLine,
+                Text(
+                    "  ID = 1:6,",
+                ),
+                NewLine,
+                Text(
+                    "  AST = c(15, 45, 28, 35, 22, 30),",
+                ),
+                NewLine,
+                Text(
+                    "  ULNAST = 33,",
+                ),
+                NewLine,
+                Text(
+                    "  BILI = c(0.8, 1.0, 2.2, 4.5, 1.8, 0.9),",
+                ),
+                NewLine,
+                Text(
+                    "  ULNBILI = 1.2",
+                ),
+                NewLine,
+                Text(
+                    ")",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "patients ",
+                ),
+                EscapedChar(
+                    '%',
+                ),
+                Text(
+                    ">",
+                ),
+                EscapedChar(
+                    '%',
+                ),
+                NewLine,
+                Text(
+                    "  mutate(BHFC = hfc(AST, ULNAST, BILI, ULNBILI))",
+                ),
+                NewLine,
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "References",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "National Cancer Institute Organ Dysfunction Working Group criteria for hepatic impairment",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Command {
+            name: "concept",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "hepatic_function",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+    ],
+}

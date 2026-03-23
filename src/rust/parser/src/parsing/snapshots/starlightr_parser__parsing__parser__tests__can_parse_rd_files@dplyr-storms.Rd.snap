@@ -1,0 +1,465 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/dplyr-storms.Rd
+---
+Document {
+    children: [
+        NewLine,
+        NewLine,
+        NewLine,
+        Command {
+            name: "docType",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "data",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Command {
+            name: "name",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "storms",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Command {
+            name: "alias",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "storms",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Command {
+            name: "title",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "Storm tracks data",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Command {
+            name: "format",
+            options: None,
+            args: [
+                [
+                    NewLine,
+                    Text(
+                        "A tibble with 20,778 observations",
+                    ),
+                    NewLine,
+                    Text(
+                        "and 13 variables:",
+                    ),
+                    NewLine,
+                    List {
+                        kind: Describe,
+                        items: [
+                            ListItem {
+                                term: Some(
+                                    [
+                                        Text(
+                                            "name",
+                                        ),
+                                    ],
+                                ),
+                                children: [
+                                    Text(
+                                        "Storm Name",
+                                    ),
+                                ],
+                            },
+                            ListItem {
+                                term: Some(
+                                    [
+                                        Text(
+                                            "year,month,day",
+                                        ),
+                                    ],
+                                ),
+                                children: [
+                                    Text(
+                                        "Date of report",
+                                    ),
+                                ],
+                            },
+                            ListItem {
+                                term: Some(
+                                    [
+                                        Text(
+                                            "hour",
+                                        ),
+                                    ],
+                                ),
+                                children: [
+                                    Text(
+                                        "Hour of report (in UTC)",
+                                    ),
+                                ],
+                            },
+                            ListItem {
+                                term: Some(
+                                    [
+                                        Text(
+                                            "lat,long",
+                                        ),
+                                    ],
+                                ),
+                                children: [
+                                    Text(
+                                        "Location of storm center",
+                                    ),
+                                ],
+                            },
+                            ListItem {
+                                term: Some(
+                                    [
+                                        Text(
+                                            "status",
+                                        ),
+                                    ],
+                                ),
+                                children: [
+                                    Text(
+                                        "Storm classification (Tropical Depression, Tropical Storm,",
+                                    ),
+                                    NewLine,
+                                    Text(
+                                        "or Hurricane)",
+                                    ),
+                                ],
+                            },
+                            ListItem {
+                                term: Some(
+                                    [
+                                        Text(
+                                            "category",
+                                        ),
+                                    ],
+                                ),
+                                children: [
+                                    Text(
+                                        "Saffir-Simpson hurricane category calculated from wind speed.",
+                                    ),
+                                    NewLine,
+                                    List {
+                                        kind: Itemize,
+                                        items: [
+                                            ListItem {
+                                                term: None,
+                                                children: [
+                                                    Text(
+                                                        " ",
+                                                    ),
+                                                    Command {
+                                                        name: "code",
+                                                        options: None,
+                                                        args: [
+                                                            [
+                                                                Text(
+                                                                    "NA",
+                                                                ),
+                                                            ],
+                                                        ],
+                                                    },
+                                                    Text(
+                                                        ": Not a hurricane",
+                                                    ),
+                                                    NewLine,
+                                                ],
+                                            },
+                                            ListItem {
+                                                term: None,
+                                                children: [
+                                                    Text(
+                                                        " 1: 64+ knots",
+                                                    ),
+                                                    NewLine,
+                                                ],
+                                            },
+                                            ListItem {
+                                                term: None,
+                                                children: [
+                                                    Text(
+                                                        " 2: 83+ knots",
+                                                    ),
+                                                    NewLine,
+                                                ],
+                                            },
+                                            ListItem {
+                                                term: None,
+                                                children: [
+                                                    Text(
+                                                        " 3: 96+ knots",
+                                                    ),
+                                                    NewLine,
+                                                ],
+                                            },
+                                            ListItem {
+                                                term: None,
+                                                children: [
+                                                    Text(
+                                                        " 4: 113+ knots",
+                                                    ),
+                                                    NewLine,
+                                                ],
+                                            },
+                                            ListItem {
+                                                term: None,
+                                                children: [
+                                                    Text(
+                                                        " 5: 137+ knots",
+                                                    ),
+                                                    NewLine,
+                                                ],
+                                            },
+                                        ],
+                                    },
+                                    NewLine,
+                                ],
+                            },
+                            ListItem {
+                                term: Some(
+                                    [
+                                        Text(
+                                            "wind",
+                                        ),
+                                    ],
+                                ),
+                                children: [
+                                    Text(
+                                        "storm's maximum sustained wind speed (in knots)",
+                                    ),
+                                ],
+                            },
+                            ListItem {
+                                term: Some(
+                                    [
+                                        Text(
+                                            "pressure",
+                                        ),
+                                    ],
+                                ),
+                                children: [
+                                    Text(
+                                        "Air pressure at the storm's center (in millibars)",
+                                    ),
+                                ],
+                            },
+                            ListItem {
+                                term: Some(
+                                    [
+                                        Text(
+                                            "tropicalstorm_force_diameter",
+                                        ),
+                                    ],
+                                ),
+                                children: [
+                                    Text(
+                                        "Diameter (in nautical miles) of the",
+                                    ),
+                                    NewLine,
+                                    Text(
+                                        "area experiencing tropical storm strength winds (34 knots or above).",
+                                    ),
+                                    NewLine,
+                                    Text(
+                                        "Only available starting in 2004.",
+                                    ),
+                                ],
+                            },
+                            ListItem {
+                                term: Some(
+                                    [
+                                        Text(
+                                            "hurricane_force_diameter",
+                                        ),
+                                    ],
+                                ),
+                                children: [
+                                    Text(
+                                        "Diameter (in nautical miles) of the area",
+                                    ),
+                                    NewLine,
+                                    Text(
+                                        "experiencing hurricane strength winds (64 knots or above). Only available",
+                                    ),
+                                    NewLine,
+                                    Text(
+                                        "starting in 2004.",
+                                    ),
+                                ],
+                            },
+                        ],
+                    },
+                    NewLine,
+                ],
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "storms",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "This dataset is the NOAA Atlantic hurricane database best track data,",
+                ),
+                NewLine,
+                Url {
+                    href: [
+                        Text(
+                            "https://www.nhc.noaa.gov/data/#hurdat",
+                        ),
+                    ],
+                },
+                Text(
+                    ". The data includes the positions and",
+                ),
+                NewLine,
+                Text(
+                    "attributes of storms from 1975-2024. Storms",
+                ),
+                NewLine,
+                Text(
+                    "from 1979 onward are measured every six hours during the lifetime of the",
+                ),
+                NewLine,
+                Text(
+                    "storm. Storms in earlier years have some missing data.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Examples",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "storms",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "# Show a few recent storm paths",
+                ),
+                NewLine,
+                Text(
+                    "if (requireNamespace(\"ggplot2\", quietly = TRUE)) ",
+                ),
+                Text(
+                    "{",
+                ),
+                NewLine,
+                Text(
+                    "  library(ggplot2)",
+                ),
+                NewLine,
+                Text(
+                    "  storms |>",
+                ),
+                NewLine,
+                Text(
+                    "    filter(year >= 2000) |>",
+                ),
+                NewLine,
+                Text(
+                    "    ggplot(aes(long, lat, color = paste(year, name))) +",
+                ),
+                NewLine,
+                Text(
+                    "    geom_path(show.legend = FALSE) +",
+                ),
+                NewLine,
+                Text(
+                    "    facet_wrap(~year)",
+                ),
+                NewLine,
+                Text(
+                    "}",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "storms",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "See Also",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "The script to create the storms data set:",
+                ),
+                NewLine,
+                Url {
+                    href: [
+                        Text(
+                            "https://github.com/tidyverse/dplyr/blob/main/data-raw/storms.R",
+                        ),
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        Command {
+            name: "keyword",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "datasets",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+    ],
+}

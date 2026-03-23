@@ -1,0 +1,73 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &opts).unwrap()"
+input_file: parser/test_data/scicalc-bmic.Rd
+---
+---
+title: "Categorize Body Mass Index"
+description: "Categorizes individuals based on their Body Mass Index (BMI) according to standard WHO obesity classification criteria. Validates age to ensure appropriate appl"
+pagefind: false
+---
+
+
+## Usage
+
+```r
+bmic(bmi, age)
+```
+
+
+
+
+## Details
+
+**BMI Categories:**
+- 1: Underweight: BMI \< 18.5 kg/m²
+- 2: Normal weight: BMI 18.5 to \< 25 kg/m²
+- 3: Overweight: BMI 25 to \< 30 kg/m²
+- 4: Obese class 1: BMI 30 to \< 35 kg/m²
+- 5: Obese class 2: BMI 35 to \< 40 kg/m²
+- 6: Obese class 3: BMI >= 40 kg/m²
+
+
+**Age Considerations:**
+The function will warn if any individuals are under
+18 years old, as standard adult BMI categories may not be appropriate for
+children and adolescents.
+
+
+## Examples
+
+```r
+patients <- data.frame(
+  ID = 1:6,
+  AGE = c(25, 45, 17, 55, 30, 65),
+  WEIGHT = c(60, 80, 70, 90, 75, 85),
+  HEIGHT = c(165, 175, 170, 180, 160, 175)
+)
+
+dplyr::mutate(
+ patients,
+  BMI = bmi(WEIGHT, HEIGHT),
+  BMIC = bmic(BMI, AGE)
+)
+```
+
+## References
+
+World Health Organization.
+https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight
+
+
+## See Also
+
+[`bmi`](../bmi/) for calculating BMI from weight and height,
+[`agec`](../agec/) for age categorization
+
+Other body_composition: 
+[`aibw()`](../aibw/),
+[`bmi()`](../bmi/),
+[`bsa()`](../bsa/),
+[`dubois_bsa()`](../dubois_bsa/),
+[`ibw()`](../ibw/),
+[`mosteller_bsa()`](../mosteller_bsa/)

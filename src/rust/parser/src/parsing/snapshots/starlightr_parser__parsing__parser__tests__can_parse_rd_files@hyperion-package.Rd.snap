@@ -1,0 +1,1840 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/hyperion-package.Rd
+---
+Document {
+    children: [
+        NewLine,
+        NewLine,
+        Command {
+            name: "docType",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "package",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Command {
+            name: "name",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "hyperion-package",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Command {
+            name: "alias",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "hyperion",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Command {
+            name: "alias",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "hyperion-package",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Command {
+            name: "title",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "hyperion: Pharmaceutical Model Development and Workflow Tools",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "Hyperion is an R interface to the pharos CLI for pharmaceutical model",
+                ),
+                NewLine,
+                Text(
+                    "development workflows. It streamlines the complete workflow from development",
+                ),
+                NewLine,
+                Text(
+                    "through cluster execution and analysis for NONMEM modeling.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Model I/O",
+                ),
+            ],
+            children: [
+                NewLine,
+                NewLine,
+                Text(
+                    "Functions for reading, writing, and validating NONMEM models:",
+                ),
+                NewLine,
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "read_model()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "read_model",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Read a model from a .mod or .ctl file",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "copy_model()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "copy_model",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Copy a model to a new file with optional parameter updates",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "check_model()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "check_model",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Validate model syntax",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "check_dataset()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "check_dataset",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Validate model dataset",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "get_model_name()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "get_model_name",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Get the model name (filename without extension)",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "get_model_dir()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "get_model_dir",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Get the model directory path",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "get_data_path()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "get_data_path",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Get the dataset path from the model",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Model Summaries",
+                ),
+            ],
+            children: [
+                NewLine,
+                NewLine,
+                Text(
+                    "Functions for summarizing model runs:",
+                ),
+                NewLine,
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "summary()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "summary",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Get a summary of a completed model run",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "get_run_info()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "get_run_info",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Get run details and heuristics from .lst file",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Parameter Extraction",
+                ),
+            ],
+            children: [
+                NewLine,
+                NewLine,
+                Text(
+                    "Functions for extracting parameter estimates, gradients, and shrinkage:",
+                ),
+                NewLine,
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "get_parameters()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "get_parameters",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Get parameter estimates from .ext file",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "get_final_estimates()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "get_final_estimates",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Get final parameter estimates",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "read_ext_file()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "read_ext_file",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Read .ext file directly",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "get_gradients()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "get_gradients",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Get gradient values",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "get_eta_shrinkage()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "get_eta_shrinkage",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Get ETA shrinkage",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "get_eps_shrinkage()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "get_eps_shrinkage",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Get EPS shrinkage",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Parameter Metadata",
+                ),
+            ],
+            children: [
+                NewLine,
+                NewLine,
+                Text(
+                    "S7 classes and functions for structured parameter comments:",
+                ),
+                NewLine,
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "get_model_parameter_info()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "get_model_parameter_info",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Extract parameter metadata from a model",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "ThetaComment",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "thetacomment",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "OmegaComment",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "omegacomment",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "SigmaComment",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "sigmacomment",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Parameter comment classes",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "ModelComments",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "modelcomments",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Container for all parameter comments",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "get_comment()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "get_comment",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Get a comment by NONMEM name",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "get_parameter_names()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "get_parameter_names",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Get user-defined parameter names from model or ModelComments",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "get_parameter_transform()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "get_parameter_transform",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Get parameterization (transform) type",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "get_parameter_unit()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "get_parameter_unit",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Get parameter units",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "get_theta_names()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "get_theta_names",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Get theta parameter names",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "get_eta_labels()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "get_eta_labels",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Get ETA labels for plots/tables",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "update_param_info()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "update_param_info",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Update parameter metadata",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "audit_parameter_info()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "audit_parameter_info",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Audit provenance of metadata fields",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Lookup Files",
+                ),
+            ],
+            children: [
+                NewLine,
+                NewLine,
+                Text(
+                    "Functions for managing TOML lookup files with parameter metadata:",
+                ),
+                NewLine,
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "apply_lookup()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "apply_lookup",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Apply lookup file to fill missing metadata",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "apply_lookup_defaults()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "apply_lookup_defaults",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Apply default values from lookup",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "add_parameter_to_lookup()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "add_parameter_to_lookup",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Add a parameter to lookup file",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "remove_parameter_from_lookup()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "remove_parameter_from_lookup",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Remove a parameter from lookup",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "list_lookup_parameters()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "list_lookup_parameters",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - List parameters in a lookup file",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Transform Calculations",
+                ),
+            ],
+            children: [
+                NewLine,
+                NewLine,
+                Text(
+                    "Functions for computing derived statistics with transform awareness:",
+                ),
+                NewLine,
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "compute_cv()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "compute_cv",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Compute coefficient of variation",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "compute_rse()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "compute_rse",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Compute relative standard error",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "compute_ci()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "compute_ci",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Compute confidence intervals",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "transform_value()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "transform_value",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Back-transform estimates to natural scale",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Model Lineage",
+                ),
+            ],
+            children: [
+                NewLine,
+                NewLine,
+                Text(
+                    "Functions for tracking model development history:",
+                ),
+                NewLine,
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "get_model_lineage()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "get_model_lineage",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Get full lineage tree",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "get_model_ancestors()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "get_model_ancestors",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Get ancestor models",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "get_model_descendants()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "get_model_descendants",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Get descendant models",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "are_models_in_lineage()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "are_models_in_lineage",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Check if models are related",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Configuration",
+                ),
+            ],
+            children: [
+                NewLine,
+                NewLine,
+                Text(
+                    "Functions for pharos configuration:",
+                ),
+                NewLine,
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "init()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "init",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Initialize pharos with config file path",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "get_pharos_config()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "get_pharos_config",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Get current pharos configuration",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "get_comment_type()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "get_comment_type",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Get comment parsing mode (raw or type1)",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "use_type1_comments()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "use_type1_comments",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Configure pharos.toml for type1 comment parsing",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Metadata Files",
+                ),
+            ],
+            children: [
+                NewLine,
+                NewLine,
+                Text(
+                    "Functions for managing model metadata JSON files:",
+                ),
+                NewLine,
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "set_metadata_file()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "set_metadata_file",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Create or update metadata file",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "update_metadata_file()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "update_metadata_file",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Update existing metadata",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "get_model_metadata()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "get_model_metadata",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Load model's metadata",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Job Submission",
+                ),
+            ],
+            children: [
+                NewLine,
+                NewLine,
+                Text(
+                    "Functions for submitting models to compute clusters:",
+                ),
+                NewLine,
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "submit_model_to_slurm()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "submit_model_to_slurm",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Submit to SLURM scheduler",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "submit_model_to_sge()",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "submit_model_to_sge",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " - Submit to SGE scheduler",
+                                ),
+                                NewLine,
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "See Also",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "Useful links:",
+                ),
+                NewLine,
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Url {
+                                    href: [
+                                        Text(
+                                            "https://a2-ai.github.io/hyperion-docs",
+                                        ),
+                                    ],
+                                },
+                                NewLine,
+                                Text(
+                                    "  ",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Url {
+                                    href: [
+                                        Text(
+                                            "https://github.com/a2-ai/hyperion",
+                                        ),
+                                    ],
+                                },
+                                NewLine,
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Author",
+                ),
+            ],
+            children: [
+                NewLine,
+                Command {
+                    name: "strong",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "Maintainer",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ": Matt Smith ",
+                ),
+                Command {
+                    name: "email",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "matthews@a2-ai.com",
+                            ),
+                        ],
+                    ],
+                },
+                NewLine,
+                NewLine,
+                Text(
+                    "Authors:",
+                ),
+                NewLine,
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " Vincent Prouillet ",
+                                ),
+                                Command {
+                                    name: "email",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "vincent@a2-ai.com",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                                Text(
+                                    "  ",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " Mossa M. Reimert ",
+                                ),
+                                Command {
+                                    name: "email",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "mossa@a2-ai.com",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                                Text(
+                                    "  ",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " Devin Pastoor ",
+                                ),
+                                Command {
+                                    name: "email",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "devin@a2-ai.com",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+                NewLine,
+            ],
+        },
+        NewLine,
+        Command {
+            name: "keyword",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "internal",
+                    ),
+                ],
+            ],
+        },
+        NewLine,
+    ],
+}

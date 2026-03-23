@@ -12,4 +12,13 @@
 
 ^_starlightr\.toml$
 
+^lefthook\.yaml$
 ^\.claude$
+^src/\.cargo$
+^src/rust/vendor$
+^src/rust/target$
+^src/Makevars$
+^src/Makevars\.win$
+
+^src/rust/parser/src/emit/snapshots$
+^src/rust/parser/src/parsing/snapshots$

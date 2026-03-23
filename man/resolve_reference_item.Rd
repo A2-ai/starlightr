@@ -9,7 +9,8 @@ resolve_reference_item(
   output_path,
   pkg_name,
   warn = TRUE,
-  label = NULL
+  label = NULL,
+  rd_db = NULL
 )
 }
 \arguments{

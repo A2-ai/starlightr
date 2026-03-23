@@ -5,3 +5,8 @@
 .DS_Store
 .quarto
 .*-docs.R
+src/rust/vendor
+src/Makevars
+src/Makevars.win
+
+**/*.otter.R

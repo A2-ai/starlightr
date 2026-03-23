@@ -1,0 +1,66 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &EmitOptions::default()).unwrap()"
+input_file: parser/test_data/scicalc-convert-alb.Rd
+---
+---
+title: "Convert Albumin Concentration Units"
+description: "Convert Albumin Concentration Units."
+pagefind: false
+---
+
+
+## Usage
+
+```r
+convert_alb(alb)
+```
+
+## Arguments
+
+<div class="arg-table">
+<table>
+<thead>
+<tr><th>Argument</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>alb</code></td>
+<td>albumin concentration (g/L)</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+## Value
+
+Albumin concentration (g/dL)
+
+
+## Description
+
+Convert Albumin Concentration Units
+
+
+## Examples
+
+```r
+convert_alb(40)
+
+df <- data.frame(
+  ID = c(1, 2, 3, 4),
+  ALB = c(35, 40, 28, 45)
+)
+
+df <- df %>%
+  dplyr::group_by(ID) %>%
+  dplyr::mutate(ALBBL = convert_alb(ALB))
+df
+```
+
+## See Also
+
+Other unit_conversion: 
+[`convert_bili()`](../convert_bili/),
+[`convert_creat()`](../convert_creat/)
