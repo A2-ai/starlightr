@@ -67,7 +67,7 @@ build_reference_files <- function(
 
 rd_file_to_slug <- function(path) {
   stem <- tools::file_path_sans_ext(basename(path))
-  gsub(".", "-", stem, fixed = TRUE)
+  gsub(".", "-", tolower(stem), fixed = TRUE)
 }
 
 #' Append example outputs to markdown content
