@@ -53,7 +53,7 @@ where
         .and_then(|s| s.to_str())
         .ok_or_extendr_err("Cannot determine Rd file stem")?;
 
-    let slug = file_stem.replace('.', "-");
+    let slug = file_stem.to_lowercase().replace('.', "-");
 
     let output_dir = if output_dir.is_absolute() {
         output_dir.to_path_buf()

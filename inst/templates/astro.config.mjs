@@ -1,7 +1,9 @@
 // @ts-check
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
+{{#use_remark}}
 import { remarkBaseUrl } from "./remark-base-url.mjs";
+{{/use_remark}}
 {{#use_katex}}
 import { starlightKatex } from "starlight-katex";
 {{/use_katex}}
@@ -11,9 +13,11 @@ export default defineConfig({
   site: process.env.ASTRO_SITE || "http://localhost",
   base: process.env.ASTRO_BASE || "/",
   trailingSlash: "always",
+{{#use_remark}}
   markdown: {
     remarkPlugins: [remarkBaseUrl],
   },
+{{/use_remark}}
   integrations: [
     starlight({
       title: "{{{title}}}",
