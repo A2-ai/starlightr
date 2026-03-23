@@ -28,9 +28,22 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
+      CARGO_NET_GIT_FETCH_WITH_CLI: "true"
 
     steps:
       - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.config.rust-version }}
+          targets: ${{ matrix.config.rust-target }}
+
+      # Add rust-cache for faster builds
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: ${{ matrix.config.os }}-${{ matrix.config.rust-version }}
+          cache-on-failure: true
 
       - uses: r-lib/actions/setup-pandoc@v2
 
