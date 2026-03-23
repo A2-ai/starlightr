@@ -58,9 +58,8 @@ where
     let output_dir = if output_dir.is_absolute() {
         output_dir.to_path_buf()
     } else {
-        rd_file
-            .parent()
-            .ok_or_extendr_err("Cannot determine Rd file parent directory")?
+        std::env::current_dir()
+            .map_to_extendr_err("Cannot determine current working directory")?
             .join(output_dir)
     };
 
