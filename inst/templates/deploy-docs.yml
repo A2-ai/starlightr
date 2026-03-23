@@ -59,7 +59,9 @@ jobs:
             bun install
 
             # Replace versions.ts and VersionSelect.astro with latest from main
-            echo "$LATEST_VERSIONS" > src/data/versions.ts
+            if [ -f src/data/versions.ts ]; then
+              echo "$LATEST_VERSIONS" > src/data/versions.ts
+            fi
             git show origin/main:src/components/VersionSelect.astro > src/components/VersionSelect.astro 2>/dev/null || true
 
             # Build this version

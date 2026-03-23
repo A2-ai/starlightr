@@ -30,9 +30,7 @@ setup_starlight_structure <- function(output_path, config) {
   }
 
   for (dir in dirs) {
-    if (!dir.exists(dir)) {
-      dir.create(dir, recursive = TRUE)
-    }
+    ensure_dir(dir)
   }
 }
 
@@ -167,9 +165,7 @@ generate_starlightr_css <- function(output_path) {
 
   # Create styles directory
   styles_dir <- file.path(output_path, "src", "styles")
-  if (!dir.exists(styles_dir)) {
-    dir.create(styles_dir, recursive = TRUE)
-  }
+  ensure_dir(styles_dir)
 
   css_path <- file.path(styles_dir, "starlightr.css")
   file.copy(template_path, css_path, overwrite = TRUE)
@@ -186,11 +182,8 @@ generate_starlightr_css <- function(output_path) {
 generate_custom_css <- function(output_path) {
   template_path <- system.file("templates/custom.css", package = "starlightr")
 
-  # Create styles directory
   styles_dir <- file.path(output_path, "src", "styles")
-  if (!dir.exists(styles_dir)) {
-    dir.create(styles_dir, recursive = TRUE)
-  }
+  ensure_dir(styles_dir)
 
   css_path <- file.path(styles_dir, "custom.css")
 

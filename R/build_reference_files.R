@@ -67,7 +67,7 @@ build_reference_files <- function(
 
 rd_file_to_slug <- function(path) {
   stem <- tools::file_path_sans_ext(basename(path))
-  gsub(".", "-", tolower(stem), fixed = TRUE)
+  slugify(stem)
 }
 
 #' Append example outputs to markdown content
@@ -98,9 +98,10 @@ append_example_outputs <- function(md_content, func_name, site_output_path) {
   components <- character()
 
   if (has_txt) {
-    # Read text content and include in code block
     txt_content <- paste(readLines(txt_path, warn = FALSE), collapse = "\n")
-    components <- c(components, paste0("```\n", txt_content, "\n```"))
+    if (nchar(txt_content) > 0) {
+      components <- c(components, paste0("```\n", txt_content, "\n```"))
+    }
   }
 
   if (has_png) {

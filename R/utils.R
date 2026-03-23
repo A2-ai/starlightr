@@ -3,6 +3,33 @@
 # Null-coalescing operator
 `%||%` <- function(a, b) if (is.null(a)) b else a
 
+#' Convert a name to a URL-safe slug
+#'
+#' Lowercases the input and replaces dots with hyphens.
+#' Used for generating consistent reference and article slugs.
+#'
+#' @param name Character string to slugify
+#' @return Slugified character string
+#' @keywords internal
+slugify <- function(name) {
+  gsub(".", "-", tolower(name), fixed = TRUE)
+}
+
+#' Create a directory, aborting on failure
+#'
+#' @param path Directory path to create
+#' @return Invisibly returns the path
+#' @keywords internal
+ensure_dir <- function(path) {
+  if (!dir.exists(path)) {
+    dir.create(path, recursive = TRUE, showWarnings = FALSE)
+    if (!dir.exists(path)) {
+      cli::cli_abort("Failed to create directory: {.path {path}}")
+    }
+  }
+  invisible(path)
+}
+
 #' Check if a path is absolute
 #'
 #' @param path Character string representing a file path

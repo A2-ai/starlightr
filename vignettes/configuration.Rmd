@@ -10,60 +10,116 @@ vignette: >
 # Configuration Guide
 
 The `_starlightr.toml` file controls how your documentation site is built and organized.
+Run `use_starlightr()` to generate a starter config.
 
-## Basic Configuration
+## Site Metadata
 
 ```toml
 [site]
 title = "My Package"
 description = "Documentation for my R package"
-
-[[navbar.left]]
-text = "Home"
-href = "index.md"
-
-[[navbar.left]]
-text = "Reference"
-href = "reference/"
-
-[[navbar.left]]
-text = "Articles"
-href = "articles/"
-
-[[navbar.right]]
-icon = "github"
-href = "https://github.com/user/repo"
 ```
 
-## Organizing Function Reference
+## Navbar
 
-You can organize your functions into logical groups:
+Add icons/links to the top navigation bar:
 
 ```toml
-[[sidebar.reference]]
-label = "Data Processing"
-contents = ["extract_*", "process_*"]
-
-[[sidebar.reference]]
-label = "Output Functions"
-contents = ["format_*", "write_*"]
+[navbar]
+right = [{ icon = "github", href = "https://github.com/user/repo" }]
 ```
 
-## Theme Options
+## Sidebar
 
-Customize the appearance of your site:
+Organize articles and reference pages into labeled groups:
 
 ```toml
-[theme]
-color_mode = "auto"  # light, dark, or auto
+[sidebar]
+articles = [
+  { label = "Getting Started", contents = [
+    { slug = "README", label = "Welcome" },
+    "introduction",
+    "configuration",
+  ] },
+]
+
+reference = [
+  { label = "Core Functions", contents = [
+    "build_site",
+    "use_starlightr",
+  ] },
+  { label = "Helpers", contents = [
+    "add_action",
+    "add_card",
+  ] },
+]
+```
+
+Article slugs map to vignette filenames (without `.Rmd`). The special slug
+`"README"` maps to the package's `README.Rmd` or `README.md`.
+
+Reference entries map to Rd topic names. Glob patterns like `"process_*"` are
+supported.
+
+## Home Page
+
+Configure the landing page hero section and feature cards:
+
+```toml
+[home]
+hero = { tagline = "Documentation for my package", actions = [
+  { text = "Get Started", link = "./articles/readme/", icon = "right-arrow", variant = "primary" },
+  { text = "GitHub", link = "https://github.com/user/repo", icon = "external", variant = "minimal" },
+] }
+cards = [
+  { icon = "document", title = "Quickstart", description = "Get up and running", link = "./articles/readme/" },
+]
 ```
 
 ## Reference Processing
 
-Control how your documentation is processed:
+Control which sections appear in reference pages:
 
 ```toml
-[references]
+[reference]
 skip_sections = ["name"]
 include_pagefind = true
 ```
+
+## Theme
+
+```toml
+[theme]
+color_mode = "auto"  # "light", "dark", or "auto"
+```
+
+## Features
+
+```toml
+[features]
+katex = true  # Enable math rendering (default: true)
+```
+
+## Output
+
+```toml
+[output]
+dir = "../my-docs-site"
+include_build_files = true  # Generate package.json, .gitignore, remark plugin
+```
+
+## Versioned Documentation
+
+Enable multi-version documentation with tagged releases:
+
+```toml
+[versions]
+enabled = true
+list = [
+  { tag = "0.2.0", label = "v0.2.0", default = true },
+  { tag = "0.1.0", label = "v0.1.0" },
+]
+```
+
+When enabled, a version selector component is added to the site header and a
+GitHub Actions workflow is generated for building all tagged versions.

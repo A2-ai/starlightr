@@ -57,7 +57,7 @@ process_package_documentation <- function(pkg_path, output_path, config_path, ve
 process_articles_and_readme <- function(pkg_path, output_path, config) {
   vignettes_dir <- file.path(pkg_path, "vignettes")
   articles_dir <- file.path(output_path, "src", "content", "docs", "articles")
-  dir.create(articles_dir, recursive = TRUE, showWarnings = FALSE)
+  ensure_dir(articles_dir)
 
   # Collect article names from config (extract slugs from content items)
   article_names <- character(0)
@@ -116,7 +116,7 @@ process_articles_and_readme <- function(pkg_path, output_path, config) {
   # Build all Rmds in one call (single install) into a temp directory
   # Explicitly use md_document to preserve raw LaTeX (not render to HTML)
   build_dir <- tempfile("starlightr-rmd-")
-  dir.create(build_dir, recursive = TRUE, showWarnings = FALSE)
+  ensure_dir(build_dir)
   on.exit(unlink(build_dir, recursive = TRUE), add = TRUE)
 
   if (length(rmd_to_build) > 0) {
@@ -142,7 +142,7 @@ process_articles_and_readme <- function(pkg_path, output_path, config) {
   man_figures <- file.path(pkg_path, "man", "figures")
   if (dir.exists(man_figures)) {
     dest_figures <- file.path(output_path, "public", "figures")
-    dir.create(dest_figures, recursive = TRUE, showWarnings = FALSE)
+    ensure_dir(dest_figures)
     file.copy(
       list.files(man_figures, full.names = TRUE),
       dest_figures,
@@ -184,7 +184,7 @@ process_article_output <- function(output_name, md_name, source_dir, output_path
   # Copy figures from {md_name}_files/
   figures_dir <- file.path(source_dir, paste0(md_name, "_files"))
   dest_figures <- file.path(output_path, "public", "figures", tolower(output_name))
-  dir.create(dest_figures, recursive = TRUE, showWarnings = FALSE)
+  ensure_dir(dest_figures)
 
   if (dir.exists(figures_dir)) {
     figure_gfm <- file.path(figures_dir, "figure-gfm")
@@ -200,7 +200,7 @@ process_article_output <- function(output_name, md_name, source_dir, output_path
     for (subdir in fig_subdirs) {
       subdir_name <- basename(subdir)
       subdir_dest <- file.path(output_path, "public", "figures", subdir_name)
-      dir.create(subdir_dest, recursive = TRUE, showWarnings = FALSE)
+      ensure_dir(subdir_dest)
       file.copy(list.files(subdir, full.names = TRUE), subdir_dest, overwrite = TRUE)
     }
     # Also copy any files directly in figures/
