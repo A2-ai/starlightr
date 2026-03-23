@@ -108,8 +108,10 @@ process_articles_and_readme <- function(pkg_path, output_path, config) {
     return()
   }
 
-  # Collect all Rmd files to build
-  all_rmds <- rmd_paths
+  # Split into Rmd files (need building) and pre-rendered Md files (just copy)
+  is_rmd <- grepl("\\.Rmd$", rmd_paths, ignore.case = TRUE)
+  rmd_to_build <- rmd_paths[is_rmd]
+  md_to_copy <- rmd_paths[!is_rmd]
 
   # Build all Rmds in one call (single install) into a temp directory
   # Explicitly use md_document to preserve raw LaTeX (not render to HTML)
@@ -117,16 +119,24 @@ process_articles_and_readme <- function(pkg_path, output_path, config) {
   dir.create(build_dir, recursive = TRUE, showWarnings = FALSE)
   on.exit(unlink(build_dir, recursive = TRUE), add = TRUE)
 
-  cli::cli_alert_info("Building {length(all_rmds)} Rmd file{?s}...")
-  devtools::build_rmd(
-    all_rmds,
-    output_format = rmarkdown::md_document(
-      variant = "gfm",
-      preserve_yaml = FALSE
-    ),
-    output_dir = build_dir,
-    quiet = TRUE
-  )
+  if (length(rmd_to_build) > 0) {
+    cli::cli_alert_info("Building {length(rmd_to_build)} Rmd file{?s}...")
+    devtools::build_rmd(
+      rmd_to_build,
+      output_format = rmarkdown::md_document(
+        variant = "gfm",
+        preserve_yaml = FALSE
+      ),
+      output_dir = build_dir,
+      quiet = TRUE
+    )
+  }
+
+  # Copy pre-rendered Markdown files directly to build dir
+  if (length(md_to_copy) > 0) {
+    cli::cli_alert_info("Copying {length(md_to_copy)} pre-rendered Markdown file{?s}...")
+    file.copy(md_to_copy, build_dir, overwrite = TRUE)
+  }
 
   # Copy man/figures/ from package to output (common for README badges/images)
   man_figures <- file.path(pkg_path, "man", "figures")

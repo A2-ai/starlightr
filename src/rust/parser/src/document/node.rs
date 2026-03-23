@@ -51,7 +51,7 @@ impl Node {
     }
 
     fn is_section_named(&self, expected: &str) -> bool {
-        matches!(self, Node::Section { title, .. } if *title == vec![Node::Text(expected.to_string())])
+        matches!(self, Node::Section { title, .. } if matches!(title.as_slice(), [Node::Text(s)] if s == expected))
     }
 
     fn get_section_key(&self) -> Option<&str> {
@@ -117,6 +117,8 @@ impl Node {
                     .into_iter()
                     .map(|group| group.into_iter().map(Node::lower).collect())
                     .collect();
+
+                let options = options.map(|nodes| nodes.into_iter().map(Node::lower).collect());
 
                 let cmd = Node::Command {
                     name: name.clone(),

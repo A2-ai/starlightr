@@ -44,7 +44,7 @@ get_package_name <- function(pkg_path) {
   return(pkg_name)
 }
 
-#' Find README.Rmd in package root or inst/
+#' Find README (.Rmd or .md) in package root or inst/
 #'
 #' @param pkg_path Path to package directory
 #' @return README path if found, otherwise NULL

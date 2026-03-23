@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{find_readme}
 \alias{find_readme}
-\title{Find README.Rmd in package root or inst/}
+\title{Find README (.Rmd or .md) in package root or inst/}
 \usage{
 find_readme(pkg_path)
 }
@@ -13,6 +13,6 @@ find_readme(pkg_path)
 README path if found, otherwise NULL
 }
 \description{
-Find README.Rmd in package root or inst/
+Find README (.Rmd or .md) in package root or inst/
 }
 \keyword{internal}

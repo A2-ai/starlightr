@@ -15,15 +15,6 @@ pub struct Emitter {
 }
 
 impl Emitter {
-    pub fn new() -> Self {
-        Self {
-            output: "".to_string(),
-            imports: BTreeSet::new(),
-            math_mode_depth: 0,
-            code_mode_depth: 0,
-        }
-    }
-
     fn in_math_mode(&self) -> bool {
         self.math_mode_depth > 0
     }
@@ -39,16 +30,16 @@ impl Emitter {
     }
 
     fn render_nodes_to_string(&mut self, nodes: &[Node]) -> String {
-        let mut emitter = Emitter::new();
+        let mut emitter = Emitter {
+            math_mode_depth: self.math_mode_depth,
+            code_mode_depth: self.code_mode_depth,
+            ..Emitter::default()
+        };
         for node in nodes {
             emitter.emit_node(node);
         }
-        self.imports.extend(emitter.imports.clone());
+        self.imports.extend(emitter.imports);
         emitter.output
-    }
-
-    fn render_table_cell(&mut self, nodes: &[Node]) -> String {
-        self.render_compact_nodes(nodes)
     }
 
     fn escape_html(text: &str) -> String {
@@ -127,10 +118,7 @@ impl Emitter {
 
     fn emit_command(&mut self, name: &str, option: Option<&[Node]>, args: &[Vec<Node>]) {
         match name {
-            "code" => self.emit_code(option, args),
-            "verb" => self.emit_code(option, args),
-            //"usage" => self.emit_titled_code_block("Usage", option, args),
-            //"examples" => self.emit_titled_code_block("Examples", option, args),
+            "code" | "verb" => self.emit_code(option, args),
             "emph" => self.emit_emph(option, args),
             "strong" => self.emit_strong(option, args),
             "eqn" => self.emit_eqn(option, args),
@@ -312,8 +300,8 @@ impl Emitter {
     fn emit_argument_table(&mut self, args: &[Argument]) {
         self.emit_argument_table_header();
         for arg in args {
-            let name = Self::escape_html(&self.render_table_cell(&arg.name));
-            let description = self.render_table_cell(&arg.description);
+            let name = Self::escape_html(&self.render_compact_nodes(&arg.name));
+            let description = self.render_compact_nodes(&arg.description);
             self.emit_text("<tr>\n");
             self.emit_text(&format!("<td><code>{name}</code></td>\n"));
             self.emit_text(&format!("<td>{description}</td>\n"));
@@ -416,7 +404,7 @@ fn escape_yaml(text: &str) -> String {
 }
 
 fn create_frontmatter(document: &Document, pagefind: bool) -> AnyhowResult<String> {
-    let mut emitter = Emitter::new();
+    let mut emitter = Emitter::default();
     emitter.emit_text("---\n");
 
     let title = document
@@ -466,7 +454,7 @@ fn create_frontmatter(document: &Document, pagefind: bool) -> AnyhowResult<Strin
 }
 
 pub fn emit_document(mut document: Document, options: &EmitOptions) -> AnyhowResult<String> {
-    let mut emitter = Emitter::new();
+    let mut emitter = Emitter::default();
 
     let frontmatter = create_frontmatter(&document, options.include_pagefind)?;
 
