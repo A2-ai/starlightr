@@ -13,6 +13,6 @@ regex = { workspace = true }
 fs-err = { workspace = true }
 toml = { workspace = true }
 
-# Testing and utilities
+[dev-dependencies]
 insta = { workspace = true }
 tempfile = { workspace = true }

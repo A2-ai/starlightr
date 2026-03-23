@@ -72,8 +72,8 @@ fn split_package_topic(mut nodes: Vec<Node>) -> (Vec<Node>, Option<Vec<Node>>) {
     (nodes, None)
 }
 
-fn create_target(label: Vec<Node>, options: Option<Vec<Vec<Node>>>) -> LinkTarget {
-    match options.and_then(|opts| opts.into_iter().next()) {
+fn create_target(label: Vec<Node>, options: Option<Vec<Node>>) -> LinkTarget {
+    match options {
         None => {
             let target = normalize_link(label.clone());
             LinkTarget::Local(target)

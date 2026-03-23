@@ -71,10 +71,6 @@ impl<'a> Lexer<'a> {
         }
     }
     
-    fn reset(&mut self) {
-        self.pos = 0;
-    }
-
     fn mark(&self) -> usize {
         self.pos
     }
@@ -168,8 +164,6 @@ impl<'a> Lexer<'a> {
     }
 
     fn lex_all(&mut self) -> Vec<Spanned<Token>> {
-        self.reset(); 
-
         let mut lexed = Vec::new();
         lexed.push(self.next_token());
 

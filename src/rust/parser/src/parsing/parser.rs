@@ -128,22 +128,17 @@ impl Parser {
 
     fn parse_command_node(&mut self, command: String) -> Result<Node, ParserError> {
         let mut args = Vec::new();
-        let mut option = Vec::new();
 
         // \command[option]{arg}{args}
-        while self.peek().value == Token::LeftBracket {
-            option.push(self.parse_bracket_group()?);
-        }
+        let options = if self.peek().value == Token::LeftBracket {
+            Some(self.parse_bracket_group()?)
+        } else {
+            None
+        };
 
         while self.peek().value == Token::LeftBrace {
             args.push(self.parse_brace_group()?);
         }
-
-        let options = if option.is_empty() {
-            None
-        } else {
-            Some(option)
-        };
 
         Ok(Node::Command {
             name: command,
@@ -188,14 +183,29 @@ impl Parser {
 }
 
 pub fn parse_file(path: impl AsRef<Path>) -> AnyhowResult<Document> {
+    let path = path.as_ref();
     let contents = fs::read_to_string(path)?;
-    parse(&contents)
+    parse(&contents).map_err(|e| {
+        // Enrich with filename for context
+        e.context(format!("in {}", path.display()))
+    })
 }
 
 pub fn parse(contents: &str) -> AnyhowResult<Document> {
     let mut parser = Parser::new(contents);
-    let doc = parser.parse_document()?;
-    let doc = doc.lower();    
+    let doc = parser.parse_document().map_err(|e| {
+        let (start_line, start_col) = Span::line_col(contents, e.span.start);
+        let (end_line, end_col) = Span::line_col(contents, e.span.end);
+        if start_line == end_line {
+            anyhow::anyhow!("{} at line {start_line}, column {start_col}", e.message)
+        } else {
+            anyhow::anyhow!(
+                "{} from line {start_line}, column {start_col} to line {end_line}, column {end_col}",
+                e.message
+            )
+        }
+    })?;
+    let doc = doc.lower();
 
     Ok(doc)
 }

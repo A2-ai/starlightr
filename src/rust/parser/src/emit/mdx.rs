@@ -1,12 +1,12 @@
 use std::{collections::BTreeSet, slice};
 
-use serde::{Deserialize, Serialize};
+use anyhow::{Result as AnyhowResult, bail};
 
 use crate::document::Document;
 use crate::document::{Argument, CodeKind, LinkMode, LinkTarget, ListItem, ListKind, Node};
 use crate::emit::EmitOptions;
 
-#[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Default, Clone, PartialEq)]
 pub struct Emitter {
     output: String,
     imports: BTreeSet<String>,
@@ -48,10 +48,7 @@ impl Emitter {
     }
 
     fn render_table_cell(&mut self, nodes: &[Node]) -> String {
-        self.render_nodes_to_string(nodes)
-            .split_whitespace()
-            .collect::<Vec<_>>()
-            .join(" ")
+        self.render_compact_nodes(nodes)
     }
 
     fn escape_html(text: &str) -> String {
@@ -124,9 +121,7 @@ impl Emitter {
         self.output += s;
     }
 
-    fn emit_nothing(&mut self) {}
-
-    fn emit_command(&mut self, name: &str, option: Option<&[Vec<Node>]>, args: &[Vec<Node>]) {
+    fn emit_command(&mut self, name: &str, option: Option<&[Node]>, args: &[Vec<Node>]) {
         match name {
             "code" => self.emit_code(option, args),
             "verb" => self.emit_code(option, args),
@@ -137,17 +132,17 @@ impl Emitter {
             "eqn" => self.emit_eqn(option, args),
             "deqn" => self.emit_deqn(option, args),
             _ if self.in_math_mode() => self.emit_math_command(name, option, args),
-            _ => self.emit_nothing(),
+            _ => eprintln!("warning: unhandled Rd command '\\{name}' — output may be incomplete"),
         }
     }
 
-    fn emit_math_command(&mut self, name: &str, option: Option<&[Vec<Node>]>, args: &[Vec<Node>]) {
+    fn emit_math_command(&mut self, name: &str, option: Option<&[Node]>, args: &[Vec<Node>]) {
         self.emit_text("\\");
         self.emit_text(name);
 
         if let Some(option) = option {
             self.emit_text("[");
-            self.emit_node_group(option);
+            self.emit_nodes(option);
             self.emit_text("]");
         }
 
@@ -158,7 +153,7 @@ impl Emitter {
         }
     }
 
-    fn emit_code(&mut self, _option: Option<&[Vec<Node>]>, args: &[Vec<Node>]) {
+    fn emit_code(&mut self, _option: Option<&[Node]>, args: &[Vec<Node>]) {
         self.emit_text("`");
         self.code_mode_depth += 1;
         self.emit_node_group(args);
@@ -166,13 +161,13 @@ impl Emitter {
         self.emit_text("`");
     }
 
-    fn emit_emph(&mut self, _option: Option<&[Vec<Node>]>, args: &[Vec<Node>]) {
+    fn emit_emph(&mut self, _option: Option<&[Node]>, args: &[Vec<Node>]) {
         self.emit_text("*");
         self.emit_node_group(args);
         self.emit_text("*");
     }
 
-    fn emit_strong(&mut self, _option: Option<&[Vec<Node>]>, args: &[Vec<Node>]) {
+    fn emit_strong(&mut self, _option: Option<&[Node]>, args: &[Vec<Node>]) {
         self.emit_text("**");
         self.emit_node_group(args);
         self.emit_text("**");
@@ -239,7 +234,7 @@ impl Emitter {
         self.emit_text(&format!("[{label}]({url})"));
     }
 
-    fn emit_eqn(&mut self, _option: Option<&[Vec<Node>]>, args: &[Vec<Node>]) {
+    fn emit_eqn(&mut self, _option: Option<&[Node]>, args: &[Vec<Node>]) {
         self.emit_text("$");
         if let Some(math) = args.first() {
             self.emit_math_nodes(slice::from_ref(math));
@@ -247,7 +242,7 @@ impl Emitter {
         self.emit_text("$");
     }
 
-    fn emit_deqn(&mut self, _option: Option<&[Vec<Node>]>, args: &[Vec<Node>]) {
+    fn emit_deqn(&mut self, _option: Option<&[Node]>, args: &[Vec<Node>]) {
         self.emit_text("$$\n");
         if let Some(math) = args.first() {
             self.emit_math_nodes(slice::from_ref(math));
@@ -416,7 +411,7 @@ fn escape_yaml(text: &str) -> String {
     text.replace('\\', "\\\\").replace('"', "\\\"")
 }
 
-fn create_frontmatter(document: &Document, pagefind: bool) -> Result<String, String> {
+fn create_frontmatter(document: &Document, pagefind: bool) -> AnyhowResult<String> {
     let mut emitter = Emitter::new();
     emitter.emit_text("---\n");
 
@@ -428,8 +423,11 @@ fn create_frontmatter(document: &Document, pagefind: bool) -> Result<String, Str
             _ => None,
         })
         .map(|nodes| emitter.render_nodes_to_string(nodes).trim().to_string())
-        .filter(|s| !s.is_empty())
-        .ok_or_else(|| "Please add a title or name command to the Rd document".to_string())?;
+        .filter(|s| !s.is_empty());
+
+    let Some(title) = title else {
+        bail!("Please add a title or name command to the Rd document");
+    };
 
     let desc = document
         .get_description_node()
@@ -463,7 +461,7 @@ fn create_frontmatter(document: &Document, pagefind: bool) -> Result<String, Str
     Ok(emitter.output)
 }
 
-pub fn emit_document(mut document: Document, options: &EmitOptions) -> Result<String, String> {
+pub fn emit_document(mut document: Document, options: &EmitOptions) -> AnyhowResult<String> {
     let mut emitter = Emitter::new();
 
     let frontmatter = create_frontmatter(&document, options.include_pagefind)?;

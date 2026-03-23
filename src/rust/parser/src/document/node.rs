@@ -14,7 +14,7 @@ pub enum Node {
     EscapedChar(char),
     Command {
         name: String,
-        options: Option<Vec<Vec<Node>>>,
+        options: Option<Vec<Node>>,
         args: Vec<Vec<Node>>,
     },
     List {

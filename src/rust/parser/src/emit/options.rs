@@ -1,3 +1,4 @@
+use anyhow::{Context, Result as AnyhowResult};
 use fs_err as fs;
 use std::path::Path;
 use serde::{Serialize, Deserialize};
@@ -10,7 +11,7 @@ pub struct EmitOptions {
 
 impl From<Config> for EmitOptions {
     fn from(config: Config) -> Self {
-        let mut emit_opts = EmitOptions::default();                
+        let mut emit_opts = EmitOptions::default();
         if let Some(r) = config.reference {
             if let Some(s) = r.skip_sections {
                 emit_opts.skip_sections = s;
@@ -26,8 +27,8 @@ impl From<Config> for EmitOptions {
 }
 
 impl EmitOptions {
-    pub fn with_skip_sections<S, I>(mut self, sections: I) -> Self 
-    where 
+    pub fn with_skip_sections<S, I>(mut self, sections: I) -> Self
+    where
         S: Into<String>,
         I: IntoIterator<Item = S>,
     {
@@ -40,7 +41,7 @@ impl EmitOptions {
         self
     }
 
-    pub fn from_file(path: impl AsRef<Path>) -> Result<Self, String> {
+    pub fn from_file(path: impl AsRef<Path>) -> AnyhowResult<Self> {
         let config = Config::read_config(path)?;
         Ok(Self::from(config))
     }
@@ -48,7 +49,7 @@ impl EmitOptions {
 
 #[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 pub struct ReferenceConfig {
-    skip_sections: Option<Vec<String>>, 
+    skip_sections: Option<Vec<String>>,
     include_pagefind: Option<bool>,
 }
 
@@ -58,14 +59,13 @@ struct Config {
 }
 
 impl Config {
-    pub fn read_config(path: impl AsRef<Path>) -> Result<Config, String> {
-        let contents = fs::read_to_string(path)
-            .map_err(|e| format!("Failed to read config file: {e}"))?;
+    pub fn read_config(path: impl AsRef<Path>) -> AnyhowResult<Config> {
+        let contents = fs::read_to_string(path.as_ref())
+            .context("Failed to read config file")?;
 
         let config: Config = toml::from_str(&contents)
-            .map_err(|e| format!("Failed to parse config file: {e}"))?;
+            .context("Failed to parse config file")?;
 
         Ok(config)
     }
 }
-
