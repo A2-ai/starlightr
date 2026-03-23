@@ -1,5 +1,5 @@
 mod lexer;
-mod span;
 pub mod parser;
+mod span;
 
 pub use parser::parse_file;

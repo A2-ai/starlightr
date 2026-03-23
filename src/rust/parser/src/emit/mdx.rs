@@ -101,7 +101,11 @@ impl Emitter {
             Node::Href { href, label } => self.emit_href(href, label),
             Node::Section { title, children } => self.emit_section(title, children),
             Node::ArgumentTable(args) => self.emit_argument_table(args),
-            Node::Code { title, kind, children } => self.emit_code_contents(title.as_deref(), kind, children),
+            Node::Code {
+                title,
+                kind,
+                children,
+            } => self.emit_code_contents(title.as_deref(), kind, children),
         }
     }
 

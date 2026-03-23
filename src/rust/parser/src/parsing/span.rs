@@ -40,9 +40,6 @@ pub struct Spanned<T> {
 
 impl<T> Spanned<T> {
     pub fn new(value: T, span: Span) -> Self {
-        Self {
-            value,
-            span,
-        }
+        Self { value, span }
     }
 }

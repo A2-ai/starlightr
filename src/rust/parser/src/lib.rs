@@ -80,11 +80,7 @@ where
     Ok(output_dir.join(format!("{slug}.mdx")))
 }
 
-fn render_reference_path<R, O>(
-    rd_file: R,
-    output_dir: O,
-    emit_options: &EmitOptions,
-) -> Result<()> 
+fn render_reference_path<R, O>(rd_file: R, output_dir: O, emit_options: &EmitOptions) -> Result<()>
 where
     R: AsRef<Path>,
     O: AsRef<Path>,
@@ -99,7 +95,7 @@ where
         emit_document(document, emit_options).map_to_extendr_err("Failed to create mdx file")?;
 
     let output_file = resolve_output_file_path(rd_file, output_dir)?;
-    
+
     fs::write(&output_file, mdx_contents).map_to_extendr_err(format!(
         "Failed to write parsed Rd file to mdx file: {output_file:?}"
     ))
@@ -165,7 +161,7 @@ pub fn render_references(
     let config_file = Path::new(config_file)
         .canonicalize()
         .map_to_extendr_err("Failed to canonicalize config file path")?;
-    
+
     let emit_options = EmitOptions::from_file(&config_file)
         .map_to_extendr_err(format!("Failed to read config file: {config_file:?}"))?;
 

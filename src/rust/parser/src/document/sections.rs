@@ -50,8 +50,7 @@ fn lower_arguments(node: Node) -> Node {
         return node;
     };
 
-    args
-        .into_iter()
+    args.into_iter()
         .next()
         .map(lower_argument_items)
         .map(Node::ArgumentTable)
@@ -77,7 +76,7 @@ fn lower_section(node: Node) -> Node {
     let title = it.next().unwrap_or_default();
     let children = it.next().unwrap_or_default();
 
-    Node::Section{ title, children }
+    Node::Section { title, children }
 }
 
 pub(crate) fn lower_section_command(name: impl AsRef<str>, cmd: Node) -> Node {

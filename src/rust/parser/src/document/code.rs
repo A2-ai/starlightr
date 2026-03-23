@@ -14,7 +14,7 @@ fn lower_code(node: Node) -> Node {
     let Node::Command { name, args, .. } = node else {
         return node;
     };
-    
+
     let title = match name.as_str() {
         "examples" | "example" => Some("Examples".to_string()),
         "usage" => Some("Usage".to_string()),
@@ -30,7 +30,11 @@ fn lower_code(node: Node) -> Node {
 
     let children = args.into_iter().next().unwrap_or_default();
 
-    Node::Code { title, kind, children }
+    Node::Code {
+        title,
+        kind,
+        children,
+    }
 }
 
 pub(crate) fn lower_code_command(name: impl AsRef<str>, cmd: Node) -> Node {

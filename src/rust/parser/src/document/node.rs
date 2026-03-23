@@ -1,10 +1,10 @@
 use serde::{Deserialize, Serialize};
 
 use crate::document::{
+    code::{CodeKind, lower_code_command},
     link::{LinkMode, LinkTarget, lower_link_command},
     list::{ListItem, ListKind, lower_list_command},
     sections::{Argument, lower_section_command},
-    code::{CodeKind, lower_code_command},
 };
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -130,7 +130,9 @@ impl Node {
                     | "seealso" | "author" | "references" | "arguments" => {
                         lower_section_command(name, cmd)
                     }
-                    "examples" | "example" | "usage" | "dontrun" | "dontshow" | "donttest" => lower_code_command(name, cmd),
+                    "examples" | "example" | "usage" | "dontrun" | "dontshow" | "donttest" => {
+                        lower_code_command(name, cmd)
+                    }
                     _ => cmd,
                 }
             }

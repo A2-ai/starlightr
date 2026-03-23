@@ -4,7 +4,6 @@ use std::fmt::Formatter;
 
 use crate::parsing::span::{Span, Spanned};
 
-
 #[derive(Clone, PartialEq, Serialize, Deserialize)]
 pub enum Token {
     Text(String),
@@ -16,9 +15,8 @@ pub enum Token {
     RightBracket,
     Comment(String),
     Newline,
-    Eof
+    Eof,
 }
-
 
 impl fmt::Debug for Token {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
@@ -70,42 +68,45 @@ impl<'a> Lexer<'a> {
             pos: 0,
         }
     }
-    
+
     fn mark(&self) -> usize {
         self.pos
     }
 
     fn peek(&self) -> Option<char> {
-        self.input[self.pos..].chars().next() 
+        self.input[self.pos..].chars().next()
     }
 
     fn advance(&mut self) -> Option<char> {
         let ch = self.peek()?;
         self.pos += ch.len_utf8();
         Some(ch)
-
     }
 
     fn take_while<F>(&mut self, mut pred: F) -> &'a str
-    where 
+    where
         F: FnMut(char) -> bool,
     {
         let start = self.pos;
         while let Some(c) = self.peek() {
-            if !pred(c) { break; }
+            if !pred(c) {
+                break;
+            }
             self.advance();
         }
         &self.input[start..self.pos]
     }
-    
+
     fn lex_command_or_escape(&mut self) -> Spanned<Token> {
-        let start = self.mark();        
+        let start = self.mark();
         //should be at '\' so advance
         self.advance();
-        
-        // If first char is alphabetic take all alphanumeric 
+
+        // If first char is alphabetic take all alphanumeric
         // otherwise it is a command escaped char
-        let tok = if let Some(c) = self.peek() && c.is_ascii_alphabetic() {
+        let tok = if let Some(c) = self.peek()
+            && c.is_ascii_alphabetic()
+        {
             let func = self.take_while(|c| c.is_ascii_alphanumeric());
             Token::Command(func.to_string())
         } else if let Some(ch) = self.advance() {
@@ -114,13 +115,9 @@ impl<'a> Lexer<'a> {
             Token::Text("\\".to_string())
         };
 
-        Spanned::new(
-             tok,
-             Span::new(start, self.mark())
-        )
-
+        Spanned::new(tok, Span::new(start, self.mark()))
     }
-   
+
     fn lex_comment(&mut self) -> Spanned<Token> {
         let start = self.mark();
         // Should be at '%' so advance
@@ -129,7 +126,7 @@ impl<'a> Lexer<'a> {
         let comment = self.take_while(|c| c != '\n');
         Spanned::new(
             Token::Comment(comment.to_string()),
-            Span::new(start, self.pos)
+            Span::new(start, self.pos),
         )
     }
 
@@ -137,23 +134,35 @@ impl<'a> Lexer<'a> {
         let start = self.mark();
         //Not at a token boundary
         let text = self.take_while(|c| !is_text_boundary(c));
-        
-        Spanned::new(
-            Token::Text(text.to_string()),
-            Span::new(start, self.pos)
-        )
+
+        Spanned::new(Token::Text(text.to_string()), Span::new(start, self.pos))
     }
 
     fn next_token(&mut self) -> Spanned<Token> {
         let start = self.mark();
-        
+
         let tok = match self.peek() {
             None => Token::Eof,
-            Some('{') => { self.advance(); Token::LeftBrace }
-            Some('}') => { self.advance(); Token::RightBrace }
-            Some('[') => { self.advance(); Token::LeftBracket }
-            Some(']') => { self.advance(); Token::RightBracket }
-            Some('\n') => { self.advance(); Token::Newline }
+            Some('{') => {
+                self.advance();
+                Token::LeftBrace
+            }
+            Some('}') => {
+                self.advance();
+                Token::RightBrace
+            }
+            Some('[') => {
+                self.advance();
+                Token::LeftBracket
+            }
+            Some(']') => {
+                self.advance();
+                Token::RightBracket
+            }
+            Some('\n') => {
+                self.advance();
+                Token::Newline
+            }
 
             Some('%') => return self.lex_comment(),
             Some('\\') => return self.lex_command_or_escape(),
@@ -167,11 +176,13 @@ impl<'a> Lexer<'a> {
         let mut lexed = Vec::new();
         lexed.push(self.next_token());
 
-        while let Some(t) = lexed.last() && t.value != Token::Eof {
+        while let Some(t) = lexed.last()
+            && t.value != Token::Eof
+        {
             lexed.push(self.next_token())
         }
 
-        lexed 
+        lexed
     }
 }
 
@@ -184,9 +195,9 @@ pub fn lex(contents: &str) -> Vec<Spanned<Token>> {
 mod tests {
     use super::*;
     use fs_err as fs;
-    use std::path::PathBuf;
     use insta::{assert_debug_snapshot, glob};
-    
+    use std::path::PathBuf;
+
     #[test]
     fn hello_world_lexes() {
         let contents = "hello world";
@@ -205,13 +216,11 @@ mod tests {
         assert!(tokens[3].value == Token::RightBrace);
         assert!(tokens[4].value == Token::Eof);
     }
-    
+
     #[test]
     fn can_lex_rd_files() {
-
         let test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("test_data");
         glob!(test_dir, "*.Rd", |path| {
-
             let contents = fs::read_to_string(path).unwrap();
             assert_debug_snapshot!(lex(&contents));
         });

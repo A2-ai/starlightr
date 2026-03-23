@@ -4,7 +4,7 @@ use std::path::Path;
 
 use anyhow::Result as AnyhowResult;
 
-use crate::Document; 
+use crate::Document;
 use crate::document::Node;
 use crate::parsing::lexer::{Token, lex};
 use crate::parsing::span::{Span, Spanned};
@@ -17,10 +17,7 @@ pub struct ParserError {
 
 impl ParserError {
     pub fn new(message: String, span: Span) -> Self {
-        Self {
-            message,
-            span,
-        }
+        Self { message, span }
     }
 }
 
@@ -59,9 +56,7 @@ impl Parser {
     }
 
     fn is_trivia(&self) -> bool {
-        matches!(
-            self.peek().value, Token::Comment(_)
-        )
+        matches!(self.peek().value, Token::Comment(_))
     }
 
     fn skip_trivia(&mut self) {

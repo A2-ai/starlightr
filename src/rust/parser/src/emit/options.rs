@@ -1,7 +1,7 @@
 use anyhow::{Context, Result as AnyhowResult};
 use fs_err as fs;
+use serde::{Deserialize, Serialize};
 use std::path::Path;
-use serde::{Serialize, Deserialize};
 
 #[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 pub struct EmitOptions {
@@ -55,16 +55,14 @@ pub struct ReferenceConfig {
 
 #[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 struct Config {
-    reference: Option<ReferenceConfig>
+    reference: Option<ReferenceConfig>,
 }
 
 impl Config {
     pub fn read_config(path: impl AsRef<Path>) -> AnyhowResult<Config> {
-        let contents = fs::read_to_string(path.as_ref())
-            .context("Failed to read config file")?;
+        let contents = fs::read_to_string(path.as_ref()).context("Failed to read config file")?;
 
-        let config: Config = toml::from_str(&contents)
-            .context("Failed to parse config file")?;
+        let config: Config = toml::from_str(&contents).context("Failed to parse config file")?;
 
         Ok(config)
     }
