@@ -1,6 +1,6 @@
 ---
 source: parser/src/emit/mdx.rs
-expression: "emit_document(document, &EmitOptions::default(), source).unwrap()"
+expression: "emit_document(document, &opts, source).unwrap()"
 input_file: parser/test_data/scicalc-hfc.Rd
 ---
 ---
@@ -10,19 +10,17 @@ pagefind: false
 ---
 
 
-## Name
+## Description
 
-hfc
+This function categorizes hepatic function impairment using the National Cancer Institute
+Organ Dysfunction Working Group (NCI-ODWG) criteria. It evaluates aspartate aminotransferase
+(AST) and bilirubin levels relative to their upper limits of normal to determine hepatic
+impairment severity. The function handles edge cases where bilirubin values are very close
+to category boundaries using floating-point tolerant comparisons.
 
 
-## Alias
-
-hfc
 
 
-## Title
-
-Categorize Hepatic Function
 
 
 ## Usage
@@ -66,14 +64,6 @@ Integer vector of hepatic function categories (1-4). Returns the value of
 `getOption("scicalc.missing_value")` (default `-999`) for
 missing values.
 
-
-## Description
-
-This function categorizes hepatic function impairment using the National Cancer Institute
-Organ Dysfunction Working Group (NCI-ODWG) criteria. It evaluates aspartate aminotransferase
-(AST) and bilirubin levels relative to their upper limits of normal to determine hepatic
-impairment severity. The function handles edge cases where bilirubin values are very close
-to category boundaries using floating-point tolerant comparisons.
 
 
 ## Details

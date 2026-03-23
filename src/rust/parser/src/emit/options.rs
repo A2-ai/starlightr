@@ -6,6 +6,7 @@ use std::path::Path;
 #[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 pub struct EmitOptions {
     pub skip_sections: Vec<String>,
+    pub section_order: Vec<String>,
     pub include_pagefind: bool,
 }
 
@@ -15,6 +16,10 @@ impl From<Config> for EmitOptions {
         if let Some(r) = config.reference {
             if let Some(s) = r.skip_sections {
                 emit_opts.skip_sections = s;
+            };
+
+            if let Some(o) = r.section_order {
+                emit_opts.section_order = o;
             };
 
             if let Some(p) = r.include_pagefind {
@@ -36,6 +41,15 @@ impl EmitOptions {
         self
     }
 
+    pub fn with_section_order<S, I>(mut self, order: I) -> Self
+    where
+        S: Into<String>,
+        I: IntoIterator<Item = S>,
+    {
+        self.section_order = order.into_iter().map(Into::into).collect();
+        self
+    }
+
     pub fn with_pagefind(mut self) -> Self {
         self.include_pagefind = true;
         self
@@ -50,6 +64,7 @@ impl EmitOptions {
 #[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 pub struct ReferenceConfig {
     skip_sections: Option<Vec<String>>,
+    section_order: Option<Vec<String>>,
     include_pagefind: Option<bool>,
 }
 

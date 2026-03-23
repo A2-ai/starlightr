@@ -1,6 +1,6 @@
 ---
 source: parser/src/emit/mdx.rs
-expression: "emit_document(document, &opts).unwrap()"
+expression: "emit_document(document, &opts, source).unwrap()"
 input_file: parser/test_data/scicalc-bmic.Rd
 ---
 ---
@@ -8,6 +8,12 @@ title: "Categorize Body Mass Index"
 description: "Categorizes individuals based on their Body Mass Index (BMI) according to standard WHO obesity classification criteria. Validates age to ensure appropriate appl"
 pagefind: false
 ---
+
+
+## Alias
+
+bmic
+
 
 
 ## Usage
@@ -71,3 +77,8 @@ Other body_composition:
 [`dubois_bsa()`](../dubois_bsa/),
 [`ibw()`](../ibw/),
 [`mosteller_bsa()`](../mosteller_bsa/)
+
+
+## Concept
+
+body_composition

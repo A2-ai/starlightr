@@ -18,6 +18,13 @@ fn section_title(name: impl AsRef<str>) -> Vec<Node> {
         "author" => "Author",
         "references" => "References",
         "arguments" => "Arguments",
+        "name" => "Name",
+        "title" => "Title",
+        "format" => "Format",
+        "alias" => "Alias",
+        "keyword" => "Keyword",
+        "concept" => "Concept",
+        "docType" => "Doc Type",
         other => other,
     };
 
@@ -83,7 +90,8 @@ pub(crate) fn lower_section_command(name: impl AsRef<str>, cmd: Node) -> Node {
     match name.as_ref() {
         "arguments" => lower_arguments(cmd),
         "section" | "subsection" => lower_section(cmd),
-        "description" | "details" | "value" | "note" | "seealso" | "author" | "references" => {
+        "description" | "details" | "value" | "note" | "seealso" | "author" | "references"
+        | "name" | "title" | "format" | "alias" | "keyword" | "concept" | "docType" => {
             lower_titled_section(section_title(name), cmd)
         }
         _ => cmd,

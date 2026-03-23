@@ -7,39 +7,42 @@ Document {
     children: [
         NewLine,
         NewLine,
-        Command {
-            name: "name",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "ckdepi_2021_egfr",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Name",
+                ),
+            ],
+            children: [
+                Text(
+                    "ckdepi_2021_egfr",
+                ),
             ],
         },
         NewLine,
-        Command {
-            name: "alias",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "ckdepi_2021_egfr",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "ckdepi_2021_egfr",
+                ),
             ],
         },
         NewLine,
-        Command {
-            name: "title",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "Calculate eGFR Using CKD-EPI 2021 Creatinine Equation",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Title",
+                ),
+            ],
+            children: [
+                Text(
+                    "Calculate eGFR Using CKD-EPI 2021 Creatinine Equation",
+                ),
             ],
         },
         NewLine,
@@ -637,15 +640,16 @@ Document {
             ],
         },
         NewLine,
-        Command {
-            name: "concept",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "renal_function",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Concept",
+                ),
+            ],
+            children: [
+                Text(
+                    "renal_function",
+                ),
             ],
         },
         NewLine,

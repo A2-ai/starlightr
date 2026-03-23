@@ -7,39 +7,42 @@ Document {
     children: [
         NewLine,
         NewLine,
-        Command {
-            name: "name",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "a",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Name",
+                ),
+            ],
+            children: [
+                Text(
+                    "a",
+                ),
             ],
         },
         NewLine,
-        Command {
-            name: "alias",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "a",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "a",
+                ),
             ],
         },
         NewLine,
-        Command {
-            name: "title",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "test function",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Title",
+                ),
+            ],
+            children: [
+                Text(
+                    "test function",
+                ),
             ],
         },
         NewLine,

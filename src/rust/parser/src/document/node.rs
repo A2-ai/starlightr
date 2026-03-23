@@ -54,7 +54,7 @@ impl Node {
         matches!(self, Node::Section { title, .. } if matches!(title.as_slice(), [Node::Text(s)] if s == expected))
     }
 
-    fn get_section_key(&self) -> Option<&str> {
+    pub fn get_section_key(&self) -> Option<&str> {
         match self {
             Node::Command { name, .. } => Some(name),
             Node::Section { title, .. } => title.first().and_then(|n| match n {
@@ -75,7 +75,7 @@ impl Node {
     }
 
     pub fn is_title(&self) -> bool {
-        self.is_command_named("title")
+        self.is_section_named("Title")
     }
 
     pub fn is_description(&self) -> bool {
@@ -83,7 +83,7 @@ impl Node {
     }
 
     pub fn is_name(&self) -> bool {
-        self.is_command_named("name")
+        self.is_section_named("Name")
     }
 
     pub fn is_item(&self) -> bool {
@@ -129,12 +129,16 @@ impl Node {
                     "itemize" | "enumerate" | "describe" => lower_list_command(name, cmd),
                     "link" | "url" | "href" | "code" => lower_link_command(name, cmd),
                     "section" | "subsection" | "description" | "details" | "value" | "note"
-                    | "seealso" | "author" | "references" | "arguments" => {
+                    | "seealso" | "author" | "references" | "arguments"
+                    | "name" | "title" | "format"
+                    | "alias" | "keyword" | "concept" | "docType" => {
                         lower_section_command(name, cmd)
                     }
                     "examples" | "example" | "usage" | "dontrun" | "dontshow" | "donttest" => {
                         lower_code_command(name, cmd)
                     }
+                    // Pure metadata — no visual output
+                    "encoding" | "Rdversion" => Node::Text(String::new()),
                     _ => cmd,
                 }
             }

@@ -1,6 +1,6 @@
 ---
 source: parser/src/emit/mdx.rs
-expression: "emit_document(document, &EmitOptions::default()).unwrap()"
+expression: "emit_document(document, &EmitOptions::default(), source).unwrap()"
 input_file: parser/test_data/scicalc-convert-alb.Rd
 ---
 ---
@@ -8,6 +8,21 @@ title: "Convert Albumin Concentration Units"
 description: "Convert Albumin Concentration Units."
 pagefind: false
 ---
+
+
+## Name
+
+convert_alb
+
+
+## Alias
+
+convert_alb
+
+
+## Title
+
+Convert Albumin Concentration Units
 
 
 ## Usage
@@ -64,3 +79,8 @@ df
 Other unit_conversion: 
 [`convert_bili()`](../convert_bili/),
 [`convert_creat()`](../convert_creat/)
+
+
+## Concept
+
+unit_conversion

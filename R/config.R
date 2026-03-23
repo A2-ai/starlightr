@@ -48,7 +48,8 @@ default_config <- function() {
       katex = TRUE
     ),
     reference = list(
-      skip_sections = c("name", "alias", "title"),
+      skip_sections = c("name", "alias", "title", "keyword", "concept", "docType"),
+      section_order = c("Title", "Name", "Alias", "Doc Type", "Description"),
       include_pagefind = FALSE
     ),
     output = list(

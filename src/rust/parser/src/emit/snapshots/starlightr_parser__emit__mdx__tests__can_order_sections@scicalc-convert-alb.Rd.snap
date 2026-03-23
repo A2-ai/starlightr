@@ -10,9 +10,12 @@ pagefind: false
 ---
 
 
-## Alias
+## Description
 
-convert_alb
+Convert Albumin Concentration Units
+
+
+
 
 
 
@@ -22,6 +25,26 @@ convert_alb
 convert_alb(alb)
 ```
 
+## Arguments
+
+<div class="arg-table">
+<table>
+<thead>
+<tr><th>Argument</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>alb</code></td>
+<td>albumin concentration (g/L)</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+## Value
+
+Albumin concentration (g/dL)
 
 
 

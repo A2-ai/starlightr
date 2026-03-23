@@ -10,6 +10,7 @@ use crate::emit::EmitOptions;
 pub struct Emitter {
     output: String,
     imports: BTreeSet<String>,
+    source_file: String,
     math_mode_depth: usize,
     code_mode_depth: usize,
 }
@@ -123,8 +124,20 @@ impl Emitter {
             "strong" => self.emit_strong(option, args),
             "eqn" => self.emit_eqn(option, args),
             "deqn" => self.emit_deqn(option, args),
+            "email" => self.emit_email(args),
+            "method" | "S3method" => self.emit_s3_method(args),
+            "S4method" => self.emit_s4_method(args),
             _ if self.in_math_mode() => self.emit_math_command(name, option, args),
-            _ => eprintln!("warning: unhandled Rd command '\\{name}' — output may be incomplete"),
+            _ => {
+                if self.source_file.is_empty() {
+                    eprintln!("skipping Rd command '\\{name}' — not yet supported by emitter");
+                } else {
+                    eprintln!(
+                        "skipping Rd command '\\{name}' in {} — not yet supported by emitter",
+                        self.source_file
+                    );
+                }
+            }
         }
     }
 
@@ -224,6 +237,28 @@ impl Emitter {
         let url = self.render_nodes_to_string(href);
         let label = self.render_nodes_to_string(label);
         self.emit_text(&format!("[{label}]({url})"));
+    }
+
+    fn emit_email(&mut self, args: &[Vec<Node>]) {
+        if let Some(addr) = args.first() {
+            let email = self.render_nodes_to_string(addr);
+            self.emit_text(&format!("[{email}](mailto:{email})"));
+        }
+    }
+
+    fn emit_s3_method(&mut self, args: &[Vec<Node>]) {
+        // \method{generic}{class} or \S3method{generic}{class}
+        // Emits: ## S3 method for class 'class'\ngeneric
+        let generic = args.first().map(|a| self.render_nodes_to_string(a)).unwrap_or_default();
+        let class = args.get(1).map(|a| self.render_nodes_to_string(a)).unwrap_or_default();
+        self.emit_text(&format!("## S3 method for class '{class}'\n{generic}"));
+    }
+
+    fn emit_s4_method(&mut self, args: &[Vec<Node>]) {
+        // \S4method{generic}{class}
+        let generic = args.first().map(|a| self.render_nodes_to_string(a)).unwrap_or_default();
+        let class = args.get(1).map(|a| self.render_nodes_to_string(a)).unwrap_or_default();
+        self.emit_text(&format!("## S4 method for signature '{class}'\n{generic}"));
     }
 
     fn emit_eqn(&mut self, _option: Option<&[Node]>, args: &[Vec<Node>]) {
@@ -411,7 +446,7 @@ fn create_frontmatter(document: &Document, pagefind: bool) -> AnyhowResult<Strin
         .get_title_node()
         .or_else(|| document.get_name_node())
         .and_then(|node| match node {
-            Node::Command { args, .. } => args.first(),
+            Node::Section { children, .. } => Some(children),
             _ => None,
         })
         .map(|nodes| emitter.render_nodes_to_string(nodes).trim().to_string())
@@ -453,12 +488,20 @@ fn create_frontmatter(document: &Document, pagefind: bool) -> AnyhowResult<Strin
     Ok(emitter.output)
 }
 
-pub fn emit_document(mut document: Document, options: &EmitOptions) -> AnyhowResult<String> {
-    let mut emitter = Emitter::default();
+pub fn emit_document(
+    mut document: Document,
+    options: &EmitOptions,
+    source_file: Option<&str>,
+) -> AnyhowResult<String> {
+    let mut emitter = Emitter {
+        source_file: source_file.unwrap_or_default().to_string(),
+        ..Emitter::default()
+    };
 
     let frontmatter = create_frontmatter(&document, options.include_pagefind)?;
 
     document.filter_sections(&options.skip_sections);
+    document.order_sections(&options.section_order);
     emitter.emit_nodes(&document.children);
 
     let content = emitter.output.trim_start_matches('\n').to_string();
@@ -485,7 +528,8 @@ mod tests {
         let test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("test_data");
         glob!(test_dir, "*.Rd", |path| {
             let document = parse_file(path).unwrap();
-            assert_snapshot!(emit_document(document, &EmitOptions::default()).unwrap());
+            let source = path.file_name().and_then(|f| f.to_str());
+            assert_snapshot!(emit_document(document, &EmitOptions::default(), source).unwrap());
         });
     }
 
@@ -503,7 +547,24 @@ mod tests {
 
         glob!(test_dir, "*.Rd", |path| {
             let document = parse_file(path).unwrap();
-            assert_snapshot!(emit_document(document, &opts).unwrap());
+            let source = path.file_name().and_then(|f| f.to_str());
+            assert_snapshot!(emit_document(document, &opts, source).unwrap());
+        });
+    }
+
+    #[test]
+    fn can_order_sections() {
+        let test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("test_data");
+        let opts = EmitOptions::default()
+            .with_skip_sections(vec![
+                "name", "alias", "title", "keyword", "doc Type",
+            ])
+            .with_section_order(vec!["Description"]);
+
+        glob!(test_dir, "*.Rd", |path| {
+            let document = parse_file(path).unwrap();
+            let source = path.file_name().and_then(|f| f.to_str());
+            assert_snapshot!(emit_document(document, &opts, source).unwrap());
         });
     }
 }

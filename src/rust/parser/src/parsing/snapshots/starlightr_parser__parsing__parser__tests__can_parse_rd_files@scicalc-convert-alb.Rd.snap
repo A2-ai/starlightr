@@ -7,39 +7,42 @@ Document {
     children: [
         NewLine,
         NewLine,
-        Command {
-            name: "name",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "convert_alb",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Name",
+                ),
+            ],
+            children: [
+                Text(
+                    "convert_alb",
+                ),
             ],
         },
         NewLine,
-        Command {
-            name: "alias",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "convert_alb",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "convert_alb",
+                ),
             ],
         },
         NewLine,
-        Command {
-            name: "title",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "Convert Albumin Concentration Units",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Title",
+                ),
+            ],
+            children: [
+                Text(
+                    "Convert Albumin Concentration Units",
+                ),
             ],
         },
         NewLine,
@@ -226,15 +229,16 @@ Document {
             ],
         },
         NewLine,
-        Command {
-            name: "concept",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "unit_conversion",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Concept",
+                ),
+            ],
+            children: [
+                Text(
+                    "unit_conversion",
+                ),
             ],
         },
         NewLine,

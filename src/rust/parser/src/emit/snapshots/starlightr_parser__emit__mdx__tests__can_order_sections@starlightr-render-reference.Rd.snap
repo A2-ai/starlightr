@@ -10,9 +10,12 @@ pagefind: false
 ---
 
 
-## Alias
+## Description
 
-render_reference
+Renders an .Rd file to an mdx file.
+
+
+
 
 
 
@@ -21,6 +24,30 @@ render_reference
 ```r
 render_reference(rd_file, output_file, config_file = "_starlightr.toml")
 ```
+
+## Arguments
+
+<div class="arg-table">
+<table>
+<thead>
+<tr><th>Argument</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rd_file</code></td>
+<td>path to Rd file to convert to .mdx</td>
+</tr>
+<tr>
+<td><code>output_file</code></td>
+<td>path to new mdx file</td>
+</tr>
+<tr>
+<td><code>config_file</code></td>
+<td>path to _starlightr.toml</td>
+</tr>
+</tbody>
+</table>
+</div>
 
 
 

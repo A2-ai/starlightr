@@ -91,8 +91,9 @@ where
     let document = parse_file(rd_file)
         .map_to_extendr_err(format!("Failed to parse rd file: {}", rd_file.display()))?;
 
+    let source = rd_file.file_name().and_then(|f| f.to_str());
     let mdx_contents =
-        emit_document(document, emit_options).map_to_extendr_err("Failed to create mdx file")?;
+        emit_document(document, emit_options, source).map_to_extendr_err("Failed to create mdx file")?;
 
     let output_file = resolve_output_file_path(rd_file, output_dir)?;
 

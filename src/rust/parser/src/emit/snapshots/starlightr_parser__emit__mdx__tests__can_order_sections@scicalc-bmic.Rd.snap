@@ -1,6 +1,6 @@
 ---
 source: parser/src/emit/mdx.rs
-expression: "emit_document(document, &EmitOptions::default(), source).unwrap()"
+expression: "emit_document(document, &opts, source).unwrap()"
 input_file: parser/test_data/scicalc-bmic.Rd
 ---
 ---
@@ -10,19 +10,15 @@ pagefind: false
 ---
 
 
-## Name
+## Description
 
-bmic
-
-
-## Alias
-
-bmic
+Categorizes individuals based on their Body Mass Index (BMI) according to
+standard WHO obesity classification criteria. Validates age
+to ensure appropriate application of adult BMI categories.
 
 
-## Title
 
-Categorize Body Mass Index
+
 
 
 ## Usage
@@ -58,12 +54,6 @@ Integer vector of obesity categories (1-6). Returns the value of
 `getOption("scicalc.missing_value")` (default `-999`) for
 missing BMI values.
 
-
-## Description
-
-Categorizes individuals based on their Body Mass Index (BMI) according to
-standard WHO obesity classification criteria. Validates age
-to ensure appropriate application of adult BMI categories.
 
 
 ## Details

@@ -8,310 +8,315 @@ Document {
         NewLine,
         NewLine,
         NewLine,
-        Command {
-            name: "docType",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "data",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Doc Type",
+                ),
+            ],
+            children: [
+                Text(
+                    "data",
+                ),
             ],
         },
         NewLine,
-        Command {
-            name: "name",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "storms",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Name",
+                ),
+            ],
+            children: [
+                Text(
+                    "storms",
+                ),
             ],
         },
         NewLine,
-        Command {
-            name: "alias",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "storms",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "storms",
+                ),
             ],
         },
         NewLine,
-        Command {
-            name: "title",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "Storm tracks data",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Title",
+                ),
+            ],
+            children: [
+                Text(
+                    "Storm tracks data",
+                ),
             ],
         },
         NewLine,
-        Command {
-            name: "format",
-            options: None,
-            args: [
-                [
-                    NewLine,
-                    Text(
-                        "A tibble with 20,778 observations",
-                    ),
-                    NewLine,
-                    Text(
-                        "and 13 variables:",
-                    ),
-                    NewLine,
-                    List {
-                        kind: Describe,
-                        items: [
-                            ListItem {
-                                term: Some(
-                                    [
-                                        Text(
-                                            "name",
-                                        ),
-                                    ],
-                                ),
-                                children: [
+        Section {
+            title: [
+                Text(
+                    "Format",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "A tibble with 20,778 observations",
+                ),
+                NewLine,
+                Text(
+                    "and 13 variables:",
+                ),
+                NewLine,
+                List {
+                    kind: Describe,
+                    items: [
+                        ListItem {
+                            term: Some(
+                                [
                                     Text(
-                                        "Storm Name",
+                                        "name",
                                     ),
                                 ],
-                            },
-                            ListItem {
-                                term: Some(
-                                    [
-                                        Text(
-                                            "year,month,day",
-                                        ),
-                                    ],
+                            ),
+                            children: [
+                                Text(
+                                    "Storm Name",
                                 ),
-                                children: [
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
                                     Text(
-                                        "Date of report",
+                                        "year,month,day",
                                     ),
                                 ],
-                            },
-                            ListItem {
-                                term: Some(
-                                    [
-                                        Text(
-                                            "hour",
-                                        ),
-                                    ],
+                            ),
+                            children: [
+                                Text(
+                                    "Date of report",
                                 ),
-                                children: [
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
                                     Text(
-                                        "Hour of report (in UTC)",
+                                        "hour",
                                     ),
                                 ],
-                            },
-                            ListItem {
-                                term: Some(
-                                    [
-                                        Text(
-                                            "lat,long",
-                                        ),
-                                    ],
+                            ),
+                            children: [
+                                Text(
+                                    "Hour of report (in UTC)",
                                 ),
-                                children: [
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
                                     Text(
-                                        "Location of storm center",
+                                        "lat,long",
                                     ),
                                 ],
-                            },
-                            ListItem {
-                                term: Some(
-                                    [
-                                        Text(
-                                            "status",
-                                        ),
-                                    ],
+                            ),
+                            children: [
+                                Text(
+                                    "Location of storm center",
                                 ),
-                                children: [
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
                                     Text(
-                                        "Storm classification (Tropical Depression, Tropical Storm,",
-                                    ),
-                                    NewLine,
-                                    Text(
-                                        "or Hurricane)",
+                                        "status",
                                     ),
                                 ],
-                            },
-                            ListItem {
-                                term: Some(
-                                    [
-                                        Text(
-                                            "category",
-                                        ),
-                                    ],
+                            ),
+                            children: [
+                                Text(
+                                    "Storm classification (Tropical Depression, Tropical Storm,",
                                 ),
-                                children: [
+                                NewLine,
+                                Text(
+                                    "or Hurricane)",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
                                     Text(
-                                        "Saffir-Simpson hurricane category calculated from wind speed.",
+                                        "category",
                                     ),
-                                    NewLine,
-                                    List {
-                                        kind: Itemize,
-                                        items: [
-                                            ListItem {
-                                                term: None,
-                                                children: [
-                                                    Text(
-                                                        " ",
-                                                    ),
-                                                    Command {
-                                                        name: "code",
-                                                        options: None,
-                                                        args: [
-                                                            [
-                                                                Text(
-                                                                    "NA",
-                                                                ),
-                                                            ],
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "Saffir-Simpson hurricane category calculated from wind speed.",
+                                ),
+                                NewLine,
+                                List {
+                                    kind: Itemize,
+                                    items: [
+                                        ListItem {
+                                            term: None,
+                                            children: [
+                                                Text(
+                                                    " ",
+                                                ),
+                                                Command {
+                                                    name: "code",
+                                                    options: None,
+                                                    args: [
+                                                        [
+                                                            Text(
+                                                                "NA",
+                                                            ),
                                                         ],
-                                                    },
-                                                    Text(
-                                                        ": Not a hurricane",
-                                                    ),
-                                                    NewLine,
-                                                ],
-                                            },
-                                            ListItem {
-                                                term: None,
-                                                children: [
-                                                    Text(
-                                                        " 1: 64+ knots",
-                                                    ),
-                                                    NewLine,
-                                                ],
-                                            },
-                                            ListItem {
-                                                term: None,
-                                                children: [
-                                                    Text(
-                                                        " 2: 83+ knots",
-                                                    ),
-                                                    NewLine,
-                                                ],
-                                            },
-                                            ListItem {
-                                                term: None,
-                                                children: [
-                                                    Text(
-                                                        " 3: 96+ knots",
-                                                    ),
-                                                    NewLine,
-                                                ],
-                                            },
-                                            ListItem {
-                                                term: None,
-                                                children: [
-                                                    Text(
-                                                        " 4: 113+ knots",
-                                                    ),
-                                                    NewLine,
-                                                ],
-                                            },
-                                            ListItem {
-                                                term: None,
-                                                children: [
-                                                    Text(
-                                                        " 5: 137+ knots",
-                                                    ),
-                                                    NewLine,
-                                                ],
-                                            },
-                                        ],
-                                    },
-                                    NewLine,
-                                ],
-                            },
-                            ListItem {
-                                term: Some(
-                                    [
-                                        Text(
-                                            "wind",
-                                        ),
+                                                    ],
+                                                },
+                                                Text(
+                                                    ": Not a hurricane",
+                                                ),
+                                                NewLine,
+                                            ],
+                                        },
+                                        ListItem {
+                                            term: None,
+                                            children: [
+                                                Text(
+                                                    " 1: 64+ knots",
+                                                ),
+                                                NewLine,
+                                            ],
+                                        },
+                                        ListItem {
+                                            term: None,
+                                            children: [
+                                                Text(
+                                                    " 2: 83+ knots",
+                                                ),
+                                                NewLine,
+                                            ],
+                                        },
+                                        ListItem {
+                                            term: None,
+                                            children: [
+                                                Text(
+                                                    " 3: 96+ knots",
+                                                ),
+                                                NewLine,
+                                            ],
+                                        },
+                                        ListItem {
+                                            term: None,
+                                            children: [
+                                                Text(
+                                                    " 4: 113+ knots",
+                                                ),
+                                                NewLine,
+                                            ],
+                                        },
+                                        ListItem {
+                                            term: None,
+                                            children: [
+                                                Text(
+                                                    " 5: 137+ knots",
+                                                ),
+                                                NewLine,
+                                            ],
+                                        },
                                     ],
-                                ),
-                                children: [
+                                },
+                                NewLine,
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
                                     Text(
-                                        "storm's maximum sustained wind speed (in knots)",
+                                        "wind",
                                     ),
                                 ],
-                            },
-                            ListItem {
-                                term: Some(
-                                    [
-                                        Text(
-                                            "pressure",
-                                        ),
-                                    ],
+                            ),
+                            children: [
+                                Text(
+                                    "storm's maximum sustained wind speed (in knots)",
                                 ),
-                                children: [
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
                                     Text(
-                                        "Air pressure at the storm's center (in millibars)",
+                                        "pressure",
                                     ),
                                 ],
-                            },
-                            ListItem {
-                                term: Some(
-                                    [
-                                        Text(
-                                            "tropicalstorm_force_diameter",
-                                        ),
-                                    ],
+                            ),
+                            children: [
+                                Text(
+                                    "Air pressure at the storm's center (in millibars)",
                                 ),
-                                children: [
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
                                     Text(
-                                        "Diameter (in nautical miles) of the",
-                                    ),
-                                    NewLine,
-                                    Text(
-                                        "area experiencing tropical storm strength winds (34 knots or above).",
-                                    ),
-                                    NewLine,
-                                    Text(
-                                        "Only available starting in 2004.",
+                                        "tropicalstorm_force_diameter",
                                     ),
                                 ],
-                            },
-                            ListItem {
-                                term: Some(
-                                    [
-                                        Text(
-                                            "hurricane_force_diameter",
-                                        ),
-                                    ],
+                            ),
+                            children: [
+                                Text(
+                                    "Diameter (in nautical miles) of the",
                                 ),
-                                children: [
+                                NewLine,
+                                Text(
+                                    "area experiencing tropical storm strength winds (34 knots or above).",
+                                ),
+                                NewLine,
+                                Text(
+                                    "Only available starting in 2004.",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
                                     Text(
-                                        "Diameter (in nautical miles) of the area",
-                                    ),
-                                    NewLine,
-                                    Text(
-                                        "experiencing hurricane strength winds (64 knots or above). Only available",
-                                    ),
-                                    NewLine,
-                                    Text(
-                                        "starting in 2004.",
+                                        "hurricane_force_diameter",
                                     ),
                                 ],
-                            },
-                        ],
-                    },
-                    NewLine,
-                ],
+                            ),
+                            children: [
+                                Text(
+                                    "Diameter (in nautical miles) of the area",
+                                ),
+                                NewLine,
+                                Text(
+                                    "experiencing hurricane strength winds (64 knots or above). Only available",
+                                ),
+                                NewLine,
+                                Text(
+                                    "starting in 2004.",
+                                ),
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
             ],
         },
         NewLine,
@@ -449,15 +454,16 @@ Document {
             ],
         },
         NewLine,
-        Command {
-            name: "keyword",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "datasets",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Keyword",
+                ),
+            ],
+            children: [
+                Text(
+                    "datasets",
+                ),
             ],
         },
         NewLine,

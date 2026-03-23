@@ -10,9 +10,15 @@ pagefind: false
 ---
 
 
-## Alias
+import { Icon } from '@astrojs/starlight/components';
+## Description
 
-section_rules
+Creates rules for assigning parameters to named sections in the output table.
+Rules are evaluated after name transformation, so you can match on the final
+display name or use the preserved `nonmem_name` and `user_name` columns.
+
+
+
 
 
 
@@ -22,6 +28,26 @@ section_rules
 section_rules(...)
 ```
 
+## Arguments
+
+<div class="arg-table">
+<table>
+<thead>
+<tr><th>Argument</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>...</code></td>
+<td>Formula expressions following [`dplyr::case_when()`](https://rdrr.io/search?package=dplyr&repo=cran&q=case_when)<span style = {{ display: 'inline-block', verticalAlign: 'middle' }}><Icon name="external" /></span> syntax, `kind == "THETA" ~ "Structural Parameters"`</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+## Value
+
+List of quosures for use in TableSpec
 
 
 

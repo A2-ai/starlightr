@@ -7,39 +7,42 @@ Document {
     children: [
         NewLine,
         NewLine,
-        Command {
-            name: "name",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "render_reference",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Name",
+                ),
+            ],
+            children: [
+                Text(
+                    "render_reference",
+                ),
             ],
         },
         NewLine,
-        Command {
-            name: "alias",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "render_reference",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "render_reference",
+                ),
             ],
         },
         NewLine,
-        Command {
-            name: "title",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "render_reference",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Title",
+                ),
+            ],
+            children: [
+                Text(
+                    "render_reference",
+                ),
             ],
         },
         NewLine,

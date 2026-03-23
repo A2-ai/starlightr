@@ -56,7 +56,8 @@ right = [{ icon = "github", href = "https://github.com/A2-ai/starlightr" }]
 color_mode = "auto"
 
 [reference]
-skip_sections = ["name"]
+skip_sections = ["title", "name", "alias", "doc type"]
+section_order = ["Description"]
 include_pagefind = true
 
 [output]

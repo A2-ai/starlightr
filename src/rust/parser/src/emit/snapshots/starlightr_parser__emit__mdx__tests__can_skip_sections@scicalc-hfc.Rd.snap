@@ -1,6 +1,6 @@
 ---
 source: parser/src/emit/mdx.rs
-expression: "emit_document(document, &opts).unwrap()"
+expression: "emit_document(document, &opts, source).unwrap()"
 input_file: parser/test_data/scicalc-hfc.Rd
 ---
 ---
@@ -8,6 +8,12 @@ title: "Categorize Hepatic Function"
 description: "This function categorizes hepatic function impairment using the National Cancer Institute Organ Dysfunction Working Group (NCI-ODWG) criteria. It evaluates aspa"
 pagefind: false
 ---
+
+
+## Alias
+
+hfc
+
 
 
 ## Usage
@@ -67,3 +73,8 @@ patients %>%
 ## References
 
 National Cancer Institute Organ Dysfunction Working Group criteria for hepatic impairment
+
+
+## Concept
+
+hepatic_function

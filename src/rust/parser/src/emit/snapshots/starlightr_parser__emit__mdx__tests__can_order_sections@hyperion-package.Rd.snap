@@ -1,6 +1,6 @@
 ---
 source: parser/src/emit/mdx.rs
-expression: "emit_document(document, &EmitOptions::default(), source).unwrap()"
+expression: "emit_document(document, &opts, source).unwrap()"
 input_file: parser/test_data/hyperion-package.Rd
 ---
 ---
@@ -10,36 +10,18 @@ pagefind: false
 ---
 
 
-## Doc Type
-
-package
-
-
-## Name
-
-hyperion-package
-
-
-## Alias
-
-hyperion
-
-
-## Alias
-
-hyperion-package
-
-
-## Title
-
-hyperion: Pharmaceutical Model Development and Workflow Tools
-
-
 ## Description
 
 Hyperion is an R interface to the pharos CLI for pharmaceutical model
 development workflows. It streamlines the complete workflow from development
 through cluster execution and analysis for NONMEM modeling.
+
+
+
+
+
+
+
 
 
 ## Model I/O
@@ -165,8 +147,3 @@ Authors:
 - Vincent Prouillet [vincent@a2-ai.com](mailto:vincent@a2-ai.com)
 - Mossa M. Reimert [mossa@a2-ai.com](mailto:mossa@a2-ai.com)
 - Devin Pastoor [devin@a2-ai.com](mailto:devin@a2-ai.com)
-
-
-## Keyword
-
-internal

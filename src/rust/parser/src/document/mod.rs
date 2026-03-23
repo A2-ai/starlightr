@@ -35,6 +35,27 @@ impl Document {
             .retain(|n| !n.in_skipped_sections(skip_sections));
     }
 
+    pub fn order_sections<S: AsRef<str>>(&mut self, order: &[S]) {
+        if order.is_empty() {
+            return;
+        }
+        let mut ordered = Vec::new();
+        let mut remaining = std::mem::take(&mut self.children);
+
+        for section_name in order {
+            let (matched, rest): (Vec<_>, Vec<_>) = remaining
+                .into_iter()
+                .partition(|n| {
+                    n.get_section_key()
+                        .is_some_and(|k| k.to_lowercase() == section_name.as_ref().to_lowercase())
+                });
+            ordered.extend(matched);
+            remaining = rest;
+        }
+        ordered.extend(remaining);
+        self.children = ordered;
+    }
+
     pub fn lower(self) -> Self {
         let children = self.children.into_iter().map(Node::lower).collect();
         Self { children }

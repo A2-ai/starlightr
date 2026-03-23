@@ -7,63 +7,68 @@ Document {
     children: [
         NewLine,
         NewLine,
-        Command {
-            name: "docType",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "package",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Doc Type",
+                ),
+            ],
+            children: [
+                Text(
+                    "package",
+                ),
             ],
         },
         NewLine,
-        Command {
-            name: "name",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "hyperion-package",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Name",
+                ),
+            ],
+            children: [
+                Text(
+                    "hyperion-package",
+                ),
             ],
         },
         NewLine,
-        Command {
-            name: "alias",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "hyperion",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "hyperion",
+                ),
             ],
         },
         NewLine,
-        Command {
-            name: "alias",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "hyperion-package",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "hyperion-package",
+                ),
             ],
         },
         NewLine,
-        Command {
-            name: "title",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "hyperion: Pharmaceutical Model Development and Workflow Tools",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Title",
+                ),
+            ],
+            children: [
+                Text(
+                    "hyperion: Pharmaceutical Model Development and Workflow Tools",
+                ),
             ],
         },
         NewLine,
@@ -1824,15 +1829,16 @@ Document {
             ],
         },
         NewLine,
-        Command {
-            name: "keyword",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "internal",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Keyword",
+                ),
+            ],
+            children: [
+                Text(
+                    "internal",
+                ),
             ],
         },
         NewLine,

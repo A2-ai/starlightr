@@ -10,9 +10,12 @@ pagefind: false
 ---
 
 
-## Alias
+## Description
 
-ckdepi_2021_egfr
+Calculate eGFR Using CKD-EPI 2021 Creatinine Equation
+
+
+
 
 
 
@@ -22,6 +25,34 @@ ckdepi_2021_egfr
 ckdepi_2021_egfr(sexf, age, creat)
 ```
 
+## Arguments
+
+<div class="arg-table">
+<table>
+<thead>
+<tr><th>Argument</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sexf</code></td>
+<td>boolean value of sex Female: TRUE, Male: FALSE</td>
+</tr>
+<tr>
+<td><code>age</code></td>
+<td>age of subject (years)</td>
+</tr>
+<tr>
+<td><code>creat</code></td>
+<td>creatinine levels of subject (mg/dL)</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+## Value
+
+the eGFR value (mL/min/1.73m2)
 
 
 

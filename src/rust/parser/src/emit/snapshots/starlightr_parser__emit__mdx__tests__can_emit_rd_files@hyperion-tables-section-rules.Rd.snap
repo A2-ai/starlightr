@@ -1,6 +1,6 @@
 ---
 source: parser/src/emit/mdx.rs
-expression: "emit_document(document, &EmitOptions::default()).unwrap()"
+expression: "emit_document(document, &EmitOptions::default(), source).unwrap()"
 input_file: parser/test_data/hyperion-tables-section-rules.Rd
 ---
 ---
@@ -11,6 +11,21 @@ pagefind: false
 
 
 import { Icon } from '@astrojs/starlight/components';
+## Name
+
+section_rules
+
+
+## Alias
+
+section_rules
+
+
+## Title
+
+Create section assignment rules
+
+
 ## Usage
 
 ```r

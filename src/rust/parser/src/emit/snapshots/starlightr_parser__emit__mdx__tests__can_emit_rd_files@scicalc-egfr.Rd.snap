@@ -1,6 +1,6 @@
 ---
 source: parser/src/emit/mdx.rs
-expression: "emit_document(document, &EmitOptions::default()).unwrap()"
+expression: "emit_document(document, &EmitOptions::default(), source).unwrap()"
 input_file: parser/test_data/scicalc-egfr.Rd
 ---
 ---
@@ -8,6 +8,21 @@ title: "Calculate eGFR Using CKD-EPI 2021 Creatinine Equation"
 description: "Calculate eGFR Using CKD-EPI 2021 Creatinine Equation."
 pagefind: false
 ---
+
+
+## Name
+
+ckdepi_2021_egfr
+
+
+## Alias
+
+ckdepi_2021_egfr
+
+
+## Title
+
+Calculate eGFR Using CKD-EPI 2021 Creatinine Equation
 
 
 ## Usage
@@ -93,3 +108,8 @@ Other renal_function:
 [`mdrd_egfr()`](../mdrd_egfr/),
 [`rfc()`](../rfc/),
 [`schwartz_egfr()`](../schwartz_egfr/)
+
+
+## Concept
+
+renal_function

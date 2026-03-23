@@ -7,39 +7,42 @@ Document {
     children: [
         NewLine,
         NewLine,
-        Command {
-            name: "name",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "hfc",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Name",
+                ),
+            ],
+            children: [
+                Text(
+                    "hfc",
+                ),
             ],
         },
         NewLine,
-        Command {
-            name: "alias",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "hfc",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "hfc",
+                ),
             ],
         },
         NewLine,
-        Command {
-            name: "title",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "Categorize Hepatic Function",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Title",
+                ),
+            ],
+            children: [
+                Text(
+                    "Categorize Hepatic Function",
+                ),
             ],
         },
         NewLine,
@@ -424,15 +427,16 @@ Document {
             ],
         },
         NewLine,
-        Command {
-            name: "concept",
-            options: None,
-            args: [
-                [
-                    Text(
-                        "hepatic_function",
-                    ),
-                ],
+        Section {
+            title: [
+                Text(
+                    "Concept",
+                ),
+            ],
+            children: [
+                Text(
+                    "hepatic_function",
+                ),
             ],
         },
         NewLine,
