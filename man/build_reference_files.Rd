@@ -24,8 +24,9 @@ build_reference_files(
 Invisibly returns a character vector of written file paths.
 }
 \description{
-Renders all `.Rd` files in a directory to MDX using the Rust parser and,
-when example artifacts exist, appends those outputs to the generated pages.
+Renders all `.Rd` files in a directory to MDX using the Rust parser.
+External links and example outputs are resolved before rendering so that
+Rust produces final MDX in a single pass.
 }
 \examples{
 \dontrun{

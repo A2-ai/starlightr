@@ -45,8 +45,12 @@ extract_examples_code <- function(examples_section) {
 #' @examples \dontrun{
 #' capture_example_output("pkg", "pkg-docs/public")
 #' }
-capture_example_output <- function(pkg_name, artifact_output_dir, text_output_dir, verbose = FALSE) {
-
+capture_example_output <- function(
+  pkg_name,
+  artifact_output_dir,
+  text_output_dir,
+  verbose = FALSE
+) {
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
     stop("Package 'ggplot2' is required for 'capture_example_outputs()'.")
   }
@@ -62,8 +66,12 @@ capture_example_output <- function(pkg_name, artifact_output_dir, text_output_di
       )
     },
     error = function(e) {
-      stop("Failed to load package '", pkg_name,
-           "'. Make sure it's installed. ", e$message)
+      stop(
+        "Failed to load package '",
+        pkg_name,
+        "'. Make sure it's installed. ",
+        e$message
+      )
     }
   )
 
@@ -138,9 +146,20 @@ capture_example_output <- function(pkg_name, artifact_output_dir, text_output_di
         if (inherits(result, "ggplot")) {
           out_file <- file.path(artifact_output_dir, paste0(fn_name, ".png"))
           tryCatch(
-            ggplot2::ggsave(filename = out_file, plot = result, width = 6, height = 4),
+            ggplot2::ggsave(
+              filename = out_file,
+              plot = result,
+              width = 6,
+              height = 4
+            ),
             error = function(e) {
-              message("  Error saving ggplot for", fn_name, ":", e$message, "\n")
+              message(
+                "  Error saving ggplot for",
+                fn_name,
+                ":",
+                e$message,
+                "\n"
+              )
             }
           )
           if (verbose) message("Saved ggplot -> ", out_file)
@@ -159,7 +178,12 @@ capture_example_output <- function(pkg_name, artifact_output_dir, text_output_di
           # First write overwrites, subsequent writes append
           out_file <- file.path(text_output_dir, paste0(fn_name, ".txt"))
           printed_text <- utils::capture.output(print(result))
-          cat(paste(printed_text, collapse = "\n"), "\n", file = out_file, append = !first_write)
+          cat(
+            paste(printed_text, collapse = "\n"),
+            "\n",
+            file = out_file,
+            append = !first_write
+          )
 
           if (verbose) {
             if (first_write) {
@@ -172,6 +196,5 @@ capture_example_output <- function(pkg_name, artifact_output_dir, text_output_di
         }
       }
     }
-
   }
 }

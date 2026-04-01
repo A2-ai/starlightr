@@ -23,7 +23,10 @@ evaluate_sexpr <- function(html) {
     end <- start + match_lengths[i] - 1
     full_match <- substr(html, start, end)
 
-    code_match <- regmatches(full_match, regexec(pattern, full_match, perl = TRUE))[[1]]
+    code_match <- regmatches(
+      full_match,
+      regexec(pattern, full_match, perl = TRUE)
+    )[[1]]
     if (length(code_match) < 3) {
       next
     }

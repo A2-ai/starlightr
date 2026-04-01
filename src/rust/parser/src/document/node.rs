@@ -129,9 +129,8 @@ impl Node {
                     "itemize" | "enumerate" | "describe" => lower_list_command(name, cmd),
                     "link" | "url" | "href" | "code" => lower_link_command(name, cmd),
                     "section" | "subsection" | "description" | "details" | "value" | "note"
-                    | "seealso" | "author" | "references" | "arguments"
-                    | "name" | "title" | "format"
-                    | "alias" | "keyword" | "concept" | "docType" => {
+                    | "seealso" | "author" | "references" | "arguments" | "name" | "title"
+                    | "format" | "alias" | "keyword" | "concept" | "docType" => {
                         lower_section_command(name, cmd)
                     }
                     "examples" | "example" | "usage" | "dontrun" | "dontshow" | "donttest" => {

@@ -92,8 +92,8 @@ where
         .map_to_extendr_err(format!("Failed to parse rd file: {}", rd_file.display()))?;
 
     let source = rd_file.file_name().and_then(|f| f.to_str());
-    let mdx_contents =
-        emit_document(document, emit_options, source).map_to_extendr_err("Failed to create mdx file")?;
+    let mdx_contents = emit_document(document, emit_options, source)
+        .map_to_extendr_err("Failed to create mdx file")?;
 
     let output_file = resolve_output_file_path(rd_file, output_dir)?;
 
@@ -109,6 +109,8 @@ where
 /// @param rd_file path to Rd file to convert to .mdx
 /// @param output_dir path to directory where reference mdx files are saved
 /// @param config_file path to _starlightr.toml
+/// @param external_links_file path to JSON file mapping pkg::topic to URLs
+/// @param example_outputs_file path to JSON file mapping func names to example outputs
 ///
 /// @return NULL
 /// @export
@@ -125,6 +127,8 @@ pub fn render_reference(
     rd_file: &str,
     output_dir: &str,
     #[extendr(default = "'_starlightr.toml'")] config_file: &str,
+    #[extendr(default = "NULL")] external_links_file: Option<String>,
+    #[extendr(default = "NULL")] example_outputs_file: Option<String>,
 ) -> Result<()> {
     let rd_file = Path::new(rd_file)
         .canonicalize()
@@ -136,8 +140,20 @@ pub fn render_reference(
 
     let output_dir = Path::new(output_dir);
 
-    let emit_options = EmitOptions::from_file(&config_file)
+    let mut emit_options = EmitOptions::from_file(&config_file)
         .map_to_extendr_err(format!("Failed to read config file: {config_file:?}"))?;
+
+    if let Some(ref path) = external_links_file {
+        emit_options = emit_options
+            .with_external_links_file(path)
+            .map_to_extendr_err("Failed to load external links file")?;
+    }
+
+    if let Some(ref path) = example_outputs_file {
+        emit_options = emit_options
+            .with_example_outputs_file(path)
+            .map_to_extendr_err("Failed to load example outputs file")?;
+    }
 
     render_reference_path(rd_file, output_dir, &emit_options)
 }
@@ -147,6 +163,8 @@ pub fn render_references(
     rd_dir: &str,
     output_dir: &str,
     #[extendr(default = "'_starlightr.toml'")] config_file: &str,
+    #[extendr(default = "NULL")] external_links_file: Option<String>,
+    #[extendr(default = "NULL")] example_outputs_file: Option<String>,
 ) -> Result<()> {
     let rd_dir = Path::new(rd_dir)
         .canonicalize()
@@ -163,8 +181,20 @@ pub fn render_references(
         .canonicalize()
         .map_to_extendr_err("Failed to canonicalize config file path")?;
 
-    let emit_options = EmitOptions::from_file(&config_file)
+    let mut emit_options = EmitOptions::from_file(&config_file)
         .map_to_extendr_err(format!("Failed to read config file: {config_file:?}"))?;
+
+    if let Some(ref path) = external_links_file {
+        emit_options = emit_options
+            .with_external_links_file(path)
+            .map_to_extendr_err("Failed to load external links file")?;
+    }
+
+    if let Some(ref path) = example_outputs_file {
+        emit_options = emit_options
+            .with_example_outputs_file(path)
+            .map_to_extendr_err("Failed to load example outputs file")?;
+    }
 
     let output_dir = Path::new(output_dir);
 

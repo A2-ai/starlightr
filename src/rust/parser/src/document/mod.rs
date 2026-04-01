@@ -43,12 +43,10 @@ impl Document {
         let mut remaining = std::mem::take(&mut self.children);
 
         for section_name in order {
-            let (matched, rest): (Vec<_>, Vec<_>) = remaining
-                .into_iter()
-                .partition(|n| {
-                    n.get_section_key()
-                        .is_some_and(|k| k.to_lowercase() == section_name.as_ref().to_lowercase())
-                });
+            let (matched, rest): (Vec<_>, Vec<_>) = remaining.into_iter().partition(|n| {
+                n.get_section_key()
+                    .is_some_and(|k| k.to_lowercase() == section_name.as_ref().to_lowercase())
+            });
             ordered.extend(matched);
             remaining = rest;
         }

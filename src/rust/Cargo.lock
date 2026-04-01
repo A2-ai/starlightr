@@ -440,6 +440,7 @@ dependencies = [
  "insta",
  "regex",
  "serde",
+ "serde_json",
  "tempfile",
  "toml",
 ]

@@ -18,12 +18,16 @@ setup_starlight_structure <- function(output_path, config) {
 
   # Only create articles dir if configured
   if (!is.null(config$sidebar$articles)) {
-    dirs <- c(dirs, file.path(output_path, "src", "content", "docs", "articles"))
+    dirs <- c(
+      dirs,
+      file.path(output_path, "src", "content", "docs", "articles")
+    )
   }
 
   # Add version support directories if enabled
   if (has_version_support(config)) {
-    dirs <- c(dirs,
+    dirs <- c(
+      dirs,
       file.path(output_path, "src", "components"),
       file.path(output_path, "src", "data")
     )
@@ -48,7 +52,9 @@ generate_astro_config <- function(output_path, config, pkg_path = NULL) {
   sidebar_config <- generate_sidebar_config(config, output_path, pkg_name)
 
   data <- list(
-    title = escape_quoted_string(config$site$title %||% "Package Documentation"),
+    title = escape_quoted_string(
+      config$site$title %||% "Package Documentation"
+    ),
     use_remark = config$output$include_build_files %||% TRUE,
     use_katex = config$features$katex %||% TRUE,
     has_versions = has_version_support(config),
@@ -149,7 +155,10 @@ generate_gitignore <- function(output_path, overwrite = FALSE) {
 #' @param output_path Path to output directory
 #' @keywords internal
 generate_remark_plugin <- function(output_path) {
-  copy_template("remark-base-url.mjs", file.path(output_path, "remark-base-url.mjs"))
+  copy_template(
+    "remark-base-url.mjs",
+    file.path(output_path, "remark-base-url.mjs")
+  )
   cli::cli_alert_success("Generated {.file remark-base-url.mjs}")
 }
 
@@ -161,7 +170,10 @@ generate_remark_plugin <- function(output_path) {
 #' @param output_path Path to output directory
 #' @keywords internal
 generate_starlightr_css <- function(output_path) {
-  template_path <- system.file("templates/starlightr.css", package = "starlightr")
+  template_path <- system.file(
+    "templates/starlightr.css",
+    package = "starlightr"
+  )
 
   # Create styles directory
   styles_dir <- file.path(output_path, "src", "styles")
@@ -174,24 +186,21 @@ generate_starlightr_css <- function(output_path) {
 
 #' Generate custom.css file for Starlight site
 #'
-#' Creates a placeholder custom.css for user styles. Only created if missing;
+#' Creates an empty custom.css for user styles. Only created if missing;
 #' this file is user-owned and never overwritten.
 #'
 #' @param output_path Path to output directory
 #' @keywords internal
 generate_custom_css <- function(output_path) {
-  template_path <- system.file("templates/custom.css", package = "starlightr")
-
   styles_dir <- file.path(output_path, "src", "styles")
   ensure_dir(styles_dir)
 
   css_path <- file.path(styles_dir, "custom.css")
 
   if (file.exists(css_path)) {
-    cli::cli_alert_info("Skipping {.file custom.css} (already exists)")
     return(invisible(NULL))
   }
 
-  file.copy(template_path, css_path)
-  cli::cli_alert_success("Generated {.file src/styles/custom.css}")
+  writeLines("/* Add custom styles here */", css_path)
 }
+

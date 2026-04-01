@@ -9,7 +9,6 @@ description: "Creates rules for assigning parameters to named sections in the ou
 pagefind: false
 ---
 
-
 ## Alias
 
 section_rules

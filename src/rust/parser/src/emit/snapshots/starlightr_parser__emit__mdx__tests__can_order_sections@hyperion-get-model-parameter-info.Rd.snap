@@ -9,7 +9,6 @@ description: "Parses parameter comments and returns structured metadata for thet
 pagefind: false
 ---
 
-
 ## Description
 
 Parses parameter comments and returns structured metadata for theta, omega,

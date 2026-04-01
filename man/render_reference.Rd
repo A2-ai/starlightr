@@ -4,7 +4,13 @@
 \alias{render_reference}
 \title{render_reference}
 \usage{
-render_reference(rd_file, output_dir, config_file = "_starlightr.toml")
+render_reference(
+  rd_file,
+  output_dir,
+  config_file = "_starlightr.toml",
+  external_links_file = NULL,
+  example_outputs_file = NULL
+)
 }
 \arguments{
 \item{rd_file}{path to Rd file to convert to .mdx}
@@ -12,6 +18,10 @@ render_reference(rd_file, output_dir, config_file = "_starlightr.toml")
 \item{output_dir}{path to directory where reference mdx files are saved}
 
 \item{config_file}{path to _starlightr.toml}
+
+\item{external_links_file}{path to JSON file mapping pkg::topic to URLs}
+
+\item{example_outputs_file}{path to JSON file mapping func names to example outputs}
 }
 \description{
 Renders an .Rd file to an mdx file.

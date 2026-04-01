@@ -1,7 +1,6 @@
 ---
 source: parser/src/emit/mdx.rs
 expression: "emit_document(document, &opts, source).unwrap()"
-input_file: parser/test_data/hyperion-tables-section-rules.Rd
 ---
 ---
 title: "Create section assignment rules"
@@ -9,15 +8,21 @@ description: "Creates rules for assigning parameters to named sections in the ou
 pagefind: false
 ---
 
-## Description
+import { Icon } from '@astrojs/starlight/components';
 
-Creates rules for assigning parameters to named sections in the output table.
-Rules are evaluated after name transformation, so you can match on the final
-display name or use the preserved `nonmem_name` and `user_name` columns.
+## Name
 
-
+section_rules
 
 
+## Alias
+
+section_rules
+
+
+## Title
+
+Create section assignment rules
 
 
 ## Usage
@@ -36,7 +41,7 @@ section_rules(...)
 <tbody>
 <tr>
 <td><code>...</code></td>
-<td>Formula expressions following dplyr::case_when() syntax, `kind == "THETA" ~ "Structural Parameters"`</td>
+<td>Formula expressions following [`dplyr::case_when()`](https://dplyr.tidyverse.org/reference/case_when.html)<span style = {{ display: 'inline-block', verticalAlign: 'middle' }}><Icon name="external" /></span> syntax, `kind == "THETA" ~ "Structural Parameters"`</td>
 </tr>
 </tbody>
 </table>
@@ -47,6 +52,12 @@ section_rules(...)
 
 List of quosures for use in TableSpec
 
+
+## Description
+
+Creates rules for assigning parameters to named sections in the output table.
+Rules are evaluated after name transformation, so you can match on the final
+display name or use the preserved `nonmem_name` and `user_name` columns.
 
 
 ## Available columns

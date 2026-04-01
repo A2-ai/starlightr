@@ -56,16 +56,22 @@ audit_config <- function(pkg = ".", config_file = "_starlightr.toml") {
   cli::cli_alert_info("Config references: {length(config_refs)}")
 
   if (length(missing) == 0) {
-    cli::cli_alert_success("All exported functions are covered by configuration")
+    cli::cli_alert_success(
+      "All exported functions are covered by configuration"
+    )
   } else {
-    cli::cli_alert_warning("{length(missing)} exported function{?s} not in config:")
+    cli::cli_alert_warning(
+      "{length(missing)} exported function{?s} not in config:"
+    )
     for (fn in sort(missing)) {
       cli::cli_bullets(c("*" = "{.fn {fn}}"))
     }
   }
 
   if (length(config_only) > 0) {
-    cli::cli_alert_info("{length(config_only)} config reference{?s} don't match exports:")
+    cli::cli_alert_info(
+      "{length(config_only)} config reference{?s} don't match exports:"
+    )
     for (ref in sort(config_only)) {
       cli::cli_bullets(c("!" = "{.val {ref}}"))
     }
@@ -75,16 +81,22 @@ audit_config <- function(pkg = ".", config_file = "_starlightr.toml") {
   article_result <- validate_article_slugs(config, pkg_path)
 
   if (article_result$valid_count > 0) {
-    cli::cli_alert_success("{article_result$valid_count} article slug{?s} validated")
+    cli::cli_alert_success(
+      "{article_result$valid_count} article slug{?s} validated"
+    )
   }
 
   if (length(article_result$missing) > 0) {
-    cli::cli_alert_warning("{length(article_result$missing)} article{?s} in config not found:")
+    cli::cli_alert_warning(
+      "{length(article_result$missing)} article{?s} in config not found:"
+    )
     for (slug in article_result$missing) {
       if (tolower(slug) == "readme") {
         cli::cli_bullets(c("!" = "{.val {slug}} - no {.file README.Rmd}"))
       } else {
-        cli::cli_bullets(c("!" = "{.val {slug}} - no {.file vignettes/{slug}.Rmd}"))
+        cli::cli_bullets(c(
+          "!" = "{.val {slug}} - no {.file vignettes/{slug}.Rmd}"
+        ))
       }
     }
   }
@@ -104,7 +116,10 @@ audit_config <- function(pkg = ".", config_file = "_starlightr.toml") {
 
       # Collect external URLs (http/https) for informational reporting
       if (startsWith(link, "http://") || startsWith(link, "https://")) {
-        external_urls[[length(external_urls) + 1]] <- list(link = link, context = context)
+        external_urls[[length(external_urls) + 1]] <- list(
+          link = link,
+          context = context
+        )
         next
       }
 
@@ -116,7 +131,10 @@ audit_config <- function(pkg = ".", config_file = "_starlightr.toml") {
 
       # Collect non-relative links (don't start with ./)
       if (!startsWith(link, "./")) {
-        non_relative_links[[length(non_relative_links) + 1]] <- list(link = link, context = context)
+        non_relative_links[[length(non_relative_links) + 1]] <- list(
+          link = link,
+          context = context
+        )
         next
       }
 
@@ -127,7 +145,10 @@ audit_config <- function(pkg = ".", config_file = "_starlightr.toml") {
 
       # Check if this is an external doc link (not articles/reference)
       if (is_external_doc_link(link)) {
-        external_links[[length(external_links) + 1]] <- list(link = link, context = context)
+        external_links[[length(external_links) + 1]] <- list(
+          link = link,
+          context = context
+        )
         next
       }
 
@@ -138,14 +159,18 @@ audit_config <- function(pkg = ".", config_file = "_starlightr.toml") {
     }
   }
 
-  validated_count <- internal_link_count - length(external_links) - length(non_relative_links)
+  validated_count <- internal_link_count -
+    length(external_links) -
+    length(non_relative_links)
   if (validated_count > 0 && link_issues == 0) {
     cli::cli_alert_success("{validated_count} internal link{?s} validated")
   }
 
   # Report non-relative links
   if (length(non_relative_links) > 0) {
-    cli::cli_alert_warning("{length(non_relative_links)} non-relative link{?s} found (should start with './'):")
+    cli::cli_alert_warning(
+      "{length(non_relative_links)} non-relative link{?s} found (should start with './'):"
+    )
     for (nrl in non_relative_links) {
       cli::cli_bullets(c("!" = "{.val {nrl$link}} ({nrl$context})"))
     }
@@ -153,7 +178,9 @@ audit_config <- function(pkg = ".", config_file = "_starlightr.toml") {
 
   # Report external links (not validated)
   if (length(external_links) > 0) {
-    cli::cli_alert_info("{length(external_links)} external doc link{?s} found (not validated):")
+    cli::cli_alert_info(
+      "{length(external_links)} external doc link{?s} found (not validated):"
+    )
     for (ext in external_links) {
       cli::cli_bullets(c("*" = "{.val {ext$link}} ({ext$context})"))
     }
@@ -204,7 +231,10 @@ parse_namespace_exports <- function(namespace_path) {
     # Match S3method(generic, class) -> generic.class
     # Also handles S3method(pkg::generic, class) by stripping the package prefix
     if (grepl("^S3method\\(", line)) {
-      match <- regmatches(line, regexec("^S3method\\(([^,]+),\\s*([^)]+)\\)", line))[[1]]
+      match <- regmatches(
+        line,
+        regexec("^S3method\\(([^,]+),\\s*([^)]+)\\)", line)
+      )[[1]]
       if (length(match) >= 3) {
         generic <- trimws(match[2])
         class <- trimws(match[3])
@@ -244,9 +274,13 @@ extract_config_references <- function(config) {
     }
 
     if (!is.null(group$contents)) {
-      slugs <- vapply(group$contents, function(item) {
-        parse_content_item(item)$slug
-      }, character(1))
+      slugs <- vapply(
+        group$contents,
+        function(item) {
+          parse_content_item(item)$slug
+        },
+        character(1)
+      )
       refs <- c(refs, slugs)
     }
 
@@ -254,9 +288,13 @@ extract_config_references <- function(config) {
     if (!is.null(group$items)) {
       for (subgroup in group$items) {
         if (!is.null(subgroup$contents)) {
-          slugs <- vapply(subgroup$contents, function(item) {
-            parse_content_item(item)$slug
-          }, character(1))
+          slugs <- vapply(
+            subgroup$contents,
+            function(item) {
+              parse_content_item(item)$slug
+            },
+            character(1)
+          )
           refs <- c(refs, slugs)
         }
       }

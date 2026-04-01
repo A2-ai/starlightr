@@ -12,6 +12,8 @@ NULL
 #' @param rd_file path to Rd file to convert to .mdx
 #' @param output_dir path to directory where reference mdx files are saved
 #' @param config_file path to _starlightr.toml
+#' @param external_links_file path to JSON file mapping pkg::topic to URLs
+#' @param example_outputs_file path to JSON file mapping func names to example outputs
 #'
 #' @return NULL
 #' @export
@@ -23,8 +25,8 @@ NULL
 #'   config_file = "_starlightr.toml"
 #' )
 #' }
-render_reference <- function(rd_file, output_dir, config_file = '_starlightr.toml') .Call(wrap__render_reference, rd_file, output_dir, config_file)
+render_reference <- function(rd_file, output_dir, config_file = '_starlightr.toml', external_links_file = NULL, example_outputs_file = NULL) .Call(wrap__render_reference, rd_file, output_dir, config_file, external_links_file, example_outputs_file)
 
-render_references <- function(rd_dir, output_dir, config_file = '_starlightr.toml') .Call(wrap__render_references, rd_dir, output_dir, config_file)
+render_references <- function(rd_dir, output_dir, config_file = '_starlightr.toml', external_links_file = NULL, example_outputs_file = NULL) .Call(wrap__render_references, rd_dir, output_dir, config_file, external_links_file, example_outputs_file)
 
 # nolint end

@@ -7,7 +7,12 @@
 #' @param config_path Path to _starlightr.toml configuration file
 #' @param verbose Logical, whether to print debug messages for example capture
 #' @keywords internal
-process_package_documentation <- function(pkg_path, output_path, config_path, verbose = FALSE) {
+process_package_documentation <- function(
+  pkg_path,
+  output_path,
+  config_path,
+  verbose = FALSE
+) {
   cli::cli_alert_info("Processing R documentation...")
 
   # Get the actual package name from DESCRIPTION
@@ -18,15 +23,23 @@ process_package_documentation <- function(pkg_path, output_path, config_path, ve
   artifact_dir <- file.path(output_path, "public", "examples")
   text_output_dir <- file.path(output_path, "public", "examples", "text")
 
-  tryCatch({
-    capture_example_output(pkg_name, artifact_dir, text_output_dir, verbose = verbose)
-    cli::cli_alert_success("Example outputs captured successfully")
-  }, error = function(e) {
-    cli::cli_warn(c(
-      "Could not capture example outputs: {e$message}",
-      "i" = "Examples will show code only (no outputs)"
-    ))
-  })
+  tryCatch(
+    {
+      capture_example_output(
+        pkg_name,
+        artifact_dir,
+        text_output_dir,
+        verbose = verbose
+      )
+      cli::cli_alert_success("Example outputs captured successfully")
+    },
+    error = function(e) {
+      cli::cli_warn(c(
+        "Could not capture example outputs: {e$message}",
+        "i" = "Examples will show code only (no outputs)"
+      ))
+    }
+  )
 
   ref_dir <- file.path(output_path, "src", "content", "docs", "reference")
   rd_dir <- file.path(pkg_path, "man")
@@ -134,7 +147,9 @@ process_articles_and_readme <- function(pkg_path, output_path, config) {
 
   # Copy pre-rendered Markdown files directly to build dir
   if (length(md_to_copy) > 0) {
-    cli::cli_alert_info("Copying {length(md_to_copy)} pre-rendered Markdown file{?s}...")
+    cli::cli_alert_info(
+      "Copying {length(md_to_copy)} pre-rendered Markdown file{?s}..."
+    )
     file.copy(md_to_copy, build_dir, overwrite = TRUE)
   }
 
@@ -157,7 +172,14 @@ process_articles_and_readme <- function(pkg_path, output_path, config) {
     source_dir <- build_dir
     md_name <- if (tolower(name) == "readme") "README" else name
 
-    process_article_output(name, md_name, source_dir, output_path, articles_dir, config)
+    process_article_output(
+      name,
+      md_name,
+      source_dir,
+      output_path,
+      articles_dir,
+      config
+    )
   }
 
   cli::cli_alert_success("Generated {length(article_names)} article{?s}")
@@ -172,7 +194,14 @@ process_articles_and_readme <- function(pkg_path, output_path, config) {
 #' @param articles_dir Output directory for article markdown files
 #' @param config Configuration list
 #' @keywords internal
-process_article_output <- function(output_name, md_name, source_dir, output_path, articles_dir, config) {
+process_article_output <- function(
+  output_name,
+  md_name,
+  source_dir,
+  output_path,
+  articles_dir,
+  config
+) {
   md_file <- file.path(source_dir, paste0(md_name, ".md"))
   if (!file.exists(md_file)) {
     cli::cli_warn("Built markdown not found: {.file {md_file}}")
@@ -183,28 +212,49 @@ process_article_output <- function(output_name, md_name, source_dir, output_path
 
   # Copy figures from {md_name}_files/
   figures_dir <- file.path(source_dir, paste0(md_name, "_files"))
-  dest_figures <- file.path(output_path, "public", "figures", tolower(output_name))
+  dest_figures <- file.path(
+    output_path,
+    "public",
+    "figures",
+    tolower(output_name)
+  )
   ensure_dir(dest_figures)
 
   if (dir.exists(figures_dir)) {
     figure_gfm <- file.path(figures_dir, "figure-gfm")
     if (dir.exists(figure_gfm)) {
-      file.copy(list.files(figure_gfm, full.names = TRUE), dest_figures, overwrite = TRUE)
+      file.copy(
+        list.files(figure_gfm, full.names = TRUE),
+        dest_figures,
+        overwrite = TRUE
+      )
     }
   }
 
   # Also check for custom fig.path figures (e.g., figures/{name}/)
   custom_figures_dir <- file.path(source_dir, "figures")
   if (dir.exists(custom_figures_dir)) {
-    fig_subdirs <- list.dirs(custom_figures_dir, recursive = FALSE, full.names = TRUE)
+    fig_subdirs <- list.dirs(
+      custom_figures_dir,
+      recursive = FALSE,
+      full.names = TRUE
+    )
     for (subdir in fig_subdirs) {
       subdir_name <- basename(subdir)
       subdir_dest <- file.path(output_path, "public", "figures", subdir_name)
       ensure_dir(subdir_dest)
-      file.copy(list.files(subdir, full.names = TRUE), subdir_dest, overwrite = TRUE)
+      file.copy(
+        list.files(subdir, full.names = TRUE),
+        subdir_dest,
+        overwrite = TRUE
+      )
     }
     # Also copy any files directly in figures/
-    fig_files <- list.files(custom_figures_dir, full.names = TRUE, recursive = FALSE)
+    fig_files <- list.files(
+      custom_figures_dir,
+      full.names = TRUE,
+      recursive = FALSE
+    )
     fig_files <- fig_files[!dir.exists(fig_files)]
     if (length(fig_files) > 0) {
       file.copy(fig_files, dest_figures, overwrite = TRUE)
@@ -215,7 +265,8 @@ process_article_output <- function(output_name, md_name, source_dir, output_path
   md_content <- gsub(
     paste0(md_name, "_files/figure-gfm/"),
     paste0("/figures/", tolower(output_name), "/"),
-    md_content, fixed = TRUE
+    md_content,
+    fixed = TRUE
   )
 
   # Rewrite temp directory figure paths (cross-platform: matches starlightr-rmd- marker)
@@ -223,7 +274,8 @@ process_article_output <- function(output_name, md_name, source_dir, output_path
   md_content <- gsub(
     "(!\\[[^]]*\\]\\()[^)]*starlightr-rmd-[^/\\\\]+[/\\\\]+figures[/\\\\]",
     "\\1/figures/",
-    md_content, perl = TRUE
+    md_content,
+    perl = TRUE
   )
 
   # Fix lifecycle badges (must come BEFORE generic man/figures/ rewrite)
@@ -241,12 +293,20 @@ process_article_output <- function(output_name, md_name, source_dir, output_path
   } else {
     title <- tools::toTitleCase(gsub("[-_]", " ", output_name))
   }
-  final_content <- paste0("---\ntitle: \"", title, "\"\npagefind: true\n---\n\n", md_content)
+  final_content <- paste0(
+    "---\ntitle: \"",
+    title,
+    "\"\npagefind: true\n---\n\n",
+    md_content
+  )
 
   # Use .md (not .mdx) so complex HTML like gt tables with KaTeX passes through
   # MDX's strict JSX parsing breaks on this content
   # Image paths are rewritten by remark plugin to include BASE_URL
-  writeLines(final_content, file.path(articles_dir, paste0(tolower(output_name), ".md")))
+  writeLines(
+    final_content,
+    file.path(articles_dir, paste0(tolower(output_name), ".md"))
+  )
 
   # Cleanup happens at the build directory level.
 }

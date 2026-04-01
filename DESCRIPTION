@@ -23,6 +23,7 @@ Suggests:
     ggplot2,
     gt,
     knitr,
+		dplyr,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Config/testthat/edition: 3

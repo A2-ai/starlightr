@@ -9,7 +9,6 @@ description: "Renders an. Rd file to an mdx file."
 pagefind: false
 ---
 
-
 ## Alias
 
 render_reference
