@@ -13,5 +13,14 @@ export function remarkBaseUrl() {
         node.url = base + node.url;
       }
     });
+
+    visit(tree, "html", (node) => {
+      if (node.value && node.value.includes('src="/figures/')) {
+        node.value = node.value.replace(
+          /src="\/figures\//g,
+          `src="${base}/figures/`
+        );
+      }
+    });
   };
 }
