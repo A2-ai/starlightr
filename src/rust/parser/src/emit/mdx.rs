@@ -356,11 +356,6 @@ impl Emitter {
         let rendered = self.render_nodes_to_string(children);
         self.emit_text(rendered.trim());
         self.emit_text("\n\n");
-
-        let is_examples = matches!(title, [Node::Text(s)] if s == "Examples");
-        if is_examples {
-            self.emit_example_outputs();
-        }
     }
 
     fn emit_example_outputs(&mut self) {
@@ -474,6 +469,10 @@ impl Emitter {
             self.emit_text("\n");
         }
         self.emit_text("```\n");
+
+        if title == Some("Examples") {
+            self.emit_example_outputs();
+        }
     }
 }
 
