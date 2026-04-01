@@ -9,6 +9,7 @@ extendr-api = { workspace = true }
 
 anyhow = { workspace = true }
 serde = { workspace = true }
+serde_json = { workspace = true }
 regex = { workspace = true }
 fs-err = { workspace = true }
 toml = { workspace = true }

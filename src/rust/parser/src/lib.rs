@@ -125,6 +125,7 @@ pub fn render_reference(
     rd_file: &str,
     output_dir: &str,
     #[extendr(default = "'_starlightr.toml'")] config_file: &str,
+    #[extendr(default = "NULL")] external_links_file: &str,
 ) -> Result<()> {
     let rd_file = Path::new(rd_file)
         .canonicalize()
@@ -136,8 +137,14 @@ pub fn render_reference(
 
     let output_dir = Path::new(output_dir);
 
-    let emit_options = EmitOptions::from_file(&config_file)
+    let mut emit_options = EmitOptions::from_file(&config_file)
         .map_to_extendr_err(format!("Failed to read config file: {config_file:?}"))?;
+
+    if !external_links_file.is_empty() {
+        emit_options = emit_options
+            .with_external_links_file(external_links_file)
+            .map_to_extendr_err("Failed to load external links file")?;
+    }
 
     render_reference_path(rd_file, output_dir, &emit_options)
 }
@@ -147,6 +154,7 @@ pub fn render_references(
     rd_dir: &str,
     output_dir: &str,
     #[extendr(default = "'_starlightr.toml'")] config_file: &str,
+    #[extendr(default = "NULL")] external_links_file: &str,
 ) -> Result<()> {
     let rd_dir = Path::new(rd_dir)
         .canonicalize()
@@ -163,8 +171,14 @@ pub fn render_references(
         .canonicalize()
         .map_to_extendr_err("Failed to canonicalize config file path")?;
 
-    let emit_options = EmitOptions::from_file(&config_file)
+    let mut emit_options = EmitOptions::from_file(&config_file)
         .map_to_extendr_err(format!("Failed to read config file: {config_file:?}"))?;
+
+    if !external_links_file.is_empty() {
+        emit_options = emit_options
+            .with_external_links_file(external_links_file)
+            .map_to_extendr_err("Failed to load external links file")?;
+    }
 
     let output_dir = Path::new(output_dir);
 

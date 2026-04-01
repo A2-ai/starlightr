@@ -1,69 +1,88 @@
-# External package link resolution for rendered reference markdown
+# Build external link map for Rust-side resolution
 
-#' Resolve external package link placeholders in rendered markdown
+# Base R packages use rdrr.io/r/ instead of rdrr.io/pkg/
+.base_packages <- c(
+  "base", "compiler", "datasets", "graphics", "grDevices", "grid",
+  "methods", "parallel", "splines", "stats", "stats4", "tcltk",
+  "tools", "utils"
+)
+
+#' Build an external link map from installed package aliases
 #'
-#' Rust emits external package references as markdown links with a placeholder
-#' target. This post-processing step resolves those placeholders to exact URLs
-#' via downlit, or degrades unresolved links to plain visible text to match
-#' pkgdown's behavior.
+#' Reads DESCRIPTION to find Imports and Suggests, then builds a JSON file
+#' mapping "pkg::topic" to documentation URLs for all aliases in those packages.
 #'
-#' @param md_content Rendered markdown content
-#' @return Markdown content with resolved external package links
+#' @param package Path to the package root (containing DESCRIPTION)
+#' @return Path to a temporary JSON file containing the link map
 #' @keywords internal
-resolve_external_package_links <- function(md_content) {
-  pattern <- "\\[([^]\\n]+)\\]\\(__STARLIGHTR_EXT_TOPIC__::([^:()\\s]+)::([^()\\s]+)\\)"
-  icon_import <- "import { Icon } from '@astrojs/starlight/components';"
-  icon_markup <- "<span style = {{ display: 'inline-block', verticalAlign: 'middle' }}><Icon name=\"external\" /></span>"
-
-  matches <- gregexpr(pattern, md_content, perl = TRUE)
-  if (matches[[1]][1] == -1) {
-    return(md_content)
+build_external_link_map <- function(package = ".") {
+  desc <- read.dcf(file.path(package, "DESCRIPTION"))
+  deps <- character()
+  for (field in c("Imports", "Suggests", "Depends")) {
+    if (field %in% colnames(desc) && !is.na(desc[, field])) {
+      deps <- c(deps, trimws(strsplit(desc[, field], ",")[[1]]))
+    }
   }
+  # Strip version constraints
+  deps <- sub("\\s*\\(.*\\)", "", deps)
+  deps <- deps[deps != "" & deps != "R"]
+  deps <- unique(deps)
 
-  match_text <- regmatches(md_content, matches)[[1]]
-  captures <- regmatches(match_text, regexec(pattern, match_text, perl = TRUE))
-  resolved_any <- FALSE
-  replacements <- character(length(captures))
+  link_map <- list()
+  for (pkg in deps) {
+    aliases_path <- system.file("help", "aliases.rds", package = pkg)
+    if (aliases_path == "") next
 
-  for (i in seq_along(captures)) {
-    parts <- captures[[i]]
-    label <- parts[[2]]
-    package <- parts[[3]]
-    topic <- parts[[4]]
+    aliases <- readRDS(aliases_path)
+    rdnames <- unname(aliases)
+    topics <- names(aliases)
 
-    href <- tryCatch(
-      downlit::href_topic(topic, package),
-      error = function(e) NA_character_
-    )
+    base_url <- resolve_package_base_url(pkg)
 
-    replacements[[i]] <- if (is.na(href)) {
-      label
-    } else {
-      resolved_any <- TRUE
-      sprintf("[%s](%s)%s", label, href, icon_markup)
+    for (i in seq_along(topics)) {
+      key <- paste0(pkg, "::", topics[i])
+      link_map[[key]] <- paste0(base_url, "/", rdnames[i], ".html")
     }
   }
 
-  regmatches(md_content, matches) <- list(replacements)
+  json_path <- tempfile("starlightr-links-", fileext = ".json")
+  writeLines(jsonlite::toJSON(link_map, auto_unbox = TRUE), json_path)
+  json_path
+}
 
-  if (resolved_any && !grepl(icon_import, md_content, fixed = TRUE)) {
-    frontmatter_match <- regexpr(
-      "^---\\n[\\s\\S]*?\\n---\\n+",
-      md_content,
-      perl = TRUE
-    )
-
-    if (frontmatter_match[1] == 1) {
-      frontmatter <- regmatches(md_content, frontmatter_match)
-      remainder <- substring(
-        md_content,
-        frontmatter_match[1] + attr(frontmatter_match, "match.length")
-      )
-      md_content <- paste0(frontmatter, icon_import, "\n\n", remainder)
-    } else {
-      md_content <- paste0(icon_import, "\n\n", md_content)
-    }
+#' Resolve the base reference URL for a package
+#'
+#' Reads the URL field from an installed package's DESCRIPTION and constructs
+#' the reference documentation base URL. Falls back to rdrr.io.
+#'
+#' @param pkg Package name
+#' @return Base URL string for reference docs (no trailing slash)
+#' @keywords internal
+resolve_package_base_url <- function(pkg) {
+  if (pkg %in% .base_packages) {
+    return(paste0("https://rdrr.io/r/", pkg))
   }
 
-  md_content
+  desc_path <- system.file("DESCRIPTION", package = pkg)
+  if (desc_path == "") {
+    return(paste0("https://rdrr.io/pkg/", pkg, "/man"))
+  }
+
+  url_field <- read.dcf(desc_path, fields = "URL")[[1]]
+  if (is.na(url_field)) {
+    return(paste0("https://rdrr.io/pkg/", pkg, "/man"))
+  }
+
+  urls <- trimws(strsplit(url_field, "[,\\s]+", perl = TRUE)[[1]])
+  urls <- urls[grepl("^https?://", urls)]
+  # Filter out common non-doc URLs (GitHub, GitLab, bug trackers)
+  doc_urls <- urls[!grepl("github\\.com|gitlab\\.com|bugs\\.", urls)]
+
+  if (length(doc_urls) > 0) {
+    paste0(doc_urls[1], "/reference")
+  } else if (length(urls) > 0) {
+    paste0("https://rdrr.io/pkg/", pkg, "/man")
+  } else {
+    paste0("https://rdrr.io/pkg/", pkg, "/man")
+  }
 }

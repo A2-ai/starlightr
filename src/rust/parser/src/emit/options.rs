@@ -1,13 +1,17 @@
+use std::collections::HashMap;
+use std::path::Path;
+
 use anyhow::{Context, Result as AnyhowResult};
 use fs_err as fs;
 use serde::{Deserialize, Serialize};
-use std::path::Path;
 
 #[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 pub struct EmitOptions {
     pub skip_sections: Vec<String>,
     pub section_order: Vec<String>,
     pub include_pagefind: bool,
+    #[serde(default)]
+    pub external_links: HashMap<String, String>,
 }
 
 impl From<Config> for EmitOptions {
@@ -58,6 +62,14 @@ impl EmitOptions {
     pub fn from_file(path: impl AsRef<Path>) -> AnyhowResult<Self> {
         let config = Config::read_config(path)?;
         Ok(Self::from(config))
+    }
+
+    pub fn with_external_links_file(mut self, path: impl AsRef<Path>) -> AnyhowResult<Self> {
+        let contents =
+            fs::read_to_string(path.as_ref()).context("Failed to read external links file")?;
+        self.external_links =
+            serde_json::from_str(&contents).context("Failed to parse external links JSON")?;
+        Ok(self)
     }
 }
 

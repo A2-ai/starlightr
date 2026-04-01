@@ -1,4 +1,5 @@
-use std::{collections::BTreeSet, slice};
+use std::collections::{BTreeSet, HashMap};
+use std::slice;
 
 use anyhow::{Result as AnyhowResult, bail};
 
@@ -13,6 +14,7 @@ pub struct Emitter {
     source_file: String,
     math_mode_depth: usize,
     code_mode_depth: usize,
+    external_links: HashMap<String, String>,
 }
 
 impl Emitter {
@@ -34,6 +36,7 @@ impl Emitter {
         let mut emitter = Emitter {
             math_mode_depth: self.math_mode_depth,
             code_mode_depth: self.code_mode_depth,
+            external_links: self.external_links.clone(),
             ..Emitter::default()
         };
         for node in nodes {
@@ -210,21 +213,31 @@ impl Emitter {
     ) {
         let package_name = self.render_compact_nodes(package);
         let topic_name = self.render_compact_nodes(topic);
+        let key = format!("{package_name}::{topic_name}");
+        let url = self.external_links.get(&key).cloned();
 
-        match mode {
-            LinkMode::Text => self.emit_text("["),
-            LinkMode::Code => self.emit_text("[`"),
-        };
-        self.emit_nodes(label);
-        match mode {
-            LinkMode::Text => self.emit_text("]("),
-            LinkMode::Code => self.emit_text("`]("),
-        };
-        self.emit_text("__STARLIGHTR_EXT_TOPIC__::");
-        self.emit_text(&package_name);
-        self.emit_text("::");
-        self.emit_text(&topic_name);
-        self.emit_text(")");
+        match url {
+            Some(ref url) => {
+                match mode {
+                    LinkMode::Text => self.emit_text("["),
+                    LinkMode::Code => self.emit_text("[`"),
+                };
+                self.emit_nodes(label);
+                match mode {
+                    LinkMode::Text => self.emit_text("]("),
+                    LinkMode::Code => self.emit_text("`]("),
+                };
+                self.emit_text(url);
+                self.emit_text(")");
+                self.emit_text("<span style = {{ display: 'inline-block', verticalAlign: 'middle' }}><Icon name=\"external\" /></span>");
+                self.imports.insert(
+                    "import { Icon } from '@astrojs/starlight/components';".to_string(),
+                );
+            }
+            None => {
+                self.emit_nodes(label);
+            }
+        }
     }
 
     fn emit_url(&mut self, href: &[Node]) {
@@ -506,6 +519,7 @@ pub fn emit_document(
 ) -> AnyhowResult<String> {
     let mut emitter = Emitter {
         source_file: source_file.unwrap_or_default().to_string(),
+        external_links: options.external_links.clone(),
         ..Emitter::default()
     };
 
@@ -521,7 +535,7 @@ pub fn emit_document(
         content
     } else {
         let imports = emitter.imports.into_iter().collect::<Vec<_>>().join("\n");
-        format!("{imports}\n{content}")
+        format!("{imports}\n\n{content}")
     };
 
     Ok(format!("{frontmatter}{mdx}"))
@@ -575,5 +589,26 @@ mod tests {
             let source = path.file_name().and_then(|f| f.to_str());
             assert_snapshot!(emit_document(document, &opts, source).unwrap());
         });
+    }
+
+    #[test]
+    fn can_resolve_external_links() {
+        let test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("test_data");
+        let path = test_dir.join("hyperion-tables-section-rules.Rd");
+
+        let mut external_links = HashMap::new();
+        external_links.insert(
+            "dplyr::case_when".to_string(),
+            "https://dplyr.tidyverse.org/reference/case_when.html".to_string(),
+        );
+
+        let opts = EmitOptions {
+            external_links,
+            ..EmitOptions::default()
+        };
+
+        let document = parse_file(&path).unwrap();
+        let source = path.file_name().and_then(|f| f.to_str());
+        assert_snapshot!(emit_document(document, &opts, source).unwrap());
     }
 }

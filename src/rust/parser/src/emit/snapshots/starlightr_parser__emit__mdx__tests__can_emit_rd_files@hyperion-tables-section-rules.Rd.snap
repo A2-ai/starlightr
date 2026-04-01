@@ -40,7 +40,7 @@ section_rules(...)
 <tbody>
 <tr>
 <td><code>...</code></td>
-<td>Formula expressions following [`dplyr::case_when()`](__STARLIGHTR_EXT_TOPIC__::dplyr::case_when) syntax, `kind == "THETA" ~ "Structural Parameters"`</td>
+<td>Formula expressions following dplyr::case_when() syntax, `kind == "THETA" ~ "Structural Parameters"`</td>
 </tr>
 </tbody>
 </table>

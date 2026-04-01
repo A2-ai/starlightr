@@ -14,7 +14,6 @@ RoxygenNote: 7.3.3
 Imports:
     cli,
     devtools,
-    downlit,
     jsonlite,
     rmarkdown,
     tomledit,

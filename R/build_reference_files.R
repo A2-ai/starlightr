@@ -36,10 +36,13 @@ build_reference_files <- function(
     return(invisible(character()))
   }
 
+  external_links_file <- build_external_link_map()
+
   render_references(
     rd_dir = rd_dir,
     output_dir = output_dir,
-    config_file = config_file
+    config_file = config_file,
+    external_links_file = external_links_file
   )
 
   written_files <- file.path(
@@ -54,19 +57,16 @@ build_reference_files <- function(
       next
     }
 
-    func_name <- tools::file_path_sans_ext(basename(rd_files[[i]]))
-    md_content <- paste(readLines(out_path, warn = FALSE), collapse = "\n")
-    md_content <- resolve_external_package_links(md_content)
-
     if (!is.null(site_output_path)) {
+      func_name <- tools::file_path_sans_ext(basename(rd_files[[i]]))
+      md_content <- paste(readLines(out_path, warn = FALSE), collapse = "\n")
       md_content <- append_example_outputs(
         md_content,
         func_name,
         site_output_path
       )
+      writeLines(md_content, con = out_path)
     }
-
-    writeLines(md_content, con = out_path)
   }
 
   cli::cli_alert_success(

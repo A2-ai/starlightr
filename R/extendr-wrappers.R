@@ -23,8 +23,8 @@ NULL
 #'   config_file = "_starlightr.toml"
 #' )
 #' }
-render_reference <- function(rd_file, output_dir, config_file = '_starlightr.toml') .Call(wrap__render_reference, rd_file, output_dir, config_file)
+render_reference <- function(rd_file, output_dir, config_file = '_starlightr.toml', external_links_file = NULL) .Call(wrap__render_reference, rd_file, output_dir, config_file, external_links_file)
 
-render_references <- function(rd_dir, output_dir, config_file = '_starlightr.toml') .Call(wrap__render_references, rd_dir, output_dir, config_file)
+render_references <- function(rd_dir, output_dir, config_file = '_starlightr.toml', external_links_file = NULL) .Call(wrap__render_references, rd_dir, output_dir, config_file, external_links_file)
 
 # nolint end

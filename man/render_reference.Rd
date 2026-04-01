@@ -4,7 +4,12 @@
 \alias{render_reference}
 \title{render_reference}
 \usage{
-render_reference(rd_file, output_dir, config_file = "_starlightr.toml")
+render_reference(
+  rd_file,
+  output_dir,
+  config_file = "_starlightr.toml",
+  external_links_file = NULL
+)
 }
 \arguments{
 \item{rd_file}{path to Rd file to convert to .mdx}
