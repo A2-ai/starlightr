@@ -9,7 +9,6 @@ description: "Calculate eGFR Using CKD-EPI 2021 Creatinine Equation."
 pagefind: false
 ---
 
-
 ## Alias
 
 ckdepi_2021_egfr

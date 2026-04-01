@@ -7,7 +7,6 @@
 #' @return JSON string for sidebar item
 #' @keywords internal
 make_sidebar_item <- function(label, slug) {
-
   escaped_label <- gsub('"', '\\"', label, fixed = TRUE)
   escaped_slug <- gsub('"', '\\"', slug, fixed = TRUE)
   sprintf('{ label: "%s", slug: "%s" }', escaped_label, escaped_slug)
@@ -42,8 +41,12 @@ make_sidebar_group <- function(label, items, collapsed = FALSE, indent = 10) {
   collapsed_attr <- if (collapsed) ",\n          collapsed: true" else ""
   item_sep <- paste0(",\n", strrep(" ", indent + 2))
 
-  sprintf('{\n          label: "%s"%s,\n          items: [\n            %s\n          ]\n        }',
-          label, collapsed_attr, paste(items, collapse = item_sep))
+  sprintf(
+    '{\n          label: "%s"%s,\n          items: [\n            %s\n          ]\n        }',
+    label,
+    collapsed_attr,
+    paste(items, collapse = item_sep)
+  )
 }
 
 #' Resolve a reference content item to a sidebar item
@@ -57,7 +60,14 @@ make_sidebar_group <- function(label, items, collapsed = FALSE, indent = 10) {
 #' @param label Optional display label (defaults to content)
 #' @return Sidebar item JSON string or NULL if should skip
 #' @keywords internal
-resolve_reference_item <- function(content, output_path, pkg_name, warn = TRUE, label = NULL, rd_db = NULL) {
+resolve_reference_item <- function(
+  content,
+  output_path,
+  pkg_name,
+  warn = TRUE,
+  label = NULL,
+  rd_db = NULL
+) {
   # Map function to its actual documentation file
   doc_file <- find_function_doc_file(content, pkg_name, rd_db = rd_db)
 
@@ -66,8 +76,11 @@ resolve_reference_item <- function(content, output_path, pkg_name, warn = TRUE, 
   if (!is.null(output_path)) {
     ref_dir <- file.path(output_path, "src", "content", "docs", "reference")
     content_lower <- tolower(content)
-    file_exists <- file.exists(file.path(ref_dir, paste0(content_lower, ".mdx"))) ||
-                   file.exists(file.path(ref_dir, paste0(content_lower, ".md")))
+    file_exists <- file.exists(file.path(
+      ref_dir,
+      paste0(content_lower, ".mdx")
+    )) ||
+      file.exists(file.path(ref_dir, paste0(content_lower, ".md")))
   }
 
   # Use doc_file if found, otherwise use content name
@@ -78,7 +91,9 @@ resolve_reference_item <- function(content, output_path, pkg_name, warn = TRUE, 
 
   # Warn if file doesn't exist and no Rd entry was found
   if (warn && !file_exists && !has_rd) {
-    cli::cli_warn("Reference file missing: {.file {content}.mdx} - create manually or check config")
+    cli::cli_warn(
+      "Reference file missing: {.file {content}.mdx} - create manually or check config"
+    )
   }
 
   # Use provided label or default to content name
@@ -134,7 +149,11 @@ expand_glob_patterns <- function(patterns, available_files) {
 #' @param pkg_name Package name (for Rd database lookups)
 #' @return JavaScript sidebar configuration as string
 #' @keywords internal
-generate_sidebar_config <- function(config, output_path = NULL, pkg_name = NULL) {
+generate_sidebar_config <- function(
+  config,
+  output_path = NULL,
+  pkg_name = NULL
+) {
   rd_db <- if (!is.null(pkg_name)) {
     tryCatch(tools::Rd_db(pkg_name), error = function(e) NULL)
   } else {
@@ -158,19 +177,29 @@ generate_sidebar_config <- function(config, output_path = NULL, pkg_name = NULL)
     articles_items <- c()
     for (group in config$sidebar$articles) {
       if (!is.null(group$label) && !is.null(group$contents)) {
-        group_items <- vapply(group$contents, function(content) {
-          parsed <- parse_content_item(content)
-          slug <- paste0("articles/", slugify(parsed$slug))
-          make_sidebar_item(parsed$label, slug)
-        }, character(1))
+        group_items <- vapply(
+          group$contents,
+          function(content) {
+            parsed <- parse_content_item(content)
+            slug <- paste0("articles/", slugify(parsed$slug))
+            make_sidebar_item(parsed$label, slug)
+          },
+          character(1)
+        )
 
-        group_js <- make_sidebar_group(group$label, group_items, group$collapsed %||% FALSE)
+        group_js <- make_sidebar_group(
+          group$label,
+          group_items,
+          group$collapsed %||% FALSE
+        )
         articles_items <- c(articles_items, group_js)
       }
     }
 
-    articles_section <- sprintf('{\n      label: "Articles",\n      items: [\n        %s\n      ]\n    }',
-                               paste(articles_items, collapse = ",\n        "))
+    articles_section <- sprintf(
+      '{\n      label: "Articles",\n      items: [\n        %s\n      ]\n    }',
+      paste(articles_items, collapse = ",\n        ")
+    )
     sidebar_parts <- c(sidebar_parts, articles_section)
   }
 
@@ -191,23 +220,33 @@ generate_sidebar_config <- function(config, output_path = NULL, pkg_name = NULL)
       if (!is.null(group$label) && !is.null(group$contents)) {
         group_items <- c()
         # Extract slugs for pattern detection (handles both string and list items)
-        content_slugs <- vapply(group$contents, function(c) {
-          parse_content_item(c)$slug
-        }, character(1))
+        content_slugs <- vapply(
+          group$contents,
+          function(c) {
+            parse_content_item(c)$slug
+          },
+          character(1)
+        )
         has_patterns <- any(grepl("\\*", content_slugs))
 
         if (has_patterns && length(available_files) > 0) {
           # Handle pattern matching
           matched_files <- expand_glob_patterns(content_slugs, available_files)
-          group_items <- vapply(matched_files, function(file) {
-            slug <- paste0("reference/", slugify(file))
-            make_sidebar_item(file, slug)
-          }, character(1))
+          group_items <- vapply(
+            matched_files,
+            function(file) {
+              slug <- paste0("reference/", slugify(file))
+              make_sidebar_item(file, slug)
+            },
+            character(1)
+          )
         } else {
           # Handle exact names and selectors
           for (content in group$contents) {
             parsed <- parse_content_item(content)
-            if (!grepl("\\*", parsed$slug) && !is_pkgdown_selector(parsed$slug)) {
+            if (
+              !grepl("\\*", parsed$slug) && !is_pkgdown_selector(parsed$slug)
+            ) {
               item <- resolve_ref(parsed$slug, label = parsed$label)
               group_items <- c(group_items, item)
             } else if (is_pkgdown_selector(parsed$slug)) {
@@ -222,44 +261,70 @@ generate_sidebar_config <- function(config, output_path = NULL, pkg_name = NULL)
         }
 
         if (length(group_items) > 0) {
-          group_js <- make_sidebar_group(group$label, group_items, group$collapsed %||% FALSE)
+          group_js <- make_sidebar_group(
+            group$label,
+            group_items,
+            group$collapsed %||% FALSE
+          )
           reference_items <- c(reference_items, group_js)
         }
-      }
-      # Handle nested structure: label + items (each item has label + contents)
+      } # Handle nested structure: label + items (each item has label + contents)
       else if (!is.null(group$label) && !is.null(group$items)) {
         nested_items <- c()
 
         for (subgroup in group$items) {
           if (!is.null(subgroup$label) && !is.null(subgroup$contents)) {
-            expanded_contents <- expand_pkgdown_selectors(subgroup$contents, output_path)
-            subgroup_items <- vapply(expanded_contents, function(content) {
-              resolve_ref(content)
-            }, character(1))
+            expanded_contents <- expand_pkgdown_selectors(
+              subgroup$contents,
+              output_path
+            )
+            subgroup_items <- vapply(
+              expanded_contents,
+              function(content) {
+                resolve_ref(content)
+              },
+              character(1)
+            )
 
-            subgroup_js <- make_sidebar_group(subgroup$label, subgroup_items, subgroup$collapsed %||% FALSE)
+            subgroup_js <- make_sidebar_group(
+              subgroup$label,
+              subgroup_items,
+              subgroup$collapsed %||% FALSE
+            )
             nested_items <- c(nested_items, subgroup_js)
           }
         }
 
         if (length(nested_items) > 0) {
-          group_js <- make_sidebar_group(group$label, nested_items, group$collapsed %||% FALSE)
+          group_js <- make_sidebar_group(
+            group$label,
+            nested_items,
+            group$collapsed %||% FALSE
+          )
           reference_items <- c(reference_items, group_js)
         }
       }
     }
 
     if (length(reference_items) > 0) {
-      reference_section <- sprintf('{\n      label: "Reference",\n      items: [\n        %s\n      ]\n    }',
-                                  paste(reference_items, collapse = ",\n        "))
+      reference_section <- sprintf(
+        '{\n      label: "Reference",\n      items: [\n        %s\n      ]\n    }',
+        paste(reference_items, collapse = ",\n        ")
+      )
       sidebar_parts <- c(sidebar_parts, reference_section)
     } else {
       # Fallback to autogenerate if no items
-      sidebar_parts <- c(sidebar_parts, '{\n      label: "Reference",\n      autogenerate: { directory: "reference" }\n    }')
+      sidebar_parts <- c(
+        sidebar_parts,
+        '{\n      label: "Reference",\n      autogenerate: { directory: "reference" }\n    }'
+      )
     }
   } else {
     # Fallback to autogenerate
-    sidebar_parts <- c(sidebar_parts, '{\n      label: "Reference",\n      autogenerate: { directory: "reference" }\n    }')
+    sidebar_parts <- c(
+      sidebar_parts,
+      '{\n      label: "Reference",\n      autogenerate: { directory: "reference" }\n    }'
+    )
   }
 
   # Handle news/changelog section
@@ -330,7 +395,7 @@ expand_selector <- function(selector, available_functions) {
   } else if (grepl("^contains\\s*\\(", selector)) {
     regex <- escape_regex(pattern)
   } else if (grepl("^matches\\s*\\(", selector)) {
-    regex <- pattern  # Already a regex
+    regex <- pattern # Already a regex
   } else {
     return(character(0))
   }
@@ -372,24 +437,29 @@ escape_regex <- function(pattern) {
 #' @return The base name of the Rd file containing the function's documentation, or NULL
 #' @keywords internal
 find_function_doc_file <- function(function_name, pkg_name, rd_db = NULL) {
-  if (is.null(function_name) || is.null(pkg_name) || nchar(function_name) == 0) {
+  if (
+    is.null(function_name) || is.null(pkg_name) || nchar(function_name) == 0
+  ) {
     return(NULL)
   }
 
-  tryCatch({
-    if (is.null(rd_db)) {
-      rd_db <- tools::Rd_db(pkg_name)
-    }
-
-    for (rd_file_name in names(rd_db)) {
-      rd_obj <- rd_db[[rd_file_name]]
-      if (rd_contains_function(rd_obj, function_name)) {
-        return(tools::file_path_sans_ext(rd_file_name))
+  tryCatch(
+    {
+      if (is.null(rd_db)) {
+        rd_db <- tools::Rd_db(pkg_name)
       }
-    }
 
-    NULL
-  }, error = function(e) NULL)
+      for (rd_file_name in names(rd_db)) {
+        rd_obj <- rd_db[[rd_file_name]]
+        if (rd_contains_function(rd_obj, function_name)) {
+          return(tools::file_path_sans_ext(rd_file_name))
+        }
+      }
+
+      NULL
+    },
+    error = function(e) NULL
+  )
 }
 
 #' Check if an Rd object contains documentation for a specific function

@@ -51,7 +51,11 @@ copy_branding_assets <- function(pkg_path, output_path, config) {
     if (file.exists(favicon_src)) {
       images_dir <- file.path(output_path, "public", "images")
       ensure_dir(images_dir)
-      file.copy(favicon_src, file.path(images_dir, "favicon.png"), overwrite = TRUE)
+      file.copy(
+        favicon_src,
+        file.path(images_dir, "favicon.png"),
+        overwrite = TRUE
+      )
       cli::cli_alert_success("Copied favicon to {.path public/images/}")
     } else {
       cli::cli_warn("Favicon file not found: {.path {favicon_src}}")

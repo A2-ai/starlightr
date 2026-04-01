@@ -38,13 +38,17 @@ validate_version_config <- function(config) {
   versions <- config$versions$list
 
   if (is.null(versions) || length(versions) == 0) {
-    cli::cli_abort("versions.list must contain at least one version when versions.enabled is true")
+    cli::cli_abort(
+      "versions.list must contain at least one version when versions.enabled is true"
+    )
   }
 
   # Check for exactly one default
   defaults <- vapply(versions, function(v) isTRUE(v$default), logical(1))
   if (sum(defaults) == 0) {
-    cli::cli_warn("No default version specified. First version will be used as default.")
+    cli::cli_warn(
+      "No default version specified. First version will be used as default."
+    )
   } else if (sum(defaults) > 1) {
     cli::cli_abort("Only one version can have default: true")
   }
@@ -95,14 +99,21 @@ generate_versions_ts <- function(output_path, config) {
 #' @param config Configuration list
 #' @keywords internal
 generate_version_select_component <- function(output_path, config) {
-  template_path <- system.file("templates/VersionSelect.astro", package = "starlightr")
+  template_path <- system.file(
+    "templates/VersionSelect.astro",
+    package = "starlightr"
+  )
 
   # Ensure output directory exists
   components_dir <- file.path(output_path, "src", "components")
   ensure_dir(components_dir)
 
   # Copy template directly (no templating needed)
-  file.copy(template_path, file.path(components_dir, "VersionSelect.astro"), overwrite = TRUE)
+  file.copy(
+    template_path,
+    file.path(components_dir, "VersionSelect.astro"),
+    overwrite = TRUE
+  )
   cli::cli_alert_success("Generated {.file src/components/VersionSelect.astro}")
 }
 
@@ -113,7 +124,10 @@ generate_version_select_component <- function(output_path, config) {
 #' @param overwrite Logical, whether to overwrite existing file
 #' @keywords internal
 generate_deploy_workflow <- function(output_path, config, overwrite = FALSE) {
-  template_path <- system.file("templates/deploy-docs.yml", package = "starlightr")
+  template_path <- system.file(
+    "templates/deploy-docs.yml",
+    package = "starlightr"
+  )
 
   # Create .github/workflows directory in docs output
   workflows_dir <- file.path(output_path, ".github", "workflows")
@@ -123,7 +137,9 @@ generate_deploy_workflow <- function(output_path, config, overwrite = FALSE) {
 
   # Don't overwrite existing workflow unless requested
   if (file.exists(workflow_path) && !overwrite) {
-    cli::cli_alert_info("Skipping {.file .github/workflows/deploy-docs.yml} (already exists)")
+    cli::cli_alert_info(
+      "Skipping {.file .github/workflows/deploy-docs.yml} (already exists)"
+    )
     return(invisible(NULL))
   }
 

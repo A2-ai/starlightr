@@ -30,13 +30,14 @@
 #' # Rebuild and overwrite existing index.mdx
 #' build_site(overwrite = TRUE)
 #' }
-build_site <- function(pkg = ".",
-                      config_file = "_starlightr.toml",
-                      output_dir = NULL,
-                      preview = FALSE,
-                      verbose = FALSE,
-                      overwrite = FALSE) {
-
+build_site <- function(
+  pkg = ".",
+  config_file = "_starlightr.toml",
+  output_dir = NULL,
+  preview = FALSE,
+  verbose = FALSE,
+  overwrite = FALSE
+) {
   # Resolve package path
   pkg_path <- normalizePath(pkg, mustWork = TRUE)
 
@@ -69,9 +70,13 @@ build_site <- function(pkg = ".",
 
   # Provide helpful info about external vs internal directories
   if (is_absolute_path(output_dir) || startsWith(output_dir, "..")) {
-    cli::cli_alert_info("Using external directory (recommended for Starlight sites)")
+    cli::cli_alert_info(
+      "Using external directory (recommended for Starlight sites)"
+    )
   } else {
-    cli::cli_alert_warning("Using internal directory - consider external directory to avoid bloat")
+    cli::cli_alert_warning(
+      "Using internal directory - consider external directory to avoid bloat"
+    )
   }
 
   # Create output directory structure
@@ -101,7 +106,12 @@ build_site <- function(pkg = ".",
   }
 
   # Extract and process R documentation
-  process_package_documentation(pkg_path, output_path, config_path, verbose = verbose)
+  process_package_documentation(
+    pkg_path,
+    output_path,
+    config_path,
+    verbose = verbose
+  )
 
   # Process vignettes and README together (single install)
   process_articles_and_readme(pkg_path, output_path, config)

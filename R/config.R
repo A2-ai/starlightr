@@ -8,20 +8,27 @@
 #' @keywords internal
 read_config <- function(config_path) {
   if (!file.exists(config_path)) {
-    cli::cli_alert_info("No _starlightr.toml found, using default configuration")
-    cli::cli_alert("Tip: Run {.fn use_starlightr} to create a configuration file")
+    cli::cli_alert_info(
+      "No _starlightr.toml found, using default configuration"
+    )
+    cli::cli_alert(
+      "Tip: Run {.fn use_starlightr} to create a configuration file"
+    )
     return(default_config())
   }
 
-  tryCatch({
-    # Use shared helper from config_helpers.R
-    config <- read_config_toml(config_path)
+  tryCatch(
+    {
+      # Use shared helper from config_helpers.R
+      config <- read_config_toml(config_path)
 
-    # Merge with defaults to ensure all required fields exist
-    merge_config(config, default_config())
-  }, error = function(e) {
-    stop("Error reading configuration file: ", e$message)
-  })
+      # Merge with defaults to ensure all required fields exist
+      merge_config(config, default_config())
+    },
+    error = function(e) {
+      stop("Error reading configuration file: ", e$message)
+    }
+  )
 }
 
 #' Get default configuration
@@ -48,7 +55,14 @@ default_config <- function() {
       katex = TRUE
     ),
     reference = list(
-      skip_sections = c("name", "alias", "title", "keyword", "concept", "docType"),
+      skip_sections = c(
+        "name",
+        "alias",
+        "title",
+        "keyword",
+        "concept",
+        "docType"
+      ),
       section_order = c("Title", "Name", "Alias", "Doc Type", "Description"),
       include_pagefind = FALSE
     ),

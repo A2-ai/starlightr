@@ -21,10 +21,11 @@
 #' )
 #' }
 build_reference_files <- function(
-    rd_dir,
-    output_dir,
-    config_file = "_starlightr.toml",
-    site_output_path = NULL) {
+  rd_dir,
+  output_dir,
+  config_file = "_starlightr.toml",
+  site_output_path = NULL
+) {
   if (!dir.exists(rd_dir)) {
     cli::cli_abort("Rd directory not found: {.path {rd_dir}}")
   }
@@ -46,22 +47,31 @@ build_reference_files <- function(
     paste0(vapply(rd_files, rd_file_to_slug, character(1)), ".mdx")
   )
 
-  if (!is.null(site_output_path)) {
-    for (i in seq_along(rd_files)) {
-      out_path <- written_files[[i]]
-      if (!file.exists(out_path)) {
-        cli::cli_warn("Expected reference file not found: {.path {out_path}}")
-        next
-      }
-
-      func_name <- tools::file_path_sans_ext(basename(rd_files[[i]]))
-      md_content <- paste(readLines(out_path, warn = FALSE), collapse = "\n")
-      md_content <- append_example_outputs(md_content, func_name, site_output_path)
-      writeLines(md_content, con = out_path)
+  for (i in seq_along(rd_files)) {
+    out_path <- written_files[[i]]
+    if (!file.exists(out_path)) {
+      cli::cli_warn("Expected reference file not found: {.path {out_path}}")
+      next
     }
+
+    func_name <- tools::file_path_sans_ext(basename(rd_files[[i]]))
+    md_content <- paste(readLines(out_path, warn = FALSE), collapse = "\n")
+    md_content <- resolve_external_package_links(md_content)
+
+    if (!is.null(site_output_path)) {
+      md_content <- append_example_outputs(
+        md_content,
+        func_name,
+        site_output_path
+      )
+    }
+
+    writeLines(md_content, con = out_path)
   }
 
-  cli::cli_alert_success("Wrote {length(written_files)} reference file{?s} to {.path {output_dir}}")
+  cli::cli_alert_success(
+    "Wrote {length(written_files)} reference file{?s} to {.path {output_dir}}"
+  )
   invisible(written_files)
 }
 
@@ -82,9 +92,25 @@ rd_file_to_slug <- function(path) {
 #' @keywords internal
 append_example_outputs <- function(md_content, func_name, site_output_path) {
   # Check for example output files
-  png_path <- file.path(site_output_path, "public", "examples", paste0(func_name, ".png"))
-  txt_path <- file.path(site_output_path, "public", "examples", "text", paste0(func_name, ".txt"))
-  html_path <- file.path(site_output_path, "public", "examples", paste0(func_name, ".html"))
+  png_path <- file.path(
+    site_output_path,
+    "public",
+    "examples",
+    paste0(func_name, ".png")
+  )
+  txt_path <- file.path(
+    site_output_path,
+    "public",
+    "examples",
+    "text",
+    paste0(func_name, ".txt")
+  )
+  html_path <- file.path(
+    site_output_path,
+    "public",
+    "examples",
+    paste0(func_name, ".html")
+  )
 
   has_png <- file.exists(png_path)
   has_txt <- file.exists(txt_path)
@@ -106,15 +132,21 @@ append_example_outputs <- function(md_content, func_name, site_output_path) {
 
   if (has_png) {
     # Standard markdown image
-    components <- c(components, sprintf("![Example plot](/examples/%s.png)", func_name))
+    components <- c(
+      components,
+      sprintf("![Example plot](/examples/%s.png)", func_name)
+    )
   }
 
   if (has_html) {
     # Standard HTML iframe (no JSX)
-    components <- c(components, sprintf(
-      '<iframe src="/examples/%s.html" style="width: 100%%; min-height: 300px; border: none;"></iframe>',
-      func_name
-    ))
+    components <- c(
+      components,
+      sprintf(
+        '<iframe src="/examples/%s.html" style="width: 100%%; min-height: 300px; border: none;"></iframe>',
+        func_name
+      )
+    )
   }
 
   # Build the output block
@@ -145,12 +177,15 @@ append_example_outputs <- function(md_content, func_name, site_output_path) {
 
       if (length(closing_backticks) > 0) {
         # Insert after the last closing ```
-        insert_pos <- examples_start[1] + closing_backticks[length(closing_backticks)] - 1
+        insert_pos <- examples_start[1] +
+          closing_backticks[length(closing_backticks)] -
+          1
 
         lines <- c(
           lines[1:insert_pos],
           strsplit(output_block, "\n")[[1]],
-          if (insert_pos < length(lines)) lines[(insert_pos + 1):length(lines)] else character()
+          if (insert_pos < length(lines))
+            lines[(insert_pos + 1):length(lines)] else character()
         )
         md_content <- paste(lines, collapse = "\n")
       } else {

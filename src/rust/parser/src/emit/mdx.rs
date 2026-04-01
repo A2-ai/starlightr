@@ -208,24 +208,23 @@ impl Emitter {
         topic: &[Node],
         mode: &LinkMode,
     ) {
+        let package_name = self.render_compact_nodes(package);
+        let topic_name = self.render_compact_nodes(topic);
+
         match mode {
             LinkMode::Text => self.emit_text("["),
             LinkMode::Code => self.emit_text("[`"),
         };
         self.emit_nodes(label);
         match mode {
-            LinkMode::Text => self.emit_text("]"),
-            LinkMode::Code => self.emit_text("`]"),
+            LinkMode::Text => self.emit_text("]("),
+            LinkMode::Code => self.emit_text("`]("),
         };
-        self.emit_text("(https://rdrr.io/search?package=");
-        self.emit_nodes(package);
-        self.emit_text("&repo=cran&q=");
-        self.emit_nodes(topic);
+        self.emit_text("__STARLIGHTR_EXT_TOPIC__::");
+        self.emit_text(&package_name);
+        self.emit_text("::");
+        self.emit_text(&topic_name);
         self.emit_text(")");
-        // Add external link icon
-        self.emit_text("<span style = {{ display: 'inline-block', verticalAlign: 'middle' }}><Icon name=\"external\" /></span>");
-        self.imports
-            .insert("import { Icon } from '@astrojs/starlight/components';".to_string());
     }
 
     fn emit_url(&mut self, href: &[Node]) {
@@ -249,15 +248,27 @@ impl Emitter {
     fn emit_s3_method(&mut self, args: &[Vec<Node>]) {
         // \method{generic}{class} or \S3method{generic}{class}
         // Emits: ## S3 method for class 'class'\ngeneric
-        let generic = args.first().map(|a| self.render_nodes_to_string(a)).unwrap_or_default();
-        let class = args.get(1).map(|a| self.render_nodes_to_string(a)).unwrap_or_default();
+        let generic = args
+            .first()
+            .map(|a| self.render_nodes_to_string(a))
+            .unwrap_or_default();
+        let class = args
+            .get(1)
+            .map(|a| self.render_nodes_to_string(a))
+            .unwrap_or_default();
         self.emit_text(&format!("## S3 method for class '{class}'\n{generic}"));
     }
 
     fn emit_s4_method(&mut self, args: &[Vec<Node>]) {
         // \S4method{generic}{class}
-        let generic = args.first().map(|a| self.render_nodes_to_string(a)).unwrap_or_default();
-        let class = args.get(1).map(|a| self.render_nodes_to_string(a)).unwrap_or_default();
+        let generic = args
+            .first()
+            .map(|a| self.render_nodes_to_string(a))
+            .unwrap_or_default();
+        let class = args
+            .get(1)
+            .map(|a| self.render_nodes_to_string(a))
+            .unwrap_or_default();
         self.emit_text(&format!("## S4 method for signature '{class}'\n{generic}"));
     }
 
@@ -513,7 +524,7 @@ pub fn emit_document(
         format!("{imports}\n{content}")
     };
 
-    Ok(format!("{frontmatter}\n{mdx}"))
+    Ok(format!("{frontmatter}{mdx}"))
 }
 
 #[cfg(test)]
@@ -556,9 +567,7 @@ mod tests {
     fn can_order_sections() {
         let test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("test_data");
         let opts = EmitOptions::default()
-            .with_skip_sections(vec![
-                "name", "alias", "title", "keyword", "doc Type",
-            ])
+            .with_skip_sections(vec!["name", "alias", "title", "keyword", "doc Type"])
             .with_section_order(vec!["Description"]);
 
         glob!(test_dir, "*.Rd", |path| {

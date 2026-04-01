@@ -60,7 +60,9 @@ normalize_local_link <- function(link, warn = TRUE) {
     normalized_path <- tolower(path)
 
     if (warn && normalized_path != path) {
-      cli::cli_alert_info("Link normalized to lowercase: {.val {paste0(normalized_path, suffix)}}")
+      cli::cli_alert_info(
+        "Link normalized to lowercase: {.val {paste0(normalized_path, suffix)}}"
+      )
     }
 
     return(paste0(normalized_path, suffix))
@@ -87,7 +89,8 @@ find_link_entries <- function(config) {
     if (is.list(node)) {
       node_names <- names(node)
       for (i in seq_along(node)) {
-        name <- if (!is.null(node_names) && nzchar(node_names[i])) node_names[i] else as.character(i)
+        name <- if (!is.null(node_names) && nzchar(node_names[i]))
+          node_names[i] else as.character(i)
         child <- node[[i]]
         child_path <- c(path, name)
 
@@ -120,11 +123,12 @@ is_external_doc_link <- function(link) {
   path <- sub("^\\./", "", link)
   path <- sub("/$", "", path)
 
-
   # Links to articles/, reference/, or news are R-package content
-  if (startsWith(path, "articles/") ||
+  if (
+    startsWith(path, "articles/") ||
       startsWith(path, "reference/") ||
-      path == "news") {
+      path == "news"
+  ) {
     return(FALSE)
   }
 
@@ -141,7 +145,6 @@ is_external_doc_link <- function(link) {
 #' @return TRUE if an issue was found, FALSE otherwise
 #' @keywords internal
 validate_link_target <- function(link, context, pkg_path, exported) {
-
   # Only validate links starting with ./
   if (!startsWith(link, "./")) {
     return(FALSE)
@@ -158,14 +161,22 @@ validate_link_target <- function(link, context, pkg_path, exported) {
       # README is special - it's processed from package root
       if (tolower(article_name) == "readme") {
         if (is.null(find_readme(pkg_path))) {
-          cli::cli_warn("Article link target not found: {.val {link}} - no {.file README.Rmd} ({context})")
+          cli::cli_warn(
+            "Article link target not found: {.val {link}} - no {.file README.Rmd} ({context})"
+          )
           return(TRUE)
         }
       } else {
         # Check for vignette file
-        vignette_path <- file.path(pkg_path, "vignettes", paste0(article_name, ".Rmd"))
+        vignette_path <- file.path(
+          pkg_path,
+          "vignettes",
+          paste0(article_name, ".Rmd")
+        )
         if (!file.exists(vignette_path)) {
-          cli::cli_warn("Article link target not found: {.val {link}} - no vignette {.file vignettes/{article_name}.Rmd} ({context})")
+          cli::cli_warn(
+            "Article link target not found: {.val {link}} - no vignette {.file vignettes/{article_name}.Rmd} ({context})"
+          )
           return(TRUE)
         }
       }
@@ -179,7 +190,9 @@ validate_link_target <- function(link, context, pkg_path, exported) {
     if (nchar(fn_name) > 0) {
       # Check if function is exported (case-insensitive)
       if (!any(tolower(exported) == tolower(fn_name))) {
-        cli::cli_warn("Reference link target not found: {.val {link}} - no exported function {.fn {fn_name}} ({context})")
+        cli::cli_warn(
+          "Reference link target not found: {.val {link}} - no exported function {.fn {fn_name}} ({context})"
+        )
         return(TRUE)
       }
     }
@@ -214,7 +227,11 @@ validate_article_slugs <- function(config, pkg_path) {
         if (tolower(slug) == "readme") {
           exists <- !is.null(find_readme(pkg_path))
         } else {
-          exists <- file.exists(file.path(pkg_path, "vignettes", paste0(slug, ".Rmd")))
+          exists <- file.exists(file.path(
+            pkg_path,
+            "vignettes",
+            paste0(slug, ".Rmd")
+          ))
         }
 
         if (exists) {

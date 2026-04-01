@@ -34,8 +34,14 @@ write_config_toml <- function(config, config_path = "_starlightr.toml") {
 #' @param config_path Path to config file
 #' @return List with modified config and whether item was added
 #' @keywords internal
-add_sidebar_item <- function(kind, slug, section, label = NULL,
-                             config_path = "_starlightr.toml", collapsed = NULL) {
+add_sidebar_item <- function(
+  kind,
+  slug,
+  section,
+  label = NULL,
+  config_path = "_starlightr.toml",
+  collapsed = NULL
+) {
   config <- read_config_toml(config_path)
 
   # Initialize sidebar section if it doesn't exist
@@ -50,8 +56,10 @@ add_sidebar_item <- function(kind, slug, section, label = NULL,
   section_idx <- NULL
   for (i in seq_along(config$sidebar[[kind]])) {
     if (!is.list(config$sidebar[[kind]][[i]])) next
-    if (!is.null(config$sidebar[[kind]][[i]]$label) &&
-        config$sidebar[[kind]][[i]]$label == section) {
+    if (
+      !is.null(config$sidebar[[kind]][[i]]$label) &&
+        config$sidebar[[kind]][[i]]$label == section
+    ) {
       section_idx <- i
       break
     }
@@ -84,9 +92,13 @@ add_sidebar_item <- function(kind, slug, section, label = NULL,
 
   # Check for duplicates by slug
   existing_contents <- config$sidebar[[kind]][[section_idx]]$contents
-  existing_slugs <- vapply(existing_contents, function(c) {
-    parse_content_item(c)$slug
-  }, character(1))
+  existing_slugs <- vapply(
+    existing_contents,
+    function(c) {
+      parse_content_item(c)$slug
+    },
+    character(1)
+  )
 
   if (slug %in% existing_slugs) {
     # Still write if collapsed changed
@@ -95,7 +107,10 @@ add_sidebar_item <- function(kind, slug, section, label = NULL,
   }
 
   # Add to existing section
-  config$sidebar[[kind]][[section_idx]]$contents <- c(existing_contents, list(content_item))
+  config$sidebar[[kind]][[section_idx]]$contents <- c(
+    existing_contents,
+    list(content_item)
+  )
   write_config_toml(config, config_path)
   return(list(added = TRUE, new_section = FALSE))
 }
@@ -119,15 +134,27 @@ get_sidebar_sections <- function(kind, config_path = "_starlightr.toml") {
     ))
   }
 
-  labels <- vapply(sections, function(s) {
-    if (is.list(s)) s$label %||% NA_character_ else as.character(s)
-  }, character(1))
-  collapsed <- vapply(sections, function(s) {
-    if (is.list(s)) isTRUE(s$collapsed) else NA
-  }, logical(1))
-  n_items <- vapply(sections, function(s) {
-    if (is.list(s)) length(s$contents) else 1L
-  }, integer(1))
+  labels <- vapply(
+    sections,
+    function(s) {
+      if (is.list(s)) s$label %||% NA_character_ else as.character(s)
+    },
+    character(1)
+  )
+  collapsed <- vapply(
+    sections,
+    function(s) {
+      if (is.list(s)) isTRUE(s$collapsed) else NA
+    },
+    logical(1)
+  )
+  n_items <- vapply(
+    sections,
+    function(s) {
+      if (is.list(s)) length(s$contents) else 1L
+    },
+    integer(1)
+  )
 
   data.frame(
     label = labels,
@@ -145,8 +172,12 @@ get_sidebar_sections <- function(kind, config_path = "_starlightr.toml") {
 #' @param config_path Path to config file
 #' @return Character vector of labels actually modified (invisibly)
 #' @keywords internal
-set_sidebar_section_collapsed <- function(kind, section, collapsed = TRUE,
-                                          config_path = "_starlightr.toml") {
+set_sidebar_section_collapsed <- function(
+  kind,
+  section,
+  collapsed = TRUE,
+  config_path = "_starlightr.toml"
+) {
   config <- read_config_toml(config_path)
   sections <- config$sidebar[[kind]]
 
@@ -219,7 +250,14 @@ set_sidebar_section_collapsed <- function(kind, section, collapsed = TRUE,
 #'   overwrite = TRUE
 #' )
 #' }
-add_card <- function(title, description, link, icon = "document", overwrite = FALSE, config_path = "_starlightr.toml") {
+add_card <- function(
+  title,
+  description,
+  link,
+  icon = "document",
+  overwrite = FALSE,
+  config_path = "_starlightr.toml"
+) {
   config <- read_config_toml(config_path)
 
   # Initialize home.cards if it doesn't exist
@@ -233,14 +271,19 @@ add_card <- function(title, description, link, icon = "document", overwrite = FA
   # Check for duplicate by title
   existing_idx <- NULL
   for (i in seq_along(config$home$cards)) {
-    if (!is.null(config$home$cards[[i]]$title) && config$home$cards[[i]]$title == title) {
+    if (
+      !is.null(config$home$cards[[i]]$title) &&
+        config$home$cards[[i]]$title == title
+    ) {
       existing_idx <- i
       break
     }
   }
 
   if (!is.null(existing_idx) && !overwrite) {
-    cli::cli_alert_info("Card with title {.val {title}} already exists (use overwrite = TRUE to update)")
+    cli::cli_alert_info(
+      "Card with title {.val {title}} already exists (use overwrite = TRUE to update)"
+    )
     return(invisible(TRUE))
   }
 
@@ -300,8 +343,14 @@ add_card <- function(title, description, link, icon = "document", overwrite = FA
 #'   variant = "minimal"
 #' )
 #' }
-add_action <- function(text, link, icon = "right-arrow", variant = "primary",
-                       overwrite = FALSE, config_path = "_starlightr.toml") {
+add_action <- function(
+  text,
+  link,
+  icon = "right-arrow",
+  variant = "primary",
+  overwrite = FALSE,
+  config_path = "_starlightr.toml"
+) {
   config <- read_config_toml(config_path)
 
   # Initialize home.hero.actions if needed
@@ -318,15 +367,19 @@ add_action <- function(text, link, icon = "right-arrow", variant = "primary",
   # Check for duplicate by text
   existing_idx <- NULL
   for (i in seq_along(config$home$hero$actions)) {
-    if (!is.null(config$home$hero$actions[[i]]$text) &&
-        config$home$hero$actions[[i]]$text == text) {
+    if (
+      !is.null(config$home$hero$actions[[i]]$text) &&
+        config$home$hero$actions[[i]]$text == text
+    ) {
       existing_idx <- i
       break
     }
   }
 
   if (!is.null(existing_idx) && !overwrite) {
-    cli::cli_alert_info("Action with text {.val {text}} already exists (use overwrite = TRUE to update)")
+    cli::cli_alert_info(
+      "Action with text {.val {text}} already exists (use overwrite = TRUE to update)"
+    )
     return(invisible(TRUE))
   }
 
@@ -377,24 +430,47 @@ add_action <- function(text, link, icon = "right-arrow", variant = "primary",
 #' # Add to a collapsed section
 #' add_reference("my_function", "Internals", collapsed = TRUE)
 #' }
-add_reference <- function(fn_name, section, label = NULL,
-                          config_path = "_starlightr.toml", collapsed = NULL) {
-  if (!is.character(fn_name) || length(fn_name) != 1 || !nzchar(trimws(fn_name))) {
+add_reference <- function(
+  fn_name,
+  section,
+  label = NULL,
+  config_path = "_starlightr.toml",
+  collapsed = NULL
+) {
+  if (
+    !is.character(fn_name) || length(fn_name) != 1 || !nzchar(trimws(fn_name))
+  ) {
     cli::cli_abort("{.arg fn_name} must be a non-empty string")
   }
-  if (!is.character(section) || length(section) != 1 || !nzchar(trimws(section))) {
+  if (
+    !is.character(section) || length(section) != 1 || !nzchar(trimws(section))
+  ) {
     cli::cli_abort("{.arg section} must be a non-empty string")
   }
-  if (!is.null(label) && (!is.character(label) || length(label) != 1 || !nzchar(trimws(label)))) {
+  if (
+    !is.null(label) &&
+      (!is.character(label) || length(label) != 1 || !nzchar(trimws(label)))
+  ) {
     cli::cli_abort("{.arg label} must be NULL or a non-empty string")
   }
 
-  result <- add_sidebar_item("reference", fn_name, section, label, config_path, collapsed)
+  result <- add_sidebar_item(
+    "reference",
+    fn_name,
+    section,
+    label,
+    config_path,
+    collapsed
+  )
 
   if (!result$added) {
-    cli::cli_alert_info("{.fn {fn_name}} already exists in section {.val {section}}")
+    cli::cli_alert_info(
+      "{.fn {fn_name}} already exists in section {.val {section}}"
+    )
   } else if (result$new_section) {
-    cli::cli_alert_success("Created new section {.val {section}} with {.fn {fn_name}}")
+    cli::cli_alert_success(
+      "Created new section {.val {section}} with {.fn {fn_name}}"
+    )
   } else {
     cli::cli_alert_success("Added {.fn {fn_name}} to section {.val {section}}")
   }
@@ -426,26 +502,53 @@ add_reference <- function(fn_name, section, label = NULL,
 #' # Add to a collapsed section
 #' add_article("advanced-usage", "Advanced", collapsed = TRUE)
 #' }
-add_article <- function(vignette_name, section, label = NULL,
-                        config_path = "_starlightr.toml", collapsed = NULL) {
-  if (!is.character(vignette_name) || length(vignette_name) != 1 || !nzchar(trimws(vignette_name))) {
+add_article <- function(
+  vignette_name,
+  section,
+  label = NULL,
+  config_path = "_starlightr.toml",
+  collapsed = NULL
+) {
+  if (
+    !is.character(vignette_name) ||
+      length(vignette_name) != 1 ||
+      !nzchar(trimws(vignette_name))
+  ) {
     cli::cli_abort("{.arg vignette_name} must be a non-empty string")
   }
-  if (!is.character(section) || length(section) != 1 || !nzchar(trimws(section))) {
+  if (
+    !is.character(section) || length(section) != 1 || !nzchar(trimws(section))
+  ) {
     cli::cli_abort("{.arg section} must be a non-empty string")
   }
-  if (!is.null(label) && (!is.character(label) || length(label) != 1 || !nzchar(trimws(label)))) {
+  if (
+    !is.null(label) &&
+      (!is.character(label) || length(label) != 1 || !nzchar(trimws(label)))
+  ) {
     cli::cli_abort("{.arg label} must be NULL or a non-empty string")
   }
 
-  result <- add_sidebar_item("articles", vignette_name, section, label, config_path, collapsed)
+  result <- add_sidebar_item(
+    "articles",
+    vignette_name,
+    section,
+    label,
+    config_path,
+    collapsed
+  )
 
   if (!result$added) {
-    cli::cli_alert_info("{.val {vignette_name}} already exists in section {.val {section}}")
+    cli::cli_alert_info(
+      "{.val {vignette_name}} already exists in section {.val {section}}"
+    )
   } else if (result$new_section) {
-    cli::cli_alert_success("Created new section {.val {section}} with {.val {vignette_name}}")
+    cli::cli_alert_success(
+      "Created new section {.val {section}} with {.val {vignette_name}}"
+    )
   } else {
-    cli::cli_alert_success("Added {.val {vignette_name}} to section {.val {section}}")
+    cli::cli_alert_success(
+      "Added {.val {vignette_name}} to section {.val {section}}"
+    )
   }
 
   invisible(TRUE)
@@ -507,9 +610,17 @@ get_article_sections <- function(config_path = "_starlightr.toml") {
 #' # Collapse multiple sections
 #' set_reference_section(c("Site Building", "Migration"), collapsed = TRUE)
 #' }
-set_reference_section <- function(section, collapsed = TRUE,
-                                  config_path = "_starlightr.toml") {
-  modified <- set_sidebar_section_collapsed("reference", section, collapsed, config_path)
+set_reference_section <- function(
+  section,
+  collapsed = TRUE,
+  config_path = "_starlightr.toml"
+) {
+  modified <- set_sidebar_section_collapsed(
+    "reference",
+    section,
+    collapsed,
+    config_path
+  )
   state <- if (collapsed) "collapsed" else "expanded"
   for (lbl in modified) {
     cli::cli_alert_success("Set {.val {lbl}} to {state}")
@@ -536,9 +647,17 @@ set_reference_section <- function(section, collapsed = TRUE,
 #' # Expand a section
 #' set_article_section("Getting Started", collapsed = FALSE)
 #' }
-set_article_section <- function(section, collapsed = TRUE,
-                                config_path = "_starlightr.toml") {
-  modified <- set_sidebar_section_collapsed("articles", section, collapsed, config_path)
+set_article_section <- function(
+  section,
+  collapsed = TRUE,
+  config_path = "_starlightr.toml"
+) {
+  modified <- set_sidebar_section_collapsed(
+    "articles",
+    section,
+    collapsed,
+    config_path
+  )
   state <- if (collapsed) "collapsed" else "expanded"
   for (lbl in modified) {
     cli::cli_alert_success("Set {.val {lbl}} to {state}")
@@ -566,7 +685,9 @@ add_package <- function(name, version, config_path = "_starlightr.toml") {
   if (!is.character(name) || length(name) != 1 || !nzchar(trimws(name))) {
     cli::cli_abort("{.arg name} must be a non-empty string")
   }
-  if (!is.character(version) || length(version) != 1 || !nzchar(trimws(version))) {
+  if (
+    !is.character(version) || length(version) != 1 || !nzchar(trimws(version))
+  ) {
     cli::cli_abort("{.arg version} must be a non-empty string")
   }
 
@@ -595,7 +716,10 @@ add_package <- function(name, version, config_path = "_starlightr.toml") {
   }
 
   # Append new dependency
-  config$dependencies <- c(config$dependencies, list(list(name = name, version = version)))
+  config$dependencies <- c(
+    config$dependencies,
+    list(list(name = name, version = version))
+  )
   cli::cli_alert_success("Added {.pkg {name}} {.val {version}}")
 
   write_config_toml(config, config_path)
@@ -647,7 +771,12 @@ patch_package_json <- function(config, config_path) {
 #' # Add dev version
 #' add_version("dev", label = "Development")
 #' }
-add_version <- function(tag, label = NULL, default = FALSE, config_path = "_starlightr.toml") {
+add_version <- function(
+  tag,
+  label = NULL,
+  default = FALSE,
+  config_path = "_starlightr.toml"
+) {
   config <- read_config_toml(config_path)
 
   # Initialize versions section if it doesn't exist
