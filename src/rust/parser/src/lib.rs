@@ -109,6 +109,8 @@ where
 /// @param rd_file path to Rd file to convert to .mdx
 /// @param output_dir path to directory where reference mdx files are saved
 /// @param config_file path to _starlightr.toml
+/// @param external_links_file path to JSON file mapping pkg::topic to URLs
+/// @param example_outputs_file path to JSON file mapping func names to example outputs
 ///
 /// @return NULL
 /// @export

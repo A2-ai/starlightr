@@ -18,6 +18,10 @@ render_reference(
 \item{output_dir}{path to directory where reference mdx files are saved}
 
 \item{config_file}{path to _starlightr.toml}
+
+\item{external_links_file}{path to JSON file mapping pkg::topic to URLs}
+
+\item{example_outputs_file}{path to JSON file mapping func names to example outputs}
 }
 \description{
 Renders an .Rd file to an mdx file.

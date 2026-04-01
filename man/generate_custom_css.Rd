@@ -10,7 +10,7 @@ generate_custom_css(output_path)
 \item{output_path}{Path to output directory}
 }
 \description{
-Creates a placeholder custom.css for user styles. Only created if missing;
+Creates an empty custom.css for user styles. Only created if missing;
 this file is user-owned and never overwritten.
 }
 \keyword{internal}
