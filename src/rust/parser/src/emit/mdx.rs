@@ -5,7 +5,7 @@ use anyhow::{Result as AnyhowResult, bail};
 
 use crate::document::Document;
 use crate::document::{Argument, CodeKind, LinkMode, LinkTarget, ListItem, ListKind, Node};
-use crate::emit::EmitOptions;
+use crate::emit::{EmitOptions, ExampleOutput};
 
 #[derive(Debug, Default, Clone, PartialEq)]
 pub struct Emitter {
@@ -15,6 +15,7 @@ pub struct Emitter {
     math_mode_depth: usize,
     code_mode_depth: usize,
     external_links: HashMap<String, String>,
+    example_outputs: HashMap<String, ExampleOutput>,
 }
 
 impl Emitter {
@@ -37,6 +38,7 @@ impl Emitter {
             math_mode_depth: self.math_mode_depth,
             code_mode_depth: self.code_mode_depth,
             external_links: self.external_links.clone(),
+            example_outputs: self.example_outputs.clone(),
             ..Emitter::default()
         };
         for node in nodes {
@@ -354,6 +356,43 @@ impl Emitter {
         let rendered = self.render_nodes_to_string(children);
         self.emit_text(rendered.trim());
         self.emit_text("\n\n");
+
+        let is_examples = matches!(title, [Node::Text(s)] if s == "Examples");
+        if is_examples {
+            self.emit_example_outputs();
+        }
+    }
+
+    fn emit_example_outputs(&mut self) {
+        let func_name = self
+            .source_file
+            .strip_suffix(".Rd")
+            .unwrap_or(&self.source_file);
+
+        let outputs = match self.example_outputs.get(func_name).cloned() {
+            Some(o) => o,
+            None => return,
+        };
+
+        self.emit_text("### Output\n\n");
+
+        if let Some(txt) = &outputs.txt {
+            if !txt.is_empty() {
+                self.emit_text("```\n");
+                self.emit_text(txt);
+                self.emit_text("\n```\n\n");
+            }
+        }
+
+        if let Some(png) = &outputs.png {
+            self.emit_text(&format!("![Example plot]({png})\n\n"));
+        }
+
+        if let Some(html) = &outputs.html {
+            self.emit_text(&format!(
+                "<iframe src=\"{html}\" style=\"width: 100%; min-height: 300px; border: none;\"></iframe>\n\n"
+            ));
+        }
     }
 
     fn emit_argument_table(&mut self, args: &[Argument]) {
@@ -520,6 +559,7 @@ pub fn emit_document(
     let mut emitter = Emitter {
         source_file: source_file.unwrap_or_default().to_string(),
         external_links: options.external_links.clone(),
+        example_outputs: options.example_outputs.clone(),
         ..Emitter::default()
     };
 

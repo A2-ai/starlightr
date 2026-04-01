@@ -125,7 +125,8 @@ pub fn render_reference(
     rd_file: &str,
     output_dir: &str,
     #[extendr(default = "'_starlightr.toml'")] config_file: &str,
-    #[extendr(default = "NULL")] external_links_file: &str,
+    #[extendr(default = "NULL")] external_links_file: Option<String>,
+    #[extendr(default = "NULL")] example_outputs_file: Option<String>,
 ) -> Result<()> {
     let rd_file = Path::new(rd_file)
         .canonicalize()
@@ -140,10 +141,16 @@ pub fn render_reference(
     let mut emit_options = EmitOptions::from_file(&config_file)
         .map_to_extendr_err(format!("Failed to read config file: {config_file:?}"))?;
 
-    if !external_links_file.is_empty() {
+    if let Some(ref path) = external_links_file {
         emit_options = emit_options
-            .with_external_links_file(external_links_file)
+            .with_external_links_file(path)
             .map_to_extendr_err("Failed to load external links file")?;
+    }
+
+    if let Some(ref path) = example_outputs_file {
+        emit_options = emit_options
+            .with_example_outputs_file(path)
+            .map_to_extendr_err("Failed to load example outputs file")?;
     }
 
     render_reference_path(rd_file, output_dir, &emit_options)
@@ -154,7 +161,8 @@ pub fn render_references(
     rd_dir: &str,
     output_dir: &str,
     #[extendr(default = "'_starlightr.toml'")] config_file: &str,
-    #[extendr(default = "NULL")] external_links_file: &str,
+    #[extendr(default = "NULL")] external_links_file: Option<String>,
+    #[extendr(default = "NULL")] example_outputs_file: Option<String>,
 ) -> Result<()> {
     let rd_dir = Path::new(rd_dir)
         .canonicalize()
@@ -174,10 +182,16 @@ pub fn render_references(
     let mut emit_options = EmitOptions::from_file(&config_file)
         .map_to_extendr_err(format!("Failed to read config file: {config_file:?}"))?;
 
-    if !external_links_file.is_empty() {
+    if let Some(ref path) = external_links_file {
         emit_options = emit_options
-            .with_external_links_file(external_links_file)
+            .with_external_links_file(path)
             .map_to_extendr_err("Failed to load external links file")?;
+    }
+
+    if let Some(ref path) = example_outputs_file {
+        emit_options = emit_options
+            .with_example_outputs_file(path)
+            .map_to_extendr_err("Failed to load example outputs file")?;
     }
 
     let output_dir = Path::new(output_dir);

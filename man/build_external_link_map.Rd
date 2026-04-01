@@ -4,16 +4,16 @@
 \alias{build_external_link_map}
 \title{Build an external link map from installed package aliases}
 \usage{
-build_external_link_map(package = ".")
+build_external_link_map(packages)
 }
 \arguments{
-\item{package}{Path to the package root (containing DESCRIPTION)}
+\item{packages}{Character vector of package names}
 }
 \value{
 Path to a temporary JSON file containing the link map
 }
 \description{
-Reads DESCRIPTION to find Imports and Suggests, then builds a JSON file
-mapping "pkg::topic" to documentation URLs for all aliases in those packages.
+For each package, reads aliases.rds and the DESCRIPTION URL field to build
+a JSON file mapping "pkg::topic" to documentation URLs.
 }
 \keyword{internal}

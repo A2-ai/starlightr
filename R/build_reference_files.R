@@ -1,7 +1,8 @@
 #' Build reference MDX files from Rd files
 #'
-#' Renders all `.Rd` files in a directory to MDX using the Rust parser and,
-#' when example artifacts exist, appends those outputs to the generated pages.
+#' Renders all `.Rd` files in a directory to MDX using the Rust parser.
+#' External links and example outputs are resolved before rendering so that
+#' Rust produces final MDX in a single pass.
 #'
 #' @param rd_dir Path to directory containing `.Rd` files.
 #' @param output_dir Path to directory where reference MDX files are saved.
@@ -36,38 +37,26 @@ build_reference_files <- function(
     return(invisible(character()))
   }
 
-  external_links_file <- build_external_link_map()
+  dep_packages <- extract_dependency_packages()
+  external_links_file <- build_external_link_map(dep_packages)
+
+  example_outputs_file <- NULL
+  if (!is.null(site_output_path)) {
+    example_outputs_file <- build_example_outputs_map(rd_files, site_output_path)
+  }
 
   render_references(
     rd_dir = rd_dir,
     output_dir = output_dir,
     config_file = config_file,
-    external_links_file = external_links_file
+    external_links_file = external_links_file,
+    example_outputs_file = example_outputs_file
   )
 
   written_files <- file.path(
     output_dir,
     paste0(vapply(rd_files, rd_file_to_slug, character(1)), ".mdx")
   )
-
-  for (i in seq_along(rd_files)) {
-    out_path <- written_files[[i]]
-    if (!file.exists(out_path)) {
-      cli::cli_warn("Expected reference file not found: {.path {out_path}}")
-      next
-    }
-
-    if (!is.null(site_output_path)) {
-      func_name <- tools::file_path_sans_ext(basename(rd_files[[i]]))
-      md_content <- paste(readLines(out_path, warn = FALSE), collapse = "\n")
-      md_content <- append_example_outputs(
-        md_content,
-        func_name,
-        site_output_path
-      )
-      writeLines(md_content, con = out_path)
-    }
-  }
 
   cli::cli_alert_success(
     "Wrote {length(written_files)} reference file{?s} to {.path {output_dir}}"
@@ -80,132 +69,49 @@ rd_file_to_slug <- function(path) {
   slugify(stem)
 }
 
-#' Append example outputs to markdown content
+#' Build example outputs map from Rd files and site output
 #'
-#' Checks for png, txt, and html example output files and appends them
-#' after the Examples section using standard markdown/HTML (no JSX).
+#' Scans for example output artifacts (txt, png, html) and builds a JSON
+#' manifest for Rust to embed in the generated MDX.
 #'
-#' @param md_content Markdown content string
-#' @param func_name Function name to look for outputs
+#' @param rd_files Character vector of Rd file paths
 #' @param site_output_path Path to site output directory
-#' @return Updated markdown content with example outputs appended
+#' @return Path to temporary JSON file, or NULL if no outputs found
 #' @keywords internal
-append_example_outputs <- function(md_content, func_name, site_output_path) {
-  # Check for example output files
-  png_path <- file.path(
-    site_output_path,
-    "public",
-    "examples",
-    paste0(func_name, ".png")
-  )
-  txt_path <- file.path(
-    site_output_path,
-    "public",
-    "examples",
-    "text",
-    paste0(func_name, ".txt")
-  )
-  html_path <- file.path(
-    site_output_path,
-    "public",
-    "examples",
-    paste0(func_name, ".html")
-  )
+build_example_outputs_map <- function(rd_files, site_output_path) {
+  outputs <- list()
 
-  has_png <- file.exists(png_path)
-  has_txt <- file.exists(txt_path)
-  has_html <- file.exists(html_path)
+  for (rd_file in rd_files) {
+    func_name <- tools::file_path_sans_ext(basename(rd_file))
 
-  if (!has_png && !has_txt && !has_html) {
-    return(md_content)
-  }
+    png_path <- file.path(site_output_path, "public", "examples", paste0(func_name, ".png"))
+    txt_path <- file.path(site_output_path, "public", "examples", "text", paste0(func_name, ".txt"))
+    html_path <- file.path(site_output_path, "public", "examples", paste0(func_name, ".html"))
 
-  # Build output components using standard markdown/HTML (no JSX)
-  components <- character()
+    entry <- list()
+    if (file.exists(txt_path)) {
+      txt_content <- paste(readLines(txt_path, warn = FALSE), collapse = "\n")
+      if (nchar(txt_content) > 0) {
+        entry$txt <- txt_content
+      }
+    }
+    if (file.exists(png_path)) {
+      entry$png <- sprintf("/examples/%s.png", func_name)
+    }
+    if (file.exists(html_path)) {
+      entry$html <- sprintf("/examples/%s.html", func_name)
+    }
 
-  if (has_txt) {
-    txt_content <- paste(readLines(txt_path, warn = FALSE), collapse = "\n")
-    if (nchar(txt_content) > 0) {
-      components <- c(components, paste0("```\n", txt_content, "\n```"))
+    if (length(entry) > 0) {
+      outputs[[func_name]] <- entry
     }
   }
 
-  if (has_png) {
-    # Standard markdown image
-    components <- c(
-      components,
-      sprintf("![Example plot](/examples/%s.png)", func_name)
-    )
+  if (length(outputs) == 0) {
+    return(NULL)
   }
 
-  if (has_html) {
-    # Standard HTML iframe (no JSX)
-    components <- c(
-      components,
-      sprintf(
-        '<iframe src="/examples/%s.html" style="width: 100%%; min-height: 300px; border: none;"></iframe>',
-        func_name
-      )
-    )
-  }
-
-  # Build the output block
-  output_block <- paste0(
-    "\n### Output\n\n",
-    paste(components, collapse = "\n\n"),
-    "\n"
-  )
-
-  # Find the Examples section and insert after the closing ```
-  if (grepl("## Examples", md_content)) {
-    lines <- strsplit(md_content, "\n")[[1]]
-    examples_start <- grep("^## Examples", lines)
-
-    if (length(examples_start) > 0) {
-      # Find all closing ``` after Examples section
-      # We need to find the last ``` before the next ## section (or end of file)
-      next_section <- grep("^## ", lines[(examples_start[1] + 1):length(lines)])
-      if (length(next_section) > 0) {
-        section_end <- examples_start[1] + next_section[1] - 1
-      } else {
-        section_end <- length(lines)
-      }
-
-      # Find the last ``` within the Examples section
-      examples_lines <- lines[(examples_start[1]):section_end]
-      closing_backticks <- grep("^```$", examples_lines)
-
-      if (length(closing_backticks) > 0) {
-        # Insert after the last closing ```
-        insert_pos <- examples_start[1] +
-          closing_backticks[length(closing_backticks)] -
-          1
-
-        lines <- c(
-          lines[1:insert_pos],
-          strsplit(output_block, "\n")[[1]],
-          if (insert_pos < length(lines))
-            lines[(insert_pos + 1):length(lines)] else character()
-        )
-        md_content <- paste(lines, collapse = "\n")
-      } else {
-        # No code block found, insert before next section
-        lines <- c(
-          lines[1:(section_end - 1)],
-          strsplit(output_block, "\n")[[1]],
-          lines[section_end:length(lines)]
-        )
-        md_content <- paste(lines, collapse = "\n")
-      }
-    }
-  } else {
-    # No Examples section, append at end
-    md_content <- paste0(
-      md_content,
-      "\n\n## Output\n\n",
-      paste(components, collapse = "\n\n")
-    )
-  }
-
-  md_content
+  json_path <- tempfile("starlightr-examples-", fileext = ".json")
+  writeLines(jsonlite::toJSON(outputs, auto_unbox = TRUE), json_path)
+  json_path
 }

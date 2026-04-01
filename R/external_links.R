@@ -9,27 +9,15 @@
 
 #' Build an external link map from installed package aliases
 #'
-#' Reads DESCRIPTION to find Imports and Suggests, then builds a JSON file
-#' mapping "pkg::topic" to documentation URLs for all aliases in those packages.
+#' For each package, reads aliases.rds and the DESCRIPTION URL field to build
+#' a JSON file mapping "pkg::topic" to documentation URLs.
 #'
-#' @param package Path to the package root (containing DESCRIPTION)
+#' @param packages Character vector of package names
 #' @return Path to a temporary JSON file containing the link map
 #' @keywords internal
-build_external_link_map <- function(package = ".") {
-  desc <- read.dcf(file.path(package, "DESCRIPTION"))
-  deps <- character()
-  for (field in c("Imports", "Suggests", "Depends")) {
-    if (field %in% colnames(desc) && !is.na(desc[, field])) {
-      deps <- c(deps, trimws(strsplit(desc[, field], ",")[[1]]))
-    }
-  }
-  # Strip version constraints
-  deps <- sub("\\s*\\(.*\\)", "", deps)
-  deps <- deps[deps != "" & deps != "R"]
-  deps <- unique(deps)
-
+build_external_link_map <- function(packages) {
   link_map <- list()
-  for (pkg in deps) {
+  for (pkg in packages) {
     aliases_path <- system.file("help", "aliases.rds", package = pkg)
     if (aliases_path == "") next
 
@@ -80,9 +68,29 @@ resolve_package_base_url <- function(pkg) {
 
   if (length(doc_urls) > 0) {
     paste0(doc_urls[1], "/reference")
-  } else if (length(urls) > 0) {
-    paste0("https://rdrr.io/pkg/", pkg, "/man")
   } else {
     paste0("https://rdrr.io/pkg/", pkg, "/man")
   }
+}
+
+#' Extract dependency package names from a DESCRIPTION file
+#'
+#' @param package Path to package root containing DESCRIPTION
+#' @return Character vector of package names
+#' @keywords internal
+extract_dependency_packages <- function(package = ".") {
+  desc_path <- file.path(package, "DESCRIPTION")
+  if (!file.exists(desc_path)) {
+    desc_path <- system.file("DESCRIPTION", package = package)
+  }
+  desc <- read.dcf(desc_path)
+  deps <- character()
+  for (field in c("Imports", "Suggests", "Depends")) {
+    if (field %in% colnames(desc) && !is.na(desc[, field])) {
+      deps <- c(deps, trimws(strsplit(desc[, field], ",")[[1]]))
+    }
+  }
+  deps <- sub("\\s*\\(.*\\)", "", deps)
+  deps <- deps[deps != "" & deps != "R"]
+  unique(deps)
 }

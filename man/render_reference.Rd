@@ -8,7 +8,8 @@ render_reference(
   rd_file,
   output_dir,
   config_file = "_starlightr.toml",
-  external_links_file = NULL
+  external_links_file = NULL,
+  example_outputs_file = NULL
 )
 }
 \arguments{
