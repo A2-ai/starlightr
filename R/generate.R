@@ -184,26 +184,3 @@ generate_starlightr_css <- function(output_path) {
   cli::cli_alert_success("Generated {.file src/styles/starlightr.css}")
 }
 
-#' Generate custom.css file for Starlight site
-#'
-#' Creates a placeholder custom.css for user styles. Only created if missing;
-#' this file is user-owned and never overwritten.
-#'
-#' @param output_path Path to output directory
-#' @keywords internal
-generate_custom_css <- function(output_path) {
-  template_path <- system.file("templates/custom.css", package = "starlightr")
-
-  styles_dir <- file.path(output_path, "src", "styles")
-  ensure_dir(styles_dir)
-
-  css_path <- file.path(styles_dir, "custom.css")
-
-  if (file.exists(css_path)) {
-    cli::cli_alert_info("Skipping {.file custom.css} (already exists)")
-    return(invisible(NULL))
-  }
-
-  file.copy(template_path, css_path)
-  cli::cli_alert_success("Generated {.file src/styles/custom.css}")
-}
