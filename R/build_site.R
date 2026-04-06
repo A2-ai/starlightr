@@ -105,16 +105,23 @@ build_site <- function(
     }
   }
 
-  # Extract and process R documentation
-  process_package_documentation(
-    pkg_path,
-    output_path,
-    config_path,
+  # Build reference documentation (with inline examples)
+  ref_output <- file.path(output_path, "src", "content", "docs", "reference")
+  build_package_reference_docs(
+    output_dir = ref_output,
+    pkg = pkg_path,
+    config_file = config_file,
+    examples = TRUE,
     verbose = verbose
   )
 
-  # Process vignettes and README together (single install)
-  process_articles_and_readme(pkg_path, output_path, config)
+  # Build articles (with inline figures)
+  articles_output <- file.path(output_path, "src", "content", "docs", "articles")
+  build_package_articles(
+    output_dir = articles_output,
+    pkg = pkg_path,
+    config_file = config_file
+  )
 
   # Process NEWS.md if configured
   if (!is.null(config$sidebar$news)) {

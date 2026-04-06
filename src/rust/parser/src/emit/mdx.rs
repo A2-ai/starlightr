@@ -384,9 +384,8 @@ impl Emitter {
         }
 
         if let Some(html) = &outputs.html {
-            self.emit_text(&format!(
-                "<iframe src=\"{html}\" style=\"width: 100%; min-height: 300px; border: none;\"></iframe>\n\n"
-            ));
+            self.emit_text(html);
+            self.emit_text("\n\n");
         }
     }
 

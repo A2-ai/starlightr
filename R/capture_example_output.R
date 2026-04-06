@@ -33,32 +33,33 @@ extract_examples_code <- function(examples_section) {
   trimws(code)
 }
 
-#' Runs example code and capture output to a file
+#' Capture example outputs from Rd files in memory
 #'
-#' @param pkg_name  name of package to collect Rd objects for
-#' @param artifact_output_dir path to directory to save ggplots and gt tables
-#' @param text_output_dir path to directory to save text output files
+#' Runs @examples sections from the specified functions and returns captured
+#' results (ggplot objects, gt tables, text output) as an in-memory list.
+#'
+#' @param pkg_name Name of the installed package
+#' @param fn_names Character vector of function names to capture examples for.
+#'   These correspond to .Rd filenames without extension.
 #' @param verbose Logical, whether to print debug messages (default FALSE)
 #'
+#' @return A named list keyed by function name. Each element is a list with
+#'   optional components:
+#'   \describe{
+#'     \item{txt}{Character string of captured text output}
+#'     \item{png_raw}{Raw vector of PNG image data}
+#'     \item{html}{Character string of rendered HTML (gt tables)}
+#'   }
 #' @keywords internal
-#'
-#' @examples \dontrun{
-#' capture_example_output("pkg", "pkg-docs/public")
-#' }
-capture_example_output <- function(
-  pkg_name,
-  artifact_output_dir,
-  text_output_dir,
-  verbose = FALSE
-) {
+capture_rd_examples <- function(pkg_name, fn_names, verbose = FALSE) {
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
-    stop("Package 'ggplot2' is required for 'capture_example_outputs()'.")
+    stop("Package 'ggplot2' is required for capturing example outputs.")
   }
   if (!requireNamespace("gt", quietly = TRUE)) {
-    stop("Package 'gt' is required for 'capture_example_outputs()'.")
+    stop("Package 'gt' is required for capturing example outputs.")
   }
 
-  # Attempt to load the target package (so its functions can be called)
+  # Load the target package
   tryCatch(
     {
       suppressWarnings(
@@ -75,38 +76,31 @@ capture_example_output <- function(
     }
   )
 
-  # Get Rd database and extract examples from each file
+  # Get Rd database and filter to requested functions
   rd_db <- tools::Rd_db(pkg_name)
   rd_content <- list()
   for (rd_name in names(rd_db)) {
+    fn_name <- tools::file_path_sans_ext(rd_name)
+    if (!fn_name %in% fn_names) next
+
     rd_obj <- rd_db[[rd_name]]
     examples_section <- get_rd_section(rd_obj, "examples")
     if (!is.null(examples_section)) {
-      # Extract code text from examples section
       examples_code <- extract_examples_code(examples_section)
-      rd_content[[rd_name]] <- list(examples = examples_code)
+      rd_content[[fn_name]] <- examples_code
     }
   }
 
-  ensure_dir(artifact_output_dir)
-  ensure_dir(text_output_dir)
+  results <- list()
 
-  for (fn in names(rd_content)) {
-    # Rd filenames are like "foo.Rd"; strip extension safely.
-    fn_name <- tools::file_path_sans_ext(fn)
-
-    ex_code <- rd_content[[fn]]$examples
-
+  for (fn_name in names(rd_content)) {
+    ex_code <- rd_content[[fn_name]]
     if (is.null(ex_code) || ex_code == "") next
 
-    # Parse into expressions
     ex_exprs <- tryCatch(
       parse(text = ex_code),
-      error = function(e) {
-        return(NULL)
-      }
+      error = function(e) NULL
     )
-
     if (is.null(ex_exprs)) next
 
     if (verbose) {
@@ -115,13 +109,9 @@ capture_example_output <- function(
       message("Code:\n", ex_code, "\n---")
     }
 
-    # Evaluate examples in an isolated environment.
-    # Parent is .GlobalEnv so attached packages, data(), and model variable
-    # lookups all resolve, while new assignments stay in eval_env.
     eval_env <- new.env(parent = globalenv())
-
-    # Track if this is the first write to the text file for this function
-    first_write <- TRUE
+    entry <- list()
+    txt_parts <- character()
 
     for (i in seq_along(ex_exprs)) {
       if (verbose) {
@@ -131,70 +121,58 @@ capture_example_output <- function(
         withVisible(eval(ex_exprs[[i]], envir = eval_env)),
         error = function(e) {
           message("  Error in example ", i, " for ", fn_name, ": ", e$message)
-          return(NULL)
+          NULL
         }
       )
 
-      # If runtime error, skip
       if (is.null(val)) next
 
-      # If expression produced a visible result, check if it's ggplot or gt
       if (val$visible) {
         result <- val$value
 
-        # If it's a ggplot, save PNG
         if (inherits(result, "ggplot")) {
-          out_file <- file.path(artifact_output_dir, paste0(fn_name, ".png"))
+          tmp <- tempfile(fileext = ".png")
           tryCatch(
-            ggplot2::ggsave(
-              filename = out_file,
-              plot = result,
-              width = 6,
-              height = 4
-            ),
-            error = function(e) {
-              message(
-                "  Error saving ggplot for",
-                fn_name,
-                ":",
-                e$message,
-                "\n"
+            {
+              ggplot2::ggsave(
+                filename = tmp,
+                plot = result,
+                width = 6,
+                height = 4
               )
-            }
-          )
-          if (verbose) message("Saved ggplot -> ", out_file)
-
-          # If it's a gt table, save HTML
-        } else if (inherits(result, "gt_tbl")) {
-          out_file <- file.path(artifact_output_dir, paste0(fn_name, ".html"))
-          tryCatch(
-            gt::gtsave(result, out_file),
+              entry$png_raw <- readBin(tmp, "raw", file.info(tmp)$size)
+            },
             error = function(e) {
-              message("  Error saving gt table for ", fn_name, ": ", e$message)
+              message("  Error saving ggplot for ", fn_name, ": ", e$message)
             }
           )
-          if (verbose) message("Saved gt table -> ", out_file)
+          unlink(tmp)
+          if (verbose) message("  Captured ggplot for ", fn_name)
+        } else if (inherits(result, "gt_tbl")) {
+          tryCatch(
+            {
+              entry$html <- gt::as_raw_html(result)
+            },
+            error = function(e) {
+              message("  Error rendering gt table for ", fn_name, ": ", e$message)
+            }
+          )
+          if (verbose) message("  Captured gt table for ", fn_name)
         } else {
-          # First write overwrites, subsequent writes append
-          out_file <- file.path(text_output_dir, paste0(fn_name, ".txt"))
           printed_text <- utils::capture.output(print(result))
-          cat(
-            paste(printed_text, collapse = "\n"),
-            "\n",
-            file = out_file,
-            append = !first_write
-          )
-
-          if (verbose) {
-            if (first_write) {
-              message("WROTE output to -> ", out_file)
-            } else {
-              message("APPENDED output to -> ", out_file)
-            }
-          }
-          first_write <- FALSE
+          txt_parts <- c(txt_parts, paste(printed_text, collapse = "\n"))
         }
       }
     }
+
+    if (length(txt_parts) > 0) {
+      entry$txt <- paste(txt_parts, collapse = "\n")
+    }
+
+    if (length(entry) > 0) {
+      results[[fn_name]] <- entry
+    }
   }
+
+  results
 }
