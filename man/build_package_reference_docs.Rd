@@ -9,6 +9,7 @@ build_package_reference_docs(
   pkg = ".",
   config_file = "_starlightr.toml",
   examples = TRUE,
+  include_internal = FALSE,
   verbose = FALSE
 )
 }
@@ -21,6 +22,9 @@ build_package_reference_docs(
 
 \item{examples}{Logical, whether to capture and embed example outputs
 (default `TRUE`).}
+
+\item{include_internal}{Logical, whether to include include_internal functions
+(those with `@keywords include_internal`). Default `FALSE`.}
 
 \item{verbose}{Logical, whether to print debug messages during example
 capture (default `FALSE`).}
@@ -36,6 +40,12 @@ Convenience wrapper around [build_reference_files()] that processes all
 \dontrun{
 build_package_reference_docs(
   output_dir = "../my-site/src/content/docs/reference"
+)
+
+# Include include_internal functions
+build_package_reference_docs(
+  output_dir = "../my-site/src/content/docs/reference",
+  include_internal = TRUE
 )
 }
 }

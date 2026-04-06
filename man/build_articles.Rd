@@ -8,7 +8,8 @@ build_articles(
   articles,
   output_dir,
   pkg = ".",
-  config_file = "_starlightr.toml"
+  config_file = "_starlightr.toml",
+  verbose = FALSE
 )
 }
 \arguments{
@@ -21,6 +22,9 @@ to `vignettes/{name}.Rmd`.}
 \item{pkg}{Path to the package directory (default `"."`).}
 
 \item{config_file}{Path to `_starlightr.toml` (relative to `pkg`).}
+
+\item{verbose}{Logical, whether to print debug messages during Rmd
+rendering (default `FALSE`).}
 }
 \value{
 Invisibly returns a character vector of written file paths.

@@ -16,4 +16,4 @@ Path to temporary JSON file
 Takes in-memory captured results from [capture_rd_examples()] and produces
 a temporary JSON file with inline content (base64 PNGs, raw HTML, text).
 }
-\keyword{internal}
+\keyword{include_internal}

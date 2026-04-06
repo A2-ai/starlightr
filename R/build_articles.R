@@ -10,6 +10,8 @@
 #' @param output_dir Path to directory where article `.md` files are saved.
 #' @param pkg Path to the package directory (default `"."`).
 #' @param config_file Path to `_starlightr.toml` (relative to `pkg`).
+#' @param verbose Logical, whether to print debug messages during Rmd
+#'   rendering (default `FALSE`).
 #'
 #' @return Invisibly returns a character vector of written file paths.
 #' @export
@@ -25,7 +27,8 @@ build_articles <- function(
   articles,
   output_dir,
   pkg = ".",
-  config_file = "_starlightr.toml"
+  config_file = "_starlightr.toml",
+  verbose = FALSE
 ) {
   pkg_path <- normalizePath(pkg, mustWork = TRUE)
   config_path <- file.path(pkg_path, config_file)
@@ -80,7 +83,7 @@ build_articles <- function(
         preserve_yaml = FALSE
       ),
       output_dir = build_dir,
-      quiet = TRUE
+      quiet = !verbose
     )
   }
 
@@ -133,7 +136,8 @@ build_articles <- function(
 build_package_articles <- function(
   output_dir,
   pkg = ".",
-  config_file = "_starlightr.toml"
+  config_file = "_starlightr.toml",
+  verbose = FALSE
 ) {
   pkg_path <- normalizePath(pkg, mustWork = TRUE)
   config_path <- file.path(pkg_path, config_file)
@@ -167,7 +171,8 @@ build_package_articles <- function(
     articles = article_names,
     output_dir = output_dir,
     pkg = pkg,
-    config_file = config_file
+    config_file = config_file,
+    verbose = verbose
   )
 }
 

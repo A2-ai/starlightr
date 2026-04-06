@@ -106,6 +106,8 @@ build_reference_files <- function(
 #' `.Rd` files in the package's `man/` directory.
 #'
 #' @inheritParams build_reference_files
+#' @param include_internal Logical, whether to include include_internal functions
+#'   (those with `@keywords include_internal`). Default `FALSE`.
 #'
 #' @return Invisibly returns a character vector of written file paths.
 #' @export
@@ -115,12 +117,19 @@ build_reference_files <- function(
 #' build_package_reference_docs(
 #'   output_dir = "../my-site/src/content/docs/reference"
 #' )
+#'
+#' # Include include_internal functions
+#' build_package_reference_docs(
+#'   output_dir = "../my-site/src/content/docs/reference",
+#'   include_internal = TRUE
+#' )
 #' }
 build_package_reference_docs <- function(
   output_dir,
   pkg = ".",
   config_file = "_starlightr.toml",
   examples = TRUE,
+  include_internal = FALSE,
   verbose = FALSE
 ) {
   pkg_path <- normalizePath(pkg, mustWork = TRUE)
@@ -131,6 +140,14 @@ build_package_reference_docs <- function(
   }
 
   rd_files <- list.files(rd_dir, pattern = "\\.Rd$", full.names = TRUE)
+
+  if (!include_internal) {
+    rd_files <- Filter(function(f) {
+      content <- readLines(f, warn = FALSE)
+      !any(grepl("\\\\keyword\\{internal\\}", content))
+    }, rd_files)
+  }
+
   if (length(rd_files) == 0) {
     cli::cli_warn("No Rd files found in {.path {rd_dir}}")
     return(invisible(character()))
@@ -153,7 +170,7 @@ build_package_reference_docs <- function(
 #'
 #' @param captured Named list from `capture_rd_examples()`
 #' @return Path to temporary JSON file
-#' @keywords internal
+#' @keywords include_internal
 build_inline_example_outputs_map <- function(captured) {
   outputs <- list()
 

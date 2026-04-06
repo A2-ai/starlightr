@@ -4,7 +4,12 @@
 \alias{build_package_articles}
 \title{Build all configured articles for a package}
 \usage{
-build_package_articles(output_dir, pkg = ".", config_file = "_starlightr.toml")
+build_package_articles(
+  output_dir,
+  pkg = ".",
+  config_file = "_starlightr.toml",
+  verbose = FALSE
+)
 }
 \arguments{
 \item{output_dir}{Path to directory where article `.md` files are saved.}
@@ -12,6 +17,9 @@ build_package_articles(output_dir, pkg = ".", config_file = "_starlightr.toml")
 \item{pkg}{Path to the package directory (default `"."`).}
 
 \item{config_file}{Path to `_starlightr.toml` (relative to `pkg`).}
+
+\item{verbose}{Logical, whether to print debug messages during Rmd
+rendering (default `FALSE`).}
 }
 \value{
 Invisibly returns a character vector of written file paths.
