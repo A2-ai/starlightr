@@ -6,6 +6,8 @@ input_file: parser/test_data/scicalc-bmic.Rd
 ---
 title: "Categorize Body Mass Index"
 description: "Categorizes individuals based on their Body Mass Index (BMI) according to standard WHO obesity classification criteria. Validates age to ensure appropriate appl"
+sidebar:
+  label: "bmic"
 pagefind: false
 ---
 

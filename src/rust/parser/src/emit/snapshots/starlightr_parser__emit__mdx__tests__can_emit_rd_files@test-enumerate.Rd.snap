@@ -6,6 +6,8 @@ input_file: parser/test_data/test-enumerate.Rd
 ---
 title: "test function"
 description: "1. First item 1. Second item."
+sidebar:
+  label: "a"
 pagefind: false
 ---
 

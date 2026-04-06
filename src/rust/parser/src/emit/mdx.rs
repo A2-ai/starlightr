@@ -517,6 +517,16 @@ fn create_frontmatter(document: &Document, pagefind: bool) -> AnyhowResult<Strin
         bail!("Please add a title or name command to the Rd document");
     };
 
+    // sidebar.label from \name{} for Starlight sidebar display
+    let sidebar_label = document
+        .get_name_node()
+        .and_then(|node| match node {
+            Node::Section { children, .. } => Some(children),
+            _ => None,
+        })
+        .map(|nodes| emitter.render_nodes_to_string(nodes).trim().to_string())
+        .filter(|s| !s.is_empty());
+
     let desc = document
         .get_description_node()
         .and_then(|node| match node {
@@ -543,6 +553,9 @@ fn create_frontmatter(document: &Document, pagefind: bool) -> AnyhowResult<Strin
     if let Some(desc) = desc {
         emitter.emit_text(&format!("description: \"{}\"\n", escape_yaml(&desc)));
     };
+    if let Some(label) = sidebar_label {
+        emitter.emit_text(&format!("sidebar:\n  label: \"{}\"\n", escape_yaml(&label)));
+    }
     emitter.emit_text(&format!("pagefind: {pagefind}\n"));
 
     emitter.emit_text("---\n\n");

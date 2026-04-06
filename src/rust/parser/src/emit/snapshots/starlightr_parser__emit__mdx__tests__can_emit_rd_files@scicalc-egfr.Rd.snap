@@ -6,6 +6,8 @@ input_file: parser/test_data/scicalc-egfr.Rd
 ---
 title: "Calculate eGFR Using CKD-EPI 2021 Creatinine Equation"
 description: "Calculate eGFR Using CKD-EPI 2021 Creatinine Equation."
+sidebar:
+  label: "ckdepi_2021_egfr"
 pagefind: false
 ---
 

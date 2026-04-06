@@ -5,6 +5,8 @@ expression: "emit_document(document, &opts, source).unwrap()"
 ---
 title: "Create section assignment rules"
 description: "Creates rules for assigning parameters to named sections in the output table. Rules are evaluated after name transformation, so you can match on the final displ"
+sidebar:
+  label: "section_rules"
 pagefind: false
 ---
 
