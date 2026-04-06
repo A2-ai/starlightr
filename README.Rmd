@@ -76,13 +76,13 @@ build_reference_files(
   output_dir = "../my-site/src/content/docs/reference"
 )
 
-# Build articles
+# Build specific articles
 build_articles(
-  c("readme", "introduction"),
+  c("vignettes/introduction.Rmd", "README.Rmd"),
   output_dir = "../my-site/src/content/docs/articles"
 )
 
-# Or all configured articles
+# Or all vignettes + README
 build_package_articles(
   output_dir = "../my-site/src/content/docs/articles"
 )

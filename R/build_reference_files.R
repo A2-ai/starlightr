@@ -106,8 +106,10 @@ build_reference_files <- function(
 #' `.Rd` files in the package's `man/` directory.
 #'
 #' @inheritParams build_reference_files
-#' @param include_internal Logical, whether to include include_internal functions
-#'   (those with `@keywords include_internal`). Default `FALSE`.
+#' @param include_internal Logical, whether to include internal functions
+#'   (those with `@keywords internal`). If `NULL` (default), reads from
+#'   `reference.include_internal` in `_starlightr.toml`, falling back to
+#'   `FALSE`.
 #'
 #' @return Invisibly returns a character vector of written file paths.
 #' @export
@@ -118,7 +120,7 @@ build_reference_files <- function(
 #'   output_dir = "../my-site/src/content/docs/reference"
 #' )
 #'
-#' # Include include_internal functions
+#' # Include internal functions (overrides config)
 #' build_package_reference_docs(
 #'   output_dir = "../my-site/src/content/docs/reference",
 #'   include_internal = TRUE
@@ -129,7 +131,7 @@ build_package_reference_docs <- function(
   pkg = ".",
   config_file = "_starlightr.toml",
   examples = TRUE,
-  include_internal = FALSE,
+  include_internal = NULL,
   verbose = FALSE
 ) {
   pkg_path <- normalizePath(pkg, mustWork = TRUE)
@@ -137,6 +139,17 @@ build_package_reference_docs <- function(
 
   if (!dir.exists(rd_dir)) {
     cli::cli_abort("No {.path man/} directory found in {.path {pkg_path}}")
+  }
+
+  # Resolve include_internal: arg overrides config, config overrides FALSE
+  if (is.null(include_internal)) {
+    config_path <- file.path(pkg_path, config_file)
+    if (file.exists(config_path)) {
+      config <- read_config(config_path)
+      include_internal <- config$reference$include_internal %||% FALSE
+    } else {
+      include_internal <- FALSE
+    }
   }
 
   rd_files <- list.files(rd_dir, pattern = "\\.Rd$", full.names = TRUE)

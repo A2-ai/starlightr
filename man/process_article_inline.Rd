@@ -4,10 +4,10 @@
 \alias{process_article_inline}
 \title{Process a single article's built output with inline figures}
 \usage{
-process_article_inline(output_name, md_name, source_dir, output_dir, config)
+process_article_inline(slug, md_name, source_dir, output_dir, title)
 }
 \arguments{
-\item{output_name}{Name for the output file (e.g., "readme", "introduction")}
+\item{slug}{Output file slug (e.g., "readme", "introduction")}
 
 \item{md_name}{Name of the .md file without extension}
 
@@ -15,7 +15,7 @@ process_article_inline(output_name, md_name, source_dir, output_dir, config)
 
 \item{output_dir}{Directory where final .md is written}
 
-\item{config}{Configuration list}
+\item{title}{Title for the article frontmatter}
 }
 \value{
 Path to written file, or NULL if source not found

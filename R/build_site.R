@@ -105,23 +105,30 @@ build_site <- function(
     }
   }
 
-  # Build reference documentation (with inline examples)
+  # Build reference documentation (config-filtered, with inline examples)
   ref_output <- file.path(output_path, "src", "content", "docs", "reference")
-  build_package_reference_docs(
-    output_dir = ref_output,
-    pkg = pkg_path,
-    config_file = config_file,
-    examples = TRUE,
-    verbose = verbose
-  )
+  rd_files <- resolve_config_rd_files(pkg_path, config)
+  if (length(rd_files) > 0) {
+    build_reference_files(
+      rd_files = rd_files,
+      output_dir = ref_output,
+      pkg = pkg_path,
+      config_file = config_file,
+      examples = TRUE,
+      verbose = verbose
+    )
+  }
 
-  # Build articles (with inline figures)
+  # Build articles (config-filtered, with inline figures)
   articles_output <- file.path(output_path, "src", "content", "docs", "articles")
-  build_package_articles(
-    output_dir = articles_output,
-    pkg = pkg_path,
-    config_file = config_file
-  )
+  rmd_files <- resolve_config_rmd_files(pkg_path, config)
+  if (length(rmd_files) > 0) {
+    build_articles(
+      rmd_files = rmd_files,
+      output_dir = articles_output,
+      verbose = verbose
+    )
+  }
 
   # Process NEWS.md if configured
   if (!is.null(config$sidebar$news)) {
@@ -147,4 +154,104 @@ build_site <- function(
   }
 
   invisible(output_path)
+}
+
+#' Resolve config sidebar.reference to .Rd file paths
+#'
+#' If config has sidebar.reference, resolves slugs/patterns to .Rd files.
+#' Otherwise returns all .Rd files (minus internal unless configured).
+#'
+#' @param pkg_path Package directory path
+#' @param config Parsed config list
+#' @return Character vector of .Rd file paths
+#' @keywords internal
+resolve_config_rd_files <- function(pkg_path, config) {
+  rd_dir <- file.path(pkg_path, "man")
+  if (!dir.exists(rd_dir)) return(character())
+
+  all_rd <- list.files(rd_dir, pattern = "\\.Rd$", full.names = TRUE)
+  if (length(all_rd) == 0) return(character())
+
+  # Filter internal unless config says otherwise
+  include_internal <- config$reference$include_internal %||% FALSE
+  if (!include_internal) {
+    all_rd <- Filter(function(f) {
+      content <- readLines(f, warn = FALSE)
+      !any(grepl("\\\\keyword\\{internal\\}", content))
+    }, all_rd)
+  }
+
+  # If no sidebar.reference config, return all
+  config_refs <- extract_config_references(config)
+  if (length(config_refs) == 0) return(all_rd)
+
+  # Resolve config refs (slugs/patterns) against available .Rd basenames
+  rd_basenames <- tools::file_path_sans_ext(basename(all_rd))
+  matched <- character()
+  for (ref in config_refs) {
+    if (grepl("\\*", ref)) {
+      pattern <- paste0("^", gsub("\\*", ".*", ref), "$")
+      hits <- rd_basenames[grepl(pattern, rd_basenames, ignore.case = TRUE)]
+    } else {
+      hits <- rd_basenames[tolower(rd_basenames) == tolower(ref)]
+    }
+    matched <- c(matched, hits)
+  }
+
+  matched <- unique(matched)
+  all_rd[rd_basenames %in% matched]
+}
+
+#' Resolve config sidebar.articles to .Rmd file paths
+#'
+#' If config has sidebar.articles, resolves slugs to .Rmd files.
+#' Otherwise discovers all vignettes + README.
+#'
+#' @param pkg_path Package directory path
+#' @param config Parsed config list
+#' @return Character vector of .Rmd file paths
+#' @keywords internal
+resolve_config_rmd_files <- function(pkg_path, config) {
+  # Extract article slugs from config
+  article_names <- character(0)
+  if (!is.null(config$sidebar$articles)) {
+    for (group in config$sidebar$articles) {
+      if (!is.null(group$contents)) {
+        for (item in group$contents) {
+          parsed <- parse_content_item(item)
+          article_names <- c(article_names, parsed$slug)
+        }
+      }
+    }
+    article_names <- article_names[nchar(article_names) > 0]
+  }
+
+  # If no config, discover all vignettes + README
+  if (length(article_names) == 0) {
+    rmd_files <- character()
+    vignettes_dir <- file.path(pkg_path, "vignettes")
+    if (dir.exists(vignettes_dir)) {
+      rmd_files <- list.files(vignettes_dir, pattern = "\\.Rmd$", full.names = TRUE)
+    }
+    readme_path <- find_readme(pkg_path)
+    if (!is.null(readme_path)) {
+      rmd_files <- c(readme_path, rmd_files)
+    }
+    return(rmd_files)
+  }
+
+  # Resolve slugs to file paths
+  vignettes_dir <- file.path(pkg_path, "vignettes")
+  rmd_files <- character()
+  for (name in article_names) {
+    if (tolower(name) == "readme") {
+      path <- find_readme(pkg_path)
+      if (!is.null(path)) rmd_files <- c(rmd_files, path)
+    } else {
+      path <- file.path(vignettes_dir, paste0(name, ".Rmd"))
+      if (file.exists(path)) rmd_files <- c(rmd_files, path)
+    }
+  }
+
+  rmd_files
 }

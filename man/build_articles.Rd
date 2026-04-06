@@ -2,26 +2,14 @@
 % Please edit documentation in R/build_articles.R
 \name{build_articles}
 \alias{build_articles}
-\title{Build article markdown files from vignettes}
+\title{Build article markdown files from Rmd sources}
 \usage{
-build_articles(
-  articles,
-  output_dir,
-  pkg = ".",
-  config_file = "_starlightr.toml",
-  verbose = FALSE
-)
+build_articles(rmd_files, output_dir, verbose = FALSE)
 }
 \arguments{
-\item{articles}{Character vector of article names. The special value
-`"readme"` maps to `README.Rmd` at the package root; all other names map
-to `vignettes/{name}.Rmd`.}
+\item{rmd_files}{Character vector of paths to `.Rmd` (or `.md`) files.}
 
 \item{output_dir}{Path to directory where article `.md` files are saved.}
-
-\item{pkg}{Path to the package directory (default `"."`).}
-
-\item{config_file}{Path to `_starlightr.toml` (relative to `pkg`).}
 
 \item{verbose}{Logical, whether to print debug messages during Rmd
 rendering (default `FALSE`).}
@@ -30,14 +18,15 @@ rendering (default `FALSE`).}
 Invisibly returns a character vector of written file paths.
 }
 \description{
-Renders `.Rmd` vignettes to markdown and post-processes them for use in a
-Starlight site. Figures are embedded inline as base64 data URIs so only
-`output_dir` is needed.
+Renders `.Rmd` files to markdown and post-processes them for use in a
+Starlight site. Titles are read from each file's YAML frontmatter.
+Figures are embedded inline as base64 data URIs so only `output_dir`
+is needed.
 }
 \examples{
 \dontrun{
 build_articles(
-  c("readme", "introduction"),
+  c("vignettes/introduction.Rmd", "README.Rmd"),
   output_dir = "../my-site/src/content/docs/articles"
 )
 }

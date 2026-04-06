@@ -1,15 +1,12 @@
-#' Build article markdown files from vignettes
+#' Build article markdown files from Rmd sources
 #'
-#' Renders `.Rmd` vignettes to markdown and post-processes them for use in a
-#' Starlight site. Figures are embedded inline as base64 data URIs so only
-#' `output_dir` is needed.
+#' Renders `.Rmd` files to markdown and post-processes them for use in a
+#' Starlight site. Titles are read from each file's YAML frontmatter.
+#' Figures are embedded inline as base64 data URIs so only `output_dir`
+#' is needed.
 #'
-#' @param articles Character vector of article names. The special value
-#'   `"readme"` maps to `README.Rmd` at the package root; all other names map
-#'   to `vignettes/{name}.Rmd`.
+#' @param rmd_files Character vector of paths to `.Rmd` (or `.md`) files.
 #' @param output_dir Path to directory where article `.md` files are saved.
-#' @param pkg Path to the package directory (default `"."`).
-#' @param config_file Path to `_starlightr.toml` (relative to `pkg`).
 #' @param verbose Logical, whether to print debug messages during Rmd
 #'   rendering (default `FALSE`).
 #'
@@ -19,55 +16,39 @@
 #' @examples
 #' \dontrun{
 #' build_articles(
-#'   c("readme", "introduction"),
+#'   c("vignettes/introduction.Rmd", "README.Rmd"),
 #'   output_dir = "../my-site/src/content/docs/articles"
 #' )
 #' }
 build_articles <- function(
-  articles,
+  rmd_files,
   output_dir,
-  pkg = ".",
-  config_file = "_starlightr.toml",
   verbose = FALSE
 ) {
-  pkg_path <- normalizePath(pkg, mustWork = TRUE)
-  config_path <- file.path(pkg_path, config_file)
-  config <- if (file.exists(config_path)) read_config(config_path) else list()
-  vignettes_dir <- file.path(pkg_path, "vignettes")
-
   ensure_dir(output_dir)
 
-  # Map article names to Rmd file paths
-  rmd_paths <- character(length(articles))
-  for (i in seq_along(articles)) {
-    name <- articles[i]
-    if (tolower(name) == "readme") {
-      readme_path <- find_readme(pkg_path)
-      rmd_paths[i] <- readme_path %||% file.path(pkg_path, "README.Rmd")
-    } else {
-      rmd_paths[i] <- file.path(vignettes_dir, paste0(name, ".Rmd"))
-    }
-  }
-
   # Validate existence
-  existing <- file.exists(rmd_paths)
+  rmd_files <- normalizePath(rmd_files, mustWork = FALSE)
+  existing <- file.exists(rmd_files)
   if (any(!existing)) {
-    for (f in rmd_paths[!existing]) {
-      cli::cli_warn("Article Rmd not found: {.file {f}}")
+    for (f in rmd_files[!existing]) {
+      cli::cli_warn("File not found: {.file {f}}")
     }
   }
-  rmd_paths <- rmd_paths[existing]
-  articles <- articles[existing]
+  rmd_files <- rmd_files[existing]
 
-  if (length(rmd_paths) == 0) {
-    cli::cli_alert_info("No article Rmd files found")
+  if (length(rmd_files) == 0) {
+    cli::cli_alert_info("No article files found")
     return(invisible(character()))
   }
 
+  # Read titles from YAML frontmatter before rendering
+  titles <- vapply(rmd_files, read_rmd_title, character(1))
+
   # Split into Rmd (need building) and pre-rendered Md (just copy)
-  is_rmd <- grepl("\\.Rmd$", rmd_paths, ignore.case = TRUE)
-  rmd_to_build <- rmd_paths[is_rmd]
-  md_to_copy <- rmd_paths[!is_rmd]
+  is_rmd <- grepl("\\.Rmd$", rmd_files, ignore.case = TRUE)
+  rmd_to_build <- rmd_files[is_rmd]
+  md_to_copy <- rmd_files[!is_rmd]
 
   # Build all Rmds in one call (single install) into a temp directory
   build_dir <- tempfile("starlightr-rmd-")
@@ -97,16 +78,18 @@ build_articles <- function(
 
   # Process each article
   written_files <- character()
-  for (i in seq_along(articles)) {
-    name <- articles[i]
-    md_name <- if (tolower(name) == "readme") "README" else name
+  for (i in seq_along(rmd_files)) {
+    src <- rmd_files[i]
+    md_name <- tools::file_path_sans_ext(basename(src))
+    slug <- slugify(md_name)
+    title <- titles[i]
 
     out_file <- process_article_inline(
-      name,
+      slug,
       md_name,
       build_dir,
       output_dir,
-      config
+      title
     )
     if (!is.null(out_file)) {
       written_files <- c(written_files, out_file)
@@ -117,12 +100,14 @@ build_articles <- function(
   invisible(written_files)
 }
 
-#' Build all configured articles for a package
+#' Build all articles for a package
 #'
-#' Convenience wrapper around [build_articles()] that reads article names from
-#' the `_starlightr.toml` configuration.
+#' Discovers all vignettes and README in the package and builds them.
 #'
-#' @inheritParams build_articles
+#' @param output_dir Path to directory where article `.md` files are saved.
+#' @param pkg Path to the package directory (default `"."`).
+#' @param verbose Logical, whether to print debug messages during Rmd
+#'   rendering (default `FALSE`).
 #'
 #' @return Invisibly returns a character vector of written file paths.
 #' @export
@@ -136,44 +121,68 @@ build_articles <- function(
 build_package_articles <- function(
   output_dir,
   pkg = ".",
-  config_file = "_starlightr.toml",
   verbose = FALSE
 ) {
   pkg_path <- normalizePath(pkg, mustWork = TRUE)
-  config_path <- file.path(pkg_path, config_file)
 
-  if (!file.exists(config_path)) {
-    cli::cli_abort("Configuration file not found at {.path {config_path}}")
+  # Discover vignettes
+  vignettes_dir <- file.path(pkg_path, "vignettes")
+  rmd_files <- character()
+  if (dir.exists(vignettes_dir)) {
+    rmd_files <- list.files(
+      vignettes_dir,
+      pattern = "\\.Rmd$",
+      full.names = TRUE
+    )
   }
 
-  config <- read_config(config_path)
-
-  # Extract article names from config
-  article_names <- character(0)
-  if (!is.null(config$sidebar$articles)) {
-    for (group in config$sidebar$articles) {
-      if (!is.null(group$contents)) {
-        for (item in group$contents) {
-          parsed <- parse_content_item(item)
-          article_names <- c(article_names, parsed$slug)
-        }
-      }
-    }
-    article_names <- article_names[nchar(article_names) > 0]
+  # Discover README
+  readme_path <- find_readme(pkg_path)
+  if (!is.null(readme_path)) {
+    rmd_files <- c(readme_path, rmd_files)
   }
 
-  if (length(article_names) == 0) {
-    cli::cli_alert_info("No articles configured in sidebar.articles")
+  if (length(rmd_files) == 0) {
+    cli::cli_alert_info("No vignettes or README found in {.path {pkg_path}}")
     return(invisible(character()))
   }
 
   build_articles(
-    articles = article_names,
+    rmd_files = rmd_files,
     output_dir = output_dir,
-    pkg = pkg,
-    config_file = config_file,
     verbose = verbose
   )
+}
+
+#' Read title from Rmd/md YAML frontmatter
+#'
+#' @param path Path to .Rmd or .md file
+#' @return Title string, or a fallback derived from filename
+#' @keywords internal
+read_rmd_title <- function(path) {
+  lines <- readLines(path, n = 20, warn = FALSE)
+
+  # Check for YAML frontmatter
+  if (length(lines) == 0 || lines[1] != "---") {
+    return(tools::toTitleCase(gsub("[-_]", " ", tools::file_path_sans_ext(basename(path)))))
+  }
+
+  end <- which(lines[-1] == "---")[1]
+  if (is.na(end)) {
+    return(tools::toTitleCase(gsub("[-_]", " ", tools::file_path_sans_ext(basename(path)))))
+  }
+
+  yaml_block <- lines[2:end]
+  parsed <- tryCatch(
+    yaml::yaml.load(paste(yaml_block, collapse = "\n")),
+    error = function(e) NULL
+  )
+
+  if (!is.null(parsed$title)) {
+    return(parsed$title)
+  }
+
+  tools::toTitleCase(gsub("[-_]", " ", tools::file_path_sans_ext(basename(path))))
 }
 
 #' Process a single article's built output with inline figures
@@ -181,19 +190,19 @@ build_package_articles <- function(
 #' Post-processes a built markdown file: inlines figures as base64 data URIs,
 #' fixes paths, and adds YAML frontmatter.
 #'
-#' @param output_name Name for the output file (e.g., "readme", "introduction")
+#' @param slug Output file slug (e.g., "readme", "introduction")
 #' @param md_name Name of the .md file without extension
 #' @param source_dir Directory containing the built .md and figure files
 #' @param output_dir Directory where final .md is written
-#' @param config Configuration list
+#' @param title Title for the article frontmatter
 #' @return Path to written file, or NULL if source not found
 #' @keywords internal
 process_article_inline <- function(
-  output_name,
+  slug,
   md_name,
   source_dir,
   output_dir,
-  config
+  title
 ) {
   md_file <- file.path(source_dir, paste0(md_name, ".md"))
   if (!file.exists(md_file)) {
@@ -215,12 +224,6 @@ process_article_inline <- function(
   # Remove HTML comments
   md_content <- gsub("(?s)<!--.*?-->", "", md_content, perl = TRUE)
 
-  # Add frontmatter
-  if (tolower(output_name) == "readme") {
-    title <- config$readme$title %||% "Getting Started"
-  } else {
-    title <- tools::toTitleCase(gsub("[-_]", " ", output_name))
-  }
   final_content <- paste0(
     "---\ntitle: \"",
     title,
@@ -228,7 +231,7 @@ process_article_inline <- function(
     md_content
   )
 
-  out_file <- file.path(output_dir, paste0(tolower(output_name), ".md"))
+  out_file <- file.path(output_dir, paste0(slug, ".md"))
   writeLines(final_content, out_file)
   out_file
 }
@@ -270,9 +273,6 @@ collect_article_figures <- function(md_name, source_dir) {
     }
   }
 
-  # man/figures (common in READMEs)
-  # These are handled by path rewriting, not inlining
-
   figures
 }
 
@@ -303,12 +303,11 @@ inline_figure_references <- function(md_content, figure_files) {
     b64 <- base64enc::base64encode(raw_data)
     data_uri <- paste0("data:", mime, ";base64,", b64)
 
-    # Replace the path in markdown (handle both exact and URL-encoded variants)
+    # Replace the path in markdown
     md_content <- gsub(rel_path, data_uri, md_content, fixed = TRUE)
   }
 
-  # Also handle temp directory figure paths that include the full temp path
-  # These match patterns like /tmp/starlightr-rmd-XXXX/figures/...
+  # Handle temp directory figure paths that include the full temp path
   md_content <- gsub(
     "(!\\[[^]]*\\]\\()[^)]*starlightr-rmd-[^)]+\\)",
     "\\1)",

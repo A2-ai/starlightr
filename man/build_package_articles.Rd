@@ -2,21 +2,14 @@
 % Please edit documentation in R/build_articles.R
 \name{build_package_articles}
 \alias{build_package_articles}
-\title{Build all configured articles for a package}
+\title{Build all articles for a package}
 \usage{
-build_package_articles(
-  output_dir,
-  pkg = ".",
-  config_file = "_starlightr.toml",
-  verbose = FALSE
-)
+build_package_articles(output_dir, pkg = ".", verbose = FALSE)
 }
 \arguments{
 \item{output_dir}{Path to directory where article `.md` files are saved.}
 
 \item{pkg}{Path to the package directory (default `"."`).}
-
-\item{config_file}{Path to `_starlightr.toml` (relative to `pkg`).}
 
 \item{verbose}{Logical, whether to print debug messages during Rmd
 rendering (default `FALSE`).}
@@ -25,8 +18,7 @@ rendering (default `FALSE`).}
 Invisibly returns a character vector of written file paths.
 }
 \description{
-Convenience wrapper around [build_articles()] that reads article names from
-the `_starlightr.toml` configuration.
+Discovers all vignettes and README in the package and builds them.
 }
 \examples{
 \dontrun{
