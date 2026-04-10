@@ -6,6 +6,8 @@ input_file: parser/test_data/starlightr-render-reference.Rd
 ---
 title: "render_reference"
 description: "Renders an. Rd file to an mdx file."
+sidebar:
+  label: "render_reference"
 pagefind: false
 ---
 

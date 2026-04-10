@@ -6,6 +6,8 @@ input_file: parser/test_data/scicalc-convert-alb.Rd
 ---
 title: "Convert Albumin Concentration Units"
 description: "Convert Albumin Concentration Units."
+sidebar:
+  label: "convert_alb"
 pagefind: false
 ---
 

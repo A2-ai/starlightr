@@ -59,23 +59,37 @@ bun run dev
 Your package should be installed and up to date before running `build_site()`
 so starlightr can read Rd documentation and capture example outputs.
 
-## Reference Files Only
+## Embedding in an Existing Starlight Site
 
-If you already have a Starlight site and only want to regenerate
-reference pages from `man/`, use `build_reference_files()`:
+If you already have a Starlight site, you can build reference docs and
+articles independently without the full `build_site()` workflow:
 
 ```r
+# Build all reference pages (with inline examples)
+build_package_reference_docs(
+  output_dir = "../my-site/src/content/docs/reference"
+)
+
+# Or build specific Rd files
 build_reference_files(
-  rd_dir = "man",
-  output_dir = "../my-package-docs/src/content/docs/reference",
-  config_file = "_starlightr.toml",
-  site_output_path = "../my-package-docs"
+  c("man/build_site.Rd", "man/add_article.Rd"),
+  output_dir = "../my-site/src/content/docs/reference"
+)
+
+# Build specific articles
+build_articles(
+  c("vignettes/introduction.Rmd", "README.Rmd"),
+  output_dir = "../my-site/src/content/docs/articles"
+)
+
+# Or all vignettes + README
+build_package_articles(
+  output_dir = "../my-site/src/content/docs/articles"
 )
 ```
 
-`site_output_path` should be the root of the Starlight site. It is used
-to find captured example outputs in `public/examples/` and append them to
-the generated reference pages.
+Example outputs and figures are embedded inline as base64 data URIs,
+so only `output_dir` is needed.
 
 ## Configuration
 
@@ -122,9 +136,9 @@ include_build_files = true
 `build_site()` captures outputs from `@examples` and embeds them into the
 generated reference pages:
 
-- plots as PNGs
+- plots as inline base64 PNGs
 - text output in fenced code blocks
-- HTML outputs such as gt tables via iframes
+- HTML outputs such as gt tables rendered inline
 
 `\dontrun{}` and `\dontshow{}` in Rd are respected and 
 output is not run or not shown respectively.
@@ -149,5 +163,8 @@ pkgdown_to_starlight()
 |----------|---------|
 | `use_starlightr()` | Initialize starlightr in a package |
 | `build_site()` | Build a full Starlight site |
-| `build_reference_files()` | Render reference MDX files only |
+| `build_reference_files()` | Build reference MDX from specific Rd files |
+| `build_package_reference_docs()` | Build all reference MDX for a package |
+| `build_articles()` | Build articles from specific vignettes |
+| `build_package_articles()` | Build all configured articles for a package |
 | `audit_config()` | Audit config against package exports and links |
