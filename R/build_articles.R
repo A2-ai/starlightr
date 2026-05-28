@@ -113,7 +113,8 @@ build_articles <- function(
       md_name,
       build_dir,
       output_dir,
-      title
+      title,
+      rmd_dir = dirname(src)
     )
     if (!is.null(out_file)) {
       written_files <- c(written_files, out_file)
@@ -219,6 +220,8 @@ read_rmd_title <- function(path) {
 #' @param source_dir Directory containing the built .md and figure files
 #' @param output_dir Directory where final .md is written
 #' @param title Title for the article frontmatter
+#' @param rmd_dir Directory of the source Rmd. Used to locate figures
+#'   written under the README convention (`man/figures/<prefix>-*`).
 #' @return Path to written file, or NULL if source not found
 #' @keywords internal
 process_article_inline <- function(
@@ -226,7 +229,8 @@ process_article_inline <- function(
   md_name,
   source_dir,
   output_dir,
-  title
+  title,
+  rmd_dir = NULL
 ) {
   md_file <- file.path(source_dir, paste0(md_name, ".md"))
   if (!file.exists(md_file)) {
@@ -236,8 +240,19 @@ process_article_inline <- function(
 
   md_content <- paste(readLines(md_file, warn = FALSE), collapse = "\n")
 
+  # rmarkdown can emit image paths as absolutes under our build dir:
+  # `![](/private/var/.../starlightr-rmd-XXX/<name>_files/figure-gfm/foo.png)`.
+  # Strip the absolute prefix down to the part after the build-dir segment so
+  # the inline lookup (keyed on relative paths like `<name>_files/...`) matches.
+  md_content <- gsub(
+    "(!\\[[^]]*\\]\\()[^)]*/starlightr-rmd-[^/]+/",
+    "\\1",
+    md_content,
+    perl = TRUE
+  )
+
   # Collect all figure files from known locations
-  figure_files <- collect_article_figures(md_name, source_dir)
+  figure_files <- collect_article_figures(md_name, source_dir, rmd_dir)
 
   # Inline all figure references as base64 data URIs
   md_content <- inline_figure_references(md_content, figure_files)
@@ -266,10 +281,13 @@ process_article_inline <- function(
 #'
 #' @param md_name Markdown filename without extension
 #' @param source_dir Build output directory
+#' @param rmd_dir Directory of the source Rmd. When supplied, figures
+#'   under `<rmd_dir>/man/figures/` are also collected (README convention:
+#'   `knitr::opts_chunk$set(fig.path = "man/figures/README-")`).
 #' @return Named list mapping relative paths (as they appear in markdown) to
 #'   absolute file paths
 #' @keywords internal
-collect_article_figures <- function(md_name, source_dir) {
+collect_article_figures <- function(md_name, source_dir, rmd_dir = NULL) {
   figures <- list()
 
   # Standard knitr figure-gfm output
@@ -294,6 +312,19 @@ collect_article_figures <- function(md_name, source_dir) {
         normalizePath(f, mustWork = FALSE)
       ))
       figures[[rel_path]] <- f
+    }
+  }
+
+  # README convention: figures written under <rmd_dir>/man/figures/
+  if (!is.null(rmd_dir)) {
+    man_figures <- file.path(rmd_dir, "man", "figures")
+    if (dir.exists(man_figures)) {
+      files <- list.files(man_figures, full.names = TRUE)
+      files <- files[!dir.exists(files)]
+      for (f in files) {
+        rel_path <- file.path("man/figures", basename(f))
+        figures[[rel_path]] <- f
+      }
     }
   }
 

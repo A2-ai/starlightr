@@ -134,6 +134,7 @@ impl Emitter {
             "S4method" => self.emit_s4_method(args),
             "if" => self.emit_if(args),
             "ifelse" => self.emit_ifelse(args),
+            "figure" => self.emit_figure(args),
             _ if self.in_math_mode() => self.emit_math_command(name, option, args),
             _ => {
                 if self.source_file.is_empty() {
@@ -307,6 +308,28 @@ impl Emitter {
         if Self::format_matches_html(&args[0]) {
             self.emit_nodes(&args[1]);
         }
+    }
+
+    fn emit_figure(&mut self, args: &[Vec<Node>]) {
+        // \figure{filename} or \figure{filename}{alt-or-options}.
+        // The package's `man/figures/` directory is copied to the site's
+        // `public/figures/`, so we emit a root-relative `/figures/...` URL.
+        let Some(file_arg) = args.first() else {
+            return;
+        };
+        let filename = self.render_nodes_to_string(file_arg);
+        let filename = filename.trim();
+        if filename.is_empty() {
+            return;
+        }
+        let alt = args
+            .get(1)
+            .map(|a| {
+                let raw = self.render_nodes_to_string(a);
+                extract_figure_alt(&raw).unwrap_or(raw)
+            })
+            .unwrap_or_default();
+        self.emit_text(&format!("![{alt}](/figures/{filename})"));
     }
 
     fn emit_ifelse(&mut self, args: &[Vec<Node>]) {
@@ -507,6 +530,23 @@ impl Emitter {
             self.emit_example_outputs();
         }
     }
+}
+
+/// Parse `options: alt='Some text'` (or double-quoted) and return the alt
+/// value. Returns `None` if the string isn't in that shape, in which case
+/// callers fall back to using the raw second arg verbatim.
+fn extract_figure_alt(raw: &str) -> Option<String> {
+    let after_options = raw.trim().strip_prefix("options:")?.trim_start();
+    let alt_idx = after_options.find("alt=")?;
+    let after_alt = &after_options[alt_idx + "alt=".len()..];
+    let mut chars = after_alt.chars();
+    let delim = chars.next()?;
+    if delim != '\'' && delim != '"' {
+        return None;
+    }
+    let body = &after_alt[delim.len_utf8()..];
+    let end = body.find(delim)?;
+    Some(body[..end].to_string())
 }
 
 fn clean_description_text(text: String) -> String {
