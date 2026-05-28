@@ -13,9 +13,10 @@ LazyData: true
 RoxygenNote: 7.3.3
 Imports:
     base64enc,
+    callr,
     cli,
-    devtools,
     jsonlite,
+    pkgload,
     rmarkdown,
     tomledit,
     whisker,

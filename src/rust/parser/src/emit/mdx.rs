@@ -132,6 +132,8 @@ impl Emitter {
             "email" => self.emit_email(args),
             "method" | "S3method" => self.emit_s3_method(args),
             "S4method" => self.emit_s4_method(args),
+            "if" => self.emit_if(args),
+            "ifelse" => self.emit_ifelse(args),
             _ if self.in_math_mode() => self.emit_math_command(name, option, args),
             _ => {
                 if self.source_file.is_empty() {
@@ -285,6 +287,38 @@ impl Emitter {
             .map(|a| self.render_nodes_to_string(a))
             .unwrap_or_default();
         self.emit_text(&format!("## S4 method for signature '{class}'\n{generic}"));
+    }
+
+    fn format_matches_html(arg: &[Node]) -> bool {
+        let mut s = String::new();
+        for node in arg {
+            if let Node::Text(t) = node {
+                s.push_str(t);
+            }
+        }
+        s.trim().eq_ignore_ascii_case("html")
+    }
+
+    fn emit_if(&mut self, args: &[Vec<Node>]) {
+        // \if{format}{text} — emit text only when format matches the output (html).
+        if args.len() < 2 {
+            return;
+        }
+        if Self::format_matches_html(&args[0]) {
+            self.emit_nodes(&args[1]);
+        }
+    }
+
+    fn emit_ifelse(&mut self, args: &[Vec<Node>]) {
+        // \ifelse{format}{TEXT_IF}{TEXT_ELSE} — choose branch by format.
+        if args.len() < 3 {
+            return;
+        }
+        if Self::format_matches_html(&args[0]) {
+            self.emit_nodes(&args[1]);
+        } else {
+            self.emit_nodes(&args[2]);
+        }
     }
 
     fn emit_eqn(&mut self, _option: Option<&[Node]>, args: &[Vec<Node>]) {
@@ -595,7 +629,7 @@ pub fn emit_document(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::parsing::parse_file;
+    use crate::parsing::parser::parse_file;
     use insta::{assert_snapshot, glob};
     use std::path::PathBuf;
 
@@ -640,6 +674,55 @@ mod tests {
             let source = path.file_name().and_then(|f| f.to_str());
             assert_snapshot!(emit_document(document, &opts, source).unwrap());
         });
+    }
+
+    #[test]
+    fn ifelse_picks_html_branch() {
+        // Real-world lifecycle-badge usage:
+        // \ifelse{html}{<html-only content>}{\strong{[Deprecated]}}
+        let doc = crate::parsing::parser::parse(
+            r"\name{x}\title{x}\description{\ifelse{html}{HTML_BRANCH}{\strong{[Deprecated]}}}",
+        )
+        .unwrap();
+        let out = emit_document(doc, &EmitOptions::default(), None).unwrap();
+        assert!(out.contains("HTML_BRANCH"), "expected html branch in:\n{out}");
+        assert!(
+            !out.contains("[Deprecated]"),
+            "else branch should not appear:\n{out}"
+        );
+    }
+
+    #[test]
+    fn ifelse_picks_else_branch_for_non_html() {
+        let doc = crate::parsing::parser::parse(
+            r"\name{x}\title{x}\description{\ifelse{latex}{LATEX_BRANCH}{ELSE_BRANCH}}",
+        )
+        .unwrap();
+        let out = emit_document(doc, &EmitOptions::default(), None).unwrap();
+        assert!(
+            out.contains("ELSE_BRANCH"),
+            "expected else branch in:\n{out}"
+        );
+        assert!(
+            !out.contains("LATEX_BRANCH"),
+            "latex branch should not appear:\n{out}"
+        );
+    }
+
+    #[test]
+    fn if_emits_only_on_html() {
+        let html_doc =
+            crate::parsing::parser::parse(r"\name{x}\title{x}\description{\if{html}{KEPT}}").unwrap();
+        let html_out = emit_document(html_doc, &EmitOptions::default(), None).unwrap();
+        assert!(html_out.contains("KEPT"), "expected KEPT in:\n{html_out}");
+
+        let latex_doc =
+            crate::parsing::parser::parse(r"\name{x}\title{x}\description{\if{latex}{DROPPED}}").unwrap();
+        let latex_out = emit_document(latex_doc, &EmitOptions::default(), None).unwrap();
+        assert!(
+            !latex_out.contains("DROPPED"),
+            "latex \\if should be dropped in:\n{latex_out}"
+        );
     }
 
     #[test]

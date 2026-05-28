@@ -50,22 +50,46 @@ build_articles <- function(
   rmd_to_build <- rmd_files[is_rmd]
   md_to_copy <- rmd_files[!is_rmd]
 
-  # Build all Rmds in one call (single install) into a temp directory
+  # Render each Rmd in a clean callr subprocess. `pkgload::load_all` in
+  # the subprocess loads the package from source (same as an interactive
+  # `devtools::load_all()`), so we don't need to install. Imports resolve
+  # from the caller's user library, inherited via `.libPaths()`.
+  # `output_dir` relocates outputs into the tempdir, leaving the source
+  # `vignettes/` untouched on a successful render.
   build_dir <- tempfile("starlightr-rmd-")
   ensure_dir(build_dir)
   on.exit(unlink(build_dir, recursive = TRUE), add = TRUE)
 
   if (length(rmd_to_build) > 0) {
     cli::cli_alert_info("Building {length(rmd_to_build)} Rmd file{?s}...")
-    devtools::build_rmd(
-      rmd_to_build,
-      output_format = rmarkdown::md_document(
-        variant = "gfm",
-        preserve_yaml = FALSE
-      ),
-      output_dir = build_dir,
-      quiet = !verbose
-    )
+    pkg_path <- normalizePath(".", mustWork = TRUE)
+    for (rmd in rmd_to_build) {
+      cli::cli_inform(c(i = "Building {.path {rmd}}"))
+      callr::r_safe(
+        function(pkg_path, input, output_format, output_dir, quiet) {
+          pkgload::load_all(pkg_path, quiet = quiet, helpers = FALSE)
+          rmarkdown::render(
+            input = input,
+            output_format = output_format,
+            output_dir = output_dir,
+            quiet = quiet
+          )
+        },
+        args = list(
+          pkg_path = pkg_path,
+          input = rmd,
+          output_format = rmarkdown::md_document(
+            variant = "gfm",
+            preserve_yaml = FALSE
+          ),
+          output_dir = build_dir,
+          quiet = !verbose
+        ),
+        show = TRUE,
+        spinner = FALSE,
+        stderr = "2>&1"
+      )
+    }
   }
 
   # Copy pre-rendered Markdown files directly to build dir
