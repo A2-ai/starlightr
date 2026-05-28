@@ -20,8 +20,8 @@ jobs:
       fail-fast: false
       matrix:
         config:
+          - {os: windows-latest, r: '4.5', rust-version: 'stable-msvc', rust-target: 'x86_64-pc-windows-gnu'}
           - {os: macos-latest,   r: '4.5', rust-version: 'stable'}
-          #- {os: windows-latest, r: '4.5', rust-version: 'stable'}
           - {os: ubuntu-latest,  r: '4.5', rust-version: 'stable'}
           - {os: ubuntu-latest,  r: '4.4', rust-version: 'stable'}
 
@@ -32,11 +32,25 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - uses: dtolnay/rust-toolchain@master
+      
+      - uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: ${{ matrix.config.rust-version }}
           targets: ${{ matrix.config.rust-target }}
+
+      - name: Ensure rustup cargo bin is first on PATH
+        if: runner.os != 'Windows'
+        run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Verify Rust toolchain
+        if: runner.os != 'Windows'
+        run: |
+          which rustup
+          which rustc
+          which cargo
+          rustup show
+          rustc --version
+          cargo --version
 
       # Add rust-cache for faster builds
       - name: Cache Rust dependencies
@@ -60,12 +74,19 @@ jobs:
           cat rproject.toml
         if: runner.os != 'Windows'
 
-      - name: replace-rversion (Windows)
+      - name: replace-rversion and set repos (Windows)
         run: |
           $rVersion = "${{ matrix.config.r }}"
           (Get-Content rproject.toml) -replace '^r_version = "4\.[0-9\.]+"$', "r_version = `"$rVersion`"" | Set-Content rproject.toml
           Get-Content rproject.toml
         shell: pwsh
+        if: runner.os == 'Windows'
+      
+      - name: fix windows repository
+        run: |
+          rv.exe configure repository remove prism
+          rv.exe configure repository add PPM --url https://packagemanager.posit.co/cran/2026-03-30
+        shell: cmd
         if: runner.os == 'Windows'
 
       - name: rv-plan
@@ -76,6 +97,7 @@ jobs:
         run: rv.exe plan
         shell: cmd
         if: runner.os == 'Windows'
+      
       - name: rv-sysdeps-install (Linux)
         if: runner.os == 'Linux'
         run: |
@@ -89,11 +111,11 @@ jobs:
             echo "All system dependencies are present"
           fi
       - name: rv-sync
-        run: rv sync
+        run: rv sync -vvv
         if: runner.os != 'Windows'
 
       - name: rv-sync (Windows)
-        run: rv.exe sync -vvv
+        run: rv.exe sync
         shell: cmd
         if: runner.os == 'Windows'
 
