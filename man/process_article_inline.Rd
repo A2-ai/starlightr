@@ -4,7 +4,14 @@
 \alias{process_article_inline}
 \title{Process a single article's built output with inline figures}
 \usage{
-process_article_inline(slug, md_name, source_dir, output_dir, title)
+process_article_inline(
+  slug,
+  md_name,
+  source_dir,
+  output_dir,
+  title,
+  rmd_dir = NULL
+)
 }
 \arguments{
 \item{slug}{Output file slug (e.g., "readme", "introduction")}
@@ -16,6 +23,9 @@ process_article_inline(slug, md_name, source_dir, output_dir, title)
 \item{output_dir}{Directory where final .md is written}
 
 \item{title}{Title for the article frontmatter}
+
+\item{rmd_dir}{Directory of the source Rmd. Used to locate figures
+written under the README convention (`man/figures/<prefix>-*`).}
 }
 \value{
 Path to written file, or NULL if source not found

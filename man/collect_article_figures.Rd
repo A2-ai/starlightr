@@ -4,12 +4,16 @@
 \alias{collect_article_figures}
 \title{Collect figure files from article build output}
 \usage{
-collect_article_figures(md_name, source_dir)
+collect_article_figures(md_name, source_dir, rmd_dir = NULL)
 }
 \arguments{
 \item{md_name}{Markdown filename without extension}
 
 \item{source_dir}{Build output directory}
+
+\item{rmd_dir}{Directory of the source Rmd. When supplied, figures
+under `<rmd_dir>/man/figures/` are also collected (README convention:
+`knitr::opts_chunk$set(fig.path = "man/figures/README-")`).}
 }
 \value{
 Named list mapping relative paths (as they appear in markdown) to
