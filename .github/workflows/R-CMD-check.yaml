@@ -114,6 +114,18 @@ jobs:
         run: rv sync -vvv
         if: runner.os != 'Windows'
 
+      - name: Check system dependencies
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Rscript -e "pkgbuild::has_build_tools(debug = TRUE)"
+          git --version
+          rustc --version
+          cargo --version
+          xz --version
+          pandoc --version
+          where make
+
       - name: rv-sync (Windows)
         run: rv.exe sync -vvv
         shell: cmd
