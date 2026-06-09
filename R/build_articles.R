@@ -2,11 +2,15 @@
 #'
 #' Renders `.Rmd` files to markdown and post-processes them for use in a
 #' Starlight site. Titles are read from each file's YAML frontmatter.
-#' Figures are embedded inline as base64 data URIs so only `output_dir`
-#' is needed.
+#' Figures are copied into the site's `public/figures/` directory and
+#' referenced with `/figures/...` paths, keeping the generated `.md`
+#' source readable and letting Astro optimize the images.
 #'
 #' @param rmd_files Character vector of paths to `.Rmd` (or `.md`) files.
 #' @param output_dir Path to directory where article `.md` files are saved.
+#' @param site_dir Path to the Starlight site root, where figures are copied
+#'   under `public/figures/`. If `NULL` (default), it is derived from
+#'   `output_dir` by stripping the trailing `src/content/docs/...` segment.
 #' @param verbose Logical, whether to print debug messages during Rmd
 #'   rendering (default `FALSE`).
 #'
@@ -17,15 +21,22 @@
 #' \dontrun{
 #' build_articles(
 #'   c("vignettes/introduction.Rmd", "README.Rmd"),
-#'   output_dir = "../my-site/src/content/docs/articles"
+#'   output_dir = "../my-site/src/content/docs/articles",
+#'   site_dir = "../my-site"
 #' )
 #' }
 build_articles <- function(
   rmd_files,
   output_dir,
+  site_dir = NULL,
   verbose = FALSE
 ) {
   ensure_dir(output_dir)
+
+  if (is.null(site_dir)) {
+    site_dir <- resolve_site_dir(output_dir)
+  }
+  public_figures_dir <- file.path(site_dir, "public", "figures")
 
   # Validate existence
   rmd_files <- normalizePath(rmd_files, mustWork = FALSE)
@@ -114,6 +125,7 @@ build_articles <- function(
       build_dir,
       output_dir,
       title,
+      public_figures_dir,
       rmd_dir = dirname(src)
     )
     if (!is.null(out_file)) {
@@ -131,6 +143,9 @@ build_articles <- function(
 #'
 #' @param output_dir Path to directory where article `.md` files are saved.
 #' @param pkg Path to the package directory (default `"."`).
+#' @param site_dir Path to the Starlight site root, where figures are copied
+#'   under `public/figures/`. If `NULL` (default), it is derived from
+#'   `output_dir`.
 #' @param verbose Logical, whether to print debug messages during Rmd
 #'   rendering (default `FALSE`).
 #'
@@ -146,6 +161,7 @@ build_articles <- function(
 build_package_articles <- function(
   output_dir,
   pkg = ".",
+  site_dir = NULL,
   verbose = FALSE
 ) {
   pkg_path <- normalizePath(pkg, mustWork = TRUE)
@@ -175,6 +191,7 @@ build_package_articles <- function(
   build_articles(
     rmd_files = rmd_files,
     output_dir = output_dir,
+    site_dir = site_dir,
     verbose = verbose
   )
 }
@@ -212,14 +229,16 @@ read_rmd_title <- function(path) {
 
 #' Process a single article's built output with inline figures
 #'
-#' Post-processes a built markdown file: inlines figures as base64 data URIs,
-#' fixes paths, and adds YAML frontmatter.
+#' Post-processes a built markdown file: copies figures into the site's
+#' `public/figures/` directory, fixes paths, and adds YAML frontmatter.
 #'
 #' @param slug Output file slug (e.g., "readme", "introduction")
 #' @param md_name Name of the .md file without extension
 #' @param source_dir Directory containing the built .md and figure files
 #' @param output_dir Directory where final .md is written
 #' @param title Title for the article frontmatter
+#' @param public_figures_dir Site `public/figures/` directory where figures
+#'   are copied. Files are placed under a per-slug subdirectory.
 #' @param rmd_dir Directory of the source Rmd. Used to locate figures
 #'   written under the README convention (`man/figures/<prefix>-*`).
 #' @return Path to written file, or NULL if source not found
@@ -230,6 +249,7 @@ process_article_inline <- function(
   source_dir,
   output_dir,
   title,
+  public_figures_dir,
   rmd_dir = NULL
 ) {
   md_file <- file.path(source_dir, paste0(md_name, ".md"))
@@ -254,8 +274,13 @@ process_article_inline <- function(
   # Collect all figure files from known locations
   figure_files <- collect_article_figures(md_name, source_dir, rmd_dir)
 
-  # Inline all figure references as base64 data URIs
-  md_content <- inline_figure_references(md_content, figure_files)
+  # Copy figures into public/figures/<slug>/ and rewrite to /figures/ paths
+  md_content <- copy_figure_references(
+    md_content,
+    figure_files,
+    public_figures_dir,
+    slug
+  )
 
   # Fix lifecycle badges (must come BEFORE generic man/figures/ rewrite)
   md_content <- fix_lifecycle_badges(md_content)
@@ -331,35 +356,34 @@ collect_article_figures <- function(md_name, source_dir, rmd_dir = NULL) {
   figures
 }
 
-#' Inline figure references in markdown as base64 data URIs
+#' Copy figure files into the site's public directory and rewrite references
 #'
 #' Finds markdown image references (`![alt](path)`) and replaces local file
-#' paths with base64-encoded data URIs.
+#' paths with `/figures/<slug>/<file>` paths after copying each figure into
+#' `<public_figures_dir>/<slug>/`. The `/figures/` prefix matches the
+#' `remark-base-url.mjs` plugin, which prepends the deployment base URL.
 #'
 #' @param md_content Markdown string
 #' @param figure_files Named list from `collect_article_figures()`
-#' @return Markdown with inline base64 images
+#' @param public_figures_dir Site `public/figures/` directory
+#' @param slug Article slug, used as a per-article subdirectory
+#' @return Markdown with `/figures/...` image references
 #' @keywords internal
-inline_figure_references <- function(md_content, figure_files) {
+copy_figure_references <- function(md_content, figure_files, public_figures_dir, slug) {
+  dest_dir <- file.path(public_figures_dir, slug)
+
   for (rel_path in names(figure_files)) {
     abs_path <- figure_files[[rel_path]]
     if (!file.exists(abs_path)) next
 
-    ext <- tolower(tools::file_ext(abs_path))
-    mime <- switch(ext,
-      png = "image/png",
-      jpg = , jpeg = "image/jpeg",
-      svg = "image/svg+xml",
-      gif = "image/gif",
-      "application/octet-stream"
-    )
+    ensure_dir(dest_dir)
+    file_name <- basename(abs_path)
+    file.copy(abs_path, file.path(dest_dir, file_name), overwrite = TRUE)
 
-    raw_data <- readBin(abs_path, "raw", file.info(abs_path)$size)
-    b64 <- base64enc::base64encode(raw_data)
-    data_uri <- paste0("data:", mime, ";base64,", b64)
+    web_path <- paste0("/figures/", slug, "/", file_name)
 
     # Replace the path in markdown
-    md_content <- gsub(rel_path, data_uri, md_content, fixed = TRUE)
+    md_content <- gsub(rel_path, web_path, md_content, fixed = TRUE)
   }
 
   # Handle temp directory figure paths that include the full temp path

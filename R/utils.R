@@ -15,6 +15,26 @@ slugify <- function(name) {
   gsub(".", "-", tolower(name), fixed = TRUE)
 }
 
+#' Derive the Starlight site root from a content output directory
+#'
+#' Strips a trailing `src/content/docs/...` segment so that, e.g.,
+#' `../my-site/src/content/docs/articles` resolves to `../my-site`. Returns
+#' `output_dir` unchanged if the segment is not present.
+#'
+#' @param output_dir Path to a content directory inside the site
+#' @return Path to the site root
+#' @keywords internal
+resolve_site_dir <- function(output_dir) {
+  site_dir <- sub("[/\\\\]src[/\\\\]content[/\\\\]docs([/\\\\].*)?$", "", output_dir)
+  if (identical(site_dir, output_dir)) {
+    cli::cli_warn(c(
+      "Could not derive site root from {.path {output_dir}}.",
+      i = "Figures will be written under {.path {file.path(output_dir, 'public', 'figures')}}; pass {.arg site_dir} to control this."
+    ))
+  }
+  site_dir
+}
+
 #' Create a directory, aborting on failure
 #'
 #' @param path Directory path to create
