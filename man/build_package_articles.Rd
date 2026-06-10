@@ -4,12 +4,16 @@
 \alias{build_package_articles}
 \title{Build all articles for a package}
 \usage{
-build_package_articles(output_dir, pkg = ".", verbose = FALSE)
+build_package_articles(output_dir, pkg = ".", site_dir = NULL, verbose = FALSE)
 }
 \arguments{
 \item{output_dir}{Path to directory where article `.md` files are saved.}
 
 \item{pkg}{Path to the package directory (default `"."`).}
+
+\item{site_dir}{Path to the Starlight site root, where figures are copied
+under `public/figures/`. If `NULL` (default), it is derived from
+`output_dir`.}
 
 \item{verbose}{Logical, whether to print debug messages during Rmd
 rendering (default `FALSE`).}

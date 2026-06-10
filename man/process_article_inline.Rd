@@ -10,6 +10,7 @@ process_article_inline(
   source_dir,
   output_dir,
   title,
+  public_figures_dir,
   rmd_dir = NULL
 )
 }
@@ -24,6 +25,9 @@ process_article_inline(
 
 \item{title}{Title for the article frontmatter}
 
+\item{public_figures_dir}{Site `public/figures/` directory where figures
+are copied. Files are placed under a per-slug subdirectory.}
+
 \item{rmd_dir}{Directory of the source Rmd. Used to locate figures
 written under the README convention (`man/figures/<prefix>-*`).}
 }
@@ -31,7 +35,7 @@ written under the README convention (`man/figures/<prefix>-*`).}
 Path to written file, or NULL if source not found
 }
 \description{
-Post-processes a built markdown file: inlines figures as base64 data URIs,
-fixes paths, and adds YAML frontmatter.
+Post-processes a built markdown file: copies figures into the site's
+`public/figures/` directory, fixes paths, and adds YAML frontmatter.
 }
 \keyword{internal}
