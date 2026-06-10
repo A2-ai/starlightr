@@ -119,13 +119,14 @@ build_site <- function(
     )
   }
 
-  # Build articles (config-filtered, with inline figures)
+  # Build articles (config-filtered, figures copied to public/figures/)
   articles_output <- file.path(output_path, "src", "content", "docs", "articles")
   rmd_files <- resolve_config_rmd_files(pkg_path, config)
   if (length(rmd_files) > 0) {
     build_articles(
       rmd_files = rmd_files,
       output_dir = articles_output,
+      site_dir = output_path,
       verbose = verbose
     )
   }

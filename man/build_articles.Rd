@@ -4,12 +4,16 @@
 \alias{build_articles}
 \title{Build article markdown files from Rmd sources}
 \usage{
-build_articles(rmd_files, output_dir, verbose = FALSE)
+build_articles(rmd_files, output_dir, site_dir = NULL, verbose = FALSE)
 }
 \arguments{
 \item{rmd_files}{Character vector of paths to `.Rmd` (or `.md`) files.}
 
 \item{output_dir}{Path to directory where article `.md` files are saved.}
+
+\item{site_dir}{Path to the Starlight site root, where figures are copied
+under `public/figures/`. If `NULL` (default), it is derived from
+`output_dir` by stripping the trailing `src/content/docs/...` segment.}
 
 \item{verbose}{Logical, whether to print debug messages during Rmd
 rendering (default `FALSE`).}
@@ -20,14 +24,16 @@ Invisibly returns a character vector of written file paths.
 \description{
 Renders `.Rmd` files to markdown and post-processes them for use in a
 Starlight site. Titles are read from each file's YAML frontmatter.
-Figures are embedded inline as base64 data URIs so only `output_dir`
-is needed.
+Figures are copied into the site's `public/figures/` directory and
+referenced with `/figures/...` paths, keeping the generated `.md`
+source readable and letting Astro optimize the images.
 }
 \examples{
 \dontrun{
 build_articles(
   c("vignettes/introduction.Rmd", "README.Rmd"),
-  output_dir = "../my-site/src/content/docs/articles"
+  output_dir = "../my-site/src/content/docs/articles",
+  site_dir = "../my-site"
 )
 }
 }
