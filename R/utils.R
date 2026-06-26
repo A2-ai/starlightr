@@ -11,6 +11,7 @@
 #' @param name Character string to slugify
 #' @return Slugified character string
 #' @keywords internal
+#' @noRd
 slugify <- function(name) {
   gsub(".", "-", tolower(name), fixed = TRUE)
 }
@@ -24,6 +25,7 @@ slugify <- function(name) {
 #' @param output_dir Path to a content directory inside the site
 #' @return Path to the site root
 #' @keywords internal
+#' @noRd
 resolve_site_dir <- function(output_dir) {
   site_dir <- sub("[/\\\\]src[/\\\\]content[/\\\\]docs([/\\\\].*)?$", "", output_dir)
   if (identical(site_dir, output_dir)) {
@@ -40,6 +42,7 @@ resolve_site_dir <- function(output_dir) {
 #' @param path Directory path to create
 #' @return Invisibly returns the path
 #' @keywords internal
+#' @noRd
 ensure_dir <- function(path) {
   if (!dir.exists(path)) {
     dir.create(path, recursive = TRUE, showWarnings = FALSE)
@@ -55,6 +58,7 @@ ensure_dir <- function(path) {
 #' @param path Character string representing a file path
 #' @return Logical indicating if the path is absolute
 #' @keywords internal
+#' @noRd
 is_absolute_path <- function(path) {
   # Check for Unix-style absolute paths (starting with /)
   if (grepl("^/", path)) return(TRUE)
@@ -73,6 +77,7 @@ is_absolute_path <- function(path) {
 #' @param pkg_path Path to package directory
 #' @return Package name as string
 #' @keywords internal
+#' @noRd
 get_package_name <- function(pkg_path) {
   desc_path <- file.path(pkg_path, "DESCRIPTION")
 
@@ -96,6 +101,7 @@ get_package_name <- function(pkg_path) {
 #' @param pkg_path Path to package directory
 #' @return README path if found, otherwise NULL
 #' @keywords internal
+#' @noRd
 find_readme <- function(pkg_path) {
   candidates <- c(
     file.path(pkg_path, "README.Rmd"),
@@ -121,6 +127,7 @@ find_readme <- function(pkg_path) {
 #' @param x Character string to escape
 #' @return Escaped string safe for use inside double quotes
 #' @keywords internal
+#' @noRd
 escape_quoted_string <- function(x) {
   x <- gsub("\\", "\\\\", x, fixed = TRUE)
   x <- gsub('"', '\\"', x, fixed = TRUE)
@@ -135,6 +142,7 @@ escape_quoted_string <- function(x) {
 #' @param config Configuration list
 #' @return GitHub URL or NULL
 #' @keywords internal
+#' @noRd
 get_github_url <- function(config) {
   # Look for GitHub URL in navbar right section
   if (!is.null(config$navbar$right)) {
@@ -154,6 +162,7 @@ get_github_url <- function(config) {
 #'
 #' @return The Rd element for that section, or NULL if not found
 #' @keywords internal
+#' @noRd
 get_rd_section <- function(rd_obj, tag) {
   if (!startsWith(tag, "\\")) {
     tag <- paste0("\\", tag)
@@ -176,6 +185,7 @@ get_rd_section <- function(rd_obj, tag) {
 #' @param md Markdown string
 #' @return Markdown with lifecycle badges pointing to CDN
 #' @keywords internal
+#' @noRd
 fix_lifecycle_badges <- function(md) {
   cdn_base <- "https://lifecycle.r-lib.org/articles/figures/lifecycle-"
 
@@ -201,6 +211,7 @@ fix_lifecycle_badges <- function(md) {
 #' @param data Named list of variables for whisker interpolation
 #' @return Rendered template as a character string
 #' @keywords internal
+#' @noRd
 render_template <- function(name, data = list()) {
   template_path <- system.file("templates", name, package = "starlightr")
   if (template_path == "") {
@@ -215,6 +226,7 @@ render_template <- function(name, data = list()) {
 #' @param name Template filename (e.g. "gitignore")
 #' @param dest Destination file path
 #' @keywords internal
+#' @noRd
 copy_template <- function(name, dest) {
   template_path <- system.file("templates", name, package = "starlightr")
   if (template_path == "") {
@@ -229,11 +241,12 @@ copy_template <- function(name, dest) {
 #'
 #' @param output_path Path to built site
 #' @keywords internal
+#' @noRd
 preview_site <- function(output_path) {
   cli::cli_h2("To preview your site")
   cli::cli_ol(c(
     "cd {.path {output_path}}",
-    "npm install",
-    "npm run dev"
+    "bun install",
+    "bun run dev"
   ))
 }

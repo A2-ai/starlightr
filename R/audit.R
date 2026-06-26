@@ -206,6 +206,7 @@ audit_config <- function(pkg = ".", config_file = "_starlightr.toml") {
 #' @param namespace_path Path to NAMESPACE file
 #' @return Character vector of exported function names
 #' @keywords internal
+#' @noRd
 parse_namespace_exports <- function(namespace_path) {
   lines <- readLines(namespace_path, warn = FALSE)
 
@@ -259,6 +260,7 @@ parse_namespace_exports <- function(namespace_path) {
 #' @param config Parsed YAML configuration list
 #' @return Character vector of function names and patterns
 #' @keywords internal
+#' @noRd
 extract_config_references <- function(config) {
   refs <- character()
 
@@ -310,6 +312,7 @@ extract_config_references <- function(config) {
 #' @param exports Character vector of exported function names
 #' @return List with covered (matched exports) and unmatched (config refs that don't match)
 #' @keywords internal
+#' @noRd
 match_config_to_exports <- function(config_refs, exports) {
   covered <- character()
   unmatched <- character()
@@ -340,6 +343,7 @@ match_config_to_exports <- function(config_refs, exports) {
 #' @param exports Character vector of exported function names
 #' @return Character vector of matching export names
 #' @keywords internal
+#' @noRd
 match_single_reference <- function(ref, exports) {
   # Package documentation files (e.g., "mypackage-package") are valid references
   # but not exports - return the ref itself to mark as "covered"

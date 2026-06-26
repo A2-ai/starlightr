@@ -6,6 +6,7 @@
 #'
 #' @return List containing parsed configuration
 #' @keywords internal
+#' @noRd
 read_config <- function(config_path) {
   if (!file.exists(config_path)) {
     cli::cli_alert_info(
@@ -35,6 +36,7 @@ read_config <- function(config_path) {
 #'
 #' @return List with default configuration values
 #' @keywords internal
+#' @noRd
 default_config <- function() {
   list(
     site = list(
@@ -83,6 +85,7 @@ default_config <- function() {
 #'
 #' @return Merged configuration list
 #' @keywords internal
+#' @noRd
 merge_config <- function(user_config, default_config) {
   # Simple recursive merge - in production we'd want something more sophisticated
   utils::modifyList(default_config, user_config)

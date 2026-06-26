@@ -5,6 +5,7 @@
 #' @param config Configuration list
 #' @return Logical indicating whether version support is enabled
 #' @keywords internal
+#' @noRd
 has_version_support <- function(config) {
   isTRUE(config$versions$enabled)
 }
@@ -16,6 +17,7 @@ has_version_support <- function(config) {
 #' @param config Configuration list
 #' @return Character string with current version
 #' @keywords internal
+#' @noRd
 get_current_version <- function(config) {
   env_version <- Sys.getenv("STARLIGHTR_VERSION", unset = NA)
   if (!is.na(env_version) && nchar(env_version) > 0) {
@@ -30,6 +32,7 @@ get_current_version <- function(config) {
 #' @param config Configuration list
 #' @return TRUE if valid, otherwise throws error
 #' @keywords internal
+#' @noRd
 validate_version_config <- function(config) {
   if (!has_version_support(config)) {
     return(TRUE)
@@ -68,6 +71,7 @@ validate_version_config <- function(config) {
 #' @param output_path Path to output directory
 #' @param config Configuration list
 #' @keywords internal
+#' @noRd
 generate_versions_ts <- function(output_path, config) {
   # Prepare data for whisker
   versions_data <- lapply(config$versions$list, function(v) {
@@ -98,6 +102,7 @@ generate_versions_ts <- function(output_path, config) {
 #' @param output_path Path to output directory
 #' @param config Configuration list
 #' @keywords internal
+#' @noRd
 generate_version_select_component <- function(output_path, config) {
   template_path <- system.file(
     "templates/VersionSelect.astro",
@@ -123,6 +128,7 @@ generate_version_select_component <- function(output_path, config) {
 #' @param config Configuration list
 #' @param overwrite Logical, whether to overwrite existing file
 #' @keywords internal
+#' @noRd
 generate_deploy_workflow <- function(output_path, config, overwrite = FALSE) {
   template_path <- system.file(
     "templates/deploy-docs.yml",

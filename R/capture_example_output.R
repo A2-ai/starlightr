@@ -3,6 +3,7 @@
 #' @param examples_section The examples section from an Rd object
 #' @return Character string of example code
 #' @keywords internal
+#' @noRd
 extract_examples_code <- function(examples_section) {
   extract_code_recursive <- function(el) {
     tag <- attr(el, "Rd_tag")
@@ -51,6 +52,7 @@ extract_examples_code <- function(examples_section) {
 #'     \item{html}{Character string of rendered HTML (gt tables)}
 #'   }
 #' @keywords internal
+#' @noRd
 capture_rd_examples <- function(pkg_name, fn_names, verbose = FALSE) {
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
     stop("Package 'ggplot2' is required for capturing example outputs.")

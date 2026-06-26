@@ -6,6 +6,7 @@
 #' @param slug URL slug
 #' @return JSON string for sidebar item
 #' @keywords internal
+#' @noRd
 make_sidebar_item <- function(label, slug) {
   escaped_label <- gsub('"', '\\"', label, fixed = TRUE)
   escaped_slug <- gsub('"', '\\"', slug, fixed = TRUE)
@@ -17,6 +18,7 @@ make_sidebar_item <- function(label, slug) {
 #' @param content Content item (string or list)
 #' @return List with slug and label
 #' @keywords internal
+#' @noRd
 parse_content_item <- function(content) {
   if (is.list(content)) {
     slug <- content$slug %||% content$label %||% ""
@@ -35,6 +37,7 @@ parse_content_item <- function(content) {
 #' @param indent Base indentation level
 #' @return JSON string for sidebar group
 #' @keywords internal
+#' @noRd
 make_sidebar_group <- function(label, items, collapsed = FALSE, indent = 10) {
   label <- gsub("\\", "\\\\", label, fixed = TRUE)
   label <- gsub('"', '\\"', label, fixed = TRUE)
@@ -60,6 +63,7 @@ make_sidebar_group <- function(label, items, collapsed = FALSE, indent = 10) {
 #' @param label Optional display label (defaults to content)
 #' @return Sidebar item JSON string or NULL if should skip
 #' @keywords internal
+#' @noRd
 resolve_reference_item <- function(
   content,
   output_path,
@@ -109,6 +113,7 @@ resolve_reference_item <- function(
 #' @param output_path Output path
 #' @return Character vector of file names without extension
 #' @keywords internal
+#' @noRd
 get_available_ref_files <- function(output_path) {
   if (is.null(output_path)) return(character(0))
 
@@ -125,6 +130,7 @@ get_available_ref_files <- function(output_path) {
 #' @param available_files Vector of available file names
 #' @return Vector of matched file names
 #' @keywords internal
+#' @noRd
 expand_glob_patterns <- function(patterns, available_files) {
   matched <- character(0)
 
@@ -149,6 +155,7 @@ expand_glob_patterns <- function(patterns, available_files) {
 #' @param pkg_name Package name (for Rd database lookups)
 #' @return JavaScript sidebar configuration as string
 #' @keywords internal
+#' @noRd
 generate_sidebar_config <- function(
   config,
   output_path = NULL,
@@ -345,6 +352,7 @@ generate_sidebar_config <- function(
 #'
 #' @return Vector with selectors expanded to actual function names
 #' @keywords internal
+#' @noRd
 expand_pkgdown_selectors <- function(contents, output_path = NULL) {
   if (is.null(contents) || length(contents) == 0) {
     return(character(0))
@@ -370,6 +378,7 @@ expand_pkgdown_selectors <- function(contents, output_path = NULL) {
 #' @param content String to check
 #' @return Logical indicating if it's a selector
 #' @keywords internal
+#' @noRd
 is_pkgdown_selector <- function(content) {
   grepl("^(starts_with|ends_with|contains|matches)\\s*\\(", content)
 }
@@ -380,6 +389,7 @@ is_pkgdown_selector <- function(content) {
 #' @param available_functions Vector of available function names
 #' @return Vector of matching function names
 #' @keywords internal
+#' @noRd
 expand_selector <- function(selector, available_functions) {
   if (length(available_functions) == 0) {
     return(character(0))
@@ -408,6 +418,7 @@ expand_selector <- function(selector, available_functions) {
 #' @param selector Selector string like 'ends_with("_at")'
 #' @return The extracted pattern or NULL if not found
 #' @keywords internal
+#' @noRd
 extract_quoted_pattern <- function(selector) {
   matches <- regexec('\\(\\s*["\']([^"\']+)["\']\\s*\\)', selector)
   if (matches[[1]][1] != -1) {
@@ -424,6 +435,7 @@ extract_quoted_pattern <- function(selector) {
 #' @param pattern String to escape
 #' @return Escaped string
 #' @keywords internal
+#' @noRd
 escape_regex <- function(pattern) {
   gsub("([.^$*+?{}\\[\\]\\(\\)|\\\\])", "\\\\\\1", pattern)
 }
@@ -436,6 +448,7 @@ escape_regex <- function(pattern) {
 #' @param pkg_name Package name (for accessing Rd database)
 #' @return The base name of the Rd file containing the function's documentation, or NULL
 #' @keywords internal
+#' @noRd
 find_function_doc_file <- function(function_name, pkg_name, rd_db = NULL) {
   if (
     is.null(function_name) || is.null(pkg_name) || nchar(function_name) == 0
@@ -468,6 +481,7 @@ find_function_doc_file <- function(function_name, pkg_name, rd_db = NULL) {
 #' @param function_name Function name to look for
 #' @return Logical indicating if the function is documented in this Rd object
 #' @keywords internal
+#' @noRd
 rd_contains_function <- function(rd_obj, function_name) {
   # Check the \name section first
   name_section <- get_rd_section(rd_obj, "name")

@@ -166,6 +166,7 @@ build_site <- function(
 #' @param config Parsed config list
 #' @return Character vector of .Rd file paths
 #' @keywords internal
+#' @noRd
 resolve_config_rd_files <- function(pkg_path, config) {
   rd_dir <- file.path(pkg_path, "man")
   if (!dir.exists(rd_dir)) return(character())
@@ -212,6 +213,7 @@ resolve_config_rd_files <- function(pkg_path, config) {
 #' @param config Parsed config list
 #' @return Character vector of .Rmd file paths
 #' @keywords internal
+#' @noRd
 resolve_config_rmd_files <- function(pkg_path, config) {
   # Extract article slugs from config
   article_names <- character(0)

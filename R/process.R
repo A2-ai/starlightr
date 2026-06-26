@@ -6,6 +6,7 @@
 #' @param output_path Path to output directory
 #' @param config Configuration list
 #' @keywords internal
+#' @noRd
 process_news <- function(pkg_path, output_path, config) {
   news_config <- config$sidebar$news
 

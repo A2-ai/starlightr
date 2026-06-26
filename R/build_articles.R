@@ -201,6 +201,7 @@ build_package_articles <- function(
 #' @param path Path to .Rmd or .md file
 #' @return Title string, or a fallback derived from filename
 #' @keywords internal
+#' @noRd
 read_rmd_title <- function(path) {
   lines <- readLines(path, n = 20, warn = FALSE)
 
@@ -243,6 +244,7 @@ read_rmd_title <- function(path) {
 #'   written under the README convention (`man/figures/<prefix>-*`).
 #' @return Path to written file, or NULL if source not found
 #' @keywords internal
+#' @noRd
 process_article_inline <- function(
   slug,
   md_name,
@@ -312,6 +314,7 @@ process_article_inline <- function(
 #' @return Named list mapping relative paths (as they appear in markdown) to
 #'   absolute file paths
 #' @keywords internal
+#' @noRd
 collect_article_figures <- function(md_name, source_dir, rmd_dir = NULL) {
   figures <- list()
 
@@ -369,6 +372,7 @@ collect_article_figures <- function(md_name, source_dir, rmd_dir = NULL) {
 #' @param slug Article slug, used as a per-article subdirectory
 #' @return Markdown with `/figures/...` image references
 #' @keywords internal
+#' @noRd
 copy_figure_references <- function(md_content, figure_files, public_figures_dir, slug) {
   dest_dir <- file.path(public_figures_dir, slug)
 

@@ -8,6 +8,7 @@
 #' @param html HTML string potentially containing unevaluated Sexpr
 #' @return HTML with Sexpr expressions evaluated
 #' @keywords internal
+#' @noRd
 evaluate_sexpr <- function(html) {
   pattern <- "\\\\Sexpr\\[([^\\]]+)\\]\\{([^}]+)\\}"
 

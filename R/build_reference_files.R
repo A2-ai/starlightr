@@ -184,6 +184,7 @@ build_package_reference_docs <- function(
 #' @param captured Named list from `capture_rd_examples()`
 #' @return Path to temporary JSON file
 #' @keywords include_internal
+#' @noRd
 build_inline_example_outputs_map <- function(captured) {
   outputs <- list()
 

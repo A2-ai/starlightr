@@ -1,10 +1,12 @@
 [site]
 title = "starlightr"
 description = "Build beautiful Starlight documentation sites for R packages"
+logo = "man/figures/logo.png"
+favicon = "man/figures/logo.png"
 
 [home]
 hero = { tagline = "Build beautiful Starlight documentation sites for R packages", actions = [
-	{ text = "Get Started", link = "./articles/introduction/", icon = "right-arrow", variant = "primary" },
+	{ text = "Get Started", link = "./articles/readme/", icon = "right-arrow", variant = "primary" },
 	{ text = "View on GitHub", link = "https://github.com/A2-ai/starlightr", icon = "external", variant = "minimal" },
 ] }
 cards = [
@@ -17,16 +19,15 @@ cards = [
 articles = [
 	{ label = "Getting Started", contents = [
 		{ slug = "README", label = "Welcome" },
-		"introduction",
 		"configuration",
 	] },
 ]
 reference = [
 	{ label = "Site Building", contents = [
-		"build_site",
 		"use_starlightr",
+		"build_site",
 		"audit_config",
-	] },
+	], collapsed = true },
 	{ label = "Configuration Helpers", contents = [
 		"add_action",
 		"add_card",
@@ -34,20 +35,22 @@ reference = [
 		"add_article",
 		"add_version",
 		"add_package",
-	] },
+	] , collapsed = true },
 	{ label = "Sidebar Helpers", contents = [
 		"get_reference_sections",
 		"get_article_sections",
 		"set_reference_section",
 		"set_article_section",
-	] },
+	], collapsed = true  },
 	{ label = "Reference Rendering", contents = [
 		"build_reference_files",
+		"build_package_reference_docs",
 		"render_reference",
-	] },
-	{ label = "Migration", contents = [
-		"pkgdown_to_starlight",
-	] },
+	], collapsed = true  },
+	{ label = "Article Building", contents = [
+		"build_articles",
+		"build_package_articles",
+	], collapsed = true  },
 ]
 [navbar]
 right = [{ icon = "github", href = "https://github.com/A2-ai/starlightr" }]

@@ -15,6 +15,7 @@
 #' @param packages Character vector of package names
 #' @return Path to a temporary JSON file containing the link map
 #' @keywords internal
+#' @noRd
 build_external_link_map <- function(packages) {
   link_map <- list()
   for (pkg in packages) {
@@ -46,6 +47,7 @@ build_external_link_map <- function(packages) {
 #' @param pkg Package name
 #' @return Base URL string for reference docs (no trailing slash)
 #' @keywords internal
+#' @noRd
 resolve_package_base_url <- function(pkg) {
   if (pkg %in% .base_packages) {
     return(paste0("https://rdrr.io/r/", pkg))
@@ -78,6 +80,7 @@ resolve_package_base_url <- function(pkg) {
 #' @param package Path to package root containing DESCRIPTION
 #' @return Character vector of package names
 #' @keywords internal
+#' @noRd
 extract_dependency_packages <- function(package = ".") {
   desc_path <- file.path(package, "DESCRIPTION")
   if (!file.exists(desc_path)) {

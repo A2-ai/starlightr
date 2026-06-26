@@ -5,6 +5,7 @@
 #' @param output_path Path to output directory
 #' @param config Configuration list
 #' @keywords internal
+#' @noRd
 setup_starlight_structure <- function(output_path, config) {
   # Create main directories
   dirs <- c(
@@ -44,6 +45,7 @@ setup_starlight_structure <- function(output_path, config) {
 #' @param config Configuration list
 #' @param pkg_path Path to package directory
 #' @keywords internal
+#' @noRd
 generate_astro_config <- function(output_path, config, pkg_path = NULL) {
   github_url <- get_github_url(config)
 
@@ -77,6 +79,7 @@ generate_astro_config <- function(output_path, config, pkg_path = NULL) {
 #' @param config Configuration list
 #' @param overwrite Logical, whether to overwrite existing file
 #' @keywords internal
+#' @noRd
 generate_package_json <- function(output_path, config, overwrite = FALSE) {
   package_json_path <- file.path(output_path, "package.json")
 
@@ -101,6 +104,7 @@ generate_package_json <- function(output_path, config, overwrite = FALSE) {
 #' @param package_json_path Path to the package.json file
 #' @param config Configuration list
 #' @keywords internal
+#' @noRd
 merge_package_deps <- function(package_json_path, config) {
   pkg <- jsonlite::read_json(package_json_path)
 
@@ -123,6 +127,7 @@ merge_package_deps <- function(package_json_path, config) {
 #'
 #' @param output_path Path to output directory
 #' @keywords internal
+#' @noRd
 generate_content_config <- function(output_path) {
   src_path <- file.path(output_path, "src")
   copy_template("content.config.ts", file.path(src_path, "content.config.ts"))
@@ -134,6 +139,7 @@ generate_content_config <- function(output_path) {
 #' @param output_path Path to output directory
 #' @param overwrite Logical, whether to overwrite existing file
 #' @keywords internal
+#' @noRd
 generate_gitignore <- function(output_path, overwrite = FALSE) {
   gitignore_path <- file.path(output_path, ".gitignore")
 
@@ -154,6 +160,7 @@ generate_gitignore <- function(output_path, overwrite = FALSE) {
 #'
 #' @param output_path Path to output directory
 #' @keywords internal
+#' @noRd
 generate_remark_plugin <- function(output_path) {
   copy_template(
     "remark-base-url.mjs",
@@ -169,6 +176,7 @@ generate_remark_plugin <- function(output_path) {
 #'
 #' @param output_path Path to output directory
 #' @keywords internal
+#' @noRd
 generate_starlightr_css <- function(output_path) {
   template_path <- system.file(
     "templates/starlightr.css",
@@ -191,6 +199,7 @@ generate_starlightr_css <- function(output_path) {
 #'
 #' @param output_path Path to output directory
 #' @keywords internal
+#' @noRd
 generate_custom_css <- function(output_path) {
   styles_dir <- file.path(output_path, "src", "styles")
   ensure_dir(styles_dir)

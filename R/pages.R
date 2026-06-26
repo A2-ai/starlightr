@@ -1,38 +1,49 @@
 # Page creation helpers for starlightr
 
-#' Update hero image in existing index.mdx
+#' Inject a hero image into an existing index.mdx
+#'
+#' Parses the YAML frontmatter and adds the logo as the hero image if one
+#' isn't already set, leaving the body untouched. Used to retrofit a logo
+#' onto an existing index.mdx without overwriting it.
 #'
 #' @param index_path Path to index.mdx file
 #' @param config Configuration list
-#' @keywords internal
+#' @noRd
 update_index_hero_image <- function(index_path, config) {
   if (is.null(config$site$logo)) {
-    return() # No logo configured, nothing to update
+    return() # No logo configured, nothing to do
   }
 
-  content <- readLines(index_path, warn = FALSE)
-  content_str <- paste(content, collapse = "\n")
+  lines <- readLines(index_path, warn = FALSE)
 
-  # Check if hero image already exists
-  if (grepl("image:\\s*\\n\\s*file:", content_str)) {
-    return() # Already has hero image
+  # Frontmatter is the block between the first two "---" fences.
+  fences <- which(lines == "---")
+  if (length(fences) < 2) {
+    return() # No frontmatter block to update
+  }
+  fm_str <- paste(lines[(fences[1] + 1):(fences[2] - 1)], collapse = "\n")
+  body <- if (fences[2] < length(lines)) {
+    lines[(fences[2] + 1):length(lines)]
+  } else {
+    character()
   }
 
-  # Find the hero section and add image after tagline
-  # Pattern: find "hero:\n  tagline: ..." and add image after
-  hero_image_yaml <- "  image:\n    file: /src/assets/logo.png"
+  fm <- yaml::yaml.load(fm_str)
+  if (!is.null(fm$hero$image$file)) {
+    return() # Already has a hero image
+  }
 
-  # Insert image section after tagline line (before actions or other hero content)
-  updated <- sub(
-    "(hero:\\s*\\n\\s*tagline:[^\\n]*)",
-    paste0("\\1\n", hero_image_yaml),
-    content_str
+  fm$hero$image <- list(file = "../../assets/logo.png")
+
+  # verbatim_logical writes true/false, not yaml's default yes/no (which Astro
+  # would read as a string and reject against Starlight's boolean schema).
+  new_fm <- sub(
+    "\n$",
+    "",
+    yaml::as.yaml(fm, handlers = list(logical = yaml::verbatim_logical))
   )
-
-  if (updated != content_str) {
-    writeLines(updated, index_path)
-    cli::cli_alert_success("Updated {.file index.mdx} with hero image")
-  }
+  writeLines(c("---", new_fm, "---", body), index_path)
+  cli::cli_alert_success("Added hero image to {.file index.mdx}")
 }
 
 #' Create default index.mdx page
@@ -42,6 +53,7 @@ update_index_hero_image <- function(index_path, config) {
 #' @param config Configuration list
 #' @param overwrite Logical, whether to overwrite existing index.mdx
 #' @keywords internal
+#' @noRd
 create_index_page <- function(
   pkg_path,
   output_path,
@@ -51,7 +63,8 @@ create_index_page <- function(
   index_path <- file.path(output_path, "src", "content", "docs", "index.mdx")
   file_existed <- file.exists(index_path)
 
-  # If index exists and not overwriting, just update the hero image if needed
+  # index.mdx is user-editable, so don't overwrite an existing one; just
+  # retrofit the hero image if a logo was added since it was created.
   if (file_existed && !overwrite) {
     update_index_hero_image(index_path, config)
     return()

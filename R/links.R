@@ -5,6 +5,7 @@
 #' @param link Link string
 #' @return Logical indicating if link is internal
 #' @keywords internal
+#' @noRd
 is_internal_link <- function(link) {
   if (is.null(link) || !is.character(link) || nchar(link) == 0) {
     return(FALSE)
@@ -28,6 +29,7 @@ is_internal_link <- function(link) {
 #' @param link Link string
 #' @return Logical indicating if link should end with '/'
 #' @keywords internal
+#' @noRd
 link_needs_trailing_slash <- function(link) {
   path <- sub("[?#].*$", "", link)
   nchar(path) > 0 && !grepl("/$", path)
@@ -39,6 +41,7 @@ link_needs_trailing_slash <- function(link) {
 #' @param warn Whether to warn when link is normalized
 #' @return Normalized link string
 #' @keywords internal
+#' @noRd
 normalize_local_link <- function(link, warn = TRUE) {
   if (is.null(link) || !is.character(link)) {
     return(link)
@@ -76,6 +79,7 @@ normalize_local_link <- function(link, warn = TRUE) {
 #' @param config Parsed YAML configuration list
 #' @return List of link entries (link + context)
 #' @keywords internal
+#' @noRd
 find_link_entries <- function(config) {
   entries <- list()
 
@@ -115,6 +119,7 @@ find_link_entries <- function(config) {
 #' @param link Link string
 #' @return TRUE if link points to external content, FALSE otherwise
 #' @keywords internal
+#' @noRd
 is_external_doc_link <- function(link) {
   if (!startsWith(link, "./")) {
     return(FALSE)
@@ -144,6 +149,7 @@ is_external_doc_link <- function(link) {
 #' @param exported Character vector of exported function names
 #' @return TRUE if an issue was found, FALSE otherwise
 #' @keywords internal
+#' @noRd
 validate_link_target <- function(link, context, pkg_path, exported) {
   # Only validate links starting with ./
   if (!startsWith(link, "./")) {
@@ -208,6 +214,7 @@ validate_link_target <- function(link, context, pkg_path, exported) {
 #' @param pkg_path Path to package directory
 #' @return List with missing (character vector) and valid_count (integer)
 #' @keywords internal
+#' @noRd
 validate_article_slugs <- function(config, pkg_path) {
   missing <- character()
   valid_count <- 0

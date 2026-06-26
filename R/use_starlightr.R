@@ -54,6 +54,7 @@ use_starlightr <- function(pkg = ".", open = interactive()) {
 #' @param config_path Path where to create the config file
 #' @param pkg_path Path to package directory
 #' @keywords internal
+#' @noRd
 create_default_config <- function(config_path, pkg_path) {
   # Try to read DESCRIPTION to get package info
   desc_path <- file.path(pkg_path, "DESCRIPTION")
@@ -98,6 +99,7 @@ create_default_config <- function(config_path, pkg_path) {
 #'
 #' @param pkg_path Path to package directory
 #' @keywords internal
+#' @noRd
 update_rbuildignore <- function(pkg_path) {
   rbuildignore_path <- file.path(pkg_path, ".Rbuildignore")
 

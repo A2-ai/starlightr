@@ -9,9 +9,17 @@
 [![extendr](https://img.shields.io/badge/extendr-*-276DC2)](https://extendr.github.io/extendr/extendr_api/)
 <!-- badges: end -->
 
-**starlightr** builds Starlight documentation sites for R packages. It
-converts Rd files to MDX, turns vignettes into articles, and can embed
-captured example outputs directly into reference pages.
+starlightr builds [Starlight](https://starlight.astro.build/)
+documentation sites for R packages. Heavily inspired by
+[pkgdown](https://pkgdown.r-lib.org/), it brings the same
+build-docs-from-your-package workflow to a modern site framework: Rd
+files become MDX reference pages, vignettes become articles, and
+captured example outputs (plots, text, HTML) are embedded inline.
+
+The Rd parsing is done in Rust, exposed to R via
+[extendr](https://extendr.github.io/extendr/extendr_api/), and
+translated into the MDX files that make up the Astro Starlight site
+pages.
 
 ## Installation
 
@@ -20,123 +28,76 @@ captured example outputs directly into reference pages.
 devtools::install_github("A2-ai/starlightr")
 ```
 
-## Requirements
-
-- R \>= 4.0
-- Node.js \>= 18
-- pandoc
+Requires R \>= 4.0, Node.js \>= 18, and pandoc. Install your package
+before building so starlightr can read its Rd docs and run examples.
 
 ## Quick Start
 
 ``` r
 library(starlightr)
 
-# Run from your package directory
-use_starlightr()
-build_site(output_dir = "../my-package-docs")
+use_starlightr()                              # scaffold _starlightr.toml
+build_site(output_dir = "../my-package-docs") # build the site
 ```
-
-Then preview the site:
 
 ``` bash
-cd ../my-package-docs
-bun i
-bun run dev
+cd ../my-package-docs && bun i && bun run dev # preview
 ```
 
-Your package should be installed and up to date before running
-`build_site()` so starlightr can read Rd documentation and capture
-example outputs.
+## Embedding in an Existing Starlight Site
 
-## Reference Files Only
-
-If you already have a Starlight site and only want to regenerate
-reference pages from `man/`, use `build_reference_files()`:
+Build reference pages and articles without the full `build_site()`
+workflow. Outputs and figures are inlined as base64, so only
+`output_dir` is needed.
 
 ``` r
-build_reference_files(
-  rd_dir = "man",
-  output_dir = "../my-package-docs/src/content/docs/reference",
-  config_file = "_starlightr.toml",
-  site_output_path = "../my-package-docs"
-)
-```
+build_package_reference_docs(output_dir = "../my-site/src/content/docs/reference")
+build_package_articles(output_dir = "../my-site/src/content/docs/articles")
 
-`site_output_path` should be the root of the Starlight site. It is used
-to find captured example outputs in `public/examples/` and append them
-to the generated reference pages.
+# or target specific files
+build_reference_files(c("man/build_site.Rd"), output_dir = "...")
+build_articles(c("vignettes/configuration.Rmd"), output_dir = "...")
+```
 
 ## Configuration
 
-starlightr reads `_starlightr.toml`. A minimal example:
+starlightr reads `_starlightr.toml`:
 
 ``` toml
 [site]
 title = "My Package"
 description = "A brief description of your package"
-logo = "man/figures/logo.png"
-favicon = "man/figures/favicon.png"
 
 [home]
-hero = { tagline = "What your package does in one sentence", actions = [
-    { text = "Get Started", link = "./articles/introduction/", icon = "right-arrow", variant = "primary" },
-    { text = "View on GitHub", link = "https://github.com/user/repo", icon = "external", variant = "minimal" }
+hero = { tagline = "What your package does", actions = [
+    { text = "Get Started", link = "./articles/readme/", icon = "right-arrow", variant = "primary" }
 ] }
 
 [sidebar]
-articles = [
-    { label = "Guides", contents = ["introduction"] }
-]
-reference = [
-    { label = "Reference", autogenerate = { directory = "reference" } }
-]
+reference = [{ label = "Reference", autogenerate = { directory = "reference" } }]
 news = { label = "Changelog", source = "NEWS.md" }
-
-[navbar]
-right = [
-    { icon = "github", href = "https://github.com/user/repo" }
-]
-
-[reference]
-skip_sections = ["name"]
-include_pagefind = true
 
 [output]
 dir = "../my-package-docs"
 include_build_files = true
+
+[versions]
+enabled = true
 ```
 
-## Example Outputs
+`\dontrun{}` and `\dontshow{}` in Rd are respected. The `[versions]`
+section enables multi-version docs and can generate a deployment
+workflow.
 
-`build_site()` captures outputs from `@examples` and embeds them into
-the generated reference pages:
+## Keeping config in sync
 
-- plots as PNGs
-- text output in fenced code blocks
-- HTML outputs such as gt tables via iframes
-
-`\dontrun{}` and `\dontshow{}` in Rd are respected and output is not run
-or not shown respectively.
-
-## Versions
-
-Versioned docs are supported through the `[versions]` section in
-`_starlightr.toml`. When enabled, `build_site()` can also generate a
-deployment workflow for multi-version sites.
-
-## pkgdown Migration
-
-If you already have a `_pkgdown.yml`, you can convert it:
+The sidebar is driven by `_starlightr.toml`, not autodetected, so it can
+drift from your package’s exports. `audit_config()` flags exported
+functions missing from the config and references to functions that no
+longer exist:
 
 ``` r
-pkgdown_to_starlight()
+audit_config()
 ```
 
-## Main Functions
-
-| Function                  | Purpose                                        |
-|---------------------------|------------------------------------------------|
-| `use_starlightr()`        | Initialize starlightr in a package             |
-| `build_site()`            | Build a full Starlight site                    |
-| `build_reference_files()` | Render reference MDX files only                |
-| `audit_config()`          | Audit config against package exports and links |
+`build_site()` runs this automatically before each build.

@@ -7,6 +7,7 @@
 #' @param config_path Path to config file
 #' @return Parsed config as list
 #' @keywords internal
+#' @noRd
 read_config_toml <- function(config_path = "_starlightr.toml") {
   if (!file.exists(config_path)) {
     cli::cli_abort("Configuration file not found at {.path {config_path}}")
@@ -20,6 +21,7 @@ read_config_toml <- function(config_path = "_starlightr.toml") {
 #' @param config Config list to write
 #' @param config_path Path to config file
 #' @keywords internal
+#' @noRd
 write_config_toml <- function(config, config_path = "_starlightr.toml") {
   toml_out <- tomledit::as_toml(config)
   tomledit::write_toml(toml_out, config_path)
@@ -34,6 +36,7 @@ write_config_toml <- function(config, config_path = "_starlightr.toml") {
 #' @param config_path Path to config file
 #' @return List with modified config and whether item was added
 #' @keywords internal
+#' @noRd
 add_sidebar_item <- function(
   kind,
   slug,
@@ -121,6 +124,7 @@ add_sidebar_item <- function(
 #' @param config_path Path to config file
 #' @return Data frame with columns: label, collapsed, n_items
 #' @keywords internal
+#' @noRd
 get_sidebar_sections <- function(kind, config_path = "_starlightr.toml") {
   config <- read_config_toml(config_path)
   sections <- config$sidebar[[kind]]
@@ -172,6 +176,7 @@ get_sidebar_sections <- function(kind, config_path = "_starlightr.toml") {
 #' @param config_path Path to config file
 #' @return Character vector of labels actually modified (invisibly)
 #' @keywords internal
+#' @noRd
 set_sidebar_section_collapsed <- function(
   kind,
   section,
@@ -734,6 +739,7 @@ add_package <- function(name, version, config_path = "_starlightr.toml") {
 #' @param config Configuration list
 #' @param config_path Path to config file (used to resolve output dir)
 #' @keywords internal
+#' @noRd
 patch_package_json <- function(config, config_path) {
   output_dir <- config$output$dir %||% "docs"
   if (is_absolute_path(output_dir)) {

@@ -6,6 +6,7 @@
 #' @param output_path Path to output directory
 #' @param config Configuration list
 #' @keywords internal
+#' @noRd
 copy_assets <- function(pkg_path, output_path, config) {
   # Copy common assets if they exist
   assets_to_check <- c(
@@ -31,6 +32,7 @@ copy_assets <- function(pkg_path, output_path, config) {
 #' @param output_path Path to output directory
 #' @param config Configuration list
 #' @keywords internal
+#' @noRd
 copy_branding_assets <- function(pkg_path, output_path, config) {
   # Copy logo to src/assets/ (Astro imports this as a module)
   if (!is.null(config$site$logo)) {
