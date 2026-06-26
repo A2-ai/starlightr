@@ -13,5 +13,5 @@ dependencies = [
   "devtools",
 	"covr",
   { name = "starlightr", path = ".", dependencies_only = false, install_suggestions = true },
-	#{ name = "rextendr", git = "https://github.com/extendr/rextendr", tag = "v0.5.0" },
+	{ name = "rextendr", git = "https://github.com/extendr/rextendr", tag = "v0.5.0" },
 ]
