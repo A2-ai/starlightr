@@ -1,7 +1,7 @@
 Package: starlightr
 Type: Package
 Title: Build Starlight Documentation Sites for R Packages
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R:
     person("Matt", "Smith", email = "matthews@a2-ai.com", role = c("aut", "cre"))
 Description: A modern R package documentation generator that creates beautiful
