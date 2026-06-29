@@ -6,8 +6,10 @@ test_that("build_external_link_map resolves known dplyr topics", {
 
   map <- jsonlite::fromJSON(json_path)
 
-  expect_equal(
+  # Assert the resolution behaviour, not dplyr's exact Rd page slug (which
+  # changes across dplyr versions, e.g. case_when -> case-and-replace-when).
+  expect_match(
     map[["dplyr::case_when"]],
-    "https://dplyr.tidyverse.org/reference/case_when.html"
+    "^https://dplyr\\.tidyverse\\.org/reference/.+\\.html$"
   )
 })
