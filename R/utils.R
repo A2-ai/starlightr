@@ -83,6 +83,56 @@ ensure_dir <- function(path) {
   invisible(path)
 }
 
+#' Build into a fresh staging directory, then atomically replace `final_dir`
+#'
+#' `build_fn` writes into a temporary sibling of `final_dir` instead of
+#' `final_dir` itself. Only once `build_fn` returns successfully is that
+#' staging directory swapped in to replace `final_dir`. If `build_fn` errors
+#' (e.g. one bad source file aborts a per-file render loop partway through),
+#' `final_dir` is left exactly as it was before the call — never a mix of
+#' stale files from the last successful build and partial output from this
+#' one.
+#'
+#' Intended for output directories that starlightr fully regenerates on
+#' every build (e.g. the reference/article content dirs), not the site root
+#' as a whole — swapping the whole site root would also discard files no
+#' build_site() step manages, like `node_modules/` or a nested `.git/`.
+#'
+#' @param final_dir Path the built content should end up at
+#' @param build_fn Function taking the staging directory path and building
+#'   into it
+#' @return Invisibly returns `final_dir`
+#' @keywords internal
+#' @noRd
+build_into_staged_dir <- function(final_dir, build_fn) {
+  parent_dir <- dirname(final_dir)
+  ensure_dir(parent_dir)
+
+  staging_dir <- tempfile("starlightr-staging-", tmpdir = parent_dir)
+  dir.create(staging_dir, recursive = TRUE)
+  on.exit(unlink(staging_dir, recursive = TRUE, force = TRUE), add = TRUE)
+
+  build_fn(staging_dir)
+
+  backup_dir <- NULL
+  if (dir.exists(final_dir)) {
+    backup_dir <- tempfile("starlightr-old-", tmpdir = parent_dir)
+    if (!file.rename(final_dir, backup_dir)) {
+      cli::cli_abort(
+        "Failed to move aside existing {.path {final_dir}} before publishing new build"
+      )
+    }
+  }
+
+  if (!file.rename(staging_dir, final_dir)) {
+    if (!is.null(backup_dir)) file.rename(backup_dir, final_dir)
+    cli::cli_abort("Failed to publish built content to {.path {final_dir}}")
+  }
+
+  if (!is.null(backup_dir)) unlink(backup_dir, recursive = TRUE, force = TRUE)
+  invisible(final_dir)
+}
+
 #' Check if a path is absolute
 #'
 #' @param path Character string representing a file path

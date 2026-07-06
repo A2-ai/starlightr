@@ -105,31 +105,38 @@ build_site <- function(
     }
   }
 
-  # Build reference documentation (config-filtered, with inline examples)
+  # Build reference documentation (config-filtered, with inline examples).
+  # Staged: an uncaught error partway through must not leave ref_output as a
+  # mix of this build's partial output and the previous build's stale files.
   ref_output <- file.path(output_path, "src", "content", "docs", "reference")
   rd_files <- resolve_config_rd_files(pkg_path, config)
   if (length(rd_files) > 0) {
-    build_reference_files(
-      rd_files = rd_files,
-      output_dir = ref_output,
-      pkg = pkg_path,
-      config_file = config_file,
-      examples = TRUE,
-      verbose = verbose
-    )
+    build_into_staged_dir(ref_output, function(staging_dir) {
+      build_reference_files(
+        rd_files = rd_files,
+        output_dir = staging_dir,
+        pkg = pkg_path,
+        config_file = config_file,
+        examples = TRUE,
+        verbose = verbose
+      )
+    })
   }
 
-  # Build articles (config-filtered, figures copied to public/figures/)
+  # Build articles (config-filtered, figures copied to public/figures/).
+  # Staged for the same reason as reference docs above.
   articles_output <- file.path(output_path, "src", "content", "docs", "articles")
   rmd_files <- resolve_config_rmd_files(pkg_path, config)
   if (length(rmd_files) > 0) {
-    build_articles(
-      rmd_files = rmd_files,
-      output_dir = articles_output,
-      pkg = pkg_path,
-      site_dir = output_path,
-      verbose = verbose
-    )
+    build_into_staged_dir(articles_output, function(staging_dir) {
+      build_articles(
+        rmd_files = rmd_files,
+        output_dir = staging_dir,
+        pkg = pkg_path,
+        site_dir = output_path,
+        verbose = verbose
+      )
+    })
   }
 
   # Process NEWS.md if configured
