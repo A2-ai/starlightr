@@ -22,7 +22,7 @@ extendr-api = { workspace = true }
 starlightr-parser = { path = "parser" }
 
 [workspace.dependencies]
-extendr-api = { git = "https://github.com/extendr/extendr", branch = "main", features = ["serde"] }
+extendr-api = { version = "0.9.0", features = ["serde"] }
 
 # Core utilities
 anyhow = "1.0.100"
