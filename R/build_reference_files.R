@@ -42,6 +42,13 @@ build_reference_files <- function(
   pkg_path <- normalizePath(pkg, mustWork = TRUE)
   config_path <- file.path(pkg_path, config_file)
 
+  # The Rust emitter re-reads its own config file rather than accepting
+  # options in-process; give it R's merged config (user values over
+  # default_config()) instead of the raw file, so `[reference]` defaults
+  # (skip_sections, section_order) actually apply. See config.R.
+  config <- read_config(config_path)
+  emit_config_path <- write_reference_config_toml(config$reference)
+
   # Validate rd_files exist
   rd_files <- normalizePath(rd_files, mustWork = FALSE)
   existing <- file.exists(rd_files)
@@ -83,7 +90,7 @@ build_reference_files <- function(
     render_reference(
       rd_file = rd_file,
       output_dir = output_dir,
-      config_file = config_path,
+      config_file = emit_config_path,
       external_links_file = external_links_file,
       example_outputs_file = example_outputs_file
     )

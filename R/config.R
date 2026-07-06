@@ -63,7 +63,7 @@ default_config <- function() {
         "title",
         "keyword",
         "concept",
-        "docType"
+        "Doc Type"
       ),
       section_order = c("Title", "Name", "Alias", "Doc Type", "Description"),
       include_pagefind = FALSE
@@ -89,4 +89,37 @@ default_config <- function() {
 merge_config <- function(user_config, default_config) {
   # Simple recursive merge - in production we'd want something more sophisticated
   utils::modifyList(default_config, user_config)
+}
+
+#' Write the merged `[reference]` config as a temp TOML file for the Rust emitter
+#'
+#' The Rust emitter reads `[reference]` from its own config file argument
+#' rather than accepting options in-process, so this is how R's merged
+#' config (user values layered on [default_config()]) reaches it. Written
+#' by hand rather than via `tomledit::as_toml()` because that helper
+#' collapses length-1 character vectors to bare TOML strings, which the
+#' Rust side (`Vec<String>`) fails to deserialize.
+#'
+#' @param reference The `reference` element of a merged config list
+#'
+#' @return Path to a temporary TOML file containing just the `[reference]` table
+#' @keywords internal
+#' @noRd
+write_reference_config_toml <- function(reference) {
+  toml_array <- function(x) {
+    x <- as.character(x %||% character())
+    items <- paste0('"', escape_quoted_string(x), '"', collapse = ", ")
+    paste0("[", items, "]")
+  }
+
+  lines <- c(
+    "[reference]",
+    paste0("skip_sections = ", toml_array(reference$skip_sections)),
+    paste0("section_order = ", toml_array(reference$section_order)),
+    paste0("include_pagefind = ", tolower(as.character(isTRUE(reference$include_pagefind))))
+  )
+
+  path <- tempfile("starlightr-reference-config-", fileext = ".toml")
+  writeLines(lines, path)
+  path
 }
