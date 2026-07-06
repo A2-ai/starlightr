@@ -16,6 +16,36 @@ slugify <- function(name) {
   gsub(".", "-", tolower(name), fixed = TRUE)
 }
 
+#' Expand config reference tokens against a set of candidate names
+#'
+#' Single glob semantics for `sidebar.reference` tokens, shared by Rd-file
+#' selection, sidebar generation, and audit coverage checking: a `*` anywhere
+#' in the token matches any run of characters, matching is anchored to the
+#' full candidate name, and comparison is case-insensitive. Tokens without a
+#' `*` are matched as exact (case-insensitive) names.
+#'
+#' @param patterns Character vector of config reference tokens (exact names
+#'   or patterns containing `*`)
+#' @param candidates Character vector of candidate names to match against
+#' @return Subset of `candidates` that match any pattern, in `candidates`
+#'   order, deduplicated
+#' @keywords internal
+#' @noRd
+expand_reference_patterns <- function(patterns, candidates) {
+  is_match <- rep(FALSE, length(candidates))
+
+  for (pattern in patterns) {
+    if (grepl("*", pattern, fixed = TRUE)) {
+      regex <- paste0("^", gsub("*", ".*", pattern, fixed = TRUE), "$")
+      is_match <- is_match | grepl(regex, candidates, ignore.case = TRUE)
+    } else {
+      is_match <- is_match | (tolower(candidates) == tolower(pattern))
+    }
+  }
+
+  candidates[is_match]
+}
+
 #' Derive the Starlight site root from a content output directory
 #'
 #' Strips a trailing `src/content/docs/...` segment so that, e.g.,

@@ -189,18 +189,7 @@ resolve_config_rd_files <- function(pkg_path, config) {
 
   # Resolve config refs (slugs/patterns) against available .Rd basenames
   rd_basenames <- tools::file_path_sans_ext(basename(all_rd))
-  matched <- character()
-  for (ref in config_refs) {
-    if (grepl("\\*", ref)) {
-      pattern <- paste0("^", gsub("\\*", ".*", ref), "$")
-      hits <- rd_basenames[grepl(pattern, rd_basenames, ignore.case = TRUE)]
-    } else {
-      hits <- rd_basenames[tolower(rd_basenames) == tolower(ref)]
-    }
-    matched <- c(matched, hits)
-  }
-
-  matched <- unique(matched)
+  matched <- expand_reference_patterns(config_refs, rd_basenames)
   all_rd[rd_basenames %in% matched]
 }
 

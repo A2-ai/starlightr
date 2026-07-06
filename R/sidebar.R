@@ -124,30 +124,6 @@ get_available_ref_files <- function(output_path) {
   tools::file_path_sans_ext(files)
 }
 
-#' Expand glob patterns to matching files
-#'
-#' @param patterns Vector of patterns (may include * wildcards)
-#' @param available_files Vector of available file names
-#' @return Vector of matched file names
-#' @keywords internal
-#' @noRd
-expand_glob_patterns <- function(patterns, available_files) {
-  matched <- character(0)
-
-  for (pattern in patterns) {
-    if (grepl("\\*$", pattern)) {
-      # Convert glob to regex
-      regex <- paste0("^", gsub("\\*", "", pattern))
-      matches <- available_files[grepl(regex, available_files)]
-      matched <- c(matched, matches)
-    } else if (pattern %in% available_files) {
-      matched <- c(matched, pattern)
-    }
-  }
-
-  unique(sort(matched))
-}
-
 #' Generate sidebar configuration for Starlight
 #'
 #' @param config Configuration list from YAML
@@ -238,7 +214,10 @@ generate_sidebar_config <- function(
 
         if (has_patterns && length(available_files) > 0) {
           # Handle pattern matching
-          matched_files <- expand_glob_patterns(content_slugs, available_files)
+          matched_files <- sort(expand_reference_patterns(
+            content_slugs,
+            available_files
+          ))
           group_items <- vapply(
             matched_files,
             function(file) {
