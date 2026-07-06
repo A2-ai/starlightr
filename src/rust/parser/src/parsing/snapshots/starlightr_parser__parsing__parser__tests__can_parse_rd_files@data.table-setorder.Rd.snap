@@ -1,0 +1,2601 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/data.table-setorder.Rd
+---
+Document {
+    children: [
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Name",
+                ),
+            ],
+            children: [
+                Text(
+                    "setorder",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "setorder",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "setorderv",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "order",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "fastorder",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "forder",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "forderv",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "sort_by",
+                ),
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Title",
+                ),
+            ],
+            children: [
+                Text(
+                    "Fast row reordering of a data.table by reference",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "In ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "data.table",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " parlance, all ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "set*",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " functions change their input",
+                ),
+                NewLine,
+                Command {
+                    name: "emph",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "by reference",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ". That is, no copy is made at all, other than temporary",
+                ),
+                NewLine,
+                Text(
+                    "working memory, which is as large as one column. The only other",
+                ),
+                NewLine,
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "data.table",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " operator that modifies input by reference is ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            ":=",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                ":=",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ".",
+                ),
+                NewLine,
+                Text(
+                    "Check out the ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "See Also",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " section below for other ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "set*",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " function",
+                ),
+                NewLine,
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "data.table",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " provides.",
+                ),
+                NewLine,
+                NewLine,
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "setorder",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " (and ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "setorderv",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ") reorders the rows of a ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "data.table",
+                            ),
+                        ],
+                    ],
+                },
+                NewLine,
+                Text(
+                    "based on the columns (and column order) provided. It reorders the table",
+                ),
+                NewLine,
+                Command {
+                    name: "emph",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "by reference",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " and is therefore very memory efficient.",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "Note that queries like ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "x",
+                            ),
+                            Text(
+                                "[",
+                            ),
+                            Text(
+                                "order(.)",
+                            ),
+                            Text(
+                                "]",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " are optimised internally to use ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "data.table",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    "'s fast order.",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "Also note that ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "data.table",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " always reorders in \"C-locale\" (see Details). To sort by session locale, use ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "x",
+                            ),
+                            Text(
+                                "[",
+                            ),
+                            Text(
+                                "base::order(.)",
+                            ),
+                            Text(
+                                "]",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ".",
+                ),
+                NewLine,
+                NewLine,
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "bit64::integer64",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " type is also supported for reordering rows of a ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "data.table",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ".",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        NewLine,
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "setorder(x, ",
+                ),
+                Command {
+                    name: "dots",
+                    options: None,
+                    args: [],
+                },
+                Text(
+                    ", na.last=FALSE)",
+                ),
+                NewLine,
+                Text(
+                    "setorderv(x, cols = colnames(x), order=1L, na.last=FALSE)",
+                ),
+                NewLine,
+                Text(
+                    "# optimised to use data.table's internal fast order",
+                ),
+                NewLine,
+                Text(
+                    "# x",
+                ),
+                Text(
+                    "[",
+                ),
+                Text(
+                    "order(., na.last=TRUE)",
+                ),
+                Text(
+                    "]",
+                ),
+                NewLine,
+                Text(
+                    "# x",
+                ),
+                Text(
+                    "[",
+                ),
+                Text(
+                    "order(., decreasing=TRUE)",
+                ),
+                Text(
+                    "]",
+                ),
+                NewLine,
+                Text(
+                    "# sort_by(x, ., na.last=TRUE, decreasing=FALSE)    # R >= 4.4.0",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        ArgumentTable(
+            [
+                Argument {
+                    name: [
+                        Text(
+                            "x",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            " A ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "data.table",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ". ",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Command {
+                            name: "dots",
+                            options: None,
+                            args: [],
+                        },
+                    ],
+                    description: [
+                        Text(
+                            " The columns to sort by. Do not quote column names. If ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Command {
+                                        name: "dots",
+                                        options: None,
+                                        args: [],
+                                    },
+                                ],
+                            ],
+                        },
+                        NewLine,
+                        Text(
+                            "is missing (ex: ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "setorder(x)",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            "), ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "x",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " is rearranged based on all",
+                        ),
+                        NewLine,
+                        Text(
+                            "columns in ascending order by default. To sort by a column in descending order",
+                        ),
+                        NewLine,
+                        Text(
+                            "prefix the symbol ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "\"-\"",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " which means \"descending\" (",
+                        ),
+                        Command {
+                            name: "emph",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "not",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " \"negative\", in this context), i.e., ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "setorder(x, a, -b, c)",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ". The ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "-b",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " works",
+                        ),
+                        NewLine,
+                        Text(
+                            "when ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "b",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " is of type ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "character",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " as well. ",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "cols",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            " A character vector of column names of ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "x",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " by which to order. By default, sorts over all columns; ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "cols = NULL",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " will return ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "x",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " untouched. Do not add ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "\"-\"",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " here. Use ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "order",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " argument instead. ",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "order",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            " An integer vector with only possible values of ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "1",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " and",
+                        ),
+                        NewLine,
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "-1",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ", corresponding to ascending and descending order. The length of",
+                        ),
+                        NewLine,
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "order",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " must be either ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "1",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " or equal to that of ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "cols",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ". If",
+                        ),
+                        NewLine,
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "length(order) == 1",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ", it is recycled to ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "length(cols)",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ". ",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "na.last",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            " ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "logical",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ". If ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "TRUE",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ", missing values in the data are placed last; if ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "FALSE",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ", they are placed first; if ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "NA",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " they are removed.",
+                        ),
+                        NewLine,
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "na.last=NA",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " is valid only for ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "x",
+                                    ),
+                                    Text(
+                                        "[",
+                                    ),
+                                    Text(
+                                        "order(., na.last)",
+                                    ),
+                                    Text(
+                                        "]",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " and related ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "sort_by(x, .)",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " (",
+                        ),
+                        Command {
+                            name: "R",
+                            options: None,
+                            args: [],
+                        },
+                        Text(
+                            " ",
+                        ),
+                        Command {
+                            name: "ifelse",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "html",
+                                    ),
+                                ],
+                                [
+                                    Command {
+                                        name: "out",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "&ge;",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                                [
+                                    Command {
+                                        name: "eqn",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Command {
+                                                    name: "ge",
+                                                    options: None,
+                                                    args: [],
+                                                },
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ],
+                        },
+                        Text(
+                            " 4.4.0) and its",
+                        ),
+                        NewLine,
+                        Text(
+                            "default is ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "TRUE",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ". ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "setorder",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " and ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "setorderv",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " only accept",
+                        ),
+                        NewLine,
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "TRUE",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            "/",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "FALSE",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " with default ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "FALSE",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ". ",
+                        ),
+                    ],
+                },
+            ],
+        ),
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Details",
+                ),
+            ],
+            children: [
+                NewLine,
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "data.table",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " implements its own fast radix-based ordering. See the references for some exposition on the concept of radix sort.",
+                ),
+                NewLine,
+                NewLine,
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "setorder",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " accepts unquoted column names (with names preceded with a",
+                ),
+                NewLine,
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "-",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " sign for descending order) and reorders ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "data.table",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " rows",
+                ),
+                NewLine,
+                Command {
+                    name: "emph",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "by reference",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ", for e.g., ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "setorder(x, a, -b, c)",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ". We emphasize that",
+                ),
+                NewLine,
+                Text(
+                    "this means \"descending\" and not \"negative\" because the implementation simply",
+                ),
+                NewLine,
+                Text(
+                    "reverses the sort order, as opposed to sorting the opposite of the input",
+                ),
+                NewLine,
+                Text(
+                    "(which would be inefficient).",
+                ),
+                NewLine,
+                Text(
+                    "Note that ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "-b",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " also works with columns of type ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "character",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " unlike",
+                ),
+                NewLine,
+                Link {
+                    label: [
+                        Text(
+                            "order",
+                        ),
+                    ],
+                    target: Package {
+                        package: [
+                            Text(
+                                "base",
+                            ),
+                        ],
+                        topic: [
+                            Text(
+                                "order",
+                            ),
+                        ],
+                    },
+                    mode: Code,
+                },
+                Text(
+                    ", which requires ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "-xtfrm(y)",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " instead (which is slow).",
+                ),
+                NewLine,
+                NewLine,
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "setorderv",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " in turn accepts a character vector of column names and an",
+                ),
+                NewLine,
+                Text(
+                    "integer vector of column order separately.",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "Note that ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "setkey",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "setkey",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " still requires and will always sort only in",
+                ),
+                NewLine,
+                Text(
+                    "ascending order, and is different from ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "setorder",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " in that it additionally",
+                ),
+                NewLine,
+                Text(
+                    "sets the ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "sorted",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " attribute.",
+                ),
+                NewLine,
+                NewLine,
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "na.last",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " argument, by default, is ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "FALSE",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " for ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "setorder",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " and",
+                ),
+                NewLine,
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "setorderv",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " to be consistent with ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "data.table",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    "'s ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "setkey",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " and",
+                ),
+                NewLine,
+                Text(
+                    "is ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "TRUE",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " for ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "x",
+                            ),
+                            Text(
+                                "[",
+                            ),
+                            Text(
+                                "order(.)",
+                            ),
+                            Text(
+                                "]",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " and ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "sort_by(x, .)",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " (",
+                ),
+                Command {
+                    name: "R",
+                    options: None,
+                    args: [],
+                },
+                Text(
+                    " ",
+                ),
+                Command {
+                    name: "ifelse",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "html",
+                            ),
+                        ],
+                        [
+                            Command {
+                                name: "out",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "&ge;",
+                                        ),
+                                    ],
+                                ],
+                            },
+                        ],
+                        [
+                            Command {
+                                name: "eqn",
+                                options: None,
+                                args: [
+                                    [
+                                        Command {
+                                            name: "ge",
+                                            options: None,
+                                            args: [],
+                                        },
+                                    ],
+                                ],
+                            },
+                        ],
+                    ],
+                },
+                Text(
+                    " 4.4.0) to be consistent with ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "base::order",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ".",
+                ),
+                NewLine,
+                Text(
+                    "Only ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "x",
+                            ),
+                            Text(
+                                "[",
+                            ),
+                            Text(
+                                "order(.)",
+                            ),
+                            Text(
+                                "]",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " (and related ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "sort_by(x, .)",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ") can have ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "na.last = NA",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " as it is a subset operation",
+                ),
+                NewLine,
+                Text(
+                    "as opposed to ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "setorder",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " or ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "setorderv",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " which reorders the data.table",
+                ),
+                NewLine,
+                Text(
+                    "by reference.",
+                ),
+                NewLine,
+                NewLine,
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "data.table",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " always reorders in \"C-locale\".",
+                ),
+                NewLine,
+                Text(
+                    "As a consequence, the ordering may be different to that obtained by ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "base::order",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ".",
+                ),
+                NewLine,
+                Text(
+                    "In English locales, for example, sorting is case-sensitive in C-locale.",
+                ),
+                NewLine,
+                Text(
+                    "Thus, sorting ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "c(\"c\", \"a\", \"B\")",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " returns ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "c(\"B\", \"a\", \"c\")",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " in ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "data.table",
+                            ),
+                        ],
+                    ],
+                },
+                NewLine,
+                Text(
+                    " but ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "c(\"a\", \"B\", \"c\")",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " in ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "base::order",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ". Note this makes no difference in most cases",
+                ),
+                NewLine,
+                Text(
+                    "of data; both return identical results on ids where only upper-case or lower-case letters are present (",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "\"AB123\" < \"AC234\"",
+                            ),
+                        ],
+                    ],
+                },
+                NewLine,
+                Text(
+                    "is true in both), or on country names and other proper nouns which are consistently capitalized.",
+                ),
+                NewLine,
+                Text(
+                    "For example, neither ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "\"America\" < \"Brazil\"",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " nor",
+                ),
+                NewLine,
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "\"america\" < \"brazil\"",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " are affected since the first letter is consistently",
+                ),
+                NewLine,
+                Text(
+                    "capitalized.",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "Using C-locale makes the behaviour of sorting in ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "data.table",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " more consistent across sessions and locales.",
+                ),
+                NewLine,
+                Text(
+                    "The behaviour of ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "base::order",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " depends on assumptions about the locale of the R session.",
+                ),
+                NewLine,
+                Text(
+                    "In English locales, ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "\"america\" < \"BRAZIL\"",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " is true by default",
+                ),
+                NewLine,
+                Text(
+                    "but false if you either type ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "Sys.setlocale(locale=\"C\")",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " or the R session has been started in a C locale",
+                ),
+                NewLine,
+                Text(
+                    "for you -- which can happen on servers/services since the locale comes from the environment the R session",
+                ),
+                NewLine,
+                Text(
+                    "was started in. By contrast, ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "\"america\" < \"BRAZIL\"",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " is always ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "FALSE",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " in ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "data.table",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " regardless of the way your R session was started.",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "If ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "setorder",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " results in reordering of the rows of a keyed ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "data.table",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ",",
+                ),
+                NewLine,
+                Text(
+                    "then its key will be set to ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "NULL",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ".",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "Starting from ",
+                ),
+                Command {
+                    name: "R",
+                    options: None,
+                    args: [],
+                },
+                Text(
+                    " 4.4.0, ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "sort_by(x, y, ",
+                            ),
+                            Command {
+                                name: "dots",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                ")",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " is the S3 method for the generic ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "sort_by",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " for ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "data.table",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    "'s. ",
+                ),
+                NewLine,
+                Text(
+                    "It uses the same formula or list interfaces as data.frame's ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "sort_by",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " but internally uses ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "data.table",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    "'s fast ordering, ",
+                ),
+                NewLine,
+                Text(
+                    "hence it behaves the same as ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "x",
+                            ),
+                            Text(
+                                "[",
+                            ),
+                            Text(
+                                "order(.)",
+                            ),
+                            Text(
+                                "]",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " and takes the same optional named arguments and their defaults.",
+                ),
+                NewLine,
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Value",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "The input is modified by reference, and returned (invisibly) so it can be used",
+                ),
+                NewLine,
+                Text(
+                    "in compound statements; e.g., ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "setorder(DT,a,-b)",
+                            ),
+                            Text(
+                                "[",
+                            ),
+                            Text(
+                                ", cumsum(c), by=list(a,b)",
+                            ),
+                            Text(
+                                "]",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ".",
+                ),
+                NewLine,
+                Text(
+                    "If you require a copy, take a copy first (using ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "DT2 = copy(DT)",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    "). See",
+                ),
+                NewLine,
+                Link {
+                    label: [
+                        Text(
+                            "copy",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "copy",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ".",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "References",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Url {
+                    href: [
+                        Text(
+                            "https://en.wikipedia.org/wiki/Radix_sort",
+                        ),
+                    ],
+                },
+                Command {
+                    name: "cr",
+                    options: None,
+                    args: [],
+                },
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Url {
+                    href: [
+                        Text(
+                            "https://en.wikipedia.org/wiki/Counting_sort",
+                        ),
+                    ],
+                },
+                Command {
+                    name: "cr",
+                    options: None,
+                    args: [],
+                },
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Url {
+                    href: [
+                        Text(
+                            "https://stereopsis.com/radix.html",
+                        ),
+                    ],
+                },
+                Command {
+                    name: "cr",
+                    options: None,
+                    args: [],
+                },
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Url {
+                    href: [
+                        Text(
+                            "https://codercorner.com/RadixSortRevisited.htm",
+                        ),
+                    ],
+                },
+                Command {
+                    name: "cr",
+                    options: None,
+                    args: [],
+                },
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Url {
+                    href: [
+                        Text(
+                            "https://medium.com/basecs/getting-to-the-root-of-sorting-with-radix-sort-f8e9240d4224",
+                        ),
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "See Also",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "setkey",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "setkey",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ", ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "setcolorder",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "setcolorder",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ", ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "setattr",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "setattr",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ",",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "setnames",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "setnames",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ", ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "set",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "set",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ", ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            ":=",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                ":=",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ", ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "setDT",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "setdt",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ",",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "setDF",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "setdf",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ", ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "copy",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "copy",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ", ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "setNumericRounding",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "setnumericrounding",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Examples",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                NewLine,
+                Text(
+                    "set.seed(45L)",
+                ),
+                NewLine,
+                Text(
+                    "DT = data.table(A=sample(3, 10, TRUE),",
+                ),
+                NewLine,
+                Text(
+                    "         B=sample(letters",
+                ),
+                Text(
+                    "[",
+                ),
+                Text(
+                    "1:3",
+                ),
+                Text(
+                    "]",
+                ),
+                Text(
+                    ", 10, TRUE), C=sample(10))",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "# setorder",
+                ),
+                NewLine,
+                Text(
+                    "setorder(DT, A, -B)",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "# same as above, but using setorderv",
+                ),
+                NewLine,
+                Text(
+                    "setorderv(DT, c(\"A\", \"B\"), c(1, -1))",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Keyword",
+                ),
+            ],
+            children: [
+                Text(
+                    " data ",
+                ),
+            ],
+        },
+        NewLine,
+        NewLine,
+    ],
+}

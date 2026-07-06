@@ -1,0 +1,955 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/stats-ssfpl.Rd
+---
+Document {
+    children: [
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Name",
+                ),
+            ],
+            children: [
+                Text(
+                    "SSfpl",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Title",
+                ),
+            ],
+            children: [
+                Text(
+                    "Self-Starting ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "nls",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " Four-Parameter Logistic Model",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "SSfpl",
+                ),
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "SSfpl(input, A, B, xmid, scal)",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        ArgumentTable(
+            [
+                Argument {
+                    name: [
+                        Text(
+                            "input",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "a numeric vector of values at which to evaluate the model.",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "A",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "a numeric parameter representing the horizontal asymptote on",
+                        ),
+                        NewLine,
+                        Text(
+                            "   the left side (very small values of ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "input",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ").",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "B",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "a numeric parameter representing the horizontal asymptote on",
+                        ),
+                        NewLine,
+                        Text(
+                            "   the right side (very large values of ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "input",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ").",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "xmid",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "a numeric parameter representing the ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "input",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " value at the",
+                        ),
+                        NewLine,
+                        Text(
+                            "   inflection point of the curve.  The value of ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "SSfpl",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " will be",
+                        ),
+                        NewLine,
+                        Text(
+                            "   midway between ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "A",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " and ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "B",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " at ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "xmid",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ".",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "scal",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "a numeric scale parameter on the ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "input",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " axis.",
+                        ),
+                    ],
+                },
+            ],
+        ),
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  This ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "selfStart",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " model evaluates the four-parameter logistic",
+                ),
+                NewLine,
+                Text(
+                    "  function and its gradient.  It has an ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "initial",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " attribute computing",
+                ),
+                NewLine,
+                Text(
+                    "  initial estimates of the parameters ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "A",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ", ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "B",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ",",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "xmid",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ", and ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "scal",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " for a given set of data.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Value",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  a numeric vector of the same length as ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "input",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ".  It is the value of",
+                ),
+                NewLine,
+                Text(
+                    "  the expression ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "A+(B-A)/(1+exp((xmid-input)/scal))",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ".  If all of",
+                ),
+                NewLine,
+                Text(
+                    "  the arguments ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "A",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ", ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "B",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ", ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "xmid",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ", and ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "scal",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " are",
+                ),
+                NewLine,
+                Text(
+                    "  names of objects, the gradient matrix with respect to these names is",
+                ),
+                NewLine,
+                Text(
+                    "  attached as an attribute named ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "gradient",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ".",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Author",
+                ),
+            ],
+            children: [
+                Command {
+                    name: "enc",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "José",
+                            ),
+                        ],
+                        [
+                            Text(
+                                "Jose",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " Pinheiro and Douglas Bates",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "See Also",
+                ),
+            ],
+            children: [
+                Link {
+                    label: [
+                        Text(
+                            "nls",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "nls",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ", ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "selfStart",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "selfstart",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Examples",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "Chick.1 <- ChickWeight",
+                ),
+                Text(
+                    "[",
+                ),
+                Text(
+                    "ChickWeight$Chick == 1, ",
+                ),
+                Text(
+                    "]",
+                ),
+                NewLine,
+                Text(
+                    "SSfpl(Chick.1$Time, 13, 368, 14, 6)  # response only",
+                ),
+                NewLine,
+                Text(
+                    "local(",
+                ),
+                Text(
+                    "{",
+                ),
+                NewLine,
+                Text(
+                    "  A <- 13; B <- 368; xmid <- 14; scal <- 6",
+                ),
+                NewLine,
+                Text(
+                    "  SSfpl(Chick.1$Time, A, B, xmid, scal) # response _and_ gradient",
+                ),
+                NewLine,
+                Text(
+                    "}",
+                ),
+                Text(
+                    ")",
+                ),
+                NewLine,
+                Text(
+                    "print(getInitial(weight ~ SSfpl(Time, A, B, xmid, scal), data = Chick.1),",
+                ),
+                NewLine,
+                Text(
+                    "      digits = 5)",
+                ),
+                NewLine,
+                Text(
+                    "## Initial values are in fact the converged values",
+                ),
+                NewLine,
+                Text(
+                    "fm1 <- nls(weight ~ SSfpl(Time, A, B, xmid, scal), data = Chick.1)",
+                ),
+                NewLine,
+                Text(
+                    "summary(fm1)",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "## Visualizing the  SSfpl()  parametrization",
+                ),
+                NewLine,
+                Text(
+                    "  xx <- seq(-0.5, 5, length.out = 101)",
+                ),
+                NewLine,
+                Text(
+                    "  yy <- 1 + 4 / (1 + exp((2-xx))) # == SSfpl(xx, *) :",
+                ),
+                NewLine,
+                Text(
+                    "  stopifnot( all.equal(yy, SSfpl(xx, A = 1, B = 5, xmid = 2, scal = 1)) )",
+                ),
+                NewLine,
+                Text(
+                    "  require(graphics)",
+                ),
+                NewLine,
+                Text(
+                    "  op <- par(mar = c(0, 0, 3.5, 0))",
+                ),
+                NewLine,
+                Text(
+                    "  plot(xx, yy, type = \"l\", axes = FALSE, ylim = c(0,6), xlim = c(-1, 5),",
+                ),
+                NewLine,
+                Text(
+                    "       xlab = \"\", ylab = \"\", lwd = 2,",
+                ),
+                NewLine,
+                Text(
+                    "       main = \"Parameters in the SSfpl model\")",
+                ),
+                NewLine,
+                Text(
+                    "  mtext(quote(list(phi",
+                ),
+                Text(
+                    "[",
+                ),
+                Text(
+                    "1",
+                ),
+                Text(
+                    "]",
+                ),
+                Text(
+                    " == \"A\", phi",
+                ),
+                Text(
+                    "[",
+                ),
+                Text(
+                    "2",
+                ),
+                Text(
+                    "]",
+                ),
+                Text(
+                    " == \"B\", phi",
+                ),
+                Text(
+                    "[",
+                ),
+                Text(
+                    "3",
+                ),
+                Text(
+                    "]",
+                ),
+                Text(
+                    " == \"xmid\", phi",
+                ),
+                Text(
+                    "[",
+                ),
+                Text(
+                    "4",
+                ),
+                Text(
+                    "]",
+                ),
+                Text(
+                    " == \"scal\")))",
+                ),
+                NewLine,
+                Text(
+                    "  usr <- par(\"usr\")",
+                ),
+                NewLine,
+                Text(
+                    "  arrows(usr",
+                ),
+                Text(
+                    "[",
+                ),
+                Text(
+                    "1",
+                ),
+                Text(
+                    "]",
+                ),
+                Text(
+                    ", 0, usr",
+                ),
+                Text(
+                    "[",
+                ),
+                Text(
+                    "2",
+                ),
+                Text(
+                    "]",
+                ),
+                Text(
+                    ", 0, length = 0.1, angle = 25)",
+                ),
+                NewLine,
+                Text(
+                    "  arrows(0, usr",
+                ),
+                Text(
+                    "[",
+                ),
+                Text(
+                    "3",
+                ),
+                Text(
+                    "]",
+                ),
+                Text(
+                    ", 0, usr",
+                ),
+                Text(
+                    "[",
+                ),
+                Text(
+                    "4",
+                ),
+                Text(
+                    "]",
+                ),
+                Text(
+                    ", length = 0.1, angle = 25)",
+                ),
+                NewLine,
+                Text(
+                    "  text(usr",
+                ),
+                Text(
+                    "[",
+                ),
+                Text(
+                    "2",
+                ),
+                Text(
+                    "]",
+                ),
+                Text(
+                    " - 0.2, 0.1, \"x\", adj = c(1, 0))",
+                ),
+                NewLine,
+                Text(
+                    "  text(     -0.1, usr",
+                ),
+                Text(
+                    "[",
+                ),
+                Text(
+                    "4",
+                ),
+                Text(
+                    "]",
+                ),
+                Text(
+                    ", \"y\", adj = c(1, 1))",
+                ),
+                NewLine,
+                Text(
+                    "  abline(h = c(1, 5), lty = 3)",
+                ),
+                NewLine,
+                Text(
+                    "  arrows(-0.8, c(2.1, 2.9),",
+                ),
+                NewLine,
+                Text(
+                    "         -0.8, c(0,   5  ), length = 0.1, angle = 25)",
+                ),
+                NewLine,
+                Text(
+                    "  text  (-0.8, 2.5, quote(phi",
+                ),
+                Text(
+                    "[",
+                ),
+                Text(
+                    "1",
+                ),
+                Text(
+                    "]",
+                ),
+                Text(
+                    "))",
+                ),
+                NewLine,
+                Text(
+                    "  arrows(-0.3, c(1/4, 3/4),",
+                ),
+                NewLine,
+                Text(
+                    "         -0.3, c(0,   1  ), length = 0.07, angle = 25)",
+                ),
+                NewLine,
+                Text(
+                    "  text  (-0.3, 0.5, quote(phi",
+                ),
+                Text(
+                    "[",
+                ),
+                Text(
+                    "2",
+                ),
+                Text(
+                    "]",
+                ),
+                Text(
+                    "))",
+                ),
+                NewLine,
+                Text(
+                    "  text(2, -.1, quote(phi",
+                ),
+                Text(
+                    "[",
+                ),
+                Text(
+                    "3",
+                ),
+                Text(
+                    "]",
+                ),
+                Text(
+                    "))",
+                ),
+                NewLine,
+                Text(
+                    "  segments(c(2,3,3), c(0,3,4), # SSfpl(x = xmid = 2) = 3",
+                ),
+                NewLine,
+                Text(
+                    "           c(2,3,2), c(3,4,3),    lty = 2, lwd = 0.75)",
+                ),
+                NewLine,
+                Text(
+                    "  arrows(c(2.3, 2.7), 3,",
+                ),
+                NewLine,
+                Text(
+                    "         c(2.0, 3  ), 3, length = 0.08, angle = 25)",
+                ),
+                NewLine,
+                Text(
+                    "  text(      2.5,     3, quote(phi",
+                ),
+                Text(
+                    "[",
+                ),
+                Text(
+                    "4",
+                ),
+                Text(
+                    "]",
+                ),
+                Text(
+                    ")); text(3.1, 3.5, \"1\")",
+                ),
+                NewLine,
+                Text(
+                    "  par(op)",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Keyword",
+                ),
+            ],
+            children: [
+                Text(
+                    "models",
+                ),
+            ],
+        },
+        NewLine,
+    ],
+}

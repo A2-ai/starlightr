@@ -1,0 +1,3499 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/base-envvar.Rd
+---
+Document {
+    children: [
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Name",
+                ),
+            ],
+            children: [
+                Text(
+                    "EnvVar",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "environment variables",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "HOME",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "LANGUAGE",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "R_BATCH",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "R_BROWSER",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "R_COMPLETION",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "R_DOC_DIR",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "R_GSCMD",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "R_HISTFILE",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "R_HISTSIZE",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "R_INCLUDE_DIR",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "MAKEINDEX",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "R_PAPERSIZE",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "R_PCRE_JIT_STACK_MAXSIZE",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "R_PDFVIEWER",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "R_PLATFORM",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "R_RD4PDF",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "R_SHARE_DIR",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "R_SUPPORT_OLD_TARS",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "R_TEXI2DVICMD",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "R_TIDYCMD",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "R_UNZIPCMD",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "R_ZIPCMD",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "TMPDIR",
+                ),
+            ],
+        },
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "DISPLAY",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "EDITOR",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "PAGER",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "R_PRINTCMD",
+                ),
+            ],
+        },
+        NewLine,
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "GSC",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "R_USER",
+                ),
+            ],
+        },
+        NewLine,
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Title",
+                ),
+            ],
+            children: [
+                Text(
+                    "Environment Variables",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  Details of some of the environment variables which affect an ",
+                ),
+                Command {
+                    name: "R",
+                    options: None,
+                    args: [],
+                },
+                Text(
+                    " session.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Details",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  It is impossible to list all the environment variables which can",
+                ),
+                NewLine,
+                Text(
+                    "  affect an ",
+                ),
+                Command {
+                    name: "R",
+                    options: None,
+                    args: [],
+                },
+                Text(
+                    " session: some affect the OS system functions which ",
+                ),
+                Command {
+                    name: "R",
+                    options: None,
+                    args: [],
+                },
+                NewLine,
+                Text(
+                    "  uses, and others will affect add-on packages.  But here are notes on",
+                ),
+                NewLine,
+                Text(
+                    "  some of the more important ones.  Those that set the defaults for",
+                ),
+                NewLine,
+                Text(
+                    "  options are consulted only at startup (as are some of the others).",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                List {
+                    kind: Describe,
+                    items: [
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "HOME",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "The user's ",
+                                ),
+                                Command {
+                                    name: "sQuote",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "home",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " directory.",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "LANGUAGE",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "Optional.  The language(s) to be used for",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      message translations.  This is consulted when needed.",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "LC_ALL",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "(etc) Optional.  Use to set various aspects of",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      the locale -- see ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "Sys.getlocale",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "sys-getlocale",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ".  Consulted at startup.",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "MAKEINDEX",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "The path to ",
+                                ),
+                                Command {
+                                    name: "command",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "makeindex",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ".",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      If unset to a value determined when ",
+                                ),
+                                Command {
+                                    name: "R",
+                                    options: None,
+                                    args: [],
+                                },
+                                Text(
+                                    " was built.",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      Used by the emulation mode of ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "texi2dvi",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "texi2dvi",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " and",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "texi2pdf",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "texi2pdf",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ".",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_BATCH",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "Optional -- set in a batch session, that is",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      one started by ",
+                                ),
+                                Command {
+                                    name: "command",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "R CMD ",
+                                            ),
+                                            Link {
+                                                label: [
+                                                    Text(
+                                                        "BATCH",
+                                                    ),
+                                                ],
+                                                target: Local(
+                                                    [
+                                                        Text(
+                                                            "batch",
+                                                        ),
+                                                    ],
+                                                ),
+                                                mode: Text,
+                                            },
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ".  Most often set to",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\"\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", so test by something like",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "!is.na(",
+                                            ),
+                                            Link {
+                                                label: [
+                                                    Text(
+                                                        "Sys.getenv",
+                                                    ),
+                                                ],
+                                                target: Local(
+                                                    [
+                                                        Text(
+                                                            "sys-getenv",
+                                                        ),
+                                                    ],
+                                                ),
+                                                mode: Text,
+                                            },
+                                            Text(
+                                                "(\"R_BATCH\", NA))",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ".",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_BROWSER",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "The path to the default browser.  Used to",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      set the default value of ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "options",
+                                        ),
+                                        Text(
+                                            "(\"browser\")",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "options",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ".",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_COMPLETION",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "Optional.  If set to ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "FALSE",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ",",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      command-line completion is not used.  (Not used by the macOS GUI.)",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_DEFAULT_PACKAGES",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "A comma-separated list of packages",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      which are to be attached in every session.  See ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "options",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "options",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ".",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_DOC_DIR",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "The location of the ",
+                                ),
+                                Command {
+                                    name: "R",
+                                    options: None,
+                                    args: [],
+                                },
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "file",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "doc",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                                Text(
+                                    "      directory.  Set by ",
+                                ),
+                                Command {
+                                    name: "R",
+                                    options: None,
+                                    args: [],
+                                },
+                                Text(
+                                    ".",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_ENVIRON",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "Optional.  The path to the site environment",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      file: see ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "Startup",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "startup",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Text,
+                                },
+                                Text(
+                                    ".  Consulted at startup.",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_GSCMD",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "Optional.  The path to Ghostscript, used by",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "dev2bitmap",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "dev2bitmap",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "bitmap",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "bitmap",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " and",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "embedFonts",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "embedfonts",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ".  Consulted when those functions are",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      invoked.  Since it will be treated as if passed to",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "system",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "system",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ", spaces and shell metacharacters should be escaped.",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_HISTFILE",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "Optional.  The path of the history file:",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      see ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "Startup",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "startup",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Text,
+                                },
+                                Text(
+                                    ".  Consulted at startup and when the history is",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      saved.",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_HISTSIZE",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "Optional.  The maximum size of the history",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      file, in lines.  Exactly how this is used depends on the",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      interface.",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                List {
+                                    kind: Describe,
+                                    items: [
+                                        ListItem {
+                                            term: Some(
+                                                [
+                                                    Text(
+                                                        "On Unix-alikes,",
+                                                    ),
+                                                ],
+                                            ),
+                                            children: [
+                                                Text(
+                                                    "for the ",
+                                                ),
+                                                Command {
+                                                    name: "code",
+                                                    options: None,
+                                                    args: [
+                                                        [
+                                                            Text(
+                                                                "readline",
+                                                            ),
+                                                        ],
+                                                    ],
+                                                },
+                                                Text(
+                                                    " command-line interface it takes effect",
+                                                ),
+                                                NewLine,
+                                                Text(
+                                                    "\t  when the history is saved (by ",
+                                                ),
+                                                Link {
+                                                    label: [
+                                                        Text(
+                                                            "savehistory",
+                                                        ),
+                                                    ],
+                                                    target: Local(
+                                                        [
+                                                            Text(
+                                                                "savehistory",
+                                                            ),
+                                                        ],
+                                                    ),
+                                                    mode: Code,
+                                                },
+                                                Text(
+                                                    " or at the",
+                                                ),
+                                                NewLine,
+                                                Text(
+                                                    "\t  end of a session).",
+                                                ),
+                                            ],
+                                        },
+                                        ListItem {
+                                            term: Some(
+                                                [
+                                                    Text(
+                                                        "On Windows,",
+                                                    ),
+                                                ],
+                                            ),
+                                            children: [
+                                                Text(
+                                                    "for ",
+                                                ),
+                                                Command {
+                                                    name: "command",
+                                                    options: None,
+                                                    args: [
+                                                        [
+                                                            Text(
+                                                                "Rgui",
+                                                            ),
+                                                        ],
+                                                    ],
+                                                },
+                                                Text(
+                                                    " it controls the number of lines saved to the",
+                                                ),
+                                                NewLine,
+                                                Text(
+                                                    "\t  history file: the size of the history used in the session is",
+                                                ),
+                                                NewLine,
+                                                Text(
+                                                    "\t  controlled by the console customization: see ",
+                                                ),
+                                                Link {
+                                                    label: [
+                                                        Text(
+                                                            "Rconsole",
+                                                        ),
+                                                    ],
+                                                    target: Local(
+                                                        [
+                                                            Text(
+                                                                "rconsole",
+                                                            ),
+                                                        ],
+                                                    ),
+                                                    mode: Code,
+                                                },
+                                                Text(
+                                                    ".",
+                                                ),
+                                            ],
+                                        },
+                                    ],
+                                },
+                                NewLine,
+                                Text(
+                                    "    ",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_HOME",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "The top-level directory of the ",
+                                ),
+                                Command {
+                                    name: "R",
+                                    options: None,
+                                    args: [],
+                                },
+                                NewLine,
+                                Text(
+                                    "      installation: see ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "R.home",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "r-home",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ".  Set by ",
+                                ),
+                                Command {
+                                    name: "R",
+                                    options: None,
+                                    args: [],
+                                },
+                                Text(
+                                    ".",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_INCLUDE_DIR",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "The location of the ",
+                                ),
+                                Command {
+                                    name: "R",
+                                    options: None,
+                                    args: [],
+                                },
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "file",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "include",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                                Text(
+                                    "      directory.  Set by ",
+                                ),
+                                Command {
+                                    name: "R",
+                                    options: None,
+                                    args: [],
+                                },
+                                Text(
+                                    ".",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_LIBS",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "Optional.  Used for initial setting of",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            ".libPaths",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "-libpaths",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ".",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_LIBS_SITE",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "Optional.  Used for initial setting of",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            ".libPaths",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "-libpaths",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ".",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_LIBS_USER",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "Optional.  Used for initial setting of",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            ".libPaths",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "-libpaths",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ".",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_PAPERSIZE",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "Optional.  Used to set the default for",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "options",
+                                        ),
+                                        Text(
+                                            "(\"papersize\")",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "options",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ", e.g.",
+                                ),
+                                Command {
+                                    name: "sspace",
+                                    options: None,
+                                    args: [
+                                        [],
+                                    ],
+                                },
+                                Text(
+                                    "used by",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "pdf",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "pdf",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " and ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "postscript",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "postscript",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ".",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_PCRE_JIT_STACK_MAXSIZE",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "Optional.  Consulted when",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Command {
+                                    name: "I",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "PCRE",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    "'s ",
+                                ),
+                                Command {
+                                    name: "abbr",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "JIT",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " pattern compiler is first used.  See ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "grep",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "grep",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ".",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_PDFVIEWER",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "The path to the default PDF viewer.  Used",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      by ",
+                                ),
+                                Command {
+                                    name: "command",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "R CMD Rd2pdf",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ".",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_PLATFORM",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "The platform -- a string of the form",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\"",
+                                            ),
+                                            Command {
+                                                name: "var",
+                                                options: None,
+                                                args: [
+                                                    [
+                                                        Text(
+                                                            "cpu",
+                                                        ),
+                                                    ],
+                                                ],
+                                            },
+                                            Text(
+                                                "-",
+                                            ),
+                                            Command {
+                                                name: "var",
+                                                options: None,
+                                                args: [
+                                                    [
+                                                        Text(
+                                                            "vendor",
+                                                        ),
+                                                    ],
+                                                ],
+                                            },
+                                            Text(
+                                                "-",
+                                            ),
+                                            Command {
+                                                name: "var",
+                                                options: None,
+                                                args: [
+                                                    [
+                                                        Text(
+                                                            "os",
+                                                        ),
+                                                    ],
+                                                ],
+                                            },
+                                            Text(
+                                                "\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", see ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "R.Version",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "r-version",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ".",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_PROFILE",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "Optional.  The path to the site profile",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      file: see ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "Startup",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "startup",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Text,
+                                },
+                                Text(
+                                    ".  Consulted at startup.",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_RD4PDF",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "Options for ",
+                                ),
+                                Command {
+                                    name: "command",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "pdflatex",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " processing of",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "Rd",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " files.  Used by ",
+                                ),
+                                Command {
+                                    name: "command",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "R CMD Rd2pdf",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ".",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_SHARE_DIR",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "The location of the ",
+                                ),
+                                Command {
+                                    name: "R",
+                                    options: None,
+                                    args: [],
+                                },
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "file",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "share",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                                Text(
+                                    "      directory.  Set by ",
+                                ),
+                                Command {
+                                    name: "R",
+                                    options: None,
+                                    args: [],
+                                },
+                                Text(
+                                    ".",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_TEXI2DVICMD",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "The path to ",
+                                ),
+                                Command {
+                                    name: "command",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "texi2dvi",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ".",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      Defaults to the value of ",
+                                ),
+                                Command {
+                                    name: "env",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "TEXI2DVI",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", and if that is unset to a",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      value determined when ",
+                                ),
+                                Command {
+                                    name: "R",
+                                    options: None,
+                                    args: [],
+                                },
+                                Text(
+                                    " was built.",
+                                ),
+                                NewLine,
+                                NewLine,
+                                Text(
+                                    "      Only on Unix-alikes:",
+                                ),
+                                Command {
+                                    name: "cr",
+                                    options: None,
+                                    args: [],
+                                },
+                                NewLine,
+                                Text(
+                                    "      Consulted at startup to set the default for",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "options",
+                                        ),
+                                        Text(
+                                            "(\"texi2dvi\")",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "options",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ", used by",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "texi2dvi",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "texi2dvi",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " and ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "texi2pdf",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "texi2pdf",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " in package ",
+                                ),
+                                Command {
+                                    name: "pkg",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "tools",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ".",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    ",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_TIDYCMD",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "The path to HTML ",
+                                ),
+                                Command {
+                                    name: "command",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "tidy",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ". Used by",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Command {
+                                    name: "command",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "R CMD check",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " if ",
+                                ),
+                                Command {
+                                    name: "env",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "_R_CHECK_RD_VALIDATE_RD2HTML_",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " is",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      set to a true value (as it is by ",
+                                ),
+                                Command {
+                                    name: "option",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "--as-cran",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ".",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_UNZIPCMD",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "The path to ",
+                                ),
+                                Command {
+                                    name: "command",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "unzip",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ".  Sets the",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      initial value for ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "options",
+                                        ),
+                                        Text(
+                                            "(\"unzip\")",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "options",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " on a Unix-alike",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      when namespace ",
+                                ),
+                                Command {
+                                    name: "pkg",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "utils",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " is loaded.",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_ZIPCMD",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "The path to ",
+                                ),
+                                Command {
+                                    name: "command",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "zip",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ". Used by",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "zip",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "zip",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " and by ",
+                                ),
+                                Command {
+                                    name: "command",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "R CMD INSTALL --build",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " on Windows.",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "TMPDIR",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ", ",
+                                    ),
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "TMP",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ", ",
+                                    ),
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "TEMP",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "Consulted (in that",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      order) when setting the temporary directory for the session: see",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "tempdir",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "tempdir",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ".  ",
+                                ),
+                                Command {
+                                    name: "env",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "TMPDIR",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " is also used by some of the",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      utilities: see the help for ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "build",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "build",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ".",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "TZ",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "Optional.  The current time zone.  See",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "Sys.timezone",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "sys-timezone",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " for the system-specific",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      formats.  Consulted as needed.",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "TZDIR",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "Optional.  The top-level directory of the",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      time-zone database.  See ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "Sys.timezone",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "sys-timezone",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ".",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "no_proxy",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ", ",
+                                    ),
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "http_proxy",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ", ",
+                                    ),
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "ftp_proxy",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                NewLine,
+                                Text(
+                                    "      (and more).  Optional.  Settings for ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "download.file",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "download-file",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ":",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      see its help for further details.",
+                                ),
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Unix-specific",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  Some variables set on Unix-alikes, and not (in general) on Windows.",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                List {
+                    kind: Describe,
+                    items: [
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "DISPLAY",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "Optional: used by ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "X11",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "x11",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ", Tk (in",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      package ",
+                                ),
+                                Command {
+                                    name: "pkg",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "tcltk",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    "), the data editor and various packages.",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "EDITOR",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "The path to the default editor: sets the",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      default for ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "options",
+                                        ),
+                                        Text(
+                                            "(\"editor\")",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "options",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " when namespace",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Command {
+                                    name: "pkg",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "utils",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " is loaded.",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "PAGER",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "The path to the pager with the default setting of",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "options",
+                                        ),
+                                        Text(
+                                            "(\"pager\")",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "options",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ". The default value is chosen at",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      configuration, usually as the path to ",
+                                ),
+                                Command {
+                                    name: "command",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "less",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ".",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_PRINTCMD",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "Sets the default for",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "options",
+                                        ),
+                                        Text(
+                                            "(\"printcmd\")",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "options",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ", which sets the default print",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      command to be used by ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "postscript",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "postscript",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ".",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_SUPPORT_OLD_TARS",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "logical. Sets the default for the",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "support_old_tars",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " argument of ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "untar",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "untar",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ".  Should",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      be set to ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "TRUE",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " if an old system ",
+                                ),
+                                Command {
+                                    name: "command",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "tar",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " command is",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      used which does not support either ",
+                                ),
+                                Command {
+                                    name: "command",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "xz",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " compression or",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      automagically detecting compression type.",
+                                ),
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Windows-specific",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  Some Windows-specific variables are",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                List {
+                    kind: Describe,
+                    items: [
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "GSC",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "Optional: the path to Ghostscript, used if",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Command {
+                                    name: "env",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "R_GSCMD",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " is not set.",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "env",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R_USER",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    Text(
+                                        ":",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "The user's ",
+                                ),
+                                Command {
+                                    name: "sQuote",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "home",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " directory.  Set by",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Command {
+                                    name: "R",
+                                    options: None,
+                                    args: [],
+                                },
+                                Text(
+                                    ".  (",
+                                ),
+                                Command {
+                                    name: "env",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "HOME",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " will be set to the same value if not already set.)",
+                                ),
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "See Also",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "Sys.getenv",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "sys-getenv",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " and ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "Sys.setenv",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "sys-setenv",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " to read and set",
+                ),
+                NewLine,
+                Text(
+                    "  environmental variables in an ",
+                ),
+                Command {
+                    name: "R",
+                    options: None,
+                    args: [],
+                },
+                Text(
+                    " session.",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "gctorture",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "gctorture",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " for environment variables controlling garbage",
+                ),
+                NewLine,
+                Text(
+                    "  collection.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Keyword",
+                ),
+            ],
+            children: [
+                Text(
+                    "utilities",
+                ),
+            ],
+        },
+        NewLine,
+    ],
+}

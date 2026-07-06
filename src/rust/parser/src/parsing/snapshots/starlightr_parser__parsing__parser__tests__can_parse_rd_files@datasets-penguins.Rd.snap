@@ -1,0 +1,1860 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/datasets-penguins.Rd
+---
+Document {
+    children: [
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Name",
+                ),
+            ],
+            children: [
+                Text(
+                    "penguins",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Doc Type",
+                ),
+            ],
+            children: [
+                Text(
+                    "data",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Title",
+                ),
+            ],
+            children: [
+                Text(
+                    "Measurements of Penguins near Palmer Station, Antarctica",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "penguins",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "penguins_raw",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  Data on adult penguins covering three species found on three islands in the ",
+                ),
+                NewLine,
+                Text(
+                    "  Palmer Archipelago, Antarctica, including their size ",
+                ),
+                NewLine,
+                Text(
+                    "  (flipper length, body mass, bill dimensions), and sex.",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "  The columns of ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "penguins",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " are a subset of the more extensive",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "penguins_raw",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " data frame, which includes nesting observations ",
+                ),
+                NewLine,
+                Text(
+                    "  and blood isotope data. There are differences in the column names ",
+                ),
+                NewLine,
+                Text(
+                    "  and data types. See the ",
+                ),
+                Command {
+                    name: "sQuote",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "Format",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " section for details. ",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "penguins",
+                ),
+                NewLine,
+                Text(
+                    "penguins_raw",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Format",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "penguins",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " is a data frame with 344 rows and 8 variables:",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                List {
+                    kind: Describe,
+                    items: [
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "code",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "species",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Link {
+                                    label: [
+                                        Text(
+                                            "factor",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "factor",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ", with levels ",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "Adelie",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "Chinstrap",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", and ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "Gentoo",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "code",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "island",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "factor",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      with levels ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "Biscoe",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "Dream",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", and ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "Torgersen",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "code",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "bill_len",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Link {
+                                    label: [
+                                        Text(
+                                            "numeric",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "numeric",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ", bill length (millimeters)",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "code",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "bill_dep",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "numeric",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", bill depth (millimeters)",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "code",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "flipper_len",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Link {
+                                    label: [
+                                        Text(
+                                            "integer",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "integer",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ", flipper length (millimeters)",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "code",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "body_mass",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "integer",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", body mass (grams)",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "code",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "sex",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "factor",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", with levels ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "female",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " and ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "male",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "code",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "year",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "integer",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", study year: 2007, 2008, or 2009",
+                                ),
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "penguins_raw",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " is a data frame with 344 rows and 17 variables. ",
+                ),
+                NewLine,
+                Text(
+                    "  8 columns correspond to columns in ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "penguins",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ", ",
+                ),
+                NewLine,
+                Text(
+                    "  though with different variable names and/or classes:",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                List {
+                    kind: Describe,
+                    items: [
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "code",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "Species",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "character",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "code",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "Island",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "character",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "samp",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "Culmen Length (mm)",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "numeric",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", bill length",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "samp",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "Culmen Depth (mm)",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "numeric",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", bill depth",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "samp",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "Flipper Length (mm)",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "numeric",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", flipper length",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "samp",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "Body Mass (g)",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "numeric",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", body mass",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "code",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "Sex",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "character",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "samp",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "Date Egg",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Link {
+                                    label: [
+                                        Text(
+                                            "Date",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "date",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ", when study nest observed with 1 egg.",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      The year component is the ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "year",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " column in ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "penguins",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+                NewLine,
+                Text(
+                    "  There are 9 further columns in ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "penguins_raw",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ":",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                List {
+                    kind: Describe,
+                    items: [
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "code",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "studyName",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "character",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", expedition during which the data was collected",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "samp",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "Sample Number",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "numeric",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", continuous numbering sequence for each sample",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "code",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "Region",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "character",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", the region of Palmer ",
+                                ),
+                                Command {
+                                    name: "acronym",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "LTER",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " sampling grid",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "code",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "Stage",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "character",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", denoting reproductive stage at sampling",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "samp",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "Individual ID",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "character",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", unique ID for each individual in dataset",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "samp",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "Clutch Completion",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "character",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      if the study nest was observed with a full clutch, i.e., 2 eggs",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "samp",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "Delta 15 N (o/oo)",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "numeric",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", the ratio of stable isotopes 15N:14N",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "samp",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "Delta 13 C (o/oo)",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "numeric",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", the ratio of stable isotopes 13C:12C",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Command {
+                                        name: "code",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "Comments",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                ],
+                            ),
+                            children: [
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "character",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", additional relevant information",
+                                ),
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        Command {
+            name: "source",
+            options: None,
+            args: [
+                [
+                    NewLine,
+                    Text(
+                        "  ",
+                    ),
+                    List {
+                        kind: Describe,
+                        items: [
+                            ListItem {
+                                term: Some(
+                                    [
+                                        Command {
+                                            name: "enc",
+                                            options: None,
+                                            args: [
+                                                [
+                                                    Text(
+                                                        "Adélie",
+                                                    ),
+                                                ],
+                                                [
+                                                    Text(
+                                                        "Adelie",
+                                                    ),
+                                                ],
+                                            ],
+                                        },
+                                        Text(
+                                            " penguins:",
+                                        ),
+                                    ],
+                                ),
+                                children: [
+                                    NewLine,
+                                    Text(
+                                        "      ",
+                                    ),
+                                    Command {
+                                        name: "bibshow",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R:Palmer_Station_Antarctica_LTER+Gorman:2020a",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    NewLine,
+                                    Text(
+                                        "    ",
+                                    ),
+                                ],
+                            },
+                            ListItem {
+                                term: Some(
+                                    [
+                                        Text(
+                                            "Gentoo penguins:",
+                                        ),
+                                    ],
+                                ),
+                                children: [
+                                    NewLine,
+                                    Text(
+                                        "      ",
+                                    ),
+                                    Command {
+                                        name: "bibshow",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R:Palmer_Station_Antarctica_LTER+Gorman:2020b",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    NewLine,
+                                    Text(
+                                        "    ",
+                                    ),
+                                ],
+                            },
+                            ListItem {
+                                term: Some(
+                                    [
+                                        Text(
+                                            "Chinstrap penguins:",
+                                        ),
+                                    ],
+                                ),
+                                children: [
+                                    NewLine,
+                                    Text(
+                                        "      ",
+                                    ),
+                                    Command {
+                                        name: "bibshow",
+                                        options: None,
+                                        args: [
+                                            [
+                                                Text(
+                                                    "R:Palmer_Station_Antarctica_LTER+Gorman:2020c",
+                                                ),
+                                            ],
+                                        ],
+                                    },
+                                    NewLine,
+                                    Text(
+                                        "    ",
+                                    ),
+                                ],
+                            },
+                        ],
+                    },
+                    NewLine,
+                    NewLine,
+                    Text(
+                        "  The title naming convention for the source for the Gentoo and Chinstrap",
+                    ),
+                    NewLine,
+                    Text(
+                        "  data is that same as for ",
+                    ),
+                    Command {
+                        name: "enc",
+                        options: None,
+                        args: [
+                            [
+                                Text(
+                                    "Adélie",
+                                ),
+                            ],
+                            [
+                                Text(
+                                    "Adelie",
+                                ),
+                            ],
+                        ],
+                    },
+                    Text(
+                        " penguins.",
+                    ),
+                    NewLine,
+                ],
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Details",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "bibcitet",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "R:Gorman+Williams+Fraser:2014",
+                            ),
+                        ],
+                    ],
+                },
+                NewLine,
+                Text(
+                    "  used the data to study sex dimorphism separately for the three species.",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "bibcitet",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "R:Horst+Presmanes_Hill+Gorman:2022",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " popularized the data as",
+                ),
+                NewLine,
+                Text(
+                    "  an illustration for different statistical methods, as an alternative",
+                ),
+                NewLine,
+                Text(
+                    "  to the ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "iris",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "iris",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " data.",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "bibcitet",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "R:Kaye+Turner+Gorman:2025",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " provide the scripts used to",
+                ),
+                NewLine,
+                Text(
+                    "  create these data sets from the original source data, and a notebook",
+                ),
+                NewLine,
+                Text(
+                    "  reproducing results from ",
+                ),
+                Command {
+                    name: "bibcitet",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "R:Gorman+Williams+Fraser:2014",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ".",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Note",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  These data sets are also available in the ",
+                ),
+                Command {
+                    name: "CRANpkg",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "palmerpenguins",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " package.  ",
+                ),
+                NewLine,
+                Text(
+                    "  See the ",
+                ),
+                Href {
+                    href: [
+                        Text(
+                            "https://allisonhorst.github.io/palmerpenguins/",
+                        ),
+                    ],
+                    label: [
+                        Text(
+                            "package website",
+                        ),
+                    ],
+                },
+                Text(
+                    " ",
+                ),
+                NewLine,
+                Text(
+                    "  for further details and resources.",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "  The ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "penguins",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " data has some shorter variable names than the ",
+                ),
+                Command {
+                    name: "pkg",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "palmerpenguins",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " version, ",
+                ),
+                NewLine,
+                Text(
+                    "  for compact code and data display. ",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "References",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "bibshow",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "*",
+                            ),
+                        ],
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Examples",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "## view summaries",
+                ),
+                NewLine,
+                Text(
+                    "summary(penguins)",
+                ),
+                NewLine,
+                Text(
+                    "summary(penguins_raw)  # categorical variables are (still) character vectors",
+                ),
+                NewLine,
+                Text(
+                    "## summarize character vectors as factors:",
+                ),
+                NewLine,
+                Text(
+                    "summary(penguins_raw, character.method = \"factor\")",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "## visualise distribution across factors",
+                ),
+                NewLine,
+                Text(
+                    "plot(island ~ species, data = penguins)",
+                ),
+                NewLine,
+                Text(
+                    "plot(sex ~ interaction(island, species, sep = \"",
+                ),
+                Command {
+                    name: "n",
+                    options: None,
+                    args: [],
+                },
+                Text(
+                    "\"), data = penguins)",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "## bill depth vs. length by species (color) and sex (symbol):",
+                ),
+                NewLine,
+                Text(
+                    "## positive correlations for all species, males tend to have bigger bills",
+                ),
+                NewLine,
+                Text(
+                    "sym <- c(1, 16)",
+                ),
+                NewLine,
+                Text(
+                    "pal <- c(\"darkorange\",\"purple\",\"cyan4\")",
+                ),
+                NewLine,
+                Text(
+                    "plot(bill_dep ~ bill_len, data = penguins, pch = sym",
+                ),
+                Text(
+                    "[",
+                ),
+                Text(
+                    "sex",
+                ),
+                Text(
+                    "]",
+                ),
+                Text(
+                    ", col = pal",
+                ),
+                Text(
+                    "[",
+                ),
+                Text(
+                    "species",
+                ),
+                Text(
+                    "]",
+                ),
+                Text(
+                    ")",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "## simplified sex dimorphism analysis for Adelie species:",
+                ),
+                NewLine,
+                Text(
+                    "## proportion of males increases with several size measurements",
+                ),
+                NewLine,
+                Text(
+                    "adelie <- subset(penguins, species == \"Adelie\")",
+                ),
+                NewLine,
+                Text(
+                    "plot(sex ~ bill_len, data = adelie)",
+                ),
+                NewLine,
+                Text(
+                    "plot(sex ~ bill_dep, data = adelie)",
+                ),
+                NewLine,
+                Text(
+                    "plot(sex ~ body_mass, data = adelie)",
+                ),
+                NewLine,
+                Text(
+                    "m <- glm(sex ~ bill_len + bill_dep + body_mass, data = adelie, family = binomial)",
+                ),
+                NewLine,
+                Text(
+                    "summary(m)",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "## Produce the long variable names as from ",
+                ),
+                Text(
+                    "{",
+                ),
+                Text(
+                    "palmerpenguins",
+                ),
+                Text(
+                    "}",
+                ),
+                Text(
+                    " pkg:",
+                ),
+                NewLine,
+                Text(
+                    "long_nms <- sub(\"len\", \"length_mm\",",
+                ),
+                NewLine,
+                Text(
+                    "                sub(\"dep\",\"depth_mm\",",
+                ),
+                NewLine,
+                Text(
+                    "                    sub(\"mass\", \"mass_g\", colnames(penguins))))",
+                ),
+                NewLine,
+                Text(
+                    "## compare long and short names:",
+                ),
+                NewLine,
+                Text(
+                    "noquote(rbind(long_nms, nms = colnames(penguins)))",
+                ),
+                NewLine,
+                NewLine,
+                Code {
+                    title: None,
+                    kind: DontRun,
+                    children: [
+                        Text(
+                            " # << keeping shorter 'penguins' names in this example:",
+                        ),
+                        NewLine,
+                        Text(
+                            "    colnames(penguins) <- long_nms",
+                        ),
+                        NewLine,
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Keyword",
+                ),
+            ],
+            children: [
+                Text(
+                    "datasets",
+                ),
+            ],
+        },
+        NewLine,
+    ],
+}

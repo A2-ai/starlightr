@@ -1,0 +1,396 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/survival-logan.Rd
+---
+Document {
+    children: [
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Name",
+                ),
+            ],
+            children: [
+                Text(
+                    "logan",
+                ),
+            ],
+        },
+        Text(
+            "\r",
+        ),
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Doc Type",
+                ),
+            ],
+            children: [
+                Text(
+                    "data",
+                ),
+            ],
+        },
+        Text(
+            "\r",
+        ),
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "logan",
+                ),
+            ],
+        },
+        Text(
+            "\r",
+        ),
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Title",
+                ),
+            ],
+            children: [
+                Text(
+                    "Data from the 1972-78 GSS data used by Logan",
+                ),
+            ],
+        },
+        Text(
+            "\r",
+        ),
+        NewLine,
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                Text(
+                    "logan\r",
+                ),
+                NewLine,
+                Text(
+                    "data(logan, package=\"survival\")\r",
+                ),
+                NewLine,
+            ],
+        },
+        Text(
+            "\r",
+        ),
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                Text(
+                    "\r",
+                ),
+                NewLine,
+                Text(
+                    "Intergenerational occupational mobility data with covariates.\r",
+                ),
+                NewLine,
+            ],
+        },
+        Text(
+            "\r",
+        ),
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Format",
+                ),
+            ],
+            children: [
+                Text(
+                    "\r",
+                ),
+                NewLine,
+                Text(
+                    "  A data frame with 838 observations on the following 4 variables.\r",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                List {
+                    kind: Describe,
+                    items: [
+                        ListItem {
+                            term: Some(
+                                [
+                                    Text(
+                                        "occupation",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "subject's occupation, a factor with levels\r",
+                                ),
+                                NewLine,
+                                Text(
+                                    "      ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "farm",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "operatives",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "craftsmen",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "sales",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ",\r",
+                                ),
+                                NewLine,
+                                Text(
+                                    "       and ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "professional",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Text(
+                                        "focc",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "father's occupation",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Text(
+                                        "education",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "total years of schooling, 0 to 20",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Text(
+                                        "race",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                Text(
+                                    "levels of ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "non-black",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " and ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "black",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                Text(
+                    "\r",
+                ),
+                NewLine,
+            ],
+        },
+        Text(
+            "\r",
+        ),
+        NewLine,
+        Command {
+            name: "source",
+            options: None,
+            args: [
+                [
+                    Text(
+                        "\r",
+                    ),
+                    NewLine,
+                    Text(
+                        "  General Social Survey data, see the web site for detailed information\r",
+                    ),
+                    NewLine,
+                    Text(
+                        "  on the variables.\r",
+                    ),
+                    NewLine,
+                    Text(
+                        "  ",
+                    ),
+                    Url {
+                        href: [
+                            Text(
+                                "https://gss.norc.org/",
+                            ),
+                        ],
+                    },
+                    Text(
+                        ".\r",
+                    ),
+                    NewLine,
+                ],
+            ],
+        },
+        Text(
+            "\r",
+        ),
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "References",
+                ),
+            ],
+            children: [
+                Text(
+                    "\r",
+                ),
+                NewLine,
+                Text(
+                    "  Logan, John A. (1983). A Multivariate Model for Mobility Tables.\r",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "cite",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "American Journal of Sociology",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " 89: 324-349.",
+                ),
+            ],
+        },
+        Text(
+            "\r",
+        ),
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Keyword",
+                ),
+            ],
+            children: [
+                Text(
+                    "datasets",
+                ),
+            ],
+        },
+        Text(
+            "\r",
+        ),
+        NewLine,
+    ],
+}

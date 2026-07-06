@@ -1,0 +1,645 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/partitions-riffle.Rd
+---
+Document {
+    children: [
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Name",
+                ),
+            ],
+            children: [
+                Text(
+                    "riffle",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "riffle",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "genrif",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "allriffles",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Title",
+                ),
+            ],
+            children: [
+                Text(
+                    "Riffle shuffles",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  Enumeration of riffle shuffles",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "genrif(v)",
+                ),
+                NewLine,
+                Text(
+                    "riffle(p,q=p)",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        ArgumentTable(
+            [
+                Argument {
+                    name: [
+                        Text(
+                            "p,q,v",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "In function ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "riffle()",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ", integers ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "p",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ",",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "q",
+                                    ),
+                                ],
+                            ],
+                        },
+                        NewLine,
+                        Text(
+                            "    specify the length of the two increasing sequences.  In function",
+                        ),
+                        NewLine,
+                        Text(
+                            "    ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "genrif()",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ", the elements of ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "v",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " specify the lengths of all",
+                        ),
+                        NewLine,
+                        Text(
+                            "    the increasing sequences: there are ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "sum(v)",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " cards in the pack",
+                        ),
+                    ],
+                },
+            ],
+        ),
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Details",
+                ),
+            ],
+            children: [
+                NewLine,
+                NewLine,
+                Text(
+                    "  A ",
+                ),
+                Command {
+                    name: "dfn",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "riffle shuffle",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " is a permutation of integers",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "eqn",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "1,2,",
+                            ),
+                            Command {
+                                name: "ldots",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                ",n",
+                            ),
+                        ],
+                        [
+                            Text(
+                                "1,2,...,n",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " containing one or two rising",
+                ),
+                NewLine,
+                Text(
+                    "  sequences.",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                NewLine,
+                Text(
+                    "  A ",
+                ),
+                Command {
+                    name: "dfn",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "generalized riffle shuffle",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ", or ",
+                ),
+                Command {
+                    name: "dfn",
+                    options: None,
+                    args: [
+                        [
+                            Command {
+                                name: "eqn",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "r",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                "-riffle",
+                            ),
+                            NewLine,
+                            Text(
+                                "    shuffle",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ", contains at most ",
+                ),
+                Command {
+                    name: "eqn",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "r",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " rising sequences.  This is not",
+                ),
+                NewLine,
+                Text(
+                    "    implemented in the package (earlier versions included a buggy",
+                ),
+                NewLine,
+                Text(
+                    "    version; the difficulty is ensuring that sequences do not appear",
+                ),
+                NewLine,
+                Text(
+                    "    more than once).",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "riffle(p,q)",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " returns all riffle shuffles with rising",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    sequences of ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "1:p",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " and ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "(p+1):q",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                                Text(
+                                    "    ",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "genrif(v)",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " returns all riffle shuffles with rising",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    sequences having lengths the entries of ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "v",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", the deck being",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    numbered consecutively",
+                                ),
+                                NewLine,
+                                Text(
+                                    "  ",
+                                ),
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Value",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  Returns a matrix of class ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "partition",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " with columns being ",
+                ),
+                NewLine,
+                Text(
+                    "  riffle shuffles",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Note",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  When we say ",
+                ),
+                Command {
+                    name: "dQuote",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "contains ",
+                            ),
+                            Command {
+                                name: "eqn",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "r",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                " rising sequences",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " we generally",
+                ),
+                NewLine,
+                Text(
+                    "  mean ",
+                ),
+                Command {
+                    name: "dQuote",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "contains ",
+                            ),
+                            Command {
+                                name: "emph",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "at most",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "eqn",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "r",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                " rising sequences",
+                            ),
+                        ],
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Author",
+                ),
+            ],
+            children: [
+                Text(
+                    "Robin K. S. Hankin",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "See Also",
+                ),
+            ],
+            children: [
+                Link {
+                    label: [
+                        Text(
+                            "parts",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "parts",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Examples",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "riffle(3, 4)",
+                ),
+                NewLine,
+                Text(
+                    "genrif(1:3)",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+    ],
+}

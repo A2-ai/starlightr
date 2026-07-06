@@ -1,0 +1,66 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &opts, source).unwrap()"
+input_file: parser/test_data/base-deprecated.Rd
+---
+---
+title: "Marking Objects as Deprecated"
+description: "When an object is about to be removed from it is first deprecated and should include a call to `. Deprecated`."
+sidebar:
+  label: "Deprecated"
+pagefind: false
+---
+
+## Alias
+
+Deprecated
+
+
+## Alias
+
+.Deprecated
+
+
+## Alias
+
+deprecated
+
+
+
+
+## Usage
+
+```r
+.Deprecated(new, package = NULL, msg,
+            old = as.character(sys.call(sys.parent()))[1L])
+```
+
+
+## Details
+
+`.Deprecated("*new name*")` is called from deprecated functions.
+  These should be listed in `help("*pkg*-deprecated")`
+  for an appropriate *pkg*, including `base`.
+  The original help page for a deprecated function is sometimes
+  available at `help("*old*-deprecated")` (note the quotes).
+
+  `.Deprecated` signals a warning of class `"deprecatedWarning"`
+  with fields `old`, `new`, and `package`.
+
+
+## See Also
+
+[`Defunct`](../defunct/)
+
+  `help("[base-deprecated](../base-deprecated/)")` and so on which list the
+  deprecated functions in the packages.
+
+
+## Keyword
+
+documentation
+
+
+## Keyword
+
+utilities

@@ -1,0 +1,254 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/base-la-version.Rd
+---
+Document {
+    children: [
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Name",
+                ),
+            ],
+            children: [
+                Text(
+                    "La_version",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "La_version",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Title",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  LAPACK Version",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  Report the version of LAPACK in use.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "La_version()",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Value",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  A character vector of length one.",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "  Note that this is the version as reported by the library at runtime.",
+                ),
+                NewLine,
+                Text(
+                    "  It may differ from the reference (",
+                ),
+                Command {
+                    name: "sQuote",
+                    options: None,
+                    args: [
+                        [
+                            Command {
+                                name: "I",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "netlib",
+                                        ),
+                                    ],
+                                ],
+                            },
+                        ],
+                    ],
+                },
+                Text(
+                    ") implementation, for",
+                ),
+                NewLine,
+                Text(
+                    "  example by having some optimized or patched routines.  For the version",
+                ),
+                NewLine,
+                Text(
+                    "  included with ",
+                ),
+                Command {
+                    name: "R",
+                    options: None,
+                    args: [],
+                },
+                Text(
+                    ", the older (not Fortran 90) versions of",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "preformatted",
+                    options: None,
+                    args: [
+                        [
+                            NewLine,
+                            Text(
+                                "    DLARTG DLASSQ ZLARTG ZLASSQ",
+                            ),
+                            NewLine,
+                            Text(
+                                "  ",
+                            ),
+                        ],
+                    ],
+                },
+                NewLine,
+                Text(
+                    "  are used.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "See Also",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "extSoftVersion",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "extsoftversion",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " for versions of other third-party software.",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "La_library",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "la_library",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " for binary/executable file with LAPACK in use.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Examples",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "La_version()",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Keyword",
+                ),
+            ],
+            children: [
+                Text(
+                    "utilities",
+                ),
+            ],
+        },
+        NewLine,
+    ],
+}

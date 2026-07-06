@@ -1,0 +1,138 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &opts, source).unwrap()"
+input_file: parser/test_data/base-envvar.Rd
+---
+---
+title: "Environment Variables"
+description: "Details of some of the environment variables which affect an session."
+sidebar:
+  label: "EnvVar"
+pagefind: false
+---
+
+## Description
+
+Details of some of the environment variables which affect an  session.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Details
+
+It is impossible to list all the environment variables which can
+  affect an  session: some affect the OS system functions which 
+  uses, and others will affect add-on packages.  But here are notes on
+  some of the more important ones.  Those that set the defaults for
+  options are consulted only at startup (as are some of the others).
+  - **`HOME`:**: The user's 'home' directory.
+- **`LANGUAGE`:**: Optional. The language(s) to be used for message translations. This is consulted when needed.
+- **`LC_ALL`:**: (etc) Optional. Use to set various aspects of the locale -- see [`Sys.getlocale`](../sys-getlocale/). Consulted at startup.
+- **`MAKEINDEX`:**: The path to `makeindex`. If unset to a value determined when was built. Used by the emulation mode of [`texi2dvi`](../texi2dvi/) and [`texi2pdf`](../texi2pdf/).
+- **`R_BATCH`:**: Optional -- set in a batch session, that is one started by `R CMD [BATCH](../batch/)`. Most often set to `""`, so test by something like `!is.na([Sys.getenv](../sys-getenv/)("R_BATCH", NA))`.
+- **`R_BROWSER`:**: The path to the default browser. Used to set the default value of [`options("browser")`](../options/).
+- **`R_COMPLETION`:**: Optional. If set to `FALSE`, command-line completion is not used. (Not used by the macOS GUI.)
+- **`R_DEFAULT_PACKAGES`:**: A comma-separated list of packages which are to be attached in every session. See [`options`](../options/).
+- **`R_DOC_DIR`:**: The location of the `doc` directory. Set by .
+- **`R_ENVIRON`:**: Optional. The path to the site environment file: see [Startup](../startup/). Consulted at startup.
+- **`R_GSCMD`:**: Optional. The path to Ghostscript, used by [`dev2bitmap`](../dev2bitmap/), [`bitmap`](../bitmap/) and [`embedFonts`](../embedfonts/). Consulted when those functions are invoked. Since it will be treated as if passed to [`system`](../system/), spaces and shell metacharacters should be escaped.
+- **`R_HISTFILE`:**: Optional. The path of the history file: see [Startup](../startup/). Consulted at startup and when the history is saved.
+- **`R_HISTSIZE`:**: Optional. The maximum size of the history file, in lines. Exactly how this is used depends on the interface. - **On Unix-alikes,**: for the `readline` command-line interface it takes effect when the history is saved (by [`savehistory`](../savehistory/) or at the end of a session). - **On Windows,**: for `Rgui` it controls the number of lines saved to the history file: the size of the history used in the session is controlled by the console customization: see [`Rconsole`](../rconsole/).
+- **`R_HOME`:**: The top-level directory of the installation: see [`R.home`](../r-home/). Set by .
+- **`R_INCLUDE_DIR`:**: The location of the `include` directory. Set by .
+- **`R_LIBS`:**: Optional. Used for initial setting of [`.libPaths`](../-libpaths/).
+- **`R_LIBS_SITE`:**: Optional. Used for initial setting of [`.libPaths`](../-libpaths/).
+- **`R_LIBS_USER`:**: Optional. Used for initial setting of [`.libPaths`](../-libpaths/).
+- **`R_PAPERSIZE`:**: Optional. Used to set the default for [`options("papersize")`](../options/), e.g.used by [`pdf`](../pdf/) and [`postscript`](../postscript/).
+- **`R_PCRE_JIT_STACK_MAXSIZE`:**: Optional. Consulted when 's pattern compiler is first used. See [`grep`](../grep/).
+- **`R_PDFVIEWER`:**: The path to the default PDF viewer. Used by `R CMD Rd2pdf`.
+- **`R_PLATFORM`:**: The platform -- a string of the form `"*cpu*-*vendor*-*os*"`, see [`R.Version`](../r-version/).
+- **`R_PROFILE`:**: Optional. The path to the site profile file: see [Startup](../startup/). Consulted at startup.
+- **`R_RD4PDF`:**: Options for `pdflatex` processing of `Rd` files. Used by `R CMD Rd2pdf`.
+- **`R_SHARE_DIR`:**: The location of the `share` directory. Set by .
+- **`R_TEXI2DVICMD`:**: The path to `texi2dvi`. Defaults to the value of `TEXI2DVI`, and if that is unset to a value determined when was built. Only on Unix-alikes: Consulted at startup to set the default for [`options("texi2dvi")`](../options/), used by [`texi2dvi`](../texi2dvi/) and [`texi2pdf`](../texi2pdf/) in package `tools`.
+- **`R_TIDYCMD`:**: The path to HTML `tidy`. Used by `R CMD check` if `_R_CHECK_RD_VALIDATE_RD2HTML_` is set to a true value (as it is by `--as-cran`.
+- **`R_UNZIPCMD`:**: The path to `unzip`. Sets the initial value for [`options("unzip")`](../options/) on a Unix-alike when namespace `utils` is loaded.
+- **`R_ZIPCMD`:**: The path to `zip`. Used by [`zip`](../zip/) and by `R CMD INSTALL --build` on Windows.
+- **`TMPDIR`, `TMP`, `TEMP`:**: Consulted (in that order) when setting the temporary directory for the session: see [`tempdir`](../tempdir/). `TMPDIR` is also used by some of the utilities: see the help for [`build`](../build/).
+- **`TZ`:**: Optional. The current time zone. See [`Sys.timezone`](../sys-timezone/) for the system-specific formats. Consulted as needed.
+- **`TZDIR`:**: Optional. The top-level directory of the time-zone database. See [`Sys.timezone`](../sys-timezone/).
+- **`no_proxy`, `http_proxy`, `ftp_proxy`:**: (and more). Optional. Settings for [`download.file`](../download-file/): see its help for further details.
+
+
+
+## Unix-specific
+
+Some variables set on Unix-alikes, and not (in general) on Windows.
+  - **`DISPLAY`:**: Optional: used by [`X11`](../x11/), Tk (in package `tcltk`), the data editor and various packages.
+- **`EDITOR`:**: The path to the default editor: sets the default for [`options("editor")`](../options/) when namespace `utils` is loaded.
+- **`PAGER`:**: The path to the pager with the default setting of [`options("pager")`](../options/). The default value is chosen at configuration, usually as the path to `less`.
+- **`R_PRINTCMD`:**: Sets the default for [`options("printcmd")`](../options/), which sets the default print command to be used by [`postscript`](../postscript/).
+- **`R_SUPPORT_OLD_TARS`**: logical. Sets the default for the `support_old_tars` argument of [`untar`](../untar/). Should be set to `TRUE` if an old system `tar` command is used which does not support either `xz` compression or automagically detecting compression type.
+
+
+
+## Windows-specific
+
+Some Windows-specific variables are
+  - **`GSC`:**: Optional: the path to Ghostscript, used if `R_GSCMD` is not set.
+- **`R_USER`:**: The user's 'home' directory. Set by . (`HOME` will be set to the same value if not already set.)
+
+
+
+## See Also
+
+[`Sys.getenv`](../sys-getenv/) and [`Sys.setenv`](../sys-setenv/) to read and set
+  environmental variables in an  session.
+
+  [`gctorture`](../gctorture/) for environment variables controlling garbage
+  collection.

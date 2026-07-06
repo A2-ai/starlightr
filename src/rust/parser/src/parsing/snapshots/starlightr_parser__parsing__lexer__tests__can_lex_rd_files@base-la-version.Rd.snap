@@ -1,0 +1,833 @@
+---
+source: parser/src/parsing/lexer.rs
+expression: lex(&contents)
+input_file: parser/test_data/base-la-version.Rd
+---
+[
+    Spanned {
+        value: COMMENT( File src/library/base/man/La_version.Rd),
+        span: Span {
+            start: 0,
+            end: 41,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 41,
+            end: 42,
+        },
+    },
+    Spanned {
+        value: COMMENT( Part of the R package, https://www.R-project.org),
+        span: Span {
+            start: 42,
+            end: 92,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 92,
+            end: 93,
+        },
+    },
+    Spanned {
+        value: COMMENT( Copyright 2013-2022 R Core Team),
+        span: Span {
+            start: 93,
+            end: 126,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 126,
+            end: 127,
+        },
+    },
+    Spanned {
+        value: COMMENT( Distributed under GPL 2 or later),
+        span: Span {
+            start: 127,
+            end: 161,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 161,
+            end: 162,
+        },
+    },
+    Spanned {
+        value: COMMENT( Pulled from https://github.com/wch/r-source/blob/393ace9767744ae26c938cb56ac1cf4867ce64fa/src/library/base/man/La_version.Rd),
+        span: Span {
+            start: 162,
+            end: 288,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 288,
+            end: 289,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 289,
+            end: 290,
+        },
+    },
+    Spanned {
+        value: COMMAND(name),
+        span: Span {
+            start: 290,
+            end: 295,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 295,
+            end: 296,
+        },
+    },
+    Spanned {
+        value: TEXT(La_version),
+        span: Span {
+            start: 296,
+            end: 306,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 306,
+            end: 307,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 307,
+            end: 308,
+        },
+    },
+    Spanned {
+        value: COMMAND(alias),
+        span: Span {
+            start: 308,
+            end: 314,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 314,
+            end: 315,
+        },
+    },
+    Spanned {
+        value: TEXT(La_version),
+        span: Span {
+            start: 315,
+            end: 325,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 325,
+            end: 326,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 326,
+            end: 327,
+        },
+    },
+    Spanned {
+        value: COMMAND(title),
+        span: Span {
+            start: 327,
+            end: 333,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 333,
+            end: 334,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 334,
+            end: 335,
+        },
+    },
+    Spanned {
+        value: TEXT(  LAPACK Version),
+        span: Span {
+            start: 335,
+            end: 351,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 351,
+            end: 352,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 352,
+            end: 353,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 353,
+            end: 354,
+        },
+    },
+    Spanned {
+        value: COMMAND(description),
+        span: Span {
+            start: 354,
+            end: 366,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 366,
+            end: 367,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 367,
+            end: 368,
+        },
+    },
+    Spanned {
+        value: TEXT(  Report the version of LAPACK in use.),
+        span: Span {
+            start: 368,
+            end: 406,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 406,
+            end: 407,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 407,
+            end: 408,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 408,
+            end: 409,
+        },
+    },
+    Spanned {
+        value: COMMAND(usage),
+        span: Span {
+            start: 409,
+            end: 415,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 415,
+            end: 416,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 416,
+            end: 417,
+        },
+    },
+    Spanned {
+        value: TEXT(La_version()),
+        span: Span {
+            start: 417,
+            end: 429,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 429,
+            end: 430,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 430,
+            end: 431,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 431,
+            end: 432,
+        },
+    },
+    Spanned {
+        value: COMMAND(value),
+        span: Span {
+            start: 432,
+            end: 438,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 438,
+            end: 439,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 439,
+            end: 440,
+        },
+    },
+    Spanned {
+        value: TEXT(  A character vector of length one.),
+        span: Span {
+            start: 440,
+            end: 475,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 475,
+            end: 476,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 476,
+            end: 477,
+        },
+    },
+    Spanned {
+        value: TEXT(  Note that this is the version as reported by the library at runtime.),
+        span: Span {
+            start: 477,
+            end: 547,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 547,
+            end: 548,
+        },
+    },
+    Spanned {
+        value: TEXT(  It may differ from the reference (),
+        span: Span {
+            start: 548,
+            end: 584,
+        },
+    },
+    Spanned {
+        value: COMMAND(sQuote),
+        span: Span {
+            start: 584,
+            end: 591,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 591,
+            end: 592,
+        },
+    },
+    Spanned {
+        value: COMMAND(I),
+        span: Span {
+            start: 592,
+            end: 594,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 594,
+            end: 595,
+        },
+    },
+    Spanned {
+        value: TEXT(netlib),
+        span: Span {
+            start: 595,
+            end: 601,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 601,
+            end: 602,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 602,
+            end: 603,
+        },
+    },
+    Spanned {
+        value: TEXT() implementation, for),
+        span: Span {
+            start: 603,
+            end: 624,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 624,
+            end: 625,
+        },
+    },
+    Spanned {
+        value: TEXT(  example by having some optimized or patched routines.  For the version),
+        span: Span {
+            start: 625,
+            end: 697,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 697,
+            end: 698,
+        },
+    },
+    Spanned {
+        value: TEXT(  included with ),
+        span: Span {
+            start: 698,
+            end: 714,
+        },
+    },
+    Spanned {
+        value: COMMAND(R),
+        span: Span {
+            start: 714,
+            end: 716,
+        },
+    },
+    Spanned {
+        value: TEXT(, the older (not Fortran 90) versions of),
+        span: Span {
+            start: 716,
+            end: 756,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 756,
+            end: 757,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 757,
+            end: 759,
+        },
+    },
+    Spanned {
+        value: COMMAND(preformatted),
+        span: Span {
+            start: 759,
+            end: 772,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 772,
+            end: 773,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 773,
+            end: 774,
+        },
+    },
+    Spanned {
+        value: TEXT(    DLARTG DLASSQ ZLARTG ZLASSQ),
+        span: Span {
+            start: 774,
+            end: 805,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 805,
+            end: 806,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 806,
+            end: 808,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 808,
+            end: 809,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 809,
+            end: 810,
+        },
+    },
+    Spanned {
+        value: TEXT(  are used.),
+        span: Span {
+            start: 810,
+            end: 821,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 821,
+            end: 822,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 822,
+            end: 823,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 823,
+            end: 824,
+        },
+    },
+    Spanned {
+        value: COMMAND(seealso),
+        span: Span {
+            start: 824,
+            end: 832,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 832,
+            end: 833,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 833,
+            end: 834,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 834,
+            end: 836,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 836,
+            end: 841,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 841,
+            end: 842,
+        },
+    },
+    Spanned {
+        value: COMMAND(link),
+        span: Span {
+            start: 842,
+            end: 847,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 847,
+            end: 848,
+        },
+    },
+    Spanned {
+        value: TEXT(extSoftVersion),
+        span: Span {
+            start: 848,
+            end: 862,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 862,
+            end: 863,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 863,
+            end: 864,
+        },
+    },
+    Spanned {
+        value: TEXT( for versions of other third-party software.),
+        span: Span {
+            start: 864,
+            end: 908,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 908,
+            end: 909,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 909,
+            end: 910,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 910,
+            end: 912,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 912,
+            end: 917,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 917,
+            end: 918,
+        },
+    },
+    Spanned {
+        value: COMMAND(link),
+        span: Span {
+            start: 918,
+            end: 923,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 923,
+            end: 924,
+        },
+    },
+    Spanned {
+        value: TEXT(La_library),
+        span: Span {
+            start: 924,
+            end: 934,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 934,
+            end: 935,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 935,
+            end: 936,
+        },
+    },
+    Spanned {
+        value: TEXT( for binary/executable file with LAPACK in use.),
+        span: Span {
+            start: 936,
+            end: 983,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 983,
+            end: 984,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 984,
+            end: 985,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 985,
+            end: 986,
+        },
+    },
+    Spanned {
+        value: COMMAND(examples),
+        span: Span {
+            start: 986,
+            end: 995,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 995,
+            end: 996,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 996,
+            end: 997,
+        },
+    },
+    Spanned {
+        value: TEXT(La_version()),
+        span: Span {
+            start: 997,
+            end: 1009,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1009,
+            end: 1010,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1010,
+            end: 1011,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1011,
+            end: 1012,
+        },
+    },
+    Spanned {
+        value: COMMAND(keyword),
+        span: Span {
+            start: 1012,
+            end: 1020,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1020,
+            end: 1021,
+        },
+    },
+    Spanned {
+        value: TEXT(utilities),
+        span: Span {
+            start: 1021,
+            end: 1030,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1030,
+            end: 1031,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1031,
+            end: 1032,
+        },
+    },
+    Spanned {
+        value: EOF,
+        span: Span {
+            start: 1032,
+            end: 1032,
+        },
+    },
+]

@@ -1,0 +1,218 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &EmitOptions::default(), source).unwrap()"
+input_file: parser/test_data/data.table-setorder.Rd
+---
+---
+title: "Fast row reordering of a data.table by reference"
+description: "In `data. table` parlance, all `set*` functions change their input *by reference*. That is, no copy is made at all, other than temporary working memory, which i"
+sidebar:
+  label: "setorder"
+pagefind: false
+---
+
+## Name
+
+setorder
+
+
+## Alias
+
+setorder
+
+
+## Alias
+
+setorderv
+
+
+## Alias
+
+order
+
+
+## Alias
+
+fastorder
+
+
+## Alias
+
+forder
+
+
+## Alias
+
+forderv
+
+
+## Alias
+
+sort_by
+
+
+
+## Title
+
+Fast row reordering of a data.table by reference
+
+
+## Description
+
+In `data.table` parlance, all `set*` functions change their input
+*by reference*. That is, no copy is made at all, other than temporary
+working memory, which is as large as one column. The only other
+`data.table` operator that modifies input by reference is [`:=`](../:=/).
+Check out the `See Also` section below for other `set*` function
+`data.table` provides.
+
+`setorder` (and `setorderv`) reorders the rows of a `data.table`
+based on the columns (and column order) provided. It reorders the table
+*by reference* and is therefore very memory efficient.
+
+Note that queries like `x[order(.)]` are optimised internally to use `data.table`'s fast order.
+
+Also note that `data.table` always reorders in "C-locale" (see Details). To sort by session locale, use `x[base::order(.)]`.
+
+`bit64::integer64` type is also supported for reordering rows of a `data.table`.
+
+
+
+## Usage
+
+```r
+setorder(x, , na.last=FALSE)
+setorderv(x, cols = colnames(x), order=1L, na.last=FALSE)
+# optimised to use data.table's internal fast order
+# x[order(., na.last=TRUE)]
+# x[order(., decreasing=TRUE)]
+# sort_by(x, ., na.last=TRUE, decreasing=FALSE)    # R >= 4.4.0
+```
+
+## Arguments
+
+<div class="arg-table">
+<table>
+<thead>
+<tr><th>Argument</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x</code></td>
+<td>A `data.table`.</td>
+</tr>
+<tr>
+<td><code></code></td>
+<td>The columns to sort by. Do not quote column names. If `` is missing (ex: `setorder(x)`), `x` is rearranged based on all columns in ascending order by default. To sort by a column in descending order prefix the symbol `"-"` which means "descending" (*not* "negative", in this context), i.e., `setorder(x, a, -b, c)`. The `-b` works when `b` is of type `character` as well.</td>
+</tr>
+<tr>
+<td><code>cols</code></td>
+<td>A character vector of column names of `x` by which to order. By default, sorts over all columns; `cols = NULL` will return `x` untouched. Do not add `"-"` here. Use `order` argument instead.</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td>An integer vector with only possible values of `1` and `-1`, corresponding to ascending and descending order. The length of `order` must be either `1` or equal to that of `cols`. If `length(order) == 1`, it is recycled to `length(cols)`.</td>
+</tr>
+<tr>
+<td><code>na.last</code></td>
+<td>`logical`. If `TRUE`, missing values in the data are placed last; if `FALSE`, they are placed first; if `NA` they are removed. `na.last=NA` is valid only for `x[order(., na.last)]` and related `sort_by(x, .)` ( &ge; 4.4.0) and its default is `TRUE`. `setorder` and `setorderv` only accept `TRUE`/`FALSE` with default `FALSE`.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+## Details
+
+`data.table` implements its own fast radix-based ordering. See the references for some exposition on the concept of radix sort.
+
+`setorder` accepts unquoted column names (with names preceded with a
+`-` sign for descending order) and reorders `data.table` rows
+*by reference*, for e.g., `setorder(x, a, -b, c)`. We emphasize that
+this means "descending" and not "negative" because the implementation simply
+reverses the sort order, as opposed to sorting the opposite of the input
+(which would be inefficient).
+Note that `-b` also works with columns of type `character` unlike
+order, which requires `-xtfrm(y)` instead (which is slow).
+
+`setorderv` in turn accepts a character vector of column names and an
+integer vector of column order separately.
+
+Note that [`setkey`](../setkey/) still requires and will always sort only in
+ascending order, and is different from `setorder` in that it additionally
+sets the `sorted` attribute.
+
+`na.last` argument, by default, is `FALSE` for `setorder` and
+`setorderv` to be consistent with `data.table`'s `setkey` and
+is `TRUE` for `x[order(.)]` and `sort_by(x, .)` ( &ge; 4.4.0) to be consistent with `base::order`.
+Only `x[order(.)]` (and related `sort_by(x, .)`) can have `na.last = NA` as it is a subset operation
+as opposed to `setorder` or `setorderv` which reorders the data.table
+by reference.
+
+`data.table` always reorders in "C-locale".
+As a consequence, the ordering may be different to that obtained by `base::order`.
+In English locales, for example, sorting is case-sensitive in C-locale.
+Thus, sorting `c("c", "a", "B")` returns `c("B", "a", "c")` in `data.table`
+ but `c("a", "B", "c")` in `base::order`. Note this makes no difference in most cases
+of data; both return identical results on ids where only upper-case or lower-case letters are present (`"AB123" < "AC234"`
+is true in both), or on country names and other proper nouns which are consistently capitalized.
+For example, neither `"America" < "Brazil"` nor
+`"america" < "brazil"` are affected since the first letter is consistently
+capitalized.
+
+Using C-locale makes the behaviour of sorting in `data.table` more consistent across sessions and locales.
+The behaviour of `base::order` depends on assumptions about the locale of the R session.
+In English locales, `"america" < "BRAZIL"` is true by default
+but false if you either type `Sys.setlocale(locale="C")` or the R session has been started in a C locale
+for you -- which can happen on servers/services since the locale comes from the environment the R session
+was started in. By contrast, `"america" < "BRAZIL"` is always `FALSE` in `data.table` regardless of the way your R session was started.
+
+If `setorder` results in reordering of the rows of a keyed `data.table`,
+then its key will be set to `NULL`.
+
+Starting from  4.4.0, `sort_by(x, y, )` is the S3 method for the generic `sort_by` for `data.table`'s. 
+It uses the same formula or list interfaces as data.frame's `sort_by` but internally uses `data.table`'s fast ordering, 
+hence it behaves the same as `x[order(.)]` and takes the same optional named arguments and their defaults.
+
+
+## Value
+
+The input is modified by reference, and returned (invisibly) so it can be used
+in compound statements; e.g., `setorder(DT,a,-b)[, cumsum(c), by=list(a,b)]`.
+If you require a copy, take a copy first (using `DT2 = copy(DT)`). See
+[`copy`](../copy/).
+
+
+## References
+
+[https://en.wikipedia.org/wiki/Radix_sort](https://en.wikipedia.org/wiki/Radix_sort)
+  [https://en.wikipedia.org/wiki/Counting_sort](https://en.wikipedia.org/wiki/Counting_sort)
+  [https://stereopsis.com/radix.html](https://stereopsis.com/radix.html)
+  [https://codercorner.com/RadixSortRevisited.htm](https://codercorner.com/RadixSortRevisited.htm)
+  [https://medium.com/basecs/getting-to-the-root-of-sorting-with-radix-sort-f8e9240d4224](https://medium.com/basecs/getting-to-the-root-of-sorting-with-radix-sort-f8e9240d4224)
+
+
+## See Also
+
+[`setkey`](../setkey/), [`setcolorder`](../setcolorder/), [`setattr`](../setattr/),
+  [`setnames`](../setnames/), [`set`](../set/), [`:=`](../:=/), [`setDT`](../setdt/),
+  [`setDF`](../setdf/), [`copy`](../copy/), [`setNumericRounding`](../setnumericrounding/)
+
+
+## Examples
+
+```r
+set.seed(45L)
+DT = data.table(A=sample(3, 10, TRUE),
+         B=sample(letters[1:3], 10, TRUE), C=sample(10))
+
+# setorder
+setorder(DT, A, -B)
+
+# same as above, but using setorderv
+setorderv(DT, c("A", "B"), c(1, -1))
+```
+
+## Keyword
+
+data

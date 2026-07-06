@@ -1,0 +1,1060 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/utils-setrepositories.Rd
+---
+Document {
+    children: [
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Name",
+                ),
+            ],
+            children: [
+                Text(
+                    "setRepositories",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "setRepositories",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "R_REPOSITORIES",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "R_BIOC_VERSION",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Title",
+                ),
+            ],
+            children: [
+                Text(
+                    "Select Package Repositories",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  Interact with the user to choose the package repositories to be used.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "setRepositories(graphics = getOption(\"menu.graphics\"),",
+                ),
+                NewLine,
+                Text(
+                    "                ind = NULL, addURLs = character(), name = NULL)",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        ArgumentTable(
+            [
+                Argument {
+                    name: [
+                        Text(
+                            "graphics",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Logical. If true, use a graphical list: on Windows or",
+                        ),
+                        NewLine,
+                        Text(
+                            "    macOS GUI use a list box, and on a Unix-alike if ",
+                        ),
+                        Command {
+                            name: "pkg",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "tcltk",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " and an X",
+                        ),
+                        NewLine,
+                        Text(
+                            "    server are available, use Tk widget. Otherwise use a text",
+                        ),
+                        NewLine,
+                        Text(
+                            "    ",
+                        ),
+                        Link {
+                            label: [
+                                Text(
+                                    "menu",
+                                ),
+                            ],
+                            target: Local(
+                                [
+                                    Text(
+                                        "menu",
+                                    ),
+                                ],
+                            ),
+                            mode: Code,
+                        },
+                        Text(
+                            ".",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "ind",
+                        ),
+                    ],
+                    description: [
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "NULL",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " or a vector of integer indices, which have the",
+                        ),
+                        NewLine,
+                        Text(
+                            "    same effect as if they were entered at the prompt for",
+                        ),
+                        NewLine,
+                        Text(
+                            "    ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "graphics = FALSE",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ".",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "name",
+                        ),
+                    ],
+                    description: [
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "NULL",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " or character vector of names of the",
+                        ),
+                        NewLine,
+                        Text(
+                            "    repositories in the repository table which has the same effect as",
+                        ),
+                        NewLine,
+                        Text(
+                            "    passing the corresponding indices to ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "ind",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ".",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "addURLs",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "A character vector of additional URLs: it is often",
+                        ),
+                        NewLine,
+                        Text(
+                            "    helpful to use a named vector.",
+                        ),
+                    ],
+                },
+            ],
+        ),
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Details",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  The default list of known repositories is stored in the file",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "file",
+                    options: None,
+                    args: [
+                        [
+                            Command {
+                                name: "var",
+                                options: None,
+                                args: [
+                                    [
+                                        Link {
+                                            label: [
+                                                Text(
+                                                    "R_HOME",
+                                                ),
+                                            ],
+                                            target: Local(
+                                                [
+                                                    Text(
+                                                        "r_home",
+                                                    ),
+                                                ],
+                                            ),
+                                            mode: Text,
+                                        },
+                                    ],
+                                ],
+                            },
+                            Text(
+                                "/etc/repositories",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ".",
+                ),
+                NewLine,
+                Text(
+                    "  That file can be edited for a site, or a user can have a personal copy",
+                ),
+                NewLine,
+                Text(
+                    "  in the file pointed to by the environment variable",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "env",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "R_REPOSITORIES",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ", or if this is unset, ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "NULL",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " or does not exist,",
+                ),
+                NewLine,
+                Text(
+                    "  in ",
+                ),
+                Command {
+                    name: "file",
+                    options: None,
+                    args: [
+                        [
+                            Command {
+                                name: "var",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "HOME",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                "/.R/repositories",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ", which will take precedence.",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "  A Bioconductor mirror can be selected by setting",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "options",
+                        ),
+                        Text(
+                            "(\"BioC_mirror\")",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "options",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ", e.g.",
+                ),
+                Command {
+                    name: "sspace",
+                    options: None,
+                    args: [
+                        [],
+                    ],
+                },
+                Text(
+                    "via",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "chooseBioCmirror",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "choosebiocmirror",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " --- the default value is",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "samp",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "\"https://bioconductor.org\"",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ".",
+                ),
+                NewLine,
+                Text(
+                    "  This version of R chooses Bioconductor version ",
+                ),
+                Command {
+                    name: "Sexpr",
+                    options: None,
+                    args: [
+                        [
+                            NewLine,
+                            Text(
+                                "    utils:::.BioC_version_associated_with_R_version_default",
+                            ),
+                            NewLine,
+                            Text(
+                                "  ",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " by default, but that can be changed via the environment variable",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "env",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "R_BIOC_VERSION",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ".",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "  The items that are preselected are those that are currently in",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "options(\"repos\")",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " plus those marked as default in the",
+                ),
+                NewLine,
+                Text(
+                    "  list of known repositories.",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "  The list of repositories offered depends on the setting of option",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "\"pkgType\"",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " as some repositories only offer a subset of types",
+                ),
+                NewLine,
+                Text(
+                    "  (e.g., only source packages or not macOS binary packages).",
+                ),
+                NewLine,
+                Text(
+                    "  Further, for binary packages some repositories (notably R-Forge) only",
+                ),
+                NewLine,
+                Text(
+                    "  offer packages for the current or recent versions of ",
+                ),
+                Command {
+                    name: "R",
+                    options: None,
+                    args: [],
+                },
+                Text(
+                    ".",
+                ),
+                NewLine,
+                Text(
+                    "  (Type ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "\"both\"",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " is equivalent to ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "\"source\"",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ".)",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "  Repository ",
+                ),
+                Command {
+                    name: "samp",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "CRAN",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " is treated specially: the value is taken from",
+                ),
+                NewLine,
+                Text(
+                    "  the current setting of ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "getOption(\"repos\")",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " if this has an",
+                ),
+                NewLine,
+                Text(
+                    "  element ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "\"CRAN\"",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ": this ensures mirror selection is sticky.",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "  This function requires the ",
+                ),
+                Command {
+                    name: "R",
+                    options: None,
+                    args: [],
+                },
+                Text(
+                    " session to be interactive unless",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "ind",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " or ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "name",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " is supplied. The latter overrides the former",
+                ),
+                NewLine,
+                Text(
+                    "  if both are supplied and values are not case-sensitive. If any of the",
+                ),
+                NewLine,
+                Text(
+                    "  supplied names does not match, an error is raised.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Note",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  This does ",
+                ),
+                Command {
+                    name: "strong",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "not",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " set the list of repositories at startup: to do",
+                ),
+                NewLine,
+                Text(
+                    "  so set ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "options",
+                        ),
+                        Text(
+                            "(repos =)",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "options",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " in a start up file (see help topic",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "Startup",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "startup",
+                            ),
+                        ],
+                    ),
+                    mode: Text,
+                },
+                Text(
+                    ") or via a customized ",
+                ),
+                Command {
+                    name: "file",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "repositories",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " file.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Value",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  This function is invoked mainly for its side effect of updating",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "options(\"repos\")",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ".  It returns (invisibly) the previous",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "repos",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " options setting (as a ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "list",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "list",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " with component",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "repos",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ") or ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "NULL",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "null",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " if no changes were applied.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "See Also",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "chooseCRANmirror",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "choosecranmirror",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ", ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "chooseBioCmirror",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "choosebiocmirror",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ",",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "install.packages",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "install-packages",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    ".",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Examples",
+            ),
+            kind: Plain,
+            children: [
+                Code {
+                    title: None,
+                    kind: DontRun,
+                    children: [
+                        NewLine,
+                        Text(
+                            "setRepositories(addURLs =",
+                        ),
+                        NewLine,
+                        Text(
+                            "                c(CRANxtras = \"https://www.stats.ox.ac.uk/pub/RWin\"))",
+                        ),
+                        NewLine,
+                    ],
+                },
+                NewLine,
+                Text(
+                    "oldrepos <- setRepositories(name = c(\"CRAN\", \"R-Forge\"))",
+                ),
+                NewLine,
+                Code {
+                    title: None,
+                    kind: DontTest,
+                    children: [
+                        Text(
+                            "getOption(\"repos\")",
+                        ),
+                    ],
+                },
+                NewLine,
+                Text(
+                    "options(oldrepos) # restore",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Keyword",
+                ),
+            ],
+            children: [
+                Text(
+                    " utilities ",
+                ),
+            ],
+        },
+        NewLine,
+    ],
+}

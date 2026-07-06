@@ -1,0 +1,859 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/base-droplevels.Rd
+---
+Document {
+    children: [
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Name",
+                ),
+            ],
+            children: [
+                Text(
+                    "droplevels",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Title",
+                ),
+            ],
+            children: [
+                Text(
+                    "Drop Unused Levels from Factors",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "droplevels",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "droplevels.factor",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "droplevels.data.frame",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Concept",
+                ),
+            ],
+            children: [
+                Text(
+                    "categorical variable",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Concept",
+                ),
+            ],
+            children: [
+                Text(
+                    "enumerated type",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Concept",
+                ),
+            ],
+            children: [
+                Text(
+                    "category",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  The function ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "droplevels",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " is used to drop unused levels from a",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "factor",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "factor",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " or, more commonly, from factors in a data frame.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "droplevels(x, ",
+                ),
+                Command {
+                    name: "dots",
+                    options: None,
+                    args: [],
+                },
+                Text(
+                    ")",
+                ),
+                NewLine,
+                Command {
+                    name: "S3method",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "droplevels",
+                            ),
+                        ],
+                        [
+                            Text(
+                                "factor",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    "(x, exclude = if(anyNA(levels(x))) NULL else NA, ",
+                ),
+                Command {
+                    name: "dots",
+                    options: None,
+                    args: [],
+                },
+                Text(
+                    ")",
+                ),
+                NewLine,
+                Command {
+                    name: "S3method",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "droplevels",
+                            ),
+                        ],
+                        [
+                            Text(
+                                "data.frame",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    "(x, except, exclude, ",
+                ),
+                Command {
+                    name: "dots",
+                    options: None,
+                    args: [],
+                },
+                Text(
+                    ")",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        ArgumentTable(
+            [
+                Argument {
+                    name: [
+                        Text(
+                            "x",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "an object from which to drop unused factor levels.",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "exclude",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "passed to ",
+                        ),
+                        Link {
+                            label: [
+                                Text(
+                                    "factor",
+                                ),
+                                Text(
+                                    "()",
+                                ),
+                            ],
+                            target: Local(
+                                [
+                                    Text(
+                                        "factor",
+                                    ),
+                                ],
+                            ),
+                            mode: Code,
+                        },
+                        Text(
+                            "; factor levels which",
+                        ),
+                        NewLine,
+                        Text(
+                            "    should be excluded from the result even if present.  Note that this",
+                        ),
+                        NewLine,
+                        Text(
+                            "    was ",
+                        ),
+                        Command {
+                            name: "emph",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "implicitly",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "NA",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " in ",
+                        ),
+                        Command {
+                            name: "R",
+                            options: None,
+                            args: [],
+                        },
+                        Text(
+                            " <= 3.3.1 which did drop",
+                        ),
+                        NewLine,
+                        Text(
+                            "    ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "NA",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " levels even when present in ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "x",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ", contrary to the",
+                        ),
+                        NewLine,
+                        Text(
+                            "    documentation.  The current default is compatible with ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "x",
+                                    ),
+                                    Text(
+                                        "[",
+                                    ),
+                                    Text(
+                                        " , drop=TRUE",
+                                    ),
+                                    Text(
+                                        "]",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ".",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Command {
+                            name: "dots",
+                            options: None,
+                            args: [],
+                        },
+                    ],
+                    description: [
+                        Text(
+                            "further arguments passed to methods.",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "except",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "indices of columns from which ",
+                        ),
+                        Command {
+                            name: "emph",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "not",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " to drop levels.",
+                        ),
+                    ],
+                },
+            ],
+        ),
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Value",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "droplevels",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " returns an object of the same class as ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "x",
+                            ),
+                        ],
+                    ],
+                },
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Details",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  The method for class ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "\"factor\"",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " is currently equivalent to",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "factor(x, exclude=exclude)",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ".  For the data frame method, you",
+                ),
+                NewLine,
+                Text(
+                    "  should rarely specify ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "exclude",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " ",
+                ),
+                Command {
+                    name: "dQuote",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "globally",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " for all factor",
+                ),
+                NewLine,
+                Text(
+                    "  columns; rather the default uses the same factor-specific",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "exclude",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " as the factor method itself.",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "  The ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "except",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " argument follows the usual indexing rules.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Note",
+                ),
+            ],
+            children: [
+                Text(
+                    " This function was introduced in R 2.12.0.  It is primarily",
+                ),
+                NewLine,
+                Text(
+                    "  intended for cases where one or more factors in a data frame",
+                ),
+                NewLine,
+                Text(
+                    "  contains only elements from a reduced level set after",
+                ),
+                NewLine,
+                Text(
+                    "  subsetting.  (Notice that subsetting does ",
+                ),
+                Command {
+                    name: "emph",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "not",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " in general drop",
+                ),
+                NewLine,
+                Text(
+                    "  unused levels).  By default, levels are dropped from all factors in a",
+                ),
+                NewLine,
+                Text(
+                    "  data frame, but the ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "except",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " argument allows you to specify",
+                ),
+                NewLine,
+                Text(
+                    "  columns for which this is not wanted.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "See Also",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "subset",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "subset",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " for subsetting data frames.",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "factor",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "factor",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " for definition of factors.",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "drop",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "drop",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " for dropping array dimensions.",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "drop1",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "drop1",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " for dropping terms from a model.",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "[",
+                        ),
+                        Text(
+                            ".factor",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "[",
+                            ),
+                            Text(
+                                ".factor",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " for subsetting of factors.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Examples",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "aq <- transform(airquality, Month = factor(Month, labels = month.abb",
+                ),
+                Text(
+                    "[",
+                ),
+                Text(
+                    "5:9",
+                ),
+                Text(
+                    "]",
+                ),
+                Text(
+                    "))",
+                ),
+                NewLine,
+                Text(
+                    "aq <- subset(aq, Month != \"Jul\")",
+                ),
+                NewLine,
+                Text(
+                    "table(           aq $Month)",
+                ),
+                NewLine,
+                Text(
+                    "table(droplevels(aq)$Month)",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Keyword",
+                ),
+            ],
+            children: [
+                Text(
+                    "category",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Keyword",
+                ),
+            ],
+            children: [
+                Text(
+                    "NA",
+                ),
+            ],
+        },
+        NewLine,
+    ],
+}

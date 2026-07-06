@@ -1,0 +1,75 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &EmitOptions::default(), source).unwrap()"
+input_file: parser/test_data/base-la-version.Rd
+---
+---
+title: "LAPACK Version"
+description: "Report the version of LAPACK in use."
+sidebar:
+  label: "La_version"
+pagefind: false
+---
+
+## Name
+
+La_version
+
+
+## Alias
+
+La_version
+
+
+## Title
+
+LAPACK Version
+
+
+## Description
+
+Report the version of LAPACK in use.
+
+
+## Usage
+
+```r
+La_version()
+```
+
+## Value
+
+A character vector of length one.
+
+  Note that this is the version as reported by the library at runtime.
+  It may differ from the reference ('') implementation, for
+  example by having some optimized or patched routines.  For the version
+  included with , the older (not Fortran 90) versions of
+  
+
+```
+
+    DLARTG DLASSQ ZLARTG ZLASSQ
+  
+```
+
+
+  are used.
+
+
+## See Also
+
+[`extSoftVersion`](../extsoftversion/) for versions of other third-party software.
+
+  [`La_library`](../la_library/) for binary/executable file with LAPACK in use.
+
+
+## Examples
+
+```r
+La_version()
+```
+
+## Keyword
+
+utilities

@@ -1,0 +1,111 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &EmitOptions::default(), source).unwrap()"
+input_file: parser/test_data/partitions-riffle.Rd
+---
+---
+title: "Riffle shuffles"
+description: "Enumeration of riffle shuffles."
+sidebar:
+  label: "riffle"
+pagefind: false
+---
+
+## Name
+
+riffle
+
+
+## Alias
+
+riffle
+
+
+## Alias
+
+genrif
+
+
+## Alias
+
+allriffles
+
+
+## Title
+
+Riffle shuffles
+
+
+## Description
+
+Enumeration of riffle shuffles
+
+
+## Usage
+
+```r
+genrif(v)
+riffle(p,q=p)
+```
+
+## Arguments
+
+<div class="arg-table">
+<table>
+<thead>
+<tr><th>Argument</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>p,q,v</code></td>
+<td>In function `riffle()`, integers `p`,`q` specify the length of the two increasing sequences. In function `genrif()`, the elements of `v` specify the lengths of all the increasing sequences: there are `sum(v)` cards in the pack</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+## Details
+
+A *riffle shuffle* is a permutation of integers
+  $1,2,\ldots,n$ containing one or two rising
+  sequences.
+  
+  A *generalized riffle shuffle*, or *$r$-riffle
+    shuffle*, contains at most $r$ rising sequences.  This is not
+    implemented in the package (earlier versions included a buggy
+    version; the difficulty is ensuring that sequences do not appear
+    more than once).
+  
+  - `riffle(p,q)` returns all riffle shuffles with rising sequences of `1:p` and `(p+1):q`
+- `genrif(v)` returns all riffle shuffles with rising sequences having lengths the entries of `v`, the deck being numbered consecutively
+
+
+## Value
+
+Returns a matrix of class `partition` with columns being 
+  riffle shuffles
+
+
+## Note
+
+When we say "contains $r$ rising sequences" we generally
+  mean "contains *at most* $r$ rising sequences"
+
+
+## Author
+
+Robin K. S. Hankin
+
+
+## See Also
+
+[`parts`](../parts/)
+
+
+## Examples
+
+```r
+riffle(3, 4)
+genrif(1:3)
+```

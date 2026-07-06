@@ -1,0 +1,85 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &opts, source).unwrap()"
+input_file: parser/test_data/base-deprecated.Rd
+---
+---
+title: "Marking Objects as Deprecated"
+description: "When an object is about to be removed from it is first deprecated and should include a call to `. Deprecated`."
+sidebar:
+  label: "Deprecated"
+pagefind: false
+---
+
+## Description
+
+When an object is about to be removed from  it is first deprecated and
+  should include a call to `.Deprecated`.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Usage
+
+```r
+.Deprecated(new, package = NULL, msg,
+            old = as.character(sys.call(sys.parent()))[1L])
+```
+
+## Arguments
+
+<div class="arg-table">
+<table>
+<thead>
+<tr><th>Argument</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>new</code></td>
+<td>character string: A suggestion for a replacement function.</td>
+</tr>
+<tr>
+<td><code>package</code></td>
+<td>character string: The package to be used when suggesting where the deprecated function might be listed.</td>
+</tr>
+<tr>
+<td><code>msg</code></td>
+<td>character string: A message to be printed, if missing a default message is used.</td>
+</tr>
+<tr>
+<td><code>old</code></td>
+<td>character string specifying the function (default) or usage which is being deprecated.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+## Details
+
+`.Deprecated("*new name*")` is called from deprecated functions.
+  These should be listed in `help("*pkg*-deprecated")`
+  for an appropriate *pkg*, including `base`.
+  The original help page for a deprecated function is sometimes
+  available at `help("*old*-deprecated")` (note the quotes).
+
+  `.Deprecated` signals a warning of class `"deprecatedWarning"`
+  with fields `old`, `new`, and `package`.
+
+
+## See Also
+
+[`Defunct`](../defunct/)
+
+  `help("[base-deprecated](../base-deprecated/)")` and so on which list the
+  deprecated functions in the packages.

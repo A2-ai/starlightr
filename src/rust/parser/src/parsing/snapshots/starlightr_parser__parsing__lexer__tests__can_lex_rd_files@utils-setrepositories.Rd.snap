@@ -1,0 +1,3262 @@
+---
+source: parser/src/parsing/lexer.rs
+expression: lex(&contents)
+input_file: parser/test_data/utils-setrepositories.Rd
+---
+[
+    Spanned {
+        value: COMMENT( File src/library/utils/man/setRepositories.Rd),
+        span: Span {
+            start: 0,
+            end: 47,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 47,
+            end: 48,
+        },
+    },
+    Spanned {
+        value: COMMENT( Part of the R package, https://www.R-project.org),
+        span: Span {
+            start: 48,
+            end: 98,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 98,
+            end: 99,
+        },
+    },
+    Spanned {
+        value: COMMENT( Copyright 1995-2024 R Core Team),
+        span: Span {
+            start: 99,
+            end: 132,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 132,
+            end: 133,
+        },
+    },
+    Spanned {
+        value: COMMENT( Distributed under GPL 2 or later),
+        span: Span {
+            start: 133,
+            end: 167,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 167,
+            end: 168,
+        },
+    },
+    Spanned {
+        value: COMMENT( Pulled from https://github.com/wch/r-source/blob/393ace9767744ae26c938cb56ac1cf4867ce64fa/src/library/utils/man/setRepositories.Rd),
+        span: Span {
+            start: 168,
+            end: 300,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 300,
+            end: 301,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 301,
+            end: 302,
+        },
+    },
+    Spanned {
+        value: COMMAND(name),
+        span: Span {
+            start: 302,
+            end: 307,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 307,
+            end: 308,
+        },
+    },
+    Spanned {
+        value: TEXT(setRepositories),
+        span: Span {
+            start: 308,
+            end: 323,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 323,
+            end: 324,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 324,
+            end: 325,
+        },
+    },
+    Spanned {
+        value: COMMAND(alias),
+        span: Span {
+            start: 325,
+            end: 331,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 331,
+            end: 332,
+        },
+    },
+    Spanned {
+        value: TEXT(setRepositories),
+        span: Span {
+            start: 332,
+            end: 347,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 347,
+            end: 348,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 348,
+            end: 349,
+        },
+    },
+    Spanned {
+        value: COMMAND(alias),
+        span: Span {
+            start: 349,
+            end: 355,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 355,
+            end: 356,
+        },
+    },
+    Spanned {
+        value: TEXT(R_REPOSITORIES),
+        span: Span {
+            start: 356,
+            end: 370,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 370,
+            end: 371,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 371,
+            end: 372,
+        },
+    },
+    Spanned {
+        value: COMMAND(alias),
+        span: Span {
+            start: 372,
+            end: 378,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 378,
+            end: 379,
+        },
+    },
+    Spanned {
+        value: TEXT(R_BIOC_VERSION),
+        span: Span {
+            start: 379,
+            end: 393,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 393,
+            end: 394,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 394,
+            end: 395,
+        },
+    },
+    Spanned {
+        value: COMMAND(title),
+        span: Span {
+            start: 395,
+            end: 401,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 401,
+            end: 402,
+        },
+    },
+    Spanned {
+        value: TEXT(Select Package Repositories),
+        span: Span {
+            start: 402,
+            end: 429,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 429,
+            end: 430,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 430,
+            end: 431,
+        },
+    },
+    Spanned {
+        value: COMMAND(description),
+        span: Span {
+            start: 431,
+            end: 443,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 443,
+            end: 444,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 444,
+            end: 445,
+        },
+    },
+    Spanned {
+        value: TEXT(  Interact with the user to choose the package repositories to be used.),
+        span: Span {
+            start: 445,
+            end: 516,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 516,
+            end: 517,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 517,
+            end: 518,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 518,
+            end: 519,
+        },
+    },
+    Spanned {
+        value: COMMAND(usage),
+        span: Span {
+            start: 519,
+            end: 525,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 525,
+            end: 526,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 526,
+            end: 527,
+        },
+    },
+    Spanned {
+        value: TEXT(setRepositories(graphics = getOption("menu.graphics"),),
+        span: Span {
+            start: 527,
+            end: 581,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 581,
+            end: 582,
+        },
+    },
+    Spanned {
+        value: TEXT(                ind = NULL, addURLs = character(), name = NULL)),
+        span: Span {
+            start: 582,
+            end: 645,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 645,
+            end: 646,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 646,
+            end: 647,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 647,
+            end: 648,
+        },
+    },
+    Spanned {
+        value: COMMAND(arguments),
+        span: Span {
+            start: 648,
+            end: 658,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 658,
+            end: 659,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 659,
+            end: 660,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 660,
+            end: 662,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 662,
+            end: 667,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 667,
+            end: 668,
+        },
+    },
+    Spanned {
+        value: TEXT(graphics),
+        span: Span {
+            start: 668,
+            end: 676,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 676,
+            end: 677,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 677,
+            end: 678,
+        },
+    },
+    Spanned {
+        value: TEXT(Logical. If true, use a graphical list: on Windows or),
+        span: Span {
+            start: 678,
+            end: 731,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 731,
+            end: 732,
+        },
+    },
+    Spanned {
+        value: TEXT(    macOS GUI use a list box, and on a Unix-alike if ),
+        span: Span {
+            start: 732,
+            end: 785,
+        },
+    },
+    Spanned {
+        value: COMMAND(pkg),
+        span: Span {
+            start: 785,
+            end: 789,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 789,
+            end: 790,
+        },
+    },
+    Spanned {
+        value: TEXT(tcltk),
+        span: Span {
+            start: 790,
+            end: 795,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 795,
+            end: 796,
+        },
+    },
+    Spanned {
+        value: TEXT( and an X),
+        span: Span {
+            start: 796,
+            end: 805,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 805,
+            end: 806,
+        },
+    },
+    Spanned {
+        value: TEXT(    server are available, use Tk widget. Otherwise use a text),
+        span: Span {
+            start: 806,
+            end: 867,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 867,
+            end: 868,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 868,
+            end: 872,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 872,
+            end: 877,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 877,
+            end: 878,
+        },
+    },
+    Spanned {
+        value: COMMAND(link),
+        span: Span {
+            start: 878,
+            end: 883,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 883,
+            end: 884,
+        },
+    },
+    Spanned {
+        value: TEXT(menu),
+        span: Span {
+            start: 884,
+            end: 888,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 888,
+            end: 889,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 889,
+            end: 890,
+        },
+    },
+    Spanned {
+        value: TEXT(.),
+        span: Span {
+            start: 890,
+            end: 891,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 891,
+            end: 892,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 892,
+            end: 893,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 893,
+            end: 895,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 895,
+            end: 900,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 900,
+            end: 901,
+        },
+    },
+    Spanned {
+        value: TEXT(ind),
+        span: Span {
+            start: 901,
+            end: 904,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 904,
+            end: 905,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 905,
+            end: 906,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 906,
+            end: 911,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 911,
+            end: 912,
+        },
+    },
+    Spanned {
+        value: TEXT(NULL),
+        span: Span {
+            start: 912,
+            end: 916,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 916,
+            end: 917,
+        },
+    },
+    Spanned {
+        value: TEXT( or a vector of integer indices, which have the),
+        span: Span {
+            start: 917,
+            end: 964,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 964,
+            end: 965,
+        },
+    },
+    Spanned {
+        value: TEXT(    same effect as if they were entered at the prompt for),
+        span: Span {
+            start: 965,
+            end: 1022,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1022,
+            end: 1023,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 1023,
+            end: 1027,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1027,
+            end: 1032,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1032,
+            end: 1033,
+        },
+    },
+    Spanned {
+        value: TEXT(graphics = FALSE),
+        span: Span {
+            start: 1033,
+            end: 1049,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1049,
+            end: 1050,
+        },
+    },
+    Spanned {
+        value: TEXT(.),
+        span: Span {
+            start: 1050,
+            end: 1051,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1051,
+            end: 1052,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1052,
+            end: 1053,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 1053,
+            end: 1055,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 1055,
+            end: 1060,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1060,
+            end: 1061,
+        },
+    },
+    Spanned {
+        value: TEXT(name),
+        span: Span {
+            start: 1061,
+            end: 1065,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1065,
+            end: 1066,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1066,
+            end: 1067,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1067,
+            end: 1072,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1072,
+            end: 1073,
+        },
+    },
+    Spanned {
+        value: TEXT(NULL),
+        span: Span {
+            start: 1073,
+            end: 1077,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1077,
+            end: 1078,
+        },
+    },
+    Spanned {
+        value: TEXT( or character vector of names of the),
+        span: Span {
+            start: 1078,
+            end: 1114,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1114,
+            end: 1115,
+        },
+    },
+    Spanned {
+        value: TEXT(    repositories in the repository table which has the same effect as),
+        span: Span {
+            start: 1115,
+            end: 1184,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1184,
+            end: 1185,
+        },
+    },
+    Spanned {
+        value: TEXT(    passing the corresponding indices to ),
+        span: Span {
+            start: 1185,
+            end: 1226,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1226,
+            end: 1231,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1231,
+            end: 1232,
+        },
+    },
+    Spanned {
+        value: TEXT(ind),
+        span: Span {
+            start: 1232,
+            end: 1235,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1235,
+            end: 1236,
+        },
+    },
+    Spanned {
+        value: TEXT(.),
+        span: Span {
+            start: 1236,
+            end: 1237,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1237,
+            end: 1238,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1238,
+            end: 1239,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 1239,
+            end: 1241,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 1241,
+            end: 1246,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1246,
+            end: 1247,
+        },
+    },
+    Spanned {
+        value: TEXT(addURLs),
+        span: Span {
+            start: 1247,
+            end: 1254,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1254,
+            end: 1255,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1255,
+            end: 1256,
+        },
+    },
+    Spanned {
+        value: TEXT(A character vector of additional URLs: it is often),
+        span: Span {
+            start: 1256,
+            end: 1306,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1306,
+            end: 1307,
+        },
+    },
+    Spanned {
+        value: TEXT(    helpful to use a named vector.),
+        span: Span {
+            start: 1307,
+            end: 1341,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1341,
+            end: 1342,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1342,
+            end: 1343,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1343,
+            end: 1344,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1344,
+            end: 1345,
+        },
+    },
+    Spanned {
+        value: COMMAND(details),
+        span: Span {
+            start: 1345,
+            end: 1353,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1353,
+            end: 1354,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1354,
+            end: 1355,
+        },
+    },
+    Spanned {
+        value: TEXT(  The default list of known repositories is stored in the file),
+        span: Span {
+            start: 1355,
+            end: 1417,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1417,
+            end: 1418,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 1418,
+            end: 1420,
+        },
+    },
+    Spanned {
+        value: COMMAND(file),
+        span: Span {
+            start: 1420,
+            end: 1425,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1425,
+            end: 1426,
+        },
+    },
+    Spanned {
+        value: COMMAND(var),
+        span: Span {
+            start: 1426,
+            end: 1430,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1430,
+            end: 1431,
+        },
+    },
+    Spanned {
+        value: COMMAND(link),
+        span: Span {
+            start: 1431,
+            end: 1436,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1436,
+            end: 1437,
+        },
+    },
+    Spanned {
+        value: TEXT(R_HOME),
+        span: Span {
+            start: 1437,
+            end: 1443,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1443,
+            end: 1444,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1444,
+            end: 1445,
+        },
+    },
+    Spanned {
+        value: TEXT(/etc/repositories),
+        span: Span {
+            start: 1445,
+            end: 1462,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1462,
+            end: 1463,
+        },
+    },
+    Spanned {
+        value: TEXT(.),
+        span: Span {
+            start: 1463,
+            end: 1464,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1464,
+            end: 1465,
+        },
+    },
+    Spanned {
+        value: TEXT(  That file can be edited for a site, or a user can have a personal copy),
+        span: Span {
+            start: 1465,
+            end: 1537,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1537,
+            end: 1538,
+        },
+    },
+    Spanned {
+        value: TEXT(  in the file pointed to by the environment variable),
+        span: Span {
+            start: 1538,
+            end: 1590,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1590,
+            end: 1591,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 1591,
+            end: 1593,
+        },
+    },
+    Spanned {
+        value: COMMAND(env),
+        span: Span {
+            start: 1593,
+            end: 1597,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1597,
+            end: 1598,
+        },
+    },
+    Spanned {
+        value: TEXT(R_REPOSITORIES),
+        span: Span {
+            start: 1598,
+            end: 1612,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1612,
+            end: 1613,
+        },
+    },
+    Spanned {
+        value: TEXT(, or if this is unset, ),
+        span: Span {
+            start: 1613,
+            end: 1636,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1636,
+            end: 1641,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1641,
+            end: 1642,
+        },
+    },
+    Spanned {
+        value: TEXT(NULL),
+        span: Span {
+            start: 1642,
+            end: 1646,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1646,
+            end: 1647,
+        },
+    },
+    Spanned {
+        value: TEXT( or does not exist,),
+        span: Span {
+            start: 1647,
+            end: 1666,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1666,
+            end: 1667,
+        },
+    },
+    Spanned {
+        value: TEXT(  in ),
+        span: Span {
+            start: 1667,
+            end: 1672,
+        },
+    },
+    Spanned {
+        value: COMMAND(file),
+        span: Span {
+            start: 1672,
+            end: 1677,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1677,
+            end: 1678,
+        },
+    },
+    Spanned {
+        value: COMMAND(var),
+        span: Span {
+            start: 1678,
+            end: 1682,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1682,
+            end: 1683,
+        },
+    },
+    Spanned {
+        value: TEXT(HOME),
+        span: Span {
+            start: 1683,
+            end: 1687,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1687,
+            end: 1688,
+        },
+    },
+    Spanned {
+        value: TEXT(/.R/repositories),
+        span: Span {
+            start: 1688,
+            end: 1704,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1704,
+            end: 1705,
+        },
+    },
+    Spanned {
+        value: TEXT(, which will take precedence.),
+        span: Span {
+            start: 1705,
+            end: 1734,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1734,
+            end: 1735,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1735,
+            end: 1736,
+        },
+    },
+    Spanned {
+        value: TEXT(  A Bioconductor mirror can be selected by setting),
+        span: Span {
+            start: 1736,
+            end: 1786,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1786,
+            end: 1787,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 1787,
+            end: 1789,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1789,
+            end: 1794,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1794,
+            end: 1795,
+        },
+    },
+    Spanned {
+        value: COMMAND(link),
+        span: Span {
+            start: 1795,
+            end: 1800,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1800,
+            end: 1801,
+        },
+    },
+    Spanned {
+        value: TEXT(options),
+        span: Span {
+            start: 1801,
+            end: 1808,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1808,
+            end: 1809,
+        },
+    },
+    Spanned {
+        value: TEXT(("BioC_mirror")),
+        span: Span {
+            start: 1809,
+            end: 1824,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1824,
+            end: 1825,
+        },
+    },
+    Spanned {
+        value: TEXT(, e.g.),
+        span: Span {
+            start: 1825,
+            end: 1831,
+        },
+    },
+    Spanned {
+        value: COMMAND(sspace),
+        span: Span {
+            start: 1831,
+            end: 1838,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1838,
+            end: 1839,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1839,
+            end: 1840,
+        },
+    },
+    Spanned {
+        value: TEXT(via),
+        span: Span {
+            start: 1840,
+            end: 1843,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1843,
+            end: 1844,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 1844,
+            end: 1846,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1846,
+            end: 1851,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1851,
+            end: 1852,
+        },
+    },
+    Spanned {
+        value: COMMAND(link),
+        span: Span {
+            start: 1852,
+            end: 1857,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1857,
+            end: 1858,
+        },
+    },
+    Spanned {
+        value: TEXT(chooseBioCmirror),
+        span: Span {
+            start: 1858,
+            end: 1874,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1874,
+            end: 1875,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1875,
+            end: 1876,
+        },
+    },
+    Spanned {
+        value: TEXT( --- the default value is),
+        span: Span {
+            start: 1876,
+            end: 1901,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1901,
+            end: 1902,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 1902,
+            end: 1904,
+        },
+    },
+    Spanned {
+        value: COMMAND(samp),
+        span: Span {
+            start: 1904,
+            end: 1909,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1909,
+            end: 1910,
+        },
+    },
+    Spanned {
+        value: TEXT("https://bioconductor.org"),
+        span: Span {
+            start: 1910,
+            end: 1936,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1936,
+            end: 1937,
+        },
+    },
+    Spanned {
+        value: TEXT(.),
+        span: Span {
+            start: 1937,
+            end: 1938,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1938,
+            end: 1939,
+        },
+    },
+    Spanned {
+        value: TEXT(  This version of R chooses Bioconductor version ),
+        span: Span {
+            start: 1939,
+            end: 1988,
+        },
+    },
+    Spanned {
+        value: COMMAND(Sexpr),
+        span: Span {
+            start: 1988,
+            end: 1994,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1994,
+            end: 1995,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1995,
+            end: 1996,
+        },
+    },
+    Spanned {
+        value: TEXT(    utils:::.BioC_version_associated_with_R_version_default),
+        span: Span {
+            start: 1996,
+            end: 2055,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2055,
+            end: 2056,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 2056,
+            end: 2058,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2058,
+            end: 2059,
+        },
+    },
+    Spanned {
+        value: TEXT( by default, but that can be changed via the environment variable),
+        span: Span {
+            start: 2059,
+            end: 2124,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2124,
+            end: 2125,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 2125,
+            end: 2127,
+        },
+    },
+    Spanned {
+        value: COMMAND(env),
+        span: Span {
+            start: 2127,
+            end: 2131,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2131,
+            end: 2132,
+        },
+    },
+    Spanned {
+        value: TEXT(R_BIOC_VERSION),
+        span: Span {
+            start: 2132,
+            end: 2146,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2146,
+            end: 2147,
+        },
+    },
+    Spanned {
+        value: TEXT(.),
+        span: Span {
+            start: 2147,
+            end: 2148,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2148,
+            end: 2149,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2149,
+            end: 2150,
+        },
+    },
+    Spanned {
+        value: TEXT(  The items that are preselected are those that are currently in),
+        span: Span {
+            start: 2150,
+            end: 2214,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2214,
+            end: 2215,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 2215,
+            end: 2217,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2217,
+            end: 2222,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2222,
+            end: 2223,
+        },
+    },
+    Spanned {
+        value: TEXT(options("repos")),
+        span: Span {
+            start: 2223,
+            end: 2239,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2239,
+            end: 2240,
+        },
+    },
+    Spanned {
+        value: TEXT( plus those marked as default in the),
+        span: Span {
+            start: 2240,
+            end: 2276,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2276,
+            end: 2277,
+        },
+    },
+    Spanned {
+        value: TEXT(  list of known repositories.),
+        span: Span {
+            start: 2277,
+            end: 2306,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2306,
+            end: 2307,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2307,
+            end: 2308,
+        },
+    },
+    Spanned {
+        value: TEXT(  The list of repositories offered depends on the setting of option),
+        span: Span {
+            start: 2308,
+            end: 2375,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2375,
+            end: 2376,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 2376,
+            end: 2378,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2378,
+            end: 2383,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2383,
+            end: 2384,
+        },
+    },
+    Spanned {
+        value: TEXT("pkgType"),
+        span: Span {
+            start: 2384,
+            end: 2393,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2393,
+            end: 2394,
+        },
+    },
+    Spanned {
+        value: TEXT( as some repositories only offer a subset of types),
+        span: Span {
+            start: 2394,
+            end: 2444,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2444,
+            end: 2445,
+        },
+    },
+    Spanned {
+        value: TEXT(  (e.g., only source packages or not macOS binary packages).),
+        span: Span {
+            start: 2445,
+            end: 2505,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2505,
+            end: 2506,
+        },
+    },
+    Spanned {
+        value: TEXT(  Further, for binary packages some repositories (notably R-Forge) only),
+        span: Span {
+            start: 2506,
+            end: 2577,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2577,
+            end: 2578,
+        },
+    },
+    Spanned {
+        value: TEXT(  offer packages for the current or recent versions of ),
+        span: Span {
+            start: 2578,
+            end: 2633,
+        },
+    },
+    Spanned {
+        value: COMMAND(R),
+        span: Span {
+            start: 2633,
+            end: 2635,
+        },
+    },
+    Spanned {
+        value: TEXT(.),
+        span: Span {
+            start: 2635,
+            end: 2636,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2636,
+            end: 2637,
+        },
+    },
+    Spanned {
+        value: TEXT(  (Type ),
+        span: Span {
+            start: 2637,
+            end: 2645,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2645,
+            end: 2650,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2650,
+            end: 2651,
+        },
+    },
+    Spanned {
+        value: TEXT("both"),
+        span: Span {
+            start: 2651,
+            end: 2657,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2657,
+            end: 2658,
+        },
+    },
+    Spanned {
+        value: TEXT( is equivalent to ),
+        span: Span {
+            start: 2658,
+            end: 2676,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2676,
+            end: 2681,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2681,
+            end: 2682,
+        },
+    },
+    Spanned {
+        value: TEXT("source"),
+        span: Span {
+            start: 2682,
+            end: 2690,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2690,
+            end: 2691,
+        },
+    },
+    Spanned {
+        value: TEXT(.)),
+        span: Span {
+            start: 2691,
+            end: 2693,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2693,
+            end: 2694,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2694,
+            end: 2695,
+        },
+    },
+    Spanned {
+        value: TEXT(  Repository ),
+        span: Span {
+            start: 2695,
+            end: 2708,
+        },
+    },
+    Spanned {
+        value: COMMAND(samp),
+        span: Span {
+            start: 2708,
+            end: 2713,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2713,
+            end: 2714,
+        },
+    },
+    Spanned {
+        value: TEXT(CRAN),
+        span: Span {
+            start: 2714,
+            end: 2718,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2718,
+            end: 2719,
+        },
+    },
+    Spanned {
+        value: TEXT( is treated specially: the value is taken from),
+        span: Span {
+            start: 2719,
+            end: 2765,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2765,
+            end: 2766,
+        },
+    },
+    Spanned {
+        value: TEXT(  the current setting of ),
+        span: Span {
+            start: 2766,
+            end: 2791,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2791,
+            end: 2796,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2796,
+            end: 2797,
+        },
+    },
+    Spanned {
+        value: TEXT(getOption("repos")),
+        span: Span {
+            start: 2797,
+            end: 2815,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2815,
+            end: 2816,
+        },
+    },
+    Spanned {
+        value: TEXT( if this has an),
+        span: Span {
+            start: 2816,
+            end: 2831,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2831,
+            end: 2832,
+        },
+    },
+    Spanned {
+        value: TEXT(  element ),
+        span: Span {
+            start: 2832,
+            end: 2842,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2842,
+            end: 2847,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2847,
+            end: 2848,
+        },
+    },
+    Spanned {
+        value: TEXT("CRAN"),
+        span: Span {
+            start: 2848,
+            end: 2854,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2854,
+            end: 2855,
+        },
+    },
+    Spanned {
+        value: TEXT(: this ensures mirror selection is sticky.),
+        span: Span {
+            start: 2855,
+            end: 2897,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2897,
+            end: 2898,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2898,
+            end: 2899,
+        },
+    },
+    Spanned {
+        value: TEXT(  This function requires the ),
+        span: Span {
+            start: 2899,
+            end: 2928,
+        },
+    },
+    Spanned {
+        value: COMMAND(R),
+        span: Span {
+            start: 2928,
+            end: 2930,
+        },
+    },
+    Spanned {
+        value: TEXT( session to be interactive unless),
+        span: Span {
+            start: 2930,
+            end: 2963,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2963,
+            end: 2964,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 2964,
+            end: 2966,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2966,
+            end: 2971,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2971,
+            end: 2972,
+        },
+    },
+    Spanned {
+        value: TEXT(ind),
+        span: Span {
+            start: 2972,
+            end: 2975,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2975,
+            end: 2976,
+        },
+    },
+    Spanned {
+        value: TEXT( or ),
+        span: Span {
+            start: 2976,
+            end: 2980,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2980,
+            end: 2985,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2985,
+            end: 2986,
+        },
+    },
+    Spanned {
+        value: TEXT(name),
+        span: Span {
+            start: 2986,
+            end: 2990,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2990,
+            end: 2991,
+        },
+    },
+    Spanned {
+        value: TEXT( is supplied. The latter overrides the former),
+        span: Span {
+            start: 2991,
+            end: 3036,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3036,
+            end: 3037,
+        },
+    },
+    Spanned {
+        value: TEXT(  if both are supplied and values are not case-sensitive. If any of the),
+        span: Span {
+            start: 3037,
+            end: 3108,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3108,
+            end: 3109,
+        },
+    },
+    Spanned {
+        value: TEXT(  supplied names does not match, an error is raised.),
+        span: Span {
+            start: 3109,
+            end: 3161,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3161,
+            end: 3162,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3162,
+            end: 3163,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3163,
+            end: 3164,
+        },
+    },
+    Spanned {
+        value: COMMAND(note),
+        span: Span {
+            start: 3164,
+            end: 3169,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3169,
+            end: 3170,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3170,
+            end: 3171,
+        },
+    },
+    Spanned {
+        value: TEXT(  This does ),
+        span: Span {
+            start: 3171,
+            end: 3183,
+        },
+    },
+    Spanned {
+        value: COMMAND(strong),
+        span: Span {
+            start: 3183,
+            end: 3190,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3190,
+            end: 3191,
+        },
+    },
+    Spanned {
+        value: TEXT(not),
+        span: Span {
+            start: 3191,
+            end: 3194,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3194,
+            end: 3195,
+        },
+    },
+    Spanned {
+        value: TEXT( set the list of repositories at startup: to do),
+        span: Span {
+            start: 3195,
+            end: 3242,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3242,
+            end: 3243,
+        },
+    },
+    Spanned {
+        value: TEXT(  so set ),
+        span: Span {
+            start: 3243,
+            end: 3252,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 3252,
+            end: 3257,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3257,
+            end: 3258,
+        },
+    },
+    Spanned {
+        value: COMMAND(link),
+        span: Span {
+            start: 3258,
+            end: 3263,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3263,
+            end: 3264,
+        },
+    },
+    Spanned {
+        value: TEXT(options),
+        span: Span {
+            start: 3264,
+            end: 3271,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3271,
+            end: 3272,
+        },
+    },
+    Spanned {
+        value: TEXT((repos =)),
+        span: Span {
+            start: 3272,
+            end: 3281,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3281,
+            end: 3282,
+        },
+    },
+    Spanned {
+        value: TEXT( in a start up file (see help topic),
+        span: Span {
+            start: 3282,
+            end: 3317,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3317,
+            end: 3318,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 3318,
+            end: 3320,
+        },
+    },
+    Spanned {
+        value: COMMAND(link),
+        span: Span {
+            start: 3320,
+            end: 3325,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3325,
+            end: 3326,
+        },
+    },
+    Spanned {
+        value: TEXT(Startup),
+        span: Span {
+            start: 3326,
+            end: 3333,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3333,
+            end: 3334,
+        },
+    },
+    Spanned {
+        value: TEXT() or via a customized ),
+        span: Span {
+            start: 3334,
+            end: 3356,
+        },
+    },
+    Spanned {
+        value: COMMAND(file),
+        span: Span {
+            start: 3356,
+            end: 3361,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3361,
+            end: 3362,
+        },
+    },
+    Spanned {
+        value: TEXT(repositories),
+        span: Span {
+            start: 3362,
+            end: 3374,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3374,
+            end: 3375,
+        },
+    },
+    Spanned {
+        value: TEXT( file.),
+        span: Span {
+            start: 3375,
+            end: 3381,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3381,
+            end: 3382,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3382,
+            end: 3383,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3383,
+            end: 3384,
+        },
+    },
+    Spanned {
+        value: COMMAND(value),
+        span: Span {
+            start: 3384,
+            end: 3390,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3390,
+            end: 3391,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3391,
+            end: 3392,
+        },
+    },
+    Spanned {
+        value: TEXT(  This function is invoked mainly for its side effect of updating),
+        span: Span {
+            start: 3392,
+            end: 3457,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3457,
+            end: 3458,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 3458,
+            end: 3460,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 3460,
+            end: 3465,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3465,
+            end: 3466,
+        },
+    },
+    Spanned {
+        value: TEXT(options("repos")),
+        span: Span {
+            start: 3466,
+            end: 3482,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3482,
+            end: 3483,
+        },
+    },
+    Spanned {
+        value: TEXT(.  It returns (invisibly) the previous),
+        span: Span {
+            start: 3483,
+            end: 3521,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3521,
+            end: 3522,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 3522,
+            end: 3524,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 3524,
+            end: 3529,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3529,
+            end: 3530,
+        },
+    },
+    Spanned {
+        value: TEXT(repos),
+        span: Span {
+            start: 3530,
+            end: 3535,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3535,
+            end: 3536,
+        },
+    },
+    Spanned {
+        value: TEXT( options setting (as a ),
+        span: Span {
+            start: 3536,
+            end: 3559,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 3559,
+            end: 3564,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3564,
+            end: 3565,
+        },
+    },
+    Spanned {
+        value: COMMAND(link),
+        span: Span {
+            start: 3565,
+            end: 3570,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3570,
+            end: 3571,
+        },
+    },
+    Spanned {
+        value: TEXT(list),
+        span: Span {
+            start: 3571,
+            end: 3575,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3575,
+            end: 3576,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3576,
+            end: 3577,
+        },
+    },
+    Spanned {
+        value: TEXT( with component),
+        span: Span {
+            start: 3577,
+            end: 3592,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3592,
+            end: 3593,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 3593,
+            end: 3595,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 3595,
+            end: 3600,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3600,
+            end: 3601,
+        },
+    },
+    Spanned {
+        value: TEXT(repos),
+        span: Span {
+            start: 3601,
+            end: 3606,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3606,
+            end: 3607,
+        },
+    },
+    Spanned {
+        value: TEXT() or ),
+        span: Span {
+            start: 3607,
+            end: 3612,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 3612,
+            end: 3617,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3617,
+            end: 3618,
+        },
+    },
+    Spanned {
+        value: COMMAND(link),
+        span: Span {
+            start: 3618,
+            end: 3623,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3623,
+            end: 3624,
+        },
+    },
+    Spanned {
+        value: TEXT(NULL),
+        span: Span {
+            start: 3624,
+            end: 3628,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3628,
+            end: 3629,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3629,
+            end: 3630,
+        },
+    },
+    Spanned {
+        value: TEXT( if no changes were applied.),
+        span: Span {
+            start: 3630,
+            end: 3658,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3658,
+            end: 3659,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3659,
+            end: 3660,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3660,
+            end: 3661,
+        },
+    },
+    Spanned {
+        value: COMMAND(seealso),
+        span: Span {
+            start: 3661,
+            end: 3669,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3669,
+            end: 3670,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3670,
+            end: 3671,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 3671,
+            end: 3673,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 3673,
+            end: 3678,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3678,
+            end: 3679,
+        },
+    },
+    Spanned {
+        value: COMMAND(link),
+        span: Span {
+            start: 3679,
+            end: 3684,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3684,
+            end: 3685,
+        },
+    },
+    Spanned {
+        value: TEXT(chooseCRANmirror),
+        span: Span {
+            start: 3685,
+            end: 3701,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3701,
+            end: 3702,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3702,
+            end: 3703,
+        },
+    },
+    Spanned {
+        value: TEXT(, ),
+        span: Span {
+            start: 3703,
+            end: 3705,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 3705,
+            end: 3710,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3710,
+            end: 3711,
+        },
+    },
+    Spanned {
+        value: COMMAND(link),
+        span: Span {
+            start: 3711,
+            end: 3716,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3716,
+            end: 3717,
+        },
+    },
+    Spanned {
+        value: TEXT(chooseBioCmirror),
+        span: Span {
+            start: 3717,
+            end: 3733,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3733,
+            end: 3734,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3734,
+            end: 3735,
+        },
+    },
+    Spanned {
+        value: TEXT(,),
+        span: Span {
+            start: 3735,
+            end: 3736,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3736,
+            end: 3737,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 3737,
+            end: 3739,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 3739,
+            end: 3744,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3744,
+            end: 3745,
+        },
+    },
+    Spanned {
+        value: COMMAND(link),
+        span: Span {
+            start: 3745,
+            end: 3750,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3750,
+            end: 3751,
+        },
+    },
+    Spanned {
+        value: TEXT(install.packages),
+        span: Span {
+            start: 3751,
+            end: 3767,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3767,
+            end: 3768,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3768,
+            end: 3769,
+        },
+    },
+    Spanned {
+        value: TEXT(.),
+        span: Span {
+            start: 3769,
+            end: 3770,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3770,
+            end: 3771,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3771,
+            end: 3772,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3772,
+            end: 3773,
+        },
+    },
+    Spanned {
+        value: COMMAND(examples),
+        span: Span {
+            start: 3773,
+            end: 3782,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3782,
+            end: 3783,
+        },
+    },
+    Spanned {
+        value: COMMAND(dontrun),
+        span: Span {
+            start: 3783,
+            end: 3791,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3791,
+            end: 3792,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3792,
+            end: 3793,
+        },
+    },
+    Spanned {
+        value: TEXT(setRepositories(addURLs =),
+        span: Span {
+            start: 3793,
+            end: 3818,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3818,
+            end: 3819,
+        },
+    },
+    Spanned {
+        value: TEXT(                c(CRANxtras = "https://www.stats.ox.ac.uk/pub/RWin"))),
+        span: Span {
+            start: 3819,
+            end: 3888,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3888,
+            end: 3889,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3889,
+            end: 3890,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3890,
+            end: 3891,
+        },
+    },
+    Spanned {
+        value: TEXT(oldrepos <- setRepositories(name = c("CRAN", "R-Forge"))),
+        span: Span {
+            start: 3891,
+            end: 3947,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3947,
+            end: 3948,
+        },
+    },
+    Spanned {
+        value: COMMAND(donttest),
+        span: Span {
+            start: 3948,
+            end: 3957,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3957,
+            end: 3958,
+        },
+    },
+    Spanned {
+        value: TEXT(getOption("repos")),
+        span: Span {
+            start: 3958,
+            end: 3976,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3976,
+            end: 3977,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3977,
+            end: 3978,
+        },
+    },
+    Spanned {
+        value: TEXT(options(oldrepos) # restore),
+        span: Span {
+            start: 3978,
+            end: 4005,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4005,
+            end: 4006,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 4006,
+            end: 4007,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4007,
+            end: 4008,
+        },
+    },
+    Spanned {
+        value: COMMAND(keyword),
+        span: Span {
+            start: 4008,
+            end: 4016,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 4016,
+            end: 4017,
+        },
+    },
+    Spanned {
+        value: TEXT( utilities ),
+        span: Span {
+            start: 4017,
+            end: 4028,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 4028,
+            end: 4029,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4029,
+            end: 4030,
+        },
+    },
+    Spanned {
+        value: EOF,
+        span: Span {
+            start: 4030,
+            end: 4030,
+        },
+    },
+]

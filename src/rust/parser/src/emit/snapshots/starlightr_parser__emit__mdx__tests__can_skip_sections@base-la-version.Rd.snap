@@ -1,0 +1,43 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &opts, source).unwrap()"
+input_file: parser/test_data/base-la-version.Rd
+---
+---
+title: "LAPACK Version"
+description: "Report the version of LAPACK in use."
+sidebar:
+  label: "La_version"
+pagefind: false
+---
+
+## Alias
+
+La_version
+
+
+
+
+## Usage
+
+```r
+La_version()
+```
+
+
+## See Also
+
+[`extSoftVersion`](../extsoftversion/) for versions of other third-party software.
+
+  [`La_library`](../la_library/) for binary/executable file with LAPACK in use.
+
+
+## Examples
+
+```r
+La_version()
+```
+
+## Keyword
+
+utilities

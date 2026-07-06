@@ -135,6 +135,21 @@ impl Emitter {
             "if" => self.emit_if(args),
             "ifelse" => self.emit_ifelse(args),
             "figure" => self.emit_figure(args),
+            "tabular" => self.emit_tabular(args),
+            "preformatted" => self.emit_preformatted(args),
+            "pkg" | "env" | "option" | "file" | "command" | "samp" | "kbd" => {
+                self.emit_code(option, args)
+            }
+            "var" | "dfn" => self.emit_emph(option, args),
+            "sQuote" => self.emit_wrapped(args, "'", "'"),
+            "dQuote" => self.emit_wrapped(args, "\"", "\""),
+            "acronym" | "cite" => self.emit_node_group(args),
+            "out" => self.emit_out(args),
+            "enc" => {
+                if let Some(encoded) = args.first() {
+                    self.emit_nodes(encoded);
+                }
+            }
             _ if self.in_math_mode() => self.emit_math_command(name, option, args),
             _ => {
                 if self.source_file.is_empty() {
@@ -342,6 +357,99 @@ impl Emitter {
         } else {
             self.emit_nodes(&args[2]);
         }
+    }
+
+    fn emit_wrapped(&mut self, args: &[Vec<Node>], prefix: &str, suffix: &str) {
+        self.emit_text(prefix);
+        self.emit_node_group(args);
+        self.emit_text(suffix);
+    }
+
+    fn emit_out(&mut self, args: &[Vec<Node>]) {
+        // \out{text} — insert literally into the rendered output, unescaped
+        // (mirrors Rd's "pass through to the current output format" semantics).
+        self.code_mode_depth += 1;
+        self.emit_node_group(args);
+        self.code_mode_depth -= 1;
+    }
+
+    fn emit_preformatted(&mut self, args: &[Vec<Node>]) {
+        self.emit_text("\n\n```\n");
+        self.code_mode_depth += 1;
+        self.emit_node_group(args);
+        self.code_mode_depth -= 1;
+        self.emit_text("\n```\n\n");
+    }
+
+    /// Splits `nodes` into groups delimited by a bare (argument-less) command
+    /// named `name`, e.g. splitting a `\tabular` body on `\tab`/`\cr`.
+    fn split_by_bare_command(nodes: &[Node], name: &str) -> Vec<Vec<Node>> {
+        let mut groups: Vec<Vec<Node>> = vec![Vec::new()];
+        for node in nodes {
+            let is_separator = matches!(
+                node,
+                Node::Command { name: cmd, args, .. } if cmd == name && args.is_empty()
+            );
+            if is_separator {
+                groups.push(Vec::new());
+            } else {
+                groups
+                    .last_mut()
+                    .expect("groups always has at least one entry")
+                    .push(node.clone());
+            }
+        }
+        groups
+    }
+
+    fn emit_table_row(&mut self, cells: &[String], col_count: usize) {
+        self.emit_text("|");
+        for i in 0..col_count {
+            let cell = cells.get(i).map(String::as_str).unwrap_or("");
+            self.emit_text(" ");
+            self.emit_text(&cell.replace('|', "\\|"));
+            self.emit_text(" |");
+        }
+        self.emit_text("\n");
+    }
+
+    fn emit_tabular(&mut self, args: &[Vec<Node>]) {
+        // \tabular{colspec}{body} — cells in body are separated by \tab,
+        // rows by \cr. There's no header row concept in Rd; we render the
+        // first row as the GFM table header, which is the common convention
+        // used by other Rd-to-Markdown converters.
+        let Some(body) = args.get(1) else {
+            return;
+        };
+
+        let mut rows: Vec<Vec<String>> = Vec::new();
+        for raw_row in Self::split_by_bare_command(body, "cr") {
+            let mut cells = Vec::new();
+            for raw_cell in Self::split_by_bare_command(&raw_row, "tab") {
+                cells.push(self.render_compact_nodes(&raw_cell));
+            }
+            if cells.iter().any(|c| !c.is_empty()) {
+                rows.push(cells);
+            }
+        }
+
+        if rows.is_empty() {
+            return;
+        }
+
+        let col_count = rows.iter().map(Vec::len).max().unwrap_or(0);
+
+        self.emit_text("\n\n");
+        self.emit_table_row(&rows[0], col_count);
+        self.emit_text("|");
+        for _ in 0..col_count {
+            self.emit_text(" --- |");
+        }
+        self.emit_text("\n");
+        for row in &rows[1..] {
+            self.emit_table_row(row, col_count);
+        }
+        self.emit_text("\n");
     }
 
     fn emit_eqn(&mut self, _option: Option<&[Node]>, args: &[Vec<Node>]) {

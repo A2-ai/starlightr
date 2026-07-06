@@ -1,0 +1,838 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/tools-pskill.Rd
+---
+Document {
+    children: [
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Name",
+                ),
+            ],
+            children: [
+                Text(
+                    "pskill",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "pskill",
+                ),
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "SIGHUP",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "SIGINT",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "SIGQUIT",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "SIGKILL",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "SIGTERM",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "SIGSTOP",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "SIGTSTP",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "SIGCONT",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "SIGCHLD",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "SIGUSR1",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "SIGUSR2",
+                ),
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Title",
+                ),
+            ],
+            children: [
+                Text(
+                    "Kill a Process",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "pskill",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " sends a signal to a process, usually to terminate it.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "pskill(pid, signal = SIGTERM)",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "SIGHUP",
+                ),
+                NewLine,
+                Text(
+                    "SIGINT",
+                ),
+                NewLine,
+                Text(
+                    "SIGQUIT",
+                ),
+                NewLine,
+                Text(
+                    "SIGKILL",
+                ),
+                NewLine,
+                Text(
+                    "SIGTERM",
+                ),
+                NewLine,
+                Text(
+                    "SIGSTOP",
+                ),
+                NewLine,
+                Text(
+                    "SIGTSTP",
+                ),
+                NewLine,
+                Text(
+                    "SIGCHLD",
+                ),
+                NewLine,
+                Text(
+                    "SIGUSR1",
+                ),
+                NewLine,
+                Text(
+                    "SIGUSR2",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        ArgumentTable(
+            [
+                Argument {
+                    name: [
+                        Text(
+                            "pid",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "positive integers: one or more process IDs as returned by",
+                        ),
+                        NewLine,
+                        Text(
+                            "    ",
+                        ),
+                        Link {
+                            label: [
+                                Text(
+                                    "Sys.getpid",
+                                ),
+                            ],
+                            target: Local(
+                                [
+                                    Text(
+                                        "sys-getpid",
+                                    ),
+                                ],
+                            ),
+                            mode: Code,
+                        },
+                        Text(
+                            ".",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "signal",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "integer, most often one of the symbolic constants.",
+                        ),
+                    ],
+                },
+            ],
+        ),
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Details",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  Signals are a C99 concept, but only a small number are required to be",
+                ),
+                NewLine,
+                Text(
+                    "  supported (of those listed, only ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "SIGINT",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " and ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "SIGTERM",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ").",
+                ),
+                NewLine,
+                Text(
+                    "  They are much more widely used on POSIX operating systems (which",
+                ),
+                NewLine,
+                Text(
+                    "  should define all of those listed here), which also support a",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "kill",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " system call to send a signal to a process, most often to",
+                ),
+                NewLine,
+                Text(
+                    "  terminate it.  Function ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "pskill",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " provides a wrapper: it silently",
+                ),
+                NewLine,
+                Text(
+                    "  ignores invalid values of its arguments, including zero or negative",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "abbr",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "pid",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    "s.",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "  In normal use on a Unix-alike, ",
+                ),
+                Command {
+                    name: "kbd",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "Ctrl-C",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " sends ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "SIGINT",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ",",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "kbd",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "Ctrl-",
+                            ),
+                            EscapedChar(
+                                '\\',
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " sends ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "SIGQUIT",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " and ",
+                ),
+                Command {
+                    name: "kbd",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "Ctrl-Z",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " sends",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "SIGTSTP",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ": that and ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "SIGSTOP",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " suspend a process which can be",
+                ),
+                NewLine,
+                Text(
+                    "  resumed by ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "SIGCONT",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ".",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "  The signals are small integers, but the actual numeric values are not",
+                ),
+                NewLine,
+                Text(
+                    "  standardized (and most do differ between OSes).  The ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "SIG*",
+                            ),
+                        ],
+                    ],
+                },
+                NewLine,
+                Text(
+                    "  objects contain the appropriate integer values for the current platform",
+                ),
+                NewLine,
+                Text(
+                    "  (or ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "NA_INTEGER_",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " if the signal is not defined).",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "  Only ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "SIGINT",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " and ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "SIGTERM",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " will be defined on Windows, and",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "pskill",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " will always use the Windows system call",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "TerminateProcess",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ".",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Value",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  A logical vector of the same length as ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "pid",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ",",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "TRUE",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " (for success) or ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "FALSE",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ", invisibly.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "See Also",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  Package ",
+                ),
+                Command {
+                    name: "pkg",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "parallel",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " has several means to launch child processes",
+                ),
+                NewLine,
+                Text(
+                    "  which record the process IDs.",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "psnice",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "psnice",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        NewLine,
+        Code {
+            title: Some(
+                "Examples",
+            ),
+            kind: Plain,
+            children: [
+                Code {
+                    title: None,
+                    kind: DontRun,
+                    children: [
+                        NewLine,
+                        Text(
+                            "pskill(c(237, 245), SIGKILL)",
+                        ),
+                        NewLine,
+                    ],
+                },
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Keyword",
+                ),
+            ],
+            children: [
+                Text(
+                    "utilities",
+                ),
+            ],
+        },
+        NewLine,
+    ],
+}

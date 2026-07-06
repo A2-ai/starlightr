@@ -1,0 +1,545 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/base-deprecated.Rd
+---
+Document {
+    children: [
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Name",
+                ),
+            ],
+            children: [
+                Text(
+                    "Deprecated",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Title",
+                ),
+            ],
+            children: [
+                Text(
+                    "Marking Objects as Deprecated",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "Deprecated",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    ".Deprecated",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "deprecated",
+                ),
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  When an object is about to be removed from ",
+                ),
+                Command {
+                    name: "R",
+                    options: None,
+                    args: [],
+                },
+                Text(
+                    " it is first deprecated and",
+                ),
+                NewLine,
+                Text(
+                    "  should include a call to ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                ".Deprecated",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ".",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    ".Deprecated(new, package = NULL, msg,",
+                ),
+                NewLine,
+                Text(
+                    "            old = as.character(sys.call(sys.parent()))",
+                ),
+                Text(
+                    "[",
+                ),
+                Text(
+                    "1L",
+                ),
+                Text(
+                    "]",
+                ),
+                Text(
+                    ")",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        ArgumentTable(
+            [
+                Argument {
+                    name: [
+                        Text(
+                            "new",
+                        ),
+                    ],
+                    description: [
+                        NewLine,
+                        Text(
+                            "    character string: A suggestion for a replacement function.",
+                        ),
+                        NewLine,
+                        Text(
+                            "  ",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "package",
+                        ),
+                    ],
+                    description: [
+                        NewLine,
+                        Text(
+                            "    character string: The package to be used when suggesting where the",
+                        ),
+                        NewLine,
+                        Text(
+                            "    deprecated function might be listed.",
+                        ),
+                        NewLine,
+                        Text(
+                            "  ",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "msg",
+                        ),
+                    ],
+                    description: [
+                        NewLine,
+                        Text(
+                            "    character string: A message to be printed, if missing a default",
+                        ),
+                        NewLine,
+                        Text(
+                            "    message is used.",
+                        ),
+                        NewLine,
+                        Text(
+                            "  ",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "old",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "character string specifying the function (default) or usage",
+                        ),
+                        NewLine,
+                        Text(
+                            "    which is being deprecated.",
+                        ),
+                    ],
+                },
+            ],
+        ),
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Details",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                ".Deprecated(\"",
+                            ),
+                            Command {
+                                name: "var",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "new name",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                "\")",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " is called from deprecated functions.",
+                ),
+                NewLine,
+                Text(
+                    "  These should be listed in ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "help(\"",
+                            ),
+                            Command {
+                                name: "var",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "pkg",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                "-deprecated\")",
+                            ),
+                        ],
+                    ],
+                },
+                NewLine,
+                Text(
+                    "  for an appropriate ",
+                ),
+                Command {
+                    name: "var",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "pkg",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ", including ",
+                ),
+                Command {
+                    name: "pkg",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "base",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ".",
+                ),
+                NewLine,
+                Text(
+                    "  The original help page for a deprecated function is sometimes",
+                ),
+                NewLine,
+                Text(
+                    "  available at ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "help(\"",
+                            ),
+                            Command {
+                                name: "var",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "old",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                "-deprecated\")",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " (note the quotes).",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                ".Deprecated",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " signals a warning of class ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "\"deprecatedWarning\"",
+                            ),
+                        ],
+                    ],
+                },
+                NewLine,
+                Text(
+                    "  with fields ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "old",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ", ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "new",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ", and ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "package",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ".",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "See Also",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "Defunct",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "defunct",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                NewLine,
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "help(\"",
+                            ),
+                            Link {
+                                label: [
+                                    Text(
+                                        "base-deprecated",
+                                    ),
+                                ],
+                                target: Local(
+                                    [
+                                        Text(
+                                            "base-deprecated",
+                                        ),
+                                    ],
+                                ),
+                                mode: Text,
+                            },
+                            Text(
+                                "\")",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " and so on which list the",
+                ),
+                NewLine,
+                Text(
+                    "  deprecated functions in the packages.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Keyword",
+                ),
+            ],
+            children: [
+                Text(
+                    "documentation",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Keyword",
+                ),
+            ],
+            children: [
+                Text(
+                    "utilities",
+                ),
+            ],
+        },
+        NewLine,
+    ],
+}

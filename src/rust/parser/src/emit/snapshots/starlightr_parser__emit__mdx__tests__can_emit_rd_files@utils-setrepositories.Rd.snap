@@ -1,0 +1,152 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &EmitOptions::default(), source).unwrap()"
+input_file: parser/test_data/utils-setrepositories.Rd
+---
+---
+title: "Select Package Repositories"
+description: "Interact with the user to choose the package repositories to be used."
+sidebar:
+  label: "setRepositories"
+pagefind: false
+---
+
+## Name
+
+setRepositories
+
+
+## Alias
+
+setRepositories
+
+
+## Alias
+
+R_REPOSITORIES
+
+
+## Alias
+
+R_BIOC_VERSION
+
+
+## Title
+
+Select Package Repositories
+
+
+## Description
+
+Interact with the user to choose the package repositories to be used.
+
+
+## Usage
+
+```r
+setRepositories(graphics = getOption("menu.graphics"),
+                ind = NULL, addURLs = character(), name = NULL)
+```
+
+## Arguments
+
+<div class="arg-table">
+<table>
+<thead>
+<tr><th>Argument</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>graphics</code></td>
+<td>Logical. If true, use a graphical list: on Windows or macOS GUI use a list box, and on a Unix-alike if `tcltk` and an X server are available, use Tk widget. Otherwise use a text [`menu`](../menu/).</td>
+</tr>
+<tr>
+<td><code>ind</code></td>
+<td>`NULL` or a vector of integer indices, which have the same effect as if they were entered at the prompt for `graphics = FALSE`.</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>`NULL` or character vector of names of the repositories in the repository table which has the same effect as passing the corresponding indices to `ind`.</td>
+</tr>
+<tr>
+<td><code>addURLs</code></td>
+<td>A character vector of additional URLs: it is often helpful to use a named vector.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+## Details
+
+The default list of known repositories is stored in the file
+  `*[R_HOME](../r_home/)*/etc/repositories`.
+  That file can be edited for a site, or a user can have a personal copy
+  in the file pointed to by the environment variable
+  `R_REPOSITORIES`, or if this is unset, `NULL` or does not exist,
+  in `*HOME*/.R/repositories`, which will take precedence.
+
+  A Bioconductor mirror can be selected by setting
+  [`options("BioC_mirror")`](../options/), e.g.via
+  [`chooseBioCmirror`](../choosebiocmirror/) --- the default value is
+  `"https://bioconductor.org"`.
+  This version of R chooses Bioconductor version  by default, but that can be changed via the environment variable
+  `R_BIOC_VERSION`.
+
+  The items that are preselected are those that are currently in
+  `options("repos")` plus those marked as default in the
+  list of known repositories.
+
+  The list of repositories offered depends on the setting of option
+  `"pkgType"` as some repositories only offer a subset of types
+  (e.g., only source packages or not macOS binary packages).
+  Further, for binary packages some repositories (notably R-Forge) only
+  offer packages for the current or recent versions of .
+  (Type `"both"` is equivalent to `"source"`.)
+
+  Repository `CRAN` is treated specially: the value is taken from
+  the current setting of `getOption("repos")` if this has an
+  element `"CRAN"`: this ensures mirror selection is sticky.
+
+  This function requires the  session to be interactive unless
+  `ind` or `name` is supplied. The latter overrides the former
+  if both are supplied and values are not case-sensitive. If any of the
+  supplied names does not match, an error is raised.
+
+
+## Note
+
+This does **not** set the list of repositories at startup: to do
+  so set [`options(repos =)`](../options/) in a start up file (see help topic
+  [Startup](../startup/)) or via a customized `repositories` file.
+
+
+## Value
+
+This function is invoked mainly for its side effect of updating
+  `options("repos")`.  It returns (invisibly) the previous
+  `repos` options setting (as a [`list`](../list/) with component
+  `repos`) or [`NULL`](../null/) if no changes were applied.
+
+
+## See Also
+
+[`chooseCRANmirror`](../choosecranmirror/), [`chooseBioCmirror`](../choosebiocmirror/),
+  [`install.packages`](../install-packages/).
+
+
+## Examples
+
+```r
+# Not run:
+setRepositories(addURLs =
+                c(CRANxtras = "https://www.stats.ox.ac.uk/pub/RWin"))
+oldrepos <- setRepositories(name = c("CRAN", "R-Forge"))
+# Not tested:
+getOption("repos")
+options(oldrepos) # restore
+```
+
+## Keyword
+
+utilities

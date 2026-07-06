@@ -1,0 +1,1160 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/base-options-tabular.Rd
+---
+Document {
+    children: [
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Name",
+                ),
+            ],
+            children: [
+                Text(
+                    "options",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "options",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    ".Options",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "getOption",
+                ),
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Title",
+                ),
+            ],
+            children: [
+                Text(
+                    "Options Settings",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  Allow the user to set and examine a variety of global ",
+                ),
+                Command {
+                    name: "emph",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "options",
+                            ),
+                        ],
+                    ],
+                },
+                NewLine,
+                Text(
+                    "  which affect the way in which ",
+                ),
+                Command {
+                    name: "R",
+                    options: None,
+                    args: [],
+                },
+                Text(
+                    " computes and displays its results.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "options(",
+                ),
+                Command {
+                    name: "dots",
+                    options: None,
+                    args: [],
+                },
+                Text(
+                    ")",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "getOption(x, default = NULL)",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    ".Options",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Options used in base ",
+                ),
+                Command {
+                    name: "R",
+                    options: None,
+                    args: [],
+                },
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  The ",
+                ),
+                Command {
+                    name: "sQuote",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "factory-fresh",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " default settings of some of these options are (alphabetically)",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "tabular",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "ll",
+                            ),
+                        ],
+                        [
+                            NewLine,
+                            Text(
+                                "    ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "add.smooth",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "tab",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "TRUE",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Command {
+                                name: "cr",
+                                options: None,
+                                args: [],
+                            },
+                            NewLine,
+                            Text(
+                                "    ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "check.bounds",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "tab",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "FALSE",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Command {
+                                name: "cr",
+                                options: None,
+                                args: [],
+                            },
+                            NewLine,
+                            Text(
+                                "    ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "continue",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "tab",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "\"+ \"",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Command {
+                                name: "cr",
+                                options: None,
+                                args: [],
+                            },
+                            NewLine,
+                            Text(
+                                "    ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "digits",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "tab",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "7",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Command {
+                                name: "cr",
+                                options: None,
+                                args: [],
+                            },
+                            NewLine,
+                            Text(
+                                "    ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "echo",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "tab",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "TRUE",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Command {
+                                name: "cr",
+                                options: None,
+                                args: [],
+                            },
+                            NewLine,
+                            Text(
+                                "    ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "encoding",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "tab",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "\"native.enc\"",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Command {
+                                name: "cr",
+                                options: None,
+                                args: [],
+                            },
+                            NewLine,
+                            Text(
+                                "    ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "error",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "tab",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "NULL",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Command {
+                                name: "cr",
+                                options: None,
+                                args: [],
+                            },
+                            NewLine,
+                            Text(
+                                "    ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "expressions",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "tab",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "5000",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Command {
+                                name: "cr",
+                                options: None,
+                                args: [],
+                            },
+                            NewLine,
+                            Text(
+                                "    ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "keep.source",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "tab",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "interactive()",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Command {
+                                name: "cr",
+                                options: None,
+                                args: [],
+                            },
+                            NewLine,
+                            Text(
+                                "    ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "keep.source.pkgs",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "tab",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "FALSE",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Command {
+                                name: "cr",
+                                options: None,
+                                args: [],
+                            },
+                            NewLine,
+                            Text(
+                                "    ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "max.print",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "tab",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "99999",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Command {
+                                name: "cr",
+                                options: None,
+                                args: [],
+                            },
+                            NewLine,
+                            Text(
+                                "    ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "OutDec",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "tab",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "\".\"",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Command {
+                                name: "cr",
+                                options: None,
+                                args: [],
+                            },
+                            NewLine,
+                            Text(
+                                "    ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "prompt",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "tab",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "\"> \"",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Command {
+                                name: "cr",
+                                options: None,
+                                args: [],
+                            },
+                            NewLine,
+                            Text(
+                                "    ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "quiet",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                "   ",
+                            ),
+                            Command {
+                                name: "tab",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "FALSE",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Command {
+                                name: "cr",
+                                options: None,
+                                args: [],
+                            },
+                            NewLine,
+                            Text(
+                                "    ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "scipen",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "tab",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "0",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "cr",
+                                options: None,
+                                args: [],
+                            },
+                            NewLine,
+                            Text(
+                                "    ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "show.error.messages",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "tab",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "TRUE",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Command {
+                                name: "cr",
+                                options: None,
+                                args: [],
+                            },
+                            NewLine,
+                            Text(
+                                "    ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "timeout",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "tab",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "60",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Command {
+                                name: "cr",
+                                options: None,
+                                args: [],
+                            },
+                            NewLine,
+                            Text(
+                                "    ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "verbose",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "tab",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "FALSE",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Command {
+                                name: "cr",
+                                options: None,
+                                args: [],
+                            },
+                            NewLine,
+                            Text(
+                                "    ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "warn",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "tab",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "0",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Command {
+                                name: "cr",
+                                options: None,
+                                args: [],
+                            },
+                            NewLine,
+                            Text(
+                                "    ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "warning.length",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "tab",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "1000",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Command {
+                                name: "cr",
+                                options: None,
+                                args: [],
+                            },
+                            NewLine,
+                            Text(
+                                "    ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "width",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Text(
+                                "  ",
+                            ),
+                            Command {
+                                name: "tab",
+                                options: None,
+                                args: [],
+                            },
+                            Text(
+                                " ",
+                            ),
+                            Command {
+                                name: "code",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "80",
+                                        ),
+                                    ],
+                                ],
+                            },
+                            Command {
+                                name: "cr",
+                                options: None,
+                                args: [],
+                            },
+                            NewLine,
+                            Text(
+                                "  ",
+                            ),
+                        ],
+                    ],
+                },
+                NewLine,
+                Text(
+                    "  Others are set from environment variables or are platform-dependent.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Options set in package ",
+                ),
+                Command {
+                    name: "pkg",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "grDevices",
+                            ),
+                        ],
+                    ],
+                },
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  These will be set when package ",
+                ),
+                Command {
+                    name: "pkg",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "grDevices",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " (or its namespace)",
+                ),
+                NewLine,
+                Text(
+                    "  is loaded if not already set.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Keyword",
+                ),
+            ],
+            children: [
+                Text(
+                    "utilities",
+                ),
+            ],
+        },
+        NewLine,
+    ],
+}

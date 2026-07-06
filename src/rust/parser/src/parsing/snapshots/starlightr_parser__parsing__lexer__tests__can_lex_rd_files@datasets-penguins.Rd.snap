@@ -1,0 +1,6090 @@
+---
+source: parser/src/parsing/lexer.rs
+expression: lex(&contents)
+input_file: parser/test_data/datasets-penguins.Rd
+---
+[
+    Spanned {
+        value: COMMENT( Pulled from https://github.com/wch/r-source/blob/393ace9767744ae26c938cb56ac1cf4867ce64fa/src/library/datasets/man/penguins.Rd),
+        span: Span {
+            start: 0,
+            end: 128,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 128,
+            end: 129,
+        },
+    },
+    Spanned {
+        value: COMMAND(name),
+        span: Span {
+            start: 129,
+            end: 134,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 134,
+            end: 135,
+        },
+    },
+    Spanned {
+        value: TEXT(penguins),
+        span: Span {
+            start: 135,
+            end: 143,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 143,
+            end: 144,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 144,
+            end: 145,
+        },
+    },
+    Spanned {
+        value: COMMAND(docType),
+        span: Span {
+            start: 145,
+            end: 153,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 153,
+            end: 154,
+        },
+    },
+    Spanned {
+        value: TEXT(data),
+        span: Span {
+            start: 154,
+            end: 158,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 158,
+            end: 159,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 159,
+            end: 160,
+        },
+    },
+    Spanned {
+        value: COMMAND(title),
+        span: Span {
+            start: 160,
+            end: 166,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 166,
+            end: 167,
+        },
+    },
+    Spanned {
+        value: TEXT(Measurements of Penguins near Palmer Station, Antarctica),
+        span: Span {
+            start: 167,
+            end: 223,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 223,
+            end: 224,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 224,
+            end: 225,
+        },
+    },
+    Spanned {
+        value: COMMAND(alias),
+        span: Span {
+            start: 225,
+            end: 231,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 231,
+            end: 232,
+        },
+    },
+    Spanned {
+        value: TEXT(penguins),
+        span: Span {
+            start: 232,
+            end: 240,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 240,
+            end: 241,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 241,
+            end: 242,
+        },
+    },
+    Spanned {
+        value: COMMAND(alias),
+        span: Span {
+            start: 242,
+            end: 248,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 248,
+            end: 249,
+        },
+    },
+    Spanned {
+        value: TEXT(penguins_raw),
+        span: Span {
+            start: 249,
+            end: 261,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 261,
+            end: 262,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 262,
+            end: 263,
+        },
+    },
+    Spanned {
+        value: COMMAND(description),
+        span: Span {
+            start: 263,
+            end: 275,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 275,
+            end: 276,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 276,
+            end: 277,
+        },
+    },
+    Spanned {
+        value: TEXT(  Data on adult penguins covering three species found on three islands in the ),
+        span: Span {
+            start: 277,
+            end: 355,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 355,
+            end: 356,
+        },
+    },
+    Spanned {
+        value: TEXT(  Palmer Archipelago, Antarctica, including their size ),
+        span: Span {
+            start: 356,
+            end: 411,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 411,
+            end: 412,
+        },
+    },
+    Spanned {
+        value: TEXT(  (flipper length, body mass, bill dimensions), and sex.),
+        span: Span {
+            start: 412,
+            end: 468,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 468,
+            end: 469,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 469,
+            end: 470,
+        },
+    },
+    Spanned {
+        value: TEXT(  The columns of ),
+        span: Span {
+            start: 470,
+            end: 487,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 487,
+            end: 492,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 492,
+            end: 493,
+        },
+    },
+    Spanned {
+        value: TEXT(penguins),
+        span: Span {
+            start: 493,
+            end: 501,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 501,
+            end: 502,
+        },
+    },
+    Spanned {
+        value: TEXT( are a subset of the more extensive),
+        span: Span {
+            start: 502,
+            end: 537,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 537,
+            end: 538,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 538,
+            end: 540,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 540,
+            end: 545,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 545,
+            end: 546,
+        },
+    },
+    Spanned {
+        value: TEXT(penguins_raw),
+        span: Span {
+            start: 546,
+            end: 558,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 558,
+            end: 559,
+        },
+    },
+    Spanned {
+        value: TEXT( data frame, which includes nesting observations ),
+        span: Span {
+            start: 559,
+            end: 608,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 608,
+            end: 609,
+        },
+    },
+    Spanned {
+        value: TEXT(  and blood isotope data. There are differences in the column names ),
+        span: Span {
+            start: 609,
+            end: 677,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 677,
+            end: 678,
+        },
+    },
+    Spanned {
+        value: TEXT(  and data types. See the ),
+        span: Span {
+            start: 678,
+            end: 704,
+        },
+    },
+    Spanned {
+        value: COMMAND(sQuote),
+        span: Span {
+            start: 704,
+            end: 711,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 711,
+            end: 712,
+        },
+    },
+    Spanned {
+        value: TEXT(Format),
+        span: Span {
+            start: 712,
+            end: 718,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 718,
+            end: 719,
+        },
+    },
+    Spanned {
+        value: TEXT( section for details. ),
+        span: Span {
+            start: 719,
+            end: 741,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 741,
+            end: 742,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 742,
+            end: 743,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 743,
+            end: 744,
+        },
+    },
+    Spanned {
+        value: COMMAND(usage),
+        span: Span {
+            start: 744,
+            end: 750,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 750,
+            end: 751,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 751,
+            end: 752,
+        },
+    },
+    Spanned {
+        value: TEXT(penguins),
+        span: Span {
+            start: 752,
+            end: 760,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 760,
+            end: 761,
+        },
+    },
+    Spanned {
+        value: TEXT(penguins_raw),
+        span: Span {
+            start: 761,
+            end: 773,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 773,
+            end: 774,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 774,
+            end: 775,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 775,
+            end: 776,
+        },
+    },
+    Spanned {
+        value: COMMAND(format),
+        span: Span {
+            start: 776,
+            end: 783,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 783,
+            end: 784,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 784,
+            end: 785,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 785,
+            end: 787,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 787,
+            end: 792,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 792,
+            end: 793,
+        },
+    },
+    Spanned {
+        value: TEXT(penguins),
+        span: Span {
+            start: 793,
+            end: 801,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 801,
+            end: 802,
+        },
+    },
+    Spanned {
+        value: TEXT( is a data frame with 344 rows and 8 variables:),
+        span: Span {
+            start: 802,
+            end: 849,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 849,
+            end: 850,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 850,
+            end: 852,
+        },
+    },
+    Spanned {
+        value: COMMAND(describe),
+        span: Span {
+            start: 852,
+            end: 861,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 861,
+            end: 862,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 862,
+            end: 863,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 863,
+            end: 867,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 867,
+            end: 872,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 872,
+            end: 873,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 873,
+            end: 878,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 878,
+            end: 879,
+        },
+    },
+    Spanned {
+        value: TEXT(species),
+        span: Span {
+            start: 879,
+            end: 886,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 886,
+            end: 887,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 887,
+            end: 888,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 888,
+            end: 889,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 889,
+            end: 894,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 894,
+            end: 895,
+        },
+    },
+    Spanned {
+        value: COMMAND(link),
+        span: Span {
+            start: 895,
+            end: 900,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 900,
+            end: 901,
+        },
+    },
+    Spanned {
+        value: TEXT(factor),
+        span: Span {
+            start: 901,
+            end: 907,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 907,
+            end: 908,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 908,
+            end: 909,
+        },
+    },
+    Spanned {
+        value: TEXT(, with levels ),
+        span: Span {
+            start: 909,
+            end: 923,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 923,
+            end: 924,
+        },
+    },
+    Spanned {
+        value: TEXT(      ),
+        span: Span {
+            start: 924,
+            end: 930,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 930,
+            end: 935,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 935,
+            end: 936,
+        },
+    },
+    Spanned {
+        value: TEXT(Adelie),
+        span: Span {
+            start: 936,
+            end: 942,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 942,
+            end: 943,
+        },
+    },
+    Spanned {
+        value: TEXT(, ),
+        span: Span {
+            start: 943,
+            end: 945,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 945,
+            end: 950,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 950,
+            end: 951,
+        },
+    },
+    Spanned {
+        value: TEXT(Chinstrap),
+        span: Span {
+            start: 951,
+            end: 960,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 960,
+            end: 961,
+        },
+    },
+    Spanned {
+        value: TEXT(, and ),
+        span: Span {
+            start: 961,
+            end: 967,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 967,
+            end: 972,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 972,
+            end: 973,
+        },
+    },
+    Spanned {
+        value: TEXT(Gentoo),
+        span: Span {
+            start: 973,
+            end: 979,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 979,
+            end: 980,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 980,
+            end: 981,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 981,
+            end: 982,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 982,
+            end: 986,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 986,
+            end: 991,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 991,
+            end: 992,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 992,
+            end: 997,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 997,
+            end: 998,
+        },
+    },
+    Spanned {
+        value: TEXT(island),
+        span: Span {
+            start: 998,
+            end: 1004,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1004,
+            end: 1005,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1005,
+            end: 1006,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1006,
+            end: 1007,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1007,
+            end: 1012,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1012,
+            end: 1013,
+        },
+    },
+    Spanned {
+        value: TEXT(factor),
+        span: Span {
+            start: 1013,
+            end: 1019,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1019,
+            end: 1020,
+        },
+    },
+    Spanned {
+        value: TEXT(, ),
+        span: Span {
+            start: 1020,
+            end: 1022,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1022,
+            end: 1023,
+        },
+    },
+    Spanned {
+        value: TEXT(      with levels ),
+        span: Span {
+            start: 1023,
+            end: 1041,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1041,
+            end: 1046,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1046,
+            end: 1047,
+        },
+    },
+    Spanned {
+        value: TEXT(Biscoe),
+        span: Span {
+            start: 1047,
+            end: 1053,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1053,
+            end: 1054,
+        },
+    },
+    Spanned {
+        value: TEXT(, ),
+        span: Span {
+            start: 1054,
+            end: 1056,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1056,
+            end: 1061,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1061,
+            end: 1062,
+        },
+    },
+    Spanned {
+        value: TEXT(Dream),
+        span: Span {
+            start: 1062,
+            end: 1067,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1067,
+            end: 1068,
+        },
+    },
+    Spanned {
+        value: TEXT(, and ),
+        span: Span {
+            start: 1068,
+            end: 1074,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1074,
+            end: 1079,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1079,
+            end: 1080,
+        },
+    },
+    Spanned {
+        value: TEXT(Torgersen),
+        span: Span {
+            start: 1080,
+            end: 1089,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1089,
+            end: 1090,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1090,
+            end: 1091,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1091,
+            end: 1092,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 1092,
+            end: 1096,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 1096,
+            end: 1101,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1101,
+            end: 1102,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1102,
+            end: 1107,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1107,
+            end: 1108,
+        },
+    },
+    Spanned {
+        value: TEXT(bill_len),
+        span: Span {
+            start: 1108,
+            end: 1116,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1116,
+            end: 1117,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1117,
+            end: 1118,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1118,
+            end: 1119,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1119,
+            end: 1124,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1124,
+            end: 1125,
+        },
+    },
+    Spanned {
+        value: COMMAND(link),
+        span: Span {
+            start: 1125,
+            end: 1130,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1130,
+            end: 1131,
+        },
+    },
+    Spanned {
+        value: TEXT(numeric),
+        span: Span {
+            start: 1131,
+            end: 1138,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1138,
+            end: 1139,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1139,
+            end: 1140,
+        },
+    },
+    Spanned {
+        value: TEXT(, bill length (millimeters)),
+        span: Span {
+            start: 1140,
+            end: 1167,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1167,
+            end: 1168,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1168,
+            end: 1169,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 1169,
+            end: 1173,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 1173,
+            end: 1178,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1178,
+            end: 1179,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1179,
+            end: 1184,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1184,
+            end: 1185,
+        },
+    },
+    Spanned {
+        value: TEXT(bill_dep),
+        span: Span {
+            start: 1185,
+            end: 1193,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1193,
+            end: 1194,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1194,
+            end: 1195,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1195,
+            end: 1196,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1196,
+            end: 1201,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1201,
+            end: 1202,
+        },
+    },
+    Spanned {
+        value: TEXT(numeric),
+        span: Span {
+            start: 1202,
+            end: 1209,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1209,
+            end: 1210,
+        },
+    },
+    Spanned {
+        value: TEXT(, bill depth (millimeters)),
+        span: Span {
+            start: 1210,
+            end: 1236,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1236,
+            end: 1237,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1237,
+            end: 1238,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 1238,
+            end: 1242,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 1242,
+            end: 1247,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1247,
+            end: 1248,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1248,
+            end: 1253,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1253,
+            end: 1254,
+        },
+    },
+    Spanned {
+        value: TEXT(flipper_len),
+        span: Span {
+            start: 1254,
+            end: 1265,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1265,
+            end: 1266,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1266,
+            end: 1267,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1267,
+            end: 1268,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1268,
+            end: 1273,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1273,
+            end: 1274,
+        },
+    },
+    Spanned {
+        value: COMMAND(link),
+        span: Span {
+            start: 1274,
+            end: 1279,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1279,
+            end: 1280,
+        },
+    },
+    Spanned {
+        value: TEXT(integer),
+        span: Span {
+            start: 1280,
+            end: 1287,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1287,
+            end: 1288,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1288,
+            end: 1289,
+        },
+    },
+    Spanned {
+        value: TEXT(, flipper length (millimeters)),
+        span: Span {
+            start: 1289,
+            end: 1319,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1319,
+            end: 1320,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1320,
+            end: 1321,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 1321,
+            end: 1325,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 1325,
+            end: 1330,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1330,
+            end: 1331,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1331,
+            end: 1336,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1336,
+            end: 1337,
+        },
+    },
+    Spanned {
+        value: TEXT(body_mass),
+        span: Span {
+            start: 1337,
+            end: 1346,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1346,
+            end: 1347,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1347,
+            end: 1348,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1348,
+            end: 1349,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1349,
+            end: 1354,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1354,
+            end: 1355,
+        },
+    },
+    Spanned {
+        value: TEXT(integer),
+        span: Span {
+            start: 1355,
+            end: 1362,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1362,
+            end: 1363,
+        },
+    },
+    Spanned {
+        value: TEXT(, body mass (grams)),
+        span: Span {
+            start: 1363,
+            end: 1382,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1382,
+            end: 1383,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1383,
+            end: 1384,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 1384,
+            end: 1388,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 1388,
+            end: 1393,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1393,
+            end: 1394,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1394,
+            end: 1399,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1399,
+            end: 1400,
+        },
+    },
+    Spanned {
+        value: TEXT(sex),
+        span: Span {
+            start: 1400,
+            end: 1403,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1403,
+            end: 1404,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1404,
+            end: 1405,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1405,
+            end: 1406,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1406,
+            end: 1411,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1411,
+            end: 1412,
+        },
+    },
+    Spanned {
+        value: TEXT(factor),
+        span: Span {
+            start: 1412,
+            end: 1418,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1418,
+            end: 1419,
+        },
+    },
+    Spanned {
+        value: TEXT(, with levels ),
+        span: Span {
+            start: 1419,
+            end: 1433,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1433,
+            end: 1438,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1438,
+            end: 1439,
+        },
+    },
+    Spanned {
+        value: TEXT(female),
+        span: Span {
+            start: 1439,
+            end: 1445,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1445,
+            end: 1446,
+        },
+    },
+    Spanned {
+        value: TEXT( and ),
+        span: Span {
+            start: 1446,
+            end: 1451,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1451,
+            end: 1456,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1456,
+            end: 1457,
+        },
+    },
+    Spanned {
+        value: TEXT(male),
+        span: Span {
+            start: 1457,
+            end: 1461,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1461,
+            end: 1462,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1462,
+            end: 1463,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1463,
+            end: 1464,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 1464,
+            end: 1468,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 1468,
+            end: 1473,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1473,
+            end: 1474,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1474,
+            end: 1479,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1479,
+            end: 1480,
+        },
+    },
+    Spanned {
+        value: TEXT(year),
+        span: Span {
+            start: 1480,
+            end: 1484,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1484,
+            end: 1485,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1485,
+            end: 1486,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1486,
+            end: 1487,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1487,
+            end: 1492,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1492,
+            end: 1493,
+        },
+    },
+    Spanned {
+        value: TEXT(integer),
+        span: Span {
+            start: 1493,
+            end: 1500,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1500,
+            end: 1501,
+        },
+    },
+    Spanned {
+        value: TEXT(, study year: 2007, 2008, or 2009),
+        span: Span {
+            start: 1501,
+            end: 1534,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1534,
+            end: 1535,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1535,
+            end: 1536,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 1536,
+            end: 1538,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1538,
+            end: 1539,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1539,
+            end: 1540,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1540,
+            end: 1541,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 1541,
+            end: 1543,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1543,
+            end: 1548,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1548,
+            end: 1549,
+        },
+    },
+    Spanned {
+        value: TEXT(penguins_raw),
+        span: Span {
+            start: 1549,
+            end: 1561,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1561,
+            end: 1562,
+        },
+    },
+    Spanned {
+        value: TEXT( is a data frame with 344 rows and 17 variables. ),
+        span: Span {
+            start: 1562,
+            end: 1611,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1611,
+            end: 1612,
+        },
+    },
+    Spanned {
+        value: TEXT(  8 columns correspond to columns in ),
+        span: Span {
+            start: 1612,
+            end: 1649,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1649,
+            end: 1654,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1654,
+            end: 1655,
+        },
+    },
+    Spanned {
+        value: TEXT(penguins),
+        span: Span {
+            start: 1655,
+            end: 1663,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1663,
+            end: 1664,
+        },
+    },
+    Spanned {
+        value: TEXT(, ),
+        span: Span {
+            start: 1664,
+            end: 1666,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1666,
+            end: 1667,
+        },
+    },
+    Spanned {
+        value: TEXT(  though with different variable names and/or classes:),
+        span: Span {
+            start: 1667,
+            end: 1721,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1721,
+            end: 1722,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 1722,
+            end: 1724,
+        },
+    },
+    Spanned {
+        value: COMMAND(describe),
+        span: Span {
+            start: 1724,
+            end: 1733,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1733,
+            end: 1734,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1734,
+            end: 1735,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 1735,
+            end: 1739,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 1739,
+            end: 1744,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1744,
+            end: 1745,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1745,
+            end: 1750,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1750,
+            end: 1751,
+        },
+    },
+    Spanned {
+        value: TEXT(Species),
+        span: Span {
+            start: 1751,
+            end: 1758,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1758,
+            end: 1759,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1759,
+            end: 1760,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1760,
+            end: 1761,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1761,
+            end: 1766,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1766,
+            end: 1767,
+        },
+    },
+    Spanned {
+        value: TEXT(character),
+        span: Span {
+            start: 1767,
+            end: 1776,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1776,
+            end: 1777,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1777,
+            end: 1778,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1778,
+            end: 1779,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 1779,
+            end: 1783,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 1783,
+            end: 1788,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1788,
+            end: 1789,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1789,
+            end: 1794,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1794,
+            end: 1795,
+        },
+    },
+    Spanned {
+        value: TEXT(Island),
+        span: Span {
+            start: 1795,
+            end: 1801,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1801,
+            end: 1802,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1802,
+            end: 1803,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1803,
+            end: 1804,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1804,
+            end: 1809,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1809,
+            end: 1810,
+        },
+    },
+    Spanned {
+        value: TEXT(character),
+        span: Span {
+            start: 1810,
+            end: 1819,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1819,
+            end: 1820,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1820,
+            end: 1821,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1821,
+            end: 1822,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 1822,
+            end: 1826,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 1826,
+            end: 1831,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1831,
+            end: 1832,
+        },
+    },
+    Spanned {
+        value: COMMAND(samp),
+        span: Span {
+            start: 1832,
+            end: 1837,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1837,
+            end: 1838,
+        },
+    },
+    Spanned {
+        value: TEXT(Culmen Length (mm)),
+        span: Span {
+            start: 1838,
+            end: 1856,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1856,
+            end: 1857,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1857,
+            end: 1858,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1858,
+            end: 1859,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1859,
+            end: 1864,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1864,
+            end: 1865,
+        },
+    },
+    Spanned {
+        value: TEXT(numeric),
+        span: Span {
+            start: 1865,
+            end: 1872,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1872,
+            end: 1873,
+        },
+    },
+    Spanned {
+        value: TEXT(, bill length),
+        span: Span {
+            start: 1873,
+            end: 1886,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1886,
+            end: 1887,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1887,
+            end: 1888,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 1888,
+            end: 1892,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 1892,
+            end: 1897,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1897,
+            end: 1898,
+        },
+    },
+    Spanned {
+        value: COMMAND(samp),
+        span: Span {
+            start: 1898,
+            end: 1903,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1903,
+            end: 1904,
+        },
+    },
+    Spanned {
+        value: TEXT(Culmen Depth (mm)),
+        span: Span {
+            start: 1904,
+            end: 1921,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1921,
+            end: 1922,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1922,
+            end: 1923,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1923,
+            end: 1924,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1924,
+            end: 1929,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1929,
+            end: 1930,
+        },
+    },
+    Spanned {
+        value: TEXT(numeric),
+        span: Span {
+            start: 1930,
+            end: 1937,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1937,
+            end: 1938,
+        },
+    },
+    Spanned {
+        value: TEXT(, bill depth),
+        span: Span {
+            start: 1938,
+            end: 1950,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1950,
+            end: 1951,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1951,
+            end: 1952,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 1952,
+            end: 1956,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 1956,
+            end: 1961,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1961,
+            end: 1962,
+        },
+    },
+    Spanned {
+        value: COMMAND(samp),
+        span: Span {
+            start: 1962,
+            end: 1967,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1967,
+            end: 1968,
+        },
+    },
+    Spanned {
+        value: TEXT(Flipper Length (mm)),
+        span: Span {
+            start: 1968,
+            end: 1987,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1987,
+            end: 1988,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1988,
+            end: 1989,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1989,
+            end: 1990,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1990,
+            end: 1995,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1995,
+            end: 1996,
+        },
+    },
+    Spanned {
+        value: TEXT(numeric),
+        span: Span {
+            start: 1996,
+            end: 2003,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2003,
+            end: 2004,
+        },
+    },
+    Spanned {
+        value: TEXT(, flipper length),
+        span: Span {
+            start: 2004,
+            end: 2020,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2020,
+            end: 2021,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2021,
+            end: 2022,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 2022,
+            end: 2026,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 2026,
+            end: 2031,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2031,
+            end: 2032,
+        },
+    },
+    Spanned {
+        value: COMMAND(samp),
+        span: Span {
+            start: 2032,
+            end: 2037,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2037,
+            end: 2038,
+        },
+    },
+    Spanned {
+        value: TEXT(Body Mass (g)),
+        span: Span {
+            start: 2038,
+            end: 2051,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2051,
+            end: 2052,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2052,
+            end: 2053,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2053,
+            end: 2054,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2054,
+            end: 2059,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2059,
+            end: 2060,
+        },
+    },
+    Spanned {
+        value: TEXT(numeric),
+        span: Span {
+            start: 2060,
+            end: 2067,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2067,
+            end: 2068,
+        },
+    },
+    Spanned {
+        value: TEXT(, body mass),
+        span: Span {
+            start: 2068,
+            end: 2079,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2079,
+            end: 2080,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2080,
+            end: 2081,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 2081,
+            end: 2085,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 2085,
+            end: 2090,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2090,
+            end: 2091,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2091,
+            end: 2096,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2096,
+            end: 2097,
+        },
+    },
+    Spanned {
+        value: TEXT(Sex),
+        span: Span {
+            start: 2097,
+            end: 2100,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2100,
+            end: 2101,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2101,
+            end: 2102,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2102,
+            end: 2103,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2103,
+            end: 2108,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2108,
+            end: 2109,
+        },
+    },
+    Spanned {
+        value: TEXT(character),
+        span: Span {
+            start: 2109,
+            end: 2118,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2118,
+            end: 2119,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2119,
+            end: 2120,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2120,
+            end: 2121,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 2121,
+            end: 2125,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 2125,
+            end: 2130,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2130,
+            end: 2131,
+        },
+    },
+    Spanned {
+        value: COMMAND(samp),
+        span: Span {
+            start: 2131,
+            end: 2136,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2136,
+            end: 2137,
+        },
+    },
+    Spanned {
+        value: TEXT(Date Egg),
+        span: Span {
+            start: 2137,
+            end: 2145,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2145,
+            end: 2146,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2146,
+            end: 2147,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2147,
+            end: 2148,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2148,
+            end: 2153,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2153,
+            end: 2154,
+        },
+    },
+    Spanned {
+        value: COMMAND(link),
+        span: Span {
+            start: 2154,
+            end: 2159,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2159,
+            end: 2160,
+        },
+    },
+    Spanned {
+        value: TEXT(Date),
+        span: Span {
+            start: 2160,
+            end: 2164,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2164,
+            end: 2165,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2165,
+            end: 2166,
+        },
+    },
+    Spanned {
+        value: TEXT(, when study nest observed with 1 egg.),
+        span: Span {
+            start: 2166,
+            end: 2204,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2204,
+            end: 2205,
+        },
+    },
+    Spanned {
+        value: TEXT(      The year component is the ),
+        span: Span {
+            start: 2205,
+            end: 2237,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2237,
+            end: 2242,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2242,
+            end: 2243,
+        },
+    },
+    Spanned {
+        value: TEXT(year),
+        span: Span {
+            start: 2243,
+            end: 2247,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2247,
+            end: 2248,
+        },
+    },
+    Spanned {
+        value: TEXT( column in ),
+        span: Span {
+            start: 2248,
+            end: 2259,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2259,
+            end: 2264,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2264,
+            end: 2265,
+        },
+    },
+    Spanned {
+        value: TEXT(penguins),
+        span: Span {
+            start: 2265,
+            end: 2273,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2273,
+            end: 2274,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2274,
+            end: 2275,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2275,
+            end: 2276,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 2276,
+            end: 2278,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2278,
+            end: 2279,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2279,
+            end: 2280,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2280,
+            end: 2281,
+        },
+    },
+    Spanned {
+        value: TEXT(  There are 9 further columns in ),
+        span: Span {
+            start: 2281,
+            end: 2314,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2314,
+            end: 2319,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2319,
+            end: 2320,
+        },
+    },
+    Spanned {
+        value: TEXT(penguins_raw),
+        span: Span {
+            start: 2320,
+            end: 2332,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2332,
+            end: 2333,
+        },
+    },
+    Spanned {
+        value: TEXT(:),
+        span: Span {
+            start: 2333,
+            end: 2334,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2334,
+            end: 2335,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 2335,
+            end: 2337,
+        },
+    },
+    Spanned {
+        value: COMMAND(describe),
+        span: Span {
+            start: 2337,
+            end: 2346,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2346,
+            end: 2347,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2347,
+            end: 2348,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 2348,
+            end: 2352,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 2352,
+            end: 2357,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2357,
+            end: 2358,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2358,
+            end: 2363,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2363,
+            end: 2364,
+        },
+    },
+    Spanned {
+        value: TEXT(studyName),
+        span: Span {
+            start: 2364,
+            end: 2373,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2373,
+            end: 2374,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2374,
+            end: 2375,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2375,
+            end: 2376,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2376,
+            end: 2381,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2381,
+            end: 2382,
+        },
+    },
+    Spanned {
+        value: TEXT(character),
+        span: Span {
+            start: 2382,
+            end: 2391,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2391,
+            end: 2392,
+        },
+    },
+    Spanned {
+        value: TEXT(, expedition during which the data was collected),
+        span: Span {
+            start: 2392,
+            end: 2440,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2440,
+            end: 2441,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2441,
+            end: 2442,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 2442,
+            end: 2446,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 2446,
+            end: 2451,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2451,
+            end: 2452,
+        },
+    },
+    Spanned {
+        value: COMMAND(samp),
+        span: Span {
+            start: 2452,
+            end: 2457,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2457,
+            end: 2458,
+        },
+    },
+    Spanned {
+        value: TEXT(Sample Number),
+        span: Span {
+            start: 2458,
+            end: 2471,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2471,
+            end: 2472,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2472,
+            end: 2473,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2473,
+            end: 2474,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2474,
+            end: 2479,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2479,
+            end: 2480,
+        },
+    },
+    Spanned {
+        value: TEXT(numeric),
+        span: Span {
+            start: 2480,
+            end: 2487,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2487,
+            end: 2488,
+        },
+    },
+    Spanned {
+        value: TEXT(, continuous numbering sequence for each sample),
+        span: Span {
+            start: 2488,
+            end: 2535,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2535,
+            end: 2536,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2536,
+            end: 2537,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 2537,
+            end: 2541,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 2541,
+            end: 2546,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2546,
+            end: 2547,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2547,
+            end: 2552,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2552,
+            end: 2553,
+        },
+    },
+    Spanned {
+        value: TEXT(Region),
+        span: Span {
+            start: 2553,
+            end: 2559,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2559,
+            end: 2560,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2560,
+            end: 2561,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2561,
+            end: 2562,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2562,
+            end: 2567,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2567,
+            end: 2568,
+        },
+    },
+    Spanned {
+        value: TEXT(character),
+        span: Span {
+            start: 2568,
+            end: 2577,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2577,
+            end: 2578,
+        },
+    },
+    Spanned {
+        value: TEXT(, the region of Palmer ),
+        span: Span {
+            start: 2578,
+            end: 2601,
+        },
+    },
+    Spanned {
+        value: COMMAND(acronym),
+        span: Span {
+            start: 2601,
+            end: 2609,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2609,
+            end: 2610,
+        },
+    },
+    Spanned {
+        value: TEXT(LTER),
+        span: Span {
+            start: 2610,
+            end: 2614,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2614,
+            end: 2615,
+        },
+    },
+    Spanned {
+        value: TEXT( sampling grid),
+        span: Span {
+            start: 2615,
+            end: 2629,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2629,
+            end: 2630,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2630,
+            end: 2631,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 2631,
+            end: 2635,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 2635,
+            end: 2640,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2640,
+            end: 2641,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2641,
+            end: 2646,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2646,
+            end: 2647,
+        },
+    },
+    Spanned {
+        value: TEXT(Stage),
+        span: Span {
+            start: 2647,
+            end: 2652,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2652,
+            end: 2653,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2653,
+            end: 2654,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2654,
+            end: 2655,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2655,
+            end: 2660,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2660,
+            end: 2661,
+        },
+    },
+    Spanned {
+        value: TEXT(character),
+        span: Span {
+            start: 2661,
+            end: 2670,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2670,
+            end: 2671,
+        },
+    },
+    Spanned {
+        value: TEXT(, denoting reproductive stage at sampling),
+        span: Span {
+            start: 2671,
+            end: 2712,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2712,
+            end: 2713,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2713,
+            end: 2714,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 2714,
+            end: 2718,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 2718,
+            end: 2723,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2723,
+            end: 2724,
+        },
+    },
+    Spanned {
+        value: COMMAND(samp),
+        span: Span {
+            start: 2724,
+            end: 2729,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2729,
+            end: 2730,
+        },
+    },
+    Spanned {
+        value: TEXT(Individual ID),
+        span: Span {
+            start: 2730,
+            end: 2743,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2743,
+            end: 2744,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2744,
+            end: 2745,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2745,
+            end: 2746,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2746,
+            end: 2751,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2751,
+            end: 2752,
+        },
+    },
+    Spanned {
+        value: TEXT(character),
+        span: Span {
+            start: 2752,
+            end: 2761,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2761,
+            end: 2762,
+        },
+    },
+    Spanned {
+        value: TEXT(, unique ID for each individual in dataset),
+        span: Span {
+            start: 2762,
+            end: 2804,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2804,
+            end: 2805,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2805,
+            end: 2806,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 2806,
+            end: 2810,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 2810,
+            end: 2815,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2815,
+            end: 2816,
+        },
+    },
+    Spanned {
+        value: COMMAND(samp),
+        span: Span {
+            start: 2816,
+            end: 2821,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2821,
+            end: 2822,
+        },
+    },
+    Spanned {
+        value: TEXT(Clutch Completion),
+        span: Span {
+            start: 2822,
+            end: 2839,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2839,
+            end: 2840,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2840,
+            end: 2841,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2841,
+            end: 2842,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2842,
+            end: 2847,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2847,
+            end: 2848,
+        },
+    },
+    Spanned {
+        value: TEXT(character),
+        span: Span {
+            start: 2848,
+            end: 2857,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2857,
+            end: 2858,
+        },
+    },
+    Spanned {
+        value: TEXT(, ),
+        span: Span {
+            start: 2858,
+            end: 2860,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2860,
+            end: 2861,
+        },
+    },
+    Spanned {
+        value: TEXT(      if the study nest was observed with a full clutch, i.e., 2 eggs),
+        span: Span {
+            start: 2861,
+            end: 2930,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2930,
+            end: 2931,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 2931,
+            end: 2932,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 2932,
+            end: 2936,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 2936,
+            end: 2941,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2941,
+            end: 2942,
+        },
+    },
+    Spanned {
+        value: COMMAND(samp),
+        span: Span {
+            start: 2942,
+            end: 2947,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2947,
+            end: 2948,
+        },
+    },
+    Spanned {
+        value: TEXT(Delta 15 N (o/oo)),
+        span: Span {
+            start: 2948,
+            end: 2965,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2965,
+            end: 2966,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2966,
+            end: 2967,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2967,
+            end: 2968,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 2968,
+            end: 2973,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 2973,
+            end: 2974,
+        },
+    },
+    Spanned {
+        value: TEXT(numeric),
+        span: Span {
+            start: 2974,
+            end: 2981,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 2981,
+            end: 2982,
+        },
+    },
+    Spanned {
+        value: TEXT(, the ratio of stable isotopes 15N:14N),
+        span: Span {
+            start: 2982,
+            end: 3020,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3020,
+            end: 3021,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3021,
+            end: 3022,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 3022,
+            end: 3026,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 3026,
+            end: 3031,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3031,
+            end: 3032,
+        },
+    },
+    Spanned {
+        value: COMMAND(samp),
+        span: Span {
+            start: 3032,
+            end: 3037,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3037,
+            end: 3038,
+        },
+    },
+    Spanned {
+        value: TEXT(Delta 13 C (o/oo)),
+        span: Span {
+            start: 3038,
+            end: 3055,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3055,
+            end: 3056,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3056,
+            end: 3057,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3057,
+            end: 3058,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 3058,
+            end: 3063,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3063,
+            end: 3064,
+        },
+    },
+    Spanned {
+        value: TEXT(numeric),
+        span: Span {
+            start: 3064,
+            end: 3071,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3071,
+            end: 3072,
+        },
+    },
+    Spanned {
+        value: TEXT(, the ratio of stable isotopes 13C:12C),
+        span: Span {
+            start: 3072,
+            end: 3110,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3110,
+            end: 3111,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3111,
+            end: 3112,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 3112,
+            end: 3116,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 3116,
+            end: 3121,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3121,
+            end: 3122,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 3122,
+            end: 3127,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3127,
+            end: 3128,
+        },
+    },
+    Spanned {
+        value: TEXT(Comments),
+        span: Span {
+            start: 3128,
+            end: 3136,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3136,
+            end: 3137,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3137,
+            end: 3138,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3138,
+            end: 3139,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 3139,
+            end: 3144,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3144,
+            end: 3145,
+        },
+    },
+    Spanned {
+        value: TEXT(character),
+        span: Span {
+            start: 3145,
+            end: 3154,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3154,
+            end: 3155,
+        },
+    },
+    Spanned {
+        value: TEXT(, additional relevant information),
+        span: Span {
+            start: 3155,
+            end: 3188,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3188,
+            end: 3189,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3189,
+            end: 3190,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 3190,
+            end: 3192,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3192,
+            end: 3193,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3193,
+            end: 3194,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3194,
+            end: 3195,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3195,
+            end: 3196,
+        },
+    },
+    Spanned {
+        value: COMMAND(source),
+        span: Span {
+            start: 3196,
+            end: 3203,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3203,
+            end: 3204,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3204,
+            end: 3205,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 3205,
+            end: 3207,
+        },
+    },
+    Spanned {
+        value: COMMAND(describe),
+        span: Span {
+            start: 3207,
+            end: 3216,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3216,
+            end: 3217,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3217,
+            end: 3218,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 3218,
+            end: 3222,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 3222,
+            end: 3227,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3227,
+            end: 3228,
+        },
+    },
+    Spanned {
+        value: COMMAND(enc),
+        span: Span {
+            start: 3228,
+            end: 3232,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3232,
+            end: 3233,
+        },
+    },
+    Spanned {
+        value: TEXT(Adélie),
+        span: Span {
+            start: 3233,
+            end: 3240,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3240,
+            end: 3241,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3241,
+            end: 3242,
+        },
+    },
+    Spanned {
+        value: TEXT(Adelie),
+        span: Span {
+            start: 3242,
+            end: 3248,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3248,
+            end: 3249,
+        },
+    },
+    Spanned {
+        value: TEXT( penguins:),
+        span: Span {
+            start: 3249,
+            end: 3259,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3259,
+            end: 3260,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3260,
+            end: 3261,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3261,
+            end: 3262,
+        },
+    },
+    Spanned {
+        value: TEXT(      ),
+        span: Span {
+            start: 3262,
+            end: 3268,
+        },
+    },
+    Spanned {
+        value: COMMAND(bibshow),
+        span: Span {
+            start: 3268,
+            end: 3276,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3276,
+            end: 3277,
+        },
+    },
+    Spanned {
+        value: TEXT(R:Palmer_Station_Antarctica_LTER+Gorman:2020a),
+        span: Span {
+            start: 3277,
+            end: 3322,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3322,
+            end: 3323,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3323,
+            end: 3324,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 3324,
+            end: 3328,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3328,
+            end: 3329,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3329,
+            end: 3330,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 3330,
+            end: 3334,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 3334,
+            end: 3339,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3339,
+            end: 3340,
+        },
+    },
+    Spanned {
+        value: TEXT(Gentoo penguins:),
+        span: Span {
+            start: 3340,
+            end: 3356,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3356,
+            end: 3357,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3357,
+            end: 3358,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3358,
+            end: 3359,
+        },
+    },
+    Spanned {
+        value: TEXT(      ),
+        span: Span {
+            start: 3359,
+            end: 3365,
+        },
+    },
+    Spanned {
+        value: COMMAND(bibshow),
+        span: Span {
+            start: 3365,
+            end: 3373,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3373,
+            end: 3374,
+        },
+    },
+    Spanned {
+        value: TEXT(R:Palmer_Station_Antarctica_LTER+Gorman:2020b),
+        span: Span {
+            start: 3374,
+            end: 3419,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3419,
+            end: 3420,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3420,
+            end: 3421,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 3421,
+            end: 3425,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3425,
+            end: 3426,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3426,
+            end: 3427,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 3427,
+            end: 3431,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 3431,
+            end: 3436,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3436,
+            end: 3437,
+        },
+    },
+    Spanned {
+        value: TEXT(Chinstrap penguins:),
+        span: Span {
+            start: 3437,
+            end: 3456,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3456,
+            end: 3457,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3457,
+            end: 3458,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3458,
+            end: 3459,
+        },
+    },
+    Spanned {
+        value: TEXT(      ),
+        span: Span {
+            start: 3459,
+            end: 3465,
+        },
+    },
+    Spanned {
+        value: COMMAND(bibshow),
+        span: Span {
+            start: 3465,
+            end: 3473,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3473,
+            end: 3474,
+        },
+    },
+    Spanned {
+        value: TEXT(R:Palmer_Station_Antarctica_LTER+Gorman:2020c),
+        span: Span {
+            start: 3474,
+            end: 3519,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3519,
+            end: 3520,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3520,
+            end: 3521,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 3521,
+            end: 3525,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3525,
+            end: 3526,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3526,
+            end: 3527,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 3527,
+            end: 3529,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3529,
+            end: 3530,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3530,
+            end: 3531,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3531,
+            end: 3532,
+        },
+    },
+    Spanned {
+        value: TEXT(  The title naming convention for the source for the Gentoo and Chinstrap),
+        span: Span {
+            start: 3532,
+            end: 3605,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3605,
+            end: 3606,
+        },
+    },
+    Spanned {
+        value: TEXT(  data is that same as for ),
+        span: Span {
+            start: 3606,
+            end: 3633,
+        },
+    },
+    Spanned {
+        value: COMMAND(enc),
+        span: Span {
+            start: 3633,
+            end: 3637,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3637,
+            end: 3638,
+        },
+    },
+    Spanned {
+        value: TEXT(Adélie),
+        span: Span {
+            start: 3638,
+            end: 3645,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3645,
+            end: 3646,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3646,
+            end: 3647,
+        },
+    },
+    Spanned {
+        value: TEXT(Adelie),
+        span: Span {
+            start: 3647,
+            end: 3653,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3653,
+            end: 3654,
+        },
+    },
+    Spanned {
+        value: TEXT( penguins.),
+        span: Span {
+            start: 3654,
+            end: 3664,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3664,
+            end: 3665,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3665,
+            end: 3666,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3666,
+            end: 3667,
+        },
+    },
+    Spanned {
+        value: COMMAND(details),
+        span: Span {
+            start: 3667,
+            end: 3675,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3675,
+            end: 3676,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3676,
+            end: 3677,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 3677,
+            end: 3679,
+        },
+    },
+    Spanned {
+        value: COMMAND(bibcitet),
+        span: Span {
+            start: 3679,
+            end: 3688,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3688,
+            end: 3689,
+        },
+    },
+    Spanned {
+        value: TEXT(R:Gorman+Williams+Fraser:2014),
+        span: Span {
+            start: 3689,
+            end: 3718,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3718,
+            end: 3719,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3719,
+            end: 3720,
+        },
+    },
+    Spanned {
+        value: TEXT(  used the data to study sex dimorphism separately for the three species.),
+        span: Span {
+            start: 3720,
+            end: 3793,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3793,
+            end: 3794,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3794,
+            end: 3795,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 3795,
+            end: 3797,
+        },
+    },
+    Spanned {
+        value: COMMAND(bibcitet),
+        span: Span {
+            start: 3797,
+            end: 3806,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3806,
+            end: 3807,
+        },
+    },
+    Spanned {
+        value: TEXT(R:Horst+Presmanes_Hill+Gorman:2022),
+        span: Span {
+            start: 3807,
+            end: 3841,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3841,
+            end: 3842,
+        },
+    },
+    Spanned {
+        value: TEXT( popularized the data as),
+        span: Span {
+            start: 3842,
+            end: 3866,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3866,
+            end: 3867,
+        },
+    },
+    Spanned {
+        value: TEXT(  an illustration for different statistical methods, as an alternative),
+        span: Span {
+            start: 3867,
+            end: 3937,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3937,
+            end: 3938,
+        },
+    },
+    Spanned {
+        value: TEXT(  to the ),
+        span: Span {
+            start: 3938,
+            end: 3947,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 3947,
+            end: 3952,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3952,
+            end: 3953,
+        },
+    },
+    Spanned {
+        value: COMMAND(link),
+        span: Span {
+            start: 3953,
+            end: 3958,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3958,
+            end: 3959,
+        },
+    },
+    Spanned {
+        value: TEXT(iris),
+        span: Span {
+            start: 3959,
+            end: 3963,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3963,
+            end: 3964,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 3964,
+            end: 3965,
+        },
+    },
+    Spanned {
+        value: TEXT( data.),
+        span: Span {
+            start: 3965,
+            end: 3971,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3971,
+            end: 3972,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 3972,
+            end: 3973,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 3973,
+            end: 3975,
+        },
+    },
+    Spanned {
+        value: COMMAND(bibcitet),
+        span: Span {
+            start: 3975,
+            end: 3984,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 3984,
+            end: 3985,
+        },
+    },
+    Spanned {
+        value: TEXT(R:Kaye+Turner+Gorman:2025),
+        span: Span {
+            start: 3985,
+            end: 4010,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 4010,
+            end: 4011,
+        },
+    },
+    Spanned {
+        value: TEXT( provide the scripts used to),
+        span: Span {
+            start: 4011,
+            end: 4039,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4039,
+            end: 4040,
+        },
+    },
+    Spanned {
+        value: TEXT(  create these data sets from the original source data, and a notebook),
+        span: Span {
+            start: 4040,
+            end: 4110,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4110,
+            end: 4111,
+        },
+    },
+    Spanned {
+        value: TEXT(  reproducing results from ),
+        span: Span {
+            start: 4111,
+            end: 4138,
+        },
+    },
+    Spanned {
+        value: COMMAND(bibcitet),
+        span: Span {
+            start: 4138,
+            end: 4147,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 4147,
+            end: 4148,
+        },
+    },
+    Spanned {
+        value: TEXT(R:Gorman+Williams+Fraser:2014),
+        span: Span {
+            start: 4148,
+            end: 4177,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 4177,
+            end: 4178,
+        },
+    },
+    Spanned {
+        value: TEXT(.),
+        span: Span {
+            start: 4178,
+            end: 4179,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4179,
+            end: 4180,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 4180,
+            end: 4181,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4181,
+            end: 4182,
+        },
+    },
+    Spanned {
+        value: COMMAND(note),
+        span: Span {
+            start: 4182,
+            end: 4187,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 4187,
+            end: 4188,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4188,
+            end: 4189,
+        },
+    },
+    Spanned {
+        value: TEXT(  These data sets are also available in the ),
+        span: Span {
+            start: 4189,
+            end: 4233,
+        },
+    },
+    Spanned {
+        value: COMMAND(CRANpkg),
+        span: Span {
+            start: 4233,
+            end: 4241,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 4241,
+            end: 4242,
+        },
+    },
+    Spanned {
+        value: TEXT(palmerpenguins),
+        span: Span {
+            start: 4242,
+            end: 4256,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 4256,
+            end: 4257,
+        },
+    },
+    Spanned {
+        value: TEXT( package.  ),
+        span: Span {
+            start: 4257,
+            end: 4268,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4268,
+            end: 4269,
+        },
+    },
+    Spanned {
+        value: TEXT(  See the ),
+        span: Span {
+            start: 4269,
+            end: 4279,
+        },
+    },
+    Spanned {
+        value: COMMAND(href),
+        span: Span {
+            start: 4279,
+            end: 4284,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 4284,
+            end: 4285,
+        },
+    },
+    Spanned {
+        value: TEXT(https://allisonhorst.github.io/palmerpenguins/),
+        span: Span {
+            start: 4285,
+            end: 4331,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 4331,
+            end: 4332,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 4332,
+            end: 4333,
+        },
+    },
+    Spanned {
+        value: TEXT(package website),
+        span: Span {
+            start: 4333,
+            end: 4348,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 4348,
+            end: 4349,
+        },
+    },
+    Spanned {
+        value: TEXT( ),
+        span: Span {
+            start: 4349,
+            end: 4350,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4350,
+            end: 4351,
+        },
+    },
+    Spanned {
+        value: TEXT(  for further details and resources.),
+        span: Span {
+            start: 4351,
+            end: 4387,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4387,
+            end: 4388,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4388,
+            end: 4389,
+        },
+    },
+    Spanned {
+        value: TEXT(  The ),
+        span: Span {
+            start: 4389,
+            end: 4395,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 4395,
+            end: 4400,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 4400,
+            end: 4401,
+        },
+    },
+    Spanned {
+        value: TEXT(penguins),
+        span: Span {
+            start: 4401,
+            end: 4409,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 4409,
+            end: 4410,
+        },
+    },
+    Spanned {
+        value: TEXT( data has some shorter variable names than the ),
+        span: Span {
+            start: 4410,
+            end: 4457,
+        },
+    },
+    Spanned {
+        value: COMMAND(pkg),
+        span: Span {
+            start: 4457,
+            end: 4461,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 4461,
+            end: 4462,
+        },
+    },
+    Spanned {
+        value: TEXT(palmerpenguins),
+        span: Span {
+            start: 4462,
+            end: 4476,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 4476,
+            end: 4477,
+        },
+    },
+    Spanned {
+        value: TEXT( version, ),
+        span: Span {
+            start: 4477,
+            end: 4487,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4487,
+            end: 4488,
+        },
+    },
+    Spanned {
+        value: TEXT(  for compact code and data display. ),
+        span: Span {
+            start: 4488,
+            end: 4525,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4525,
+            end: 4526,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 4526,
+            end: 4527,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4527,
+            end: 4528,
+        },
+    },
+    Spanned {
+        value: COMMAND(references),
+        span: Span {
+            start: 4528,
+            end: 4539,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 4539,
+            end: 4540,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4540,
+            end: 4541,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 4541,
+            end: 4543,
+        },
+    },
+    Spanned {
+        value: COMMAND(bibshow),
+        span: Span {
+            start: 4543,
+            end: 4551,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 4551,
+            end: 4552,
+        },
+    },
+    Spanned {
+        value: TEXT(*),
+        span: Span {
+            start: 4552,
+            end: 4553,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 4553,
+            end: 4554,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4554,
+            end: 4555,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 4555,
+            end: 4556,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4556,
+            end: 4557,
+        },
+    },
+    Spanned {
+        value: COMMAND(examples),
+        span: Span {
+            start: 4557,
+            end: 4566,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 4566,
+            end: 4567,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4567,
+            end: 4568,
+        },
+    },
+    Spanned {
+        value: TEXT(## view summaries),
+        span: Span {
+            start: 4568,
+            end: 4585,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4585,
+            end: 4586,
+        },
+    },
+    Spanned {
+        value: TEXT(summary(penguins)),
+        span: Span {
+            start: 4586,
+            end: 4603,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4603,
+            end: 4604,
+        },
+    },
+    Spanned {
+        value: TEXT(summary(penguins_raw)  # categorical variables are (still) character vectors),
+        span: Span {
+            start: 4604,
+            end: 4680,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4680,
+            end: 4681,
+        },
+    },
+    Spanned {
+        value: TEXT(## summarize character vectors as factors:),
+        span: Span {
+            start: 4681,
+            end: 4723,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4723,
+            end: 4724,
+        },
+    },
+    Spanned {
+        value: TEXT(summary(penguins_raw, character.method = "factor")),
+        span: Span {
+            start: 4724,
+            end: 4774,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4774,
+            end: 4775,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4775,
+            end: 4776,
+        },
+    },
+    Spanned {
+        value: TEXT(## visualise distribution across factors),
+        span: Span {
+            start: 4776,
+            end: 4816,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4816,
+            end: 4817,
+        },
+    },
+    Spanned {
+        value: TEXT(plot(island ~ species, data = penguins)),
+        span: Span {
+            start: 4817,
+            end: 4856,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4856,
+            end: 4857,
+        },
+    },
+    Spanned {
+        value: TEXT(plot(sex ~ interaction(island, species, sep = "),
+        span: Span {
+            start: 4857,
+            end: 4904,
+        },
+    },
+    Spanned {
+        value: COMMAND(n),
+        span: Span {
+            start: 4904,
+            end: 4906,
+        },
+    },
+    Spanned {
+        value: TEXT("), data = penguins)),
+        span: Span {
+            start: 4906,
+            end: 4926,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4926,
+            end: 4927,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4927,
+            end: 4928,
+        },
+    },
+    Spanned {
+        value: TEXT(## bill depth vs. length by species (color) and sex (symbol):),
+        span: Span {
+            start: 4928,
+            end: 4989,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 4989,
+            end: 4990,
+        },
+    },
+    Spanned {
+        value: TEXT(## positive correlations for all species, males tend to have bigger bills),
+        span: Span {
+            start: 4990,
+            end: 5063,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5063,
+            end: 5064,
+        },
+    },
+    Spanned {
+        value: TEXT(sym <- c(1, 16)),
+        span: Span {
+            start: 5064,
+            end: 5079,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5079,
+            end: 5080,
+        },
+    },
+    Spanned {
+        value: TEXT(pal <- c("darkorange","purple","cyan4")),
+        span: Span {
+            start: 5080,
+            end: 5119,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5119,
+            end: 5120,
+        },
+    },
+    Spanned {
+        value: TEXT(plot(bill_dep ~ bill_len, data = penguins, pch = sym),
+        span: Span {
+            start: 5120,
+            end: 5172,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACKET,
+        span: Span {
+            start: 5172,
+            end: 5173,
+        },
+    },
+    Spanned {
+        value: TEXT(sex),
+        span: Span {
+            start: 5173,
+            end: 5176,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACKET,
+        span: Span {
+            start: 5176,
+            end: 5177,
+        },
+    },
+    Spanned {
+        value: TEXT(, col = pal),
+        span: Span {
+            start: 5177,
+            end: 5188,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACKET,
+        span: Span {
+            start: 5188,
+            end: 5189,
+        },
+    },
+    Spanned {
+        value: TEXT(species),
+        span: Span {
+            start: 5189,
+            end: 5196,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACKET,
+        span: Span {
+            start: 5196,
+            end: 5197,
+        },
+    },
+    Spanned {
+        value: TEXT()),
+        span: Span {
+            start: 5197,
+            end: 5198,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5198,
+            end: 5199,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5199,
+            end: 5200,
+        },
+    },
+    Spanned {
+        value: TEXT(## simplified sex dimorphism analysis for Adelie species:),
+        span: Span {
+            start: 5200,
+            end: 5257,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5257,
+            end: 5258,
+        },
+    },
+    Spanned {
+        value: TEXT(## proportion of males increases with several size measurements),
+        span: Span {
+            start: 5258,
+            end: 5321,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5321,
+            end: 5322,
+        },
+    },
+    Spanned {
+        value: TEXT(adelie <- subset(penguins, species == "Adelie")),
+        span: Span {
+            start: 5322,
+            end: 5369,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5369,
+            end: 5370,
+        },
+    },
+    Spanned {
+        value: TEXT(plot(sex ~ bill_len, data = adelie)),
+        span: Span {
+            start: 5370,
+            end: 5405,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5405,
+            end: 5406,
+        },
+    },
+    Spanned {
+        value: TEXT(plot(sex ~ bill_dep, data = adelie)),
+        span: Span {
+            start: 5406,
+            end: 5441,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5441,
+            end: 5442,
+        },
+    },
+    Spanned {
+        value: TEXT(plot(sex ~ body_mass, data = adelie)),
+        span: Span {
+            start: 5442,
+            end: 5478,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5478,
+            end: 5479,
+        },
+    },
+    Spanned {
+        value: TEXT(m <- glm(sex ~ bill_len + bill_dep + body_mass, data = adelie, family = binomial)),
+        span: Span {
+            start: 5479,
+            end: 5560,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5560,
+            end: 5561,
+        },
+    },
+    Spanned {
+        value: TEXT(summary(m)),
+        span: Span {
+            start: 5561,
+            end: 5571,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5571,
+            end: 5572,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5572,
+            end: 5573,
+        },
+    },
+    Spanned {
+        value: TEXT(## Produce the long variable names as from ),
+        span: Span {
+            start: 5573,
+            end: 5616,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 5616,
+            end: 5617,
+        },
+    },
+    Spanned {
+        value: TEXT(palmerpenguins),
+        span: Span {
+            start: 5617,
+            end: 5631,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 5631,
+            end: 5632,
+        },
+    },
+    Spanned {
+        value: TEXT( pkg:),
+        span: Span {
+            start: 5632,
+            end: 5637,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5637,
+            end: 5638,
+        },
+    },
+    Spanned {
+        value: TEXT(long_nms <- sub("len", "length_mm",),
+        span: Span {
+            start: 5638,
+            end: 5673,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5673,
+            end: 5674,
+        },
+    },
+    Spanned {
+        value: TEXT(                sub("dep","depth_mm",),
+        span: Span {
+            start: 5674,
+            end: 5711,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5711,
+            end: 5712,
+        },
+    },
+    Spanned {
+        value: TEXT(                    sub("mass", "mass_g", colnames(penguins))))),
+        span: Span {
+            start: 5712,
+            end: 5775,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5775,
+            end: 5776,
+        },
+    },
+    Spanned {
+        value: TEXT(## compare long and short names:),
+        span: Span {
+            start: 5776,
+            end: 5808,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5808,
+            end: 5809,
+        },
+    },
+    Spanned {
+        value: TEXT(noquote(rbind(long_nms, nms = colnames(penguins)))),
+        span: Span {
+            start: 5809,
+            end: 5859,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5859,
+            end: 5860,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5860,
+            end: 5861,
+        },
+    },
+    Spanned {
+        value: COMMAND(dontrun),
+        span: Span {
+            start: 5861,
+            end: 5869,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 5869,
+            end: 5870,
+        },
+    },
+    Spanned {
+        value: TEXT( # << keeping shorter 'penguins' names in this example:),
+        span: Span {
+            start: 5870,
+            end: 5925,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5925,
+            end: 5926,
+        },
+    },
+    Spanned {
+        value: TEXT(    colnames(penguins) <- long_nms),
+        span: Span {
+            start: 5926,
+            end: 5960,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5960,
+            end: 5961,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 5961,
+            end: 5962,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5962,
+            end: 5963,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 5963,
+            end: 5964,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5964,
+            end: 5965,
+        },
+    },
+    Spanned {
+        value: COMMAND(keyword),
+        span: Span {
+            start: 5965,
+            end: 5973,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 5973,
+            end: 5974,
+        },
+    },
+    Spanned {
+        value: TEXT(datasets),
+        span: Span {
+            start: 5974,
+            end: 5982,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 5982,
+            end: 5983,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 5983,
+            end: 5984,
+        },
+    },
+    Spanned {
+        value: EOF,
+        span: Span {
+            start: 5984,
+            end: 5984,
+        },
+    },
+]

@@ -1,0 +1,130 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &opts, source).unwrap()"
+input_file: parser/test_data/base-droplevels.Rd
+---
+---
+title: "Drop Unused Levels from Factors"
+description: "The function `droplevels` is used to drop unused levels from a or, more commonly, from factors in a data frame."
+sidebar:
+  label: "droplevels"
+pagefind: false
+---
+
+## Description
+
+The function `droplevels` is used to drop unused levels from a
+  [`factor`](../factor/) or, more commonly, from factors in a data frame.
+
+
+
+
+
+
+
+
+
+
+
+
+## Concept
+
+categorical variable
+
+
+## Concept
+
+enumerated type
+
+
+## Concept
+
+category
+
+
+
+## Usage
+
+```r
+droplevels(x, )
+## S3 method for class 'factor'
+droplevels(x, exclude = if(anyNA(levels(x))) NULL else NA, )
+## S3 method for class 'data.frame'
+droplevels(x, except, exclude, )
+```
+
+## Arguments
+
+<div class="arg-table">
+<table>
+<thead>
+<tr><th>Argument</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x</code></td>
+<td>an object from which to drop unused factor levels.</td>
+</tr>
+<tr>
+<td><code>exclude</code></td>
+<td>passed to [`factor()`](../factor/); factor levels which should be excluded from the result even if present. Note that this was *implicitly* `NA` in \<= 3.3.1 which did drop `NA` levels even when present in `x`, contrary to the documentation. The current default is compatible with `x[ , drop=TRUE]`.</td>
+</tr>
+<tr>
+<td><code></code></td>
+<td>further arguments passed to methods.</td>
+</tr>
+<tr>
+<td><code>except</code></td>
+<td>indices of columns from which *not* to drop levels.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+## Value
+
+`droplevels` returns an object of the same class as `x`
+
+
+## Details
+
+The method for class `"factor"` is currently equivalent to
+  `factor(x, exclude=exclude)`.  For the data frame method, you
+  should rarely specify `exclude` "globally" for all factor
+  columns; rather the default uses the same factor-specific
+  `exclude` as the factor method itself.
+
+  The `except` argument follows the usual indexing rules.
+
+
+
+## Note
+
+This function was introduced in R 2.12.0.  It is primarily
+  intended for cases where one or more factors in a data frame
+  contains only elements from a reduced level set after
+  subsetting.  (Notice that subsetting does *not* in general drop
+  unused levels).  By default, levels are dropped from all factors in a
+  data frame, but the `except` argument allows you to specify
+  columns for which this is not wanted.
+
+
+
+## See Also
+
+[`subset`](../subset/) for subsetting data frames.
+  [`factor`](../factor/) for definition of factors.
+  [`drop`](../drop/) for dropping array dimensions.
+  [`drop1`](../drop1/) for dropping terms from a model.
+  [`[.factor`](../[.factor/) for subsetting of factors.
+
+
+## Examples
+
+```r
+aq <- transform(airquality, Month = factor(Month, labels = month.abb[5:9]))
+aq <- subset(aq, Month != "Jul")
+table(           aq $Month)
+table(droplevels(aq)$Month)
+```

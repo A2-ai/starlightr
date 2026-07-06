@@ -1,0 +1,141 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &opts, source).unwrap()"
+input_file: parser/test_data/tools-pskill.Rd
+---
+---
+title: "Kill a Process"
+description: "`pskill` sends a signal to a process, usually to terminate it."
+sidebar:
+  label: "pskill"
+pagefind: false
+---
+
+## Alias
+
+pskill
+
+
+
+## Alias
+
+SIGHUP
+
+
+## Alias
+
+SIGINT
+
+
+## Alias
+
+SIGQUIT
+
+
+## Alias
+
+SIGKILL
+
+
+## Alias
+
+SIGTERM
+
+
+## Alias
+
+SIGSTOP
+
+
+## Alias
+
+SIGTSTP
+
+
+## Alias
+
+SIGCONT
+
+
+## Alias
+
+SIGCHLD
+
+
+## Alias
+
+SIGUSR1
+
+
+## Alias
+
+SIGUSR2
+
+
+
+
+
+## Usage
+
+```r
+pskill(pid, signal = SIGTERM)
+
+SIGHUP
+SIGINT
+SIGQUIT
+SIGKILL
+SIGTERM
+SIGSTOP
+SIGTSTP
+SIGCHLD
+SIGUSR1
+SIGUSR2
+```
+
+
+## Details
+
+Signals are a C99 concept, but only a small number are required to be
+  supported (of those listed, only `SIGINT` and `SIGTERM`).
+  They are much more widely used on POSIX operating systems (which
+  should define all of those listed here), which also support a
+  `kill` system call to send a signal to a process, most often to
+  terminate it.  Function `pskill` provides a wrapper: it silently
+  ignores invalid values of its arguments, including zero or negative
+  s.
+
+  In normal use on a Unix-alike, `Ctrl-C` sends `SIGINT`,
+  `Ctrl-\` sends `SIGQUIT` and `Ctrl-Z` sends
+  `SIGTSTP`: that and `SIGSTOP` suspend a process which can be
+  resumed by `SIGCONT`.
+
+  The signals are small integers, but the actual numeric values are not
+  standardized (and most do differ between OSes).  The `SIG*`
+  objects contain the appropriate integer values for the current platform
+  (or `NA_INTEGER_` if the signal is not defined).
+
+  Only `SIGINT` and `SIGTERM` will be defined on Windows, and
+  `pskill` will always use the Windows system call
+  `TerminateProcess`.
+
+
+
+## See Also
+
+Package `parallel` has several means to launch child processes
+  which record the process IDs.
+
+  [`psnice`](../psnice/)
+
+
+
+## Examples
+
+```r
+# Not run:
+pskill(c(237, 245), SIGKILL)
+```
+
+## Keyword
+
+utilities

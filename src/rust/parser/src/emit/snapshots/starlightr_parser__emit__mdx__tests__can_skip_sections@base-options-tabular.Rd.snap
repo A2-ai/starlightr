@@ -1,0 +1,83 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &opts, source).unwrap()"
+input_file: parser/test_data/base-options-tabular.Rd
+---
+---
+title: "Options Settings"
+description: "Allow the user to set and examine a variety of global *options* which affect the way in which computes and displays its results."
+sidebar:
+  label: "options"
+pagefind: false
+---
+
+## Alias
+
+options
+
+
+## Alias
+
+.Options
+
+
+## Alias
+
+getOption
+
+
+
+
+
+## Usage
+
+```r
+options()
+
+getOption(x, default = NULL)
+
+.Options
+```
+
+## Options used in base 
+
+The 'factory-fresh' default settings of some of these options are (alphabetically)
+  
+
+| `add.smooth` | `TRUE` |
+| --- | --- |
+| `check.bounds` | `FALSE` |
+| `continue` | `"+ "` |
+| `digits` | `7` |
+| `echo` | `TRUE` |
+| `encoding` | `"native.enc"` |
+| `error` | `NULL` |
+| `expressions` | `5000` |
+| `keep.source` | `interactive()` |
+| `keep.source.pkgs` | `FALSE` |
+| `max.print` | `99999` |
+| `OutDec` | `"."` |
+| `prompt` | `"> "` |
+| `quiet` | `FALSE` |
+| `scipen` | `0` |
+| `show.error.messages` | `TRUE` |
+| `timeout` | `60` |
+| `verbose` | `FALSE` |
+| `warn` | `0` |
+| `warning.length` | `1000` |
+| `width` | `80` |
+
+
+  Others are set from environment variables or are platform-dependent.
+
+
+
+## Options set in package `grDevices`
+
+These will be set when package `grDevices` (or its namespace)
+  is loaded if not already set.
+
+
+## Keyword
+
+utilities

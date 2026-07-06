@@ -1,0 +1,1883 @@
+---
+source: parser/src/parsing/lexer.rs
+expression: lex(&contents)
+input_file: parser/test_data/partitions-riffle.Rd
+---
+[
+    Spanned {
+        value: COMMENT( Pulled from https://github.com/RobinHankin/partitions/blob/eb4a3662a4cf6ff9c20c1f47a5f839e5759bffff/man/riffle.Rd),
+        span: Span {
+            start: 0,
+            end: 115,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 115,
+            end: 116,
+        },
+    },
+    Spanned {
+        value: COMMAND(name),
+        span: Span {
+            start: 116,
+            end: 121,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 121,
+            end: 122,
+        },
+    },
+    Spanned {
+        value: TEXT(riffle),
+        span: Span {
+            start: 122,
+            end: 128,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 128,
+            end: 129,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 129,
+            end: 130,
+        },
+    },
+    Spanned {
+        value: COMMAND(alias),
+        span: Span {
+            start: 130,
+            end: 136,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 136,
+            end: 137,
+        },
+    },
+    Spanned {
+        value: TEXT(riffle),
+        span: Span {
+            start: 137,
+            end: 143,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 143,
+            end: 144,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 144,
+            end: 145,
+        },
+    },
+    Spanned {
+        value: COMMAND(alias),
+        span: Span {
+            start: 145,
+            end: 151,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 151,
+            end: 152,
+        },
+    },
+    Spanned {
+        value: TEXT(genrif),
+        span: Span {
+            start: 152,
+            end: 158,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 158,
+            end: 159,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 159,
+            end: 160,
+        },
+    },
+    Spanned {
+        value: COMMAND(alias),
+        span: Span {
+            start: 160,
+            end: 166,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 166,
+            end: 167,
+        },
+    },
+    Spanned {
+        value: TEXT(allriffles),
+        span: Span {
+            start: 167,
+            end: 177,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 177,
+            end: 178,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 178,
+            end: 179,
+        },
+    },
+    Spanned {
+        value: COMMAND(title),
+        span: Span {
+            start: 179,
+            end: 185,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 185,
+            end: 186,
+        },
+    },
+    Spanned {
+        value: TEXT(Riffle shuffles),
+        span: Span {
+            start: 186,
+            end: 201,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 201,
+            end: 202,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 202,
+            end: 203,
+        },
+    },
+    Spanned {
+        value: COMMAND(description),
+        span: Span {
+            start: 203,
+            end: 215,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 215,
+            end: 216,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 216,
+            end: 217,
+        },
+    },
+    Spanned {
+        value: TEXT(  Enumeration of riffle shuffles),
+        span: Span {
+            start: 217,
+            end: 249,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 249,
+            end: 250,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 250,
+            end: 251,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 251,
+            end: 252,
+        },
+    },
+    Spanned {
+        value: COMMAND(usage),
+        span: Span {
+            start: 252,
+            end: 258,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 258,
+            end: 259,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 259,
+            end: 260,
+        },
+    },
+    Spanned {
+        value: TEXT(genrif(v)),
+        span: Span {
+            start: 260,
+            end: 269,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 269,
+            end: 270,
+        },
+    },
+    Spanned {
+        value: TEXT(riffle(p,q=p)),
+        span: Span {
+            start: 270,
+            end: 283,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 283,
+            end: 284,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 284,
+            end: 285,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 285,
+            end: 286,
+        },
+    },
+    Spanned {
+        value: COMMAND(arguments),
+        span: Span {
+            start: 286,
+            end: 296,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 296,
+            end: 297,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 297,
+            end: 298,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 298,
+            end: 300,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 300,
+            end: 305,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 305,
+            end: 306,
+        },
+    },
+    Spanned {
+        value: TEXT(p,q,v),
+        span: Span {
+            start: 306,
+            end: 311,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 311,
+            end: 312,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 312,
+            end: 313,
+        },
+    },
+    Spanned {
+        value: TEXT(In function ),
+        span: Span {
+            start: 313,
+            end: 325,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 325,
+            end: 330,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 330,
+            end: 331,
+        },
+    },
+    Spanned {
+        value: TEXT(riffle()),
+        span: Span {
+            start: 331,
+            end: 339,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 339,
+            end: 340,
+        },
+    },
+    Spanned {
+        value: TEXT(, integers ),
+        span: Span {
+            start: 340,
+            end: 351,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 351,
+            end: 356,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 356,
+            end: 357,
+        },
+    },
+    Spanned {
+        value: TEXT(p),
+        span: Span {
+            start: 357,
+            end: 358,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 358,
+            end: 359,
+        },
+    },
+    Spanned {
+        value: TEXT(,),
+        span: Span {
+            start: 359,
+            end: 360,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 360,
+            end: 365,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 365,
+            end: 366,
+        },
+    },
+    Spanned {
+        value: TEXT(q),
+        span: Span {
+            start: 366,
+            end: 367,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 367,
+            end: 368,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 368,
+            end: 369,
+        },
+    },
+    Spanned {
+        value: TEXT(    specify the length of the two increasing sequences.  In function),
+        span: Span {
+            start: 369,
+            end: 437,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 437,
+            end: 438,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 438,
+            end: 442,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 442,
+            end: 447,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 447,
+            end: 448,
+        },
+    },
+    Spanned {
+        value: TEXT(genrif()),
+        span: Span {
+            start: 448,
+            end: 456,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 456,
+            end: 457,
+        },
+    },
+    Spanned {
+        value: TEXT(, the elements of ),
+        span: Span {
+            start: 457,
+            end: 475,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 475,
+            end: 480,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 480,
+            end: 481,
+        },
+    },
+    Spanned {
+        value: TEXT(v),
+        span: Span {
+            start: 481,
+            end: 482,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 482,
+            end: 483,
+        },
+    },
+    Spanned {
+        value: TEXT( specify the lengths of all),
+        span: Span {
+            start: 483,
+            end: 510,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 510,
+            end: 511,
+        },
+    },
+    Spanned {
+        value: TEXT(    the increasing sequences: there are ),
+        span: Span {
+            start: 511,
+            end: 551,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 551,
+            end: 556,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 556,
+            end: 557,
+        },
+    },
+    Spanned {
+        value: TEXT(sum(v)),
+        span: Span {
+            start: 557,
+            end: 563,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 563,
+            end: 564,
+        },
+    },
+    Spanned {
+        value: TEXT( cards in the pack),
+        span: Span {
+            start: 564,
+            end: 582,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 582,
+            end: 583,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 583,
+            end: 584,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 584,
+            end: 585,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 585,
+            end: 586,
+        },
+    },
+    Spanned {
+        value: COMMAND(details),
+        span: Span {
+            start: 586,
+            end: 594,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 594,
+            end: 595,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 595,
+            end: 596,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 596,
+            end: 597,
+        },
+    },
+    Spanned {
+        value: TEXT(  A ),
+        span: Span {
+            start: 597,
+            end: 601,
+        },
+    },
+    Spanned {
+        value: COMMAND(dfn),
+        span: Span {
+            start: 601,
+            end: 605,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 605,
+            end: 606,
+        },
+    },
+    Spanned {
+        value: TEXT(riffle shuffle),
+        span: Span {
+            start: 606,
+            end: 620,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 620,
+            end: 621,
+        },
+    },
+    Spanned {
+        value: TEXT( is a permutation of integers),
+        span: Span {
+            start: 621,
+            end: 650,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 650,
+            end: 651,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 651,
+            end: 653,
+        },
+    },
+    Spanned {
+        value: COMMAND(eqn),
+        span: Span {
+            start: 653,
+            end: 657,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 657,
+            end: 658,
+        },
+    },
+    Spanned {
+        value: TEXT(1,2,),
+        span: Span {
+            start: 658,
+            end: 662,
+        },
+    },
+    Spanned {
+        value: COMMAND(ldots),
+        span: Span {
+            start: 662,
+            end: 668,
+        },
+    },
+    Spanned {
+        value: TEXT(,n),
+        span: Span {
+            start: 668,
+            end: 670,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 670,
+            end: 671,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 671,
+            end: 672,
+        },
+    },
+    Spanned {
+        value: TEXT(1,2,...,n),
+        span: Span {
+            start: 672,
+            end: 681,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 681,
+            end: 682,
+        },
+    },
+    Spanned {
+        value: TEXT( containing one or two rising),
+        span: Span {
+            start: 682,
+            end: 711,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 711,
+            end: 712,
+        },
+    },
+    Spanned {
+        value: TEXT(  sequences.),
+        span: Span {
+            start: 712,
+            end: 724,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 724,
+            end: 725,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 725,
+            end: 727,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 727,
+            end: 728,
+        },
+    },
+    Spanned {
+        value: TEXT(  A ),
+        span: Span {
+            start: 728,
+            end: 732,
+        },
+    },
+    Spanned {
+        value: COMMAND(dfn),
+        span: Span {
+            start: 732,
+            end: 736,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 736,
+            end: 737,
+        },
+    },
+    Spanned {
+        value: TEXT(generalized riffle shuffle),
+        span: Span {
+            start: 737,
+            end: 763,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 763,
+            end: 764,
+        },
+    },
+    Spanned {
+        value: TEXT(, or ),
+        span: Span {
+            start: 764,
+            end: 769,
+        },
+    },
+    Spanned {
+        value: COMMAND(dfn),
+        span: Span {
+            start: 769,
+            end: 773,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 773,
+            end: 774,
+        },
+    },
+    Spanned {
+        value: COMMAND(eqn),
+        span: Span {
+            start: 774,
+            end: 778,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 778,
+            end: 779,
+        },
+    },
+    Spanned {
+        value: TEXT(r),
+        span: Span {
+            start: 779,
+            end: 780,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 780,
+            end: 781,
+        },
+    },
+    Spanned {
+        value: TEXT(-riffle),
+        span: Span {
+            start: 781,
+            end: 788,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 788,
+            end: 789,
+        },
+    },
+    Spanned {
+        value: TEXT(    shuffle),
+        span: Span {
+            start: 789,
+            end: 800,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 800,
+            end: 801,
+        },
+    },
+    Spanned {
+        value: TEXT(, contains at most ),
+        span: Span {
+            start: 801,
+            end: 820,
+        },
+    },
+    Spanned {
+        value: COMMAND(eqn),
+        span: Span {
+            start: 820,
+            end: 824,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 824,
+            end: 825,
+        },
+    },
+    Spanned {
+        value: TEXT(r),
+        span: Span {
+            start: 825,
+            end: 826,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 826,
+            end: 827,
+        },
+    },
+    Spanned {
+        value: TEXT( rising sequences.  This is not),
+        span: Span {
+            start: 827,
+            end: 858,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 858,
+            end: 859,
+        },
+    },
+    Spanned {
+        value: TEXT(    implemented in the package (earlier versions included a buggy),
+        span: Span {
+            start: 859,
+            end: 924,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 924,
+            end: 925,
+        },
+    },
+    Spanned {
+        value: TEXT(    version; the difficulty is ensuring that sequences do not appear),
+        span: Span {
+            start: 925,
+            end: 993,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 993,
+            end: 994,
+        },
+    },
+    Spanned {
+        value: TEXT(    more than once).),
+        span: Span {
+            start: 994,
+            end: 1014,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1014,
+            end: 1015,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 1015,
+            end: 1017,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1017,
+            end: 1018,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 1018,
+            end: 1020,
+        },
+    },
+    Spanned {
+        value: COMMAND(itemize),
+        span: Span {
+            start: 1020,
+            end: 1028,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1028,
+            end: 1029,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1029,
+            end: 1030,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 1030,
+            end: 1034,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 1034,
+            end: 1039,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1039,
+            end: 1044,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1044,
+            end: 1045,
+        },
+    },
+    Spanned {
+        value: TEXT(riffle(p,q)),
+        span: Span {
+            start: 1045,
+            end: 1056,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1056,
+            end: 1057,
+        },
+    },
+    Spanned {
+        value: TEXT( returns all riffle shuffles with rising),
+        span: Span {
+            start: 1057,
+            end: 1097,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1097,
+            end: 1098,
+        },
+    },
+    Spanned {
+        value: TEXT(    sequences of ),
+        span: Span {
+            start: 1098,
+            end: 1115,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1115,
+            end: 1120,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1120,
+            end: 1121,
+        },
+    },
+    Spanned {
+        value: TEXT(1:p),
+        span: Span {
+            start: 1121,
+            end: 1124,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1124,
+            end: 1125,
+        },
+    },
+    Spanned {
+        value: TEXT( and ),
+        span: Span {
+            start: 1125,
+            end: 1130,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1130,
+            end: 1135,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1135,
+            end: 1136,
+        },
+    },
+    Spanned {
+        value: TEXT((p+1):q),
+        span: Span {
+            start: 1136,
+            end: 1143,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1143,
+            end: 1144,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1144,
+            end: 1145,
+        },
+    },
+    Spanned {
+        value: TEXT(    ),
+        span: Span {
+            start: 1145,
+            end: 1149,
+        },
+    },
+    Spanned {
+        value: COMMAND(item),
+        span: Span {
+            start: 1149,
+            end: 1154,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1154,
+            end: 1159,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1159,
+            end: 1160,
+        },
+    },
+    Spanned {
+        value: TEXT(genrif(v)),
+        span: Span {
+            start: 1160,
+            end: 1169,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1169,
+            end: 1170,
+        },
+    },
+    Spanned {
+        value: TEXT( returns all riffle shuffles with rising),
+        span: Span {
+            start: 1170,
+            end: 1210,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1210,
+            end: 1211,
+        },
+    },
+    Spanned {
+        value: TEXT(    sequences having lengths the entries of ),
+        span: Span {
+            start: 1211,
+            end: 1255,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1255,
+            end: 1260,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1260,
+            end: 1261,
+        },
+    },
+    Spanned {
+        value: TEXT(v),
+        span: Span {
+            start: 1261,
+            end: 1262,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1262,
+            end: 1263,
+        },
+    },
+    Spanned {
+        value: TEXT(, the deck being),
+        span: Span {
+            start: 1263,
+            end: 1279,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1279,
+            end: 1280,
+        },
+    },
+    Spanned {
+        value: TEXT(    numbered consecutively),
+        span: Span {
+            start: 1280,
+            end: 1306,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1306,
+            end: 1307,
+        },
+    },
+    Spanned {
+        value: TEXT(  ),
+        span: Span {
+            start: 1307,
+            end: 1309,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1309,
+            end: 1310,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1310,
+            end: 1311,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1311,
+            end: 1312,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1312,
+            end: 1313,
+        },
+    },
+    Spanned {
+        value: COMMAND(value),
+        span: Span {
+            start: 1313,
+            end: 1319,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1319,
+            end: 1320,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1320,
+            end: 1321,
+        },
+    },
+    Spanned {
+        value: TEXT(  Returns a matrix of class ),
+        span: Span {
+            start: 1321,
+            end: 1349,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1349,
+            end: 1354,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1354,
+            end: 1355,
+        },
+    },
+    Spanned {
+        value: TEXT(partition),
+        span: Span {
+            start: 1355,
+            end: 1364,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1364,
+            end: 1365,
+        },
+    },
+    Spanned {
+        value: TEXT( with columns being ),
+        span: Span {
+            start: 1365,
+            end: 1385,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1385,
+            end: 1386,
+        },
+    },
+    Spanned {
+        value: TEXT(  riffle shuffles),
+        span: Span {
+            start: 1386,
+            end: 1403,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1403,
+            end: 1404,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1404,
+            end: 1405,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1405,
+            end: 1406,
+        },
+    },
+    Spanned {
+        value: COMMAND(note),
+        span: Span {
+            start: 1406,
+            end: 1411,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1411,
+            end: 1412,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1412,
+            end: 1413,
+        },
+    },
+    Spanned {
+        value: TEXT(  When we say ),
+        span: Span {
+            start: 1413,
+            end: 1427,
+        },
+    },
+    Spanned {
+        value: COMMAND(dQuote),
+        span: Span {
+            start: 1427,
+            end: 1434,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1434,
+            end: 1435,
+        },
+    },
+    Spanned {
+        value: TEXT(contains ),
+        span: Span {
+            start: 1435,
+            end: 1444,
+        },
+    },
+    Spanned {
+        value: COMMAND(eqn),
+        span: Span {
+            start: 1444,
+            end: 1448,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1448,
+            end: 1449,
+        },
+    },
+    Spanned {
+        value: TEXT(r),
+        span: Span {
+            start: 1449,
+            end: 1450,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1450,
+            end: 1451,
+        },
+    },
+    Spanned {
+        value: TEXT( rising sequences),
+        span: Span {
+            start: 1451,
+            end: 1468,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1468,
+            end: 1469,
+        },
+    },
+    Spanned {
+        value: TEXT( we generally),
+        span: Span {
+            start: 1469,
+            end: 1482,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1482,
+            end: 1483,
+        },
+    },
+    Spanned {
+        value: TEXT(  mean ),
+        span: Span {
+            start: 1483,
+            end: 1490,
+        },
+    },
+    Spanned {
+        value: COMMAND(dQuote),
+        span: Span {
+            start: 1490,
+            end: 1497,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1497,
+            end: 1498,
+        },
+    },
+    Spanned {
+        value: TEXT(contains ),
+        span: Span {
+            start: 1498,
+            end: 1507,
+        },
+    },
+    Spanned {
+        value: COMMAND(emph),
+        span: Span {
+            start: 1507,
+            end: 1512,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1512,
+            end: 1513,
+        },
+    },
+    Spanned {
+        value: TEXT(at most),
+        span: Span {
+            start: 1513,
+            end: 1520,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1520,
+            end: 1521,
+        },
+    },
+    Spanned {
+        value: TEXT( ),
+        span: Span {
+            start: 1521,
+            end: 1522,
+        },
+    },
+    Spanned {
+        value: COMMAND(eqn),
+        span: Span {
+            start: 1522,
+            end: 1526,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1526,
+            end: 1527,
+        },
+    },
+    Spanned {
+        value: TEXT(r),
+        span: Span {
+            start: 1527,
+            end: 1528,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1528,
+            end: 1529,
+        },
+    },
+    Spanned {
+        value: TEXT( rising sequences),
+        span: Span {
+            start: 1529,
+            end: 1546,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1546,
+            end: 1547,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1547,
+            end: 1548,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1548,
+            end: 1549,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1549,
+            end: 1550,
+        },
+    },
+    Spanned {
+        value: COMMAND(author),
+        span: Span {
+            start: 1550,
+            end: 1557,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1557,
+            end: 1558,
+        },
+    },
+    Spanned {
+        value: TEXT(Robin K. S. Hankin),
+        span: Span {
+            start: 1558,
+            end: 1576,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1576,
+            end: 1577,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1577,
+            end: 1578,
+        },
+    },
+    Spanned {
+        value: COMMAND(seealso),
+        span: Span {
+            start: 1578,
+            end: 1586,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1586,
+            end: 1587,
+        },
+    },
+    Spanned {
+        value: COMMAND(code),
+        span: Span {
+            start: 1587,
+            end: 1592,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1592,
+            end: 1593,
+        },
+    },
+    Spanned {
+        value: COMMAND(link),
+        span: Span {
+            start: 1593,
+            end: 1598,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1598,
+            end: 1599,
+        },
+    },
+    Spanned {
+        value: TEXT(parts),
+        span: Span {
+            start: 1599,
+            end: 1604,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1604,
+            end: 1605,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1605,
+            end: 1606,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1606,
+            end: 1607,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1607,
+            end: 1608,
+        },
+    },
+    Spanned {
+        value: COMMAND(examples),
+        span: Span {
+            start: 1608,
+            end: 1617,
+        },
+    },
+    Spanned {
+        value: LEFT_BRACE,
+        span: Span {
+            start: 1617,
+            end: 1618,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1618,
+            end: 1619,
+        },
+    },
+    Spanned {
+        value: TEXT(riffle(3, 4)),
+        span: Span {
+            start: 1619,
+            end: 1631,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1631,
+            end: 1632,
+        },
+    },
+    Spanned {
+        value: TEXT(genrif(1:3)),
+        span: Span {
+            start: 1632,
+            end: 1643,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1643,
+            end: 1644,
+        },
+    },
+    Spanned {
+        value: RIGHT_BRACE,
+        span: Span {
+            start: 1644,
+            end: 1645,
+        },
+    },
+    Spanned {
+        value: NEWLINE,
+        span: Span {
+            start: 1645,
+            end: 1646,
+        },
+    },
+    Spanned {
+        value: EOF,
+        span: Span {
+            start: 1646,
+            end: 1646,
+        },
+    },
+]

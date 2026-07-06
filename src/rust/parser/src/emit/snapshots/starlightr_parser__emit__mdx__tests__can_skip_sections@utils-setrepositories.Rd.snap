@@ -1,0 +1,104 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &opts, source).unwrap()"
+input_file: parser/test_data/utils-setrepositories.Rd
+---
+---
+title: "Select Package Repositories"
+description: "Interact with the user to choose the package repositories to be used."
+sidebar:
+  label: "setRepositories"
+pagefind: false
+---
+
+## Alias
+
+setRepositories
+
+
+## Alias
+
+R_REPOSITORIES
+
+
+## Alias
+
+R_BIOC_VERSION
+
+
+
+
+## Usage
+
+```r
+setRepositories(graphics = getOption("menu.graphics"),
+                ind = NULL, addURLs = character(), name = NULL)
+```
+
+
+## Details
+
+The default list of known repositories is stored in the file
+  `*[R_HOME](../r_home/)*/etc/repositories`.
+  That file can be edited for a site, or a user can have a personal copy
+  in the file pointed to by the environment variable
+  `R_REPOSITORIES`, or if this is unset, `NULL` or does not exist,
+  in `*HOME*/.R/repositories`, which will take precedence.
+
+  A Bioconductor mirror can be selected by setting
+  [`options("BioC_mirror")`](../options/), e.g.via
+  [`chooseBioCmirror`](../choosebiocmirror/) --- the default value is
+  `"https://bioconductor.org"`.
+  This version of R chooses Bioconductor version  by default, but that can be changed via the environment variable
+  `R_BIOC_VERSION`.
+
+  The items that are preselected are those that are currently in
+  `options("repos")` plus those marked as default in the
+  list of known repositories.
+
+  The list of repositories offered depends on the setting of option
+  `"pkgType"` as some repositories only offer a subset of types
+  (e.g., only source packages or not macOS binary packages).
+  Further, for binary packages some repositories (notably R-Forge) only
+  offer packages for the current or recent versions of .
+  (Type `"both"` is equivalent to `"source"`.)
+
+  Repository `CRAN` is treated specially: the value is taken from
+  the current setting of `getOption("repos")` if this has an
+  element `"CRAN"`: this ensures mirror selection is sticky.
+
+  This function requires the  session to be interactive unless
+  `ind` or `name` is supplied. The latter overrides the former
+  if both are supplied and values are not case-sensitive. If any of the
+  supplied names does not match, an error is raised.
+
+
+## Note
+
+This does **not** set the list of repositories at startup: to do
+  so set [`options(repos =)`](../options/) in a start up file (see help topic
+  [Startup](../startup/)) or via a customized `repositories` file.
+
+
+
+## See Also
+
+[`chooseCRANmirror`](../choosecranmirror/), [`chooseBioCmirror`](../choosebiocmirror/),
+  [`install.packages`](../install-packages/).
+
+
+## Examples
+
+```r
+# Not run:
+setRepositories(addURLs =
+                c(CRANxtras = "https://www.stats.ox.ac.uk/pub/RWin"))
+oldrepos <- setRepositories(name = c("CRAN", "R-Forge"))
+# Not tested:
+getOption("repos")
+options(oldrepos) # restore
+```
+
+## Keyword
+
+utilities

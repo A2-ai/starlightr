@@ -1,0 +1,44 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &opts, source).unwrap()"
+input_file: parser/test_data/survival-logan.Rd
+---
+---
+title: "Data from the 1972-78 GSS data used by Logan"
+description: "Intergenerational occupational mobility data with covariates."
+sidebar:
+  label: "logan"
+pagefind: false
+---
+
+## Description
+
+Intergenerational occupational mobility data with covariates.
+
+
+
+
+
+
+## Usage
+
+```r
+logan
+data(logan, package="survival")
+```
+
+
+## Format
+
+A data frame with 838 observations on the following 4 variables.
+  - **occupation**: subject's occupation, a factor with levels `farm`, `operatives`, `craftsmen`, `sales`, and `professional`
+- **focc**: father's occupation
+- **education**: total years of schooling, 0 to 20
+- **race**: levels of `non-black` and `black`
+
+
+
+## References
+
+Logan, John A. (1983). A Multivariate Model for Mobility Tables.
+  American Journal of Sociology 89: 324-349.
