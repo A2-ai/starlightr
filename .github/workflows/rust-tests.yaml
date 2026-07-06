@@ -1,0 +1,38 @@
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: main
+
+name: rust-tests
+
+permissions: read-all
+
+jobs:
+  cargo-test:
+    runs-on: ubuntu-latest
+
+    name: cargo test --all (parser + extendr crate)
+
+    env:
+      CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src/rust
+
+      # extendr-api's build script links against libR, so R needs to be on
+      # PATH even though this job never installs the starlightr R package.
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.6'
+          use-public-rspm: true
+
+      - name: cargo test --all
+        run: cargo test --all --manifest-path src/rust/Cargo.toml
