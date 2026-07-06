@@ -1,0 +1,1554 @@
+---
+source: parser/src/parsing/parser.rs
+assertion_line: 218
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/base-platform.Rd
+---
+Document {
+    children: [
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Name",
+                ),
+            ],
+            children: [
+                Text(
+                    ".Platform",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Title",
+                ),
+            ],
+            children: [
+                Text(
+                    "Platform Specific Variables",
+                ),
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    ".Platform",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    ".Platform",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                ".Platform",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " is a list with some details of the platform under",
+                ),
+                NewLine,
+                Text(
+                    "  which ",
+                ),
+                Command {
+                    name: "R",
+                    options: None,
+                    args: [],
+                },
+                Text(
+                    " was built.  This provides means to write OS-portable ",
+                ),
+                Command {
+                    name: "R",
+                    options: None,
+                    args: [],
+                },
+                NewLine,
+                Text(
+                    "  code.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Value",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  A list with at least the following components:",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                List {
+                    kind: Describe,
+                    items: [
+                        ListItem {
+                            term: Some(
+                                [
+                                    Text(
+                                        "OS.type",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                NewLine,
+                                Text(
+                                    "    character string, giving the ",
+                                ),
+                                Command {
+                                    name: "bold",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "O",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    "perating ",
+                                ),
+                                Command {
+                                    name: "bold",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "S",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    "ystem",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    (family) of the computer.  One of ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\"unix\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " or ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\"windows\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ".",
+                                ),
+                                NewLine,
+                                Text(
+                                    "  ",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Text(
+                                        "file.sep",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                NewLine,
+                                Text(
+                                    "    character string, giving the ",
+                                ),
+                                Command {
+                                    name: "bold",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "file",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "bold",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "sep",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    "arator used on your",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    platform: ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\"/\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " on both Unix-alikes ",
+                                ),
+                                Command {
+                                    name: "emph",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "and",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " on Windows (but",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    not on the former port to Classic Mac OS).",
+                                ),
+                                NewLine,
+                                Text(
+                                    "  ",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Text(
+                                        "dynlib.ext",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                NewLine,
+                                Text(
+                                    "    character string, giving the file name ",
+                                ),
+                                Command {
+                                    name: "bold",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "ext",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    "ension of",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    ",
+                                ),
+                                Command {
+                                    name: "bold",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "dyn",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    "amically loadable ",
+                                ),
+                                Command {
+                                    name: "bold",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "lib",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    "raries, e.g., ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\".dll\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " on",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    Windows and ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\".so\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " or ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\".sl\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " on Unix-alikes.  (Note for",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    macOS users: these are shared objects as loaded by",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "dyn.load",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "dyn-load",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " and not dylibs: see ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "dyn.load",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "dyn-load",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ".)",
+                                ),
+                                NewLine,
+                                Text(
+                                    "  ",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Text(
+                                        "GUI",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                NewLine,
+                                Text(
+                                    "    character string, giving the type of GUI in use, or ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\"unknown\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                                Text(
+                                    "    if no GUI can be assumed.  Possible values are for Unix-alikes the",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    values given via the ",
+                                ),
+                                Command {
+                                    name: "option",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "-g",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " command-line flag (",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\"X11\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ",",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\"Tk\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    "), ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\"AQUA\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " (running under ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "R.app",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " on macOS),",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\"Rgui\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " and ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\"RTerm\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " (Windows) and perhaps others under",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    alternative front-ends or embedded ",
+                                ),
+                                Command {
+                                    name: "R",
+                                    options: None,
+                                    args: [],
+                                },
+                                Text(
+                                    ".",
+                                ),
+                                NewLine,
+                                Text(
+                                    "  ",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Text(
+                                        "endian",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                NewLine,
+                                Text(
+                                    "    character string, ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\"big\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " or ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\"little\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ", giving the",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    ",
+                                ),
+                                Command {
+                                    name: "sQuote",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "endianness",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " of the processor in use.  This is relevant when it is",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    necessary to know the order to read/write bytes of e.g.",
+                                ),
+                                Command {
+                                    name: "sspace",
+                                    options: None,
+                                    args: [
+                                        [],
+                                    ],
+                                },
+                                Text(
+                                    "an",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    integer or double from/to a ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "connection",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "connection",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Text,
+                                },
+                                Text(
+                                    ": see",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "readBin",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "readbin",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ".",
+                                ),
+                                NewLine,
+                                Text(
+                                    "  ",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Text(
+                                        "pkgType",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                NewLine,
+                                Text(
+                                    "    character string, the preferred setting for",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "options",
+                                        ),
+                                        Text(
+                                            "(\"pkgType\")",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "options",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ".  Values ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\"source\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ",",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\"mac.binary\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " and ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\"win.binary\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " are currently in use.",
+                                ),
+                                NewLine,
+                                NewLine,
+                                Text(
+                                    "    This should ",
+                                ),
+                                Command {
+                                    name: "strong",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "not",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " be used to identify the OS.",
+                                ),
+                                NewLine,
+                                Text(
+                                    "  ",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Text(
+                                        "path.sep",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                NewLine,
+                                Text(
+                                    "    character string, giving the ",
+                                ),
+                                Command {
+                                    name: "bold",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "path",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "bold",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "sep",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    "arator,",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    used on your platform, e.g., ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\":\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " on Unix-alikes and",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\";\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " on Windows.  Used to separate paths in environment",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    variables such as ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "PATH",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " and ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "TEXINPUTS",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ".",
+                                ),
+                                NewLine,
+                                Text(
+                                    "  ",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: Some(
+                                [
+                                    Text(
+                                        "r_arch",
+                                    ),
+                                ],
+                            ),
+                            children: [
+                                NewLine,
+                                Text(
+                                    "    character string, possibly ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "\"\"",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ".  The name of an",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    architecture-specific directory used in this build of ",
+                                ),
+                                Command {
+                                    name: "R",
+                                    options: None,
+                                    args: [],
+                                },
+                                Text(
+                                    ".",
+                                ),
+                                NewLine,
+                                Text(
+                                    "  ",
+                                ),
+                            ],
+                        },
+                    ],
+                },
+            ],
+        },
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "AQUA",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                ".Platform$GUI",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " is set to ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "\"AQUA\"",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " under the macOS GUI,",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "R.app",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ". This has a number of consequences:",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                List {
+                    kind: Itemize,
+                    items: [
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " ",
+                                ),
+                                Command {
+                                    name: "file",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "/usr/local/bin",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " is ",
+                                ),
+                                Command {
+                                    name: "emph",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "appended",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " to the ",
+                                ),
+                                Command {
+                                    name: "env",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "PATH",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                NewLine,
+                                Text(
+                                    "    environment variable.",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    ",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " the default graphics device is set to ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "quartz",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    ".",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    ",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " selects native (rather than Tk) widgets for the ",
+                                ),
+                                Command {
+                                    name: "code",
+                                    options: None,
+                                    args: [
+                                        [
+                                            Text(
+                                                "graphics",
+                                            ),
+                                            NewLine,
+                                            Text(
+                                                "      = TRUE",
+                                            ),
+                                        ],
+                                    ],
+                                },
+                                Text(
+                                    " options of ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "menu",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "menu",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    " and ",
+                                ),
+                                Link {
+                                    label: [
+                                        Text(
+                                            "select.list",
+                                        ),
+                                    ],
+                                    target: Local(
+                                        [
+                                            Text(
+                                                "select-list",
+                                            ),
+                                        ],
+                                    ),
+                                    mode: Code,
+                                },
+                                Text(
+                                    ".",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    ",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " HTML help is displayed in the internal browser.",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    ",
+                                ),
+                            ],
+                        },
+                        ListItem {
+                            term: None,
+                            children: [
+                                Text(
+                                    " the spreadsheet-like data editor/viewer uses a Quartz version",
+                                ),
+                                NewLine,
+                                Text(
+                                    "    rather than the X11 one.",
+                                ),
+                                NewLine,
+                                Text(
+                                    "  ",
+                                ),
+                            ],
+                        },
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "See Also",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "R.version",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "r-version",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " and ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "Sys.info",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "sys-info",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " give more details",
+                ),
+                NewLine,
+                Text(
+                    "  about the OS.  In particular, ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "R.version$platform",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " is the",
+                ),
+                NewLine,
+                Text(
+                    "  canonical name of the platform under which ",
+                ),
+                Command {
+                    name: "R",
+                    options: None,
+                    args: [],
+                },
+                Text(
+                    " was compiled.",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "osVersion",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "osversion",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " may give more details about the platform ",
+                ),
+                Command {
+                    name: "R",
+                    options: None,
+                    args: [],
+                },
+                Text(
+                    " is running on.",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            ".Machine",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "-machine",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " for details of the arithmetic used, and",
+                ),
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "system",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "system",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " for invoking platform-specific system commands.",
+                ),
+                NewLine,
+                NewLine,
+                Text(
+                    "  ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "capabilities",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "capabilities",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " and ",
+                ),
+                Link {
+                    label: [
+                        Text(
+                            "extSoftVersion",
+                        ),
+                    ],
+                    target: Local(
+                        [
+                            Text(
+                                "extsoftversion",
+                            ),
+                        ],
+                    ),
+                    mode: Code,
+                },
+                Text(
+                    " (and links",
+                ),
+                NewLine,
+                Text(
+                    "  there) for availability of capabilities partly ",
+                ),
+                Command {
+                    name: "emph",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "external",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " to ",
+                ),
+                Command {
+                    name: "R",
+                    options: None,
+                    args: [],
+                },
+                NewLine,
+                Text(
+                    "  but used from ",
+                ),
+                Command {
+                    name: "R",
+                    options: None,
+                    args: [],
+                },
+                Text(
+                    " functions.",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        NewLine,
+        Code {
+            title: Some(
+                "Examples",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "## Note: this can be done in a system-independent way by dir.exists()",
+                ),
+                NewLine,
+                Text(
+                    "if(.Platform$OS.type == \"unix\") ",
+                ),
+                Text(
+                    "{",
+                ),
+                NewLine,
+                Text(
+                    "   system.test <- function(...) system(paste(\"test\", ...)) == 0L",
+                ),
+                NewLine,
+                Text(
+                    "   dir.exists2 <- function(dir)",
+                ),
+                NewLine,
+                Text(
+                    "       sapply(dir, function(d) system.test(\"-d\", d))",
+                ),
+                NewLine,
+                Text(
+                    "   dir.exists2(c(R.home(), \"/tmp\", \"~\", \"/NO\")) # > T T T F",
+                ),
+                NewLine,
+                Text(
+                    "}",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Keyword",
+                ),
+            ],
+            children: [
+                Text(
+                    "file",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Keyword",
+                ),
+            ],
+            children: [
+                Text(
+                    "utilities",
+                ),
+            ],
+        },
+        NewLine,
+    ],
+}

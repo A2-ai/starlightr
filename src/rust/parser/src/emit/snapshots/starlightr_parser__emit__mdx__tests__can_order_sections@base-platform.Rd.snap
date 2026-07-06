@@ -1,0 +1,89 @@
+---
+source: parser/src/emit/mdx.rs
+assertion_line: 827
+expression: "emit_document(document, &opts, source).unwrap()"
+input_file: parser/test_data/base-platform.Rd
+---
+---
+title: "Platform Specific Variables"
+description: "Platform` is a list with some details of the platform under which was built. This provides means to write OS-portable code."
+sidebar:
+  label: ".Platform"
+pagefind: false
+---
+
+## Description
+
+`.Platform` is a list with some details of the platform under
+  which  was built.  This provides means to write OS-portable 
+  code.
+
+
+
+
+
+
+
+
+
+## Usage
+
+```r
+.Platform
+```
+
+
+
+## Value
+
+A list with at least the following components:
+
+  - **OS.type**: character string, giving the perating ystem (family) of the computer. One of `"unix"` or `"windows"`.
+- **file.sep**: character string, giving the arator used on your platform: `"/"` on both Unix-alikes *and* on Windows (but not on the former port to Classic Mac OS).
+- **dynlib.ext**: character string, giving the file name ension of amically loadable raries, e.g., `".dll"` on Windows and `".so"` or `".sl"` on Unix-alikes. (Note for macOS users: these are shared objects as loaded by [`dyn.load`](../dyn-load/) and not dylibs: see [`dyn.load`](../dyn-load/).)
+- **GUI**: character string, giving the type of GUI in use, or `"unknown"` if no GUI can be assumed. Possible values are for Unix-alikes the values given via the `-g` command-line flag (`"X11"`, `"Tk"`), `"AQUA"` (running under `R.app` on macOS), `"Rgui"` and `"RTerm"` (Windows) and perhaps others under alternative front-ends or embedded .
+- **endian**: character string, `"big"` or `"little"`, giving the 'endianness' of the processor in use. This is relevant when it is necessary to know the order to read/write bytes of e.g.an integer or double from/to a [connection](../connection/): see [`readBin`](../readbin/).
+- **pkgType**: character string, the preferred setting for [`options("pkgType")`](../options/). Values `"source"`, `"mac.binary"` and `"win.binary"` are currently in use. This should **not** be used to identify the OS.
+- **path.sep**: character string, giving the arator, used on your platform, e.g., `":"` on Unix-alikes and `";"` on Windows. Used to separate paths in environment variables such as `PATH` and `TEXINPUTS`.
+- **r_arch**: character string, possibly `""`. The name of an architecture-specific directory used in this build of .
+
+
+
+## AQUA
+
+`.Platform$GUI` is set to `"AQUA"` under the macOS GUI,
+  `R.app`. This has a number of consequences:
+  - `/usr/local/bin` is *appended* to the `PATH` environment variable.
+- the default graphics device is set to `quartz`.
+- selects native (rather than Tk) widgets for the `graphics = TRUE` options of [`menu`](../menu/) and [`select.list`](../select-list/).
+- HTML help is displayed in the internal browser.
+- the spreadsheet-like data editor/viewer uses a Quartz version rather than the X11 one.
+
+
+## See Also
+
+[`R.version`](../r-version/) and [`Sys.info`](../sys-info/) give more details
+  about the OS.  In particular, `R.version$platform` is the
+  canonical name of the platform under which  was compiled.
+  [`osVersion`](../osversion/) may give more details about the platform  is running on.
+
+  [`.Machine`](../-machine/) for details of the arithmetic used, and
+  [`system`](../system/) for invoking platform-specific system commands.
+
+  [`capabilities`](../capabilities/) and [`extSoftVersion`](../extsoftversion/) (and links
+  there) for availability of capabilities partly *external* to 
+  but used from  functions.
+
+
+
+## Examples
+
+```r
+## Note: this can be done in a system-independent way by dir.exists()
+if(.Platform$OS.type == "unix") {
+   system.test <- function(...) system(paste("test", ...)) == 0L
+   dir.exists2 <- function(dir)
+       sapply(dir, function(d) system.test("-d", d))
+   dir.exists2(c(R.home(), "/tmp", "~", "/NO")) # > T T T F
+}
+```
