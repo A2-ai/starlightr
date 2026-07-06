@@ -82,18 +82,9 @@ create_index_page <- function(
   if (!is.null(config$home$hero$actions)) {
     actions_yaml <- c()
     for (action in config$home$hero$actions) {
-      # Escape embedded quotes in text/link values for YAML safety
-      action_text <- gsub(
-        '"',
-        '\\"',
-        action$text %||% "Get Started",
-        fixed = TRUE
-      )
-      action_link <- gsub(
-        '"',
-        '\\"',
-        action$link %||% "/articles/getting-started/",
-        fixed = TRUE
+      action_text <- escape_quoted_string(action$text %||% "Get Started")
+      action_link <- escape_quoted_string(
+        action$link %||% "/articles/getting-started/"
       )
       action_yaml <- sprintf(
         '    - text: "%s"\n      link: "%s"\n      icon: %s\n      variant: %s',
@@ -114,10 +105,10 @@ create_index_page <- function(
       icon: right-arrow
       variant: primary
     - text: View on GitHub
-      link: %s
+      link: "%s"
       icon: external
       variant: minimal',
-      github_url
+      escape_quoted_string(github_url)
     )
   }
 
@@ -128,12 +119,12 @@ create_index_page <- function(
       config$home$cards,
       function(card) {
         icon_attr <- if (!is.null(card$icon))
-          sprintf(' icon="%s"', card$icon) else ""
+          sprintf(' icon="%s"', escape_mdx_attr(card$icon)) else ""
         sprintf(
           '  <Card title="%s"%s>\n    %s\n    [Learn more >](%s)\n  </Card>',
-          card$title %||% "Untitled",
+          escape_mdx_attr(card$title %||% "Untitled"),
           icon_attr,
-          card$description %||% "",
+          escape_mdx_text(card$description %||% ""),
           card$link %||% "/"
         )
       },
@@ -155,7 +146,7 @@ import { Card, CardGrid } from "@astrojs/starlight/components";
   }
 
   # Create default index content with Starlight components
-  site_title <- config$site$title %||% pkg_name
+  site_title <- escape_quoted_string(config$site$title %||% pkg_name)
   hero_tagline_escaped <- escape_quoted_string(hero_tagline)
   pkg_desc_escaped <- escape_quoted_string(pkg_desc)
 

@@ -76,15 +76,15 @@ generate_versions_ts <- function(output_path, config) {
   # Prepare data for whisker
   versions_data <- lapply(config$versions$list, function(v) {
     list(
-      tag = v$tag %||% "",
-      label = v$label %||% v$tag %||% "",
+      tag = escape_quoted_string(v$tag %||% ""),
+      label = escape_quoted_string(v$label %||% v$tag %||% ""),
       default = isTRUE(v$default)
     )
   })
 
   data <- list(
     versions = versions_data,
-    currentVersion = get_current_version(config)
+    currentVersion = escape_quoted_string(get_current_version(config))
   )
 
   rendered <- render_template("versions.ts", data)

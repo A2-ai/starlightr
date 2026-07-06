@@ -7,8 +7,8 @@ export interface Version {
 export const VERSIONS: Version[] = [
 {{#versions}}
   {
-    tag: "{{tag}}",
-    label: "{{label}}",
+    tag: "{{{tag}}}",
+    label: "{{{label}}}",
 {{#default}}
     default: true,
 {{/default}}
@@ -16,4 +16,4 @@ export const VERSIONS: Version[] = [
 {{/versions}}
 ];
 
-export const CURRENT_VERSION = "{{currentVersion}}";
+export const CURRENT_VERSION = "{{{currentVersion}}}";

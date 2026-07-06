@@ -32,7 +32,7 @@ process_news <- function(pkg_path, output_path, config) {
     label <- news_config$label %||% "Changelog"
     news_content <- c(
       "---",
-      paste0('title: "', label, '"'),
+      paste0('title: "', escape_quoted_string(label), '"'),
       "pagefind: true",
       "---",
       "",

@@ -167,6 +167,37 @@ escape_quoted_string <- function(x) {
   x
 }
 
+#' Escape a string for use as an MDX/JSX double-quoted attribute value
+#'
+#' JSX attribute strings follow HTML/XML text conventions, not JS string
+#' literal rules: backslash is not an escape character, and a literal `"`
+#' can only be represented via the `&quot;` entity.
+#'
+#' @param x Character string to escape
+#' @return Escaped string safe for use inside a `attr="..."` value
+#' @keywords internal
+#' @noRd
+escape_mdx_attr <- function(x) {
+  x <- gsub("&", "&amp;", x, fixed = TRUE)
+  x <- gsub('"', "&quot;", x, fixed = TRUE)
+  x
+}
+
+#' Escape a string for use as literal MDX body text
+#'
+#' Mirrors the Rust emitter's `escape_mdx_text` (`src/rust/parser/src/emit/mdx.rs`):
+#' a leading `<` in plain text can be parsed as the start of a JSX tag, so it
+#' is backslash-escaped. Other Markdown-significant characters are left
+#' alone, matching the existing convention in this codebase.
+#'
+#' @param x Character string to escape
+#' @return Escaped string safe for use as MDX body text
+#' @keywords internal
+#' @noRd
+escape_mdx_text <- function(x) {
+  gsub("<", "\\<", x, fixed = TRUE)
+}
+
 #' Extract GitHub URL from configuration
 #'
 #' @param config Configuration list

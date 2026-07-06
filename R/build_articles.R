@@ -292,7 +292,7 @@ process_article_inline <- function(
 
   final_content <- paste0(
     "---\ntitle: \"",
-    title,
+    escape_quoted_string(title),
     "\"\npagefind: true\n---\n\n",
     md_content
   )

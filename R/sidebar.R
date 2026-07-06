@@ -8,8 +8,8 @@
 #' @keywords internal
 #' @noRd
 make_sidebar_item <- function(label, slug) {
-  escaped_label <- gsub('"', '\\"', label, fixed = TRUE)
-  escaped_slug <- gsub('"', '\\"', slug, fixed = TRUE)
+  escaped_label <- escape_quoted_string(label)
+  escaped_slug <- escape_quoted_string(slug)
   sprintf('{ label: "%s", slug: "%s" }', escaped_label, escaped_slug)
 }
 
@@ -39,8 +39,7 @@ parse_content_item <- function(content) {
 #' @keywords internal
 #' @noRd
 make_sidebar_group <- function(label, items, collapsed = FALSE, indent = 10) {
-  label <- gsub("\\", "\\\\", label, fixed = TRUE)
-  label <- gsub('"', '\\"', label, fixed = TRUE)
+  label <- escape_quoted_string(label)
   collapsed_attr <- if (collapsed) ",\n          collapsed: true" else ""
   item_sep <- paste0(",\n", strrep(" ", indent + 2))
 

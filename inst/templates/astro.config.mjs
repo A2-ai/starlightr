@@ -35,7 +35,7 @@ export default defineConfig({
       favicon: "/images/favicon.png",
 {{/has_favicon}}
 {{#has_github}}
-      social: [{ icon: 'github', label: 'GitHub', href: '{{{github_url}}}' }],
+      social: [{ icon: 'github', label: 'GitHub', href: "{{{github_url}}}" }],
 {{/has_github}}
       sidebar: {{{sidebar_config}}}
     })

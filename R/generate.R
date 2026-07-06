@@ -63,7 +63,7 @@ generate_astro_config <- function(output_path, config, pkg_path = NULL) {
     has_logo = !is.null(config$site$logo),
     has_favicon = !is.null(config$site$favicon),
     has_github = !is.null(github_url),
-    github_url = github_url %||% "",
+    github_url = escape_quoted_string(github_url %||% ""),
     sidebar_config = sidebar_config
   )
 
