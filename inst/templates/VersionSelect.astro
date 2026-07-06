@@ -16,8 +16,9 @@ if (path.includes('/versions/')) {
     currentPage = matches[1];
   }
 } else {
-  // Non-versioned URL - strip base path
-  currentPage = path.replace(base, '') || '/';
+  // Non-versioned URL - strip base path (only if it's actually a prefix,
+  // not just a substring anywhere in the path)
+  currentPage = (base && path.startsWith(base) ? path.slice(base.length) : path) || '/';
 }
 
 if (!currentPage) currentPage = '/';

@@ -11,9 +11,10 @@ permissions:
   id-token: write
 
 env:
-  # For private repos: leave empty
-  # For public repos: set to "/${{ github.event.repository.name }}"
-  BASE_PREFIX: ""
+  # Auto-derived: GitHub Pages serves project sites under a "/<repo>" path
+  # prefix. Override to "" if this deploys to a custom domain (a CNAME file)
+  # or to a user/org page (a repo literally named "<user>.github.io").
+  BASE_PREFIX: ${{ !endsWith(github.event.repository.name, '.github.io') && format('/{0}', github.event.repository.name) || '' }}
 
 jobs:
   deploy:
@@ -95,4 +96,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: site
-          keep_files: true
+          # false: every run rebuilds every currently-existing tag into `site/`,
+          # so gh-pages should mirror that set exactly — otherwise a deleted
+          # tag's version directory lingers forever.
+          keep_files: false
