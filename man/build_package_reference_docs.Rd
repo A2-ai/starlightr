@@ -14,7 +14,8 @@ build_package_reference_docs(
 )
 }
 \arguments{
-\item{output_dir}{Path to directory where reference MDX files are saved.}
+\item{output_dir}{Path to directory where reference MDX files are saved.
+If relative, resolved against `pkg`.}
 
 \item{pkg}{Path to the package directory (default `"."`).}
 

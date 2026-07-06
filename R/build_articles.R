@@ -8,6 +8,11 @@
 #'
 #' @param rmd_files Character vector of paths to `.Rmd` (or `.md`) files.
 #' @param output_dir Path to directory where article `.md` files are saved.
+#'   If relative, resolved against `pkg`.
+#' @param pkg Path to the package directory (default `"."`). Rmd files are
+#'   rendered against this package (via `pkgload::load_all()`), and a
+#'   relative `output_dir` is resolved against it — this must be the
+#'   package root even when the caller's working directory is elsewhere.
 #' @param site_dir Path to the Starlight site root, where figures are copied
 #'   under `public/figures/`. If `NULL` (default), it is derived from
 #'   `output_dir` by stripping the trailing `src/content/docs/...` segment.
@@ -28,9 +33,12 @@
 build_articles <- function(
   rmd_files,
   output_dir,
+  pkg = ".",
   site_dir = NULL,
   verbose = FALSE
 ) {
+  pkg_path <- normalizePath(pkg, mustWork = TRUE)
+  output_dir <- resolve_against(output_dir, pkg_path)
   ensure_dir(output_dir)
 
   if (is.null(site_dir)) {
@@ -73,7 +81,6 @@ build_articles <- function(
 
   if (length(rmd_to_build) > 0) {
     cli::cli_alert_info("Building {length(rmd_to_build)} Rmd file{?s}...")
-    pkg_path <- normalizePath(".", mustWork = TRUE)
     for (rmd in rmd_to_build) {
       cli::cli_inform(c(i = "Building {.path {rmd}}"))
       callr::r_safe(
@@ -191,6 +198,7 @@ build_package_articles <- function(
   build_articles(
     rmd_files = rmd_files,
     output_dir = output_dir,
+    pkg = pkg_path,
     site_dir = site_dir,
     verbose = verbose
   )

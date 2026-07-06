@@ -4,12 +4,24 @@
 \alias{build_articles}
 \title{Build article markdown files from Rmd sources}
 \usage{
-build_articles(rmd_files, output_dir, site_dir = NULL, verbose = FALSE)
+build_articles(
+  rmd_files,
+  output_dir,
+  pkg = ".",
+  site_dir = NULL,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{rmd_files}{Character vector of paths to `.Rmd` (or `.md`) files.}
 
-\item{output_dir}{Path to directory where article `.md` files are saved.}
+\item{output_dir}{Path to directory where article `.md` files are saved.
+If relative, resolved against `pkg`.}
+
+\item{pkg}{Path to the package directory (default `"."`). Rmd files are
+rendered against this package (via `pkgload::load_all()`), and a
+relative `output_dir` is resolved against it — this must be the
+package root even when the caller's working directory is elsewhere.}
 
 \item{site_dir}{Path to the Starlight site root, where figures are copied
 under `public/figures/`. If `NULL` (default), it is derived from

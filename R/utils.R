@@ -102,6 +102,26 @@ is_absolute_path <- function(path) {
   return(FALSE)
 }
 
+#' Resolve a possibly-relative path against a base directory
+#'
+#' A relative `output_dir` must resolve against the package root, not
+#' whatever the current working directory happens to be when the function
+#' is called (which may differ, e.g. `build_site(pkg = "../../pkg")` run
+#' from a docs directory). Absolute paths pass through unchanged. This is
+#' the single rule; call it at the point an output/working directory is
+#' first accepted, rather than resolving relative paths ad hoc per site.
+#'
+#' @param path Character path, absolute or relative.
+#' @param base Base directory to resolve `path` against if it is relative
+#'   (typically the resolved package root, `pkg_path`).
+#' @return Absolute path.
+#' @keywords internal
+#' @noRd
+resolve_against <- function(path, base) {
+  if (is_absolute_path(path)) return(path)
+  normalizePath(file.path(base, path), mustWork = FALSE)
+}
+
 #' Get package name from DESCRIPTION file
 #'
 #' @param pkg_path Path to package directory

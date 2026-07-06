@@ -126,6 +126,7 @@ build_site <- function(
     build_articles(
       rmd_files = rmd_files,
       output_dir = articles_output,
+      pkg = pkg_path,
       site_dir = output_path,
       verbose = verbose
     )

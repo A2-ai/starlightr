@@ -16,7 +16,8 @@ build_reference_files(
 \arguments{
 \item{rd_files}{Character vector of paths to `.Rd` files.}
 
-\item{output_dir}{Path to directory where reference MDX files are saved.}
+\item{output_dir}{Path to directory where reference MDX files are saved.
+If relative, resolved against `pkg`.}
 
 \item{pkg}{Path to the package directory (default `"."`).}
 
