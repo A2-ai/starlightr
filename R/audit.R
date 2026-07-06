@@ -40,6 +40,16 @@ audit_config <- function(pkg = ".", config_file = "_starlightr.toml") {
   # Extract all function references from sidebar.reference
   config_refs <- extract_config_references(config)
 
+  # Slugs of the reference pages that will actually be built - this is the
+  # valid target set for `./reference/<x>/` links. It is *not* the same as
+  # `exported`: `@rdname`-grouped topics and `<pkg>-package` doc pages get
+  # their own reference page without being NAMESPACE exports.
+  reference_slugs <- vapply(
+    resolve_config_rd_files(pkg_path, config),
+    rd_file_to_slug,
+    character(1)
+  )
+
   # Match config references against exports
   matched <- match_config_to_exports(config_refs, exported)
 
@@ -153,7 +163,7 @@ audit_config <- function(pkg = ".", config_file = "_starlightr.toml") {
       }
 
       # Validate link targets (returns TRUE if issue found)
-      if (validate_link_target(link, context, pkg_path, exported)) {
+      if (validate_link_target(link, context, pkg_path, reference_slugs)) {
         link_issues <- link_issues + 1
       }
     }
@@ -356,17 +366,5 @@ match_single_reference <- function(ref, exports) {
     return(expand_selector(ref, exports))
   }
 
-  # Check for glob pattern (ends with *)
-  if (grepl("\\*$", ref)) {
-    pattern <- paste0("^", gsub("\\*", ".*", ref), "$")
-    return(exports[grepl(pattern, exports, ignore.case = TRUE)])
-  }
-
-  # Case-insensitive exact match
-  matches <- exports[tolower(exports) == tolower(ref)]
-  if (length(matches) > 0) {
-    return(matches)
-  }
-
-  character()
+  expand_reference_patterns(ref, exports)
 }

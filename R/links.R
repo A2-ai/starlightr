@@ -146,11 +146,13 @@ is_external_doc_link <- function(link) {
 #' @param link Link string
 #' @param context Context string for error messages
 #' @param pkg_path Path to package directory
-#' @param exported Character vector of exported function names
+#' @param reference_slugs Character vector of slugs for reference pages that
+#'   will actually be built (Rd topics, including `-package` and `@rdname`
+#'   grouped topics — not necessarily equal to NAMESPACE exports)
 #' @return TRUE if an issue was found, FALSE otherwise
 #' @keywords internal
 #' @noRd
-validate_link_target <- function(link, context, pkg_path, exported) {
+validate_link_target <- function(link, context, pkg_path, reference_slugs) {
   # Only validate links starting with ./
   if (!startsWith(link, "./")) {
     return(FALSE)
@@ -194,10 +196,12 @@ validate_link_target <- function(link, context, pkg_path, exported) {
   if (startsWith(path, "reference/")) {
     fn_name <- sub("^reference/", "", path)
     if (nchar(fn_name) > 0) {
-      # Check if function is exported (case-insensitive)
-      if (!any(tolower(exported) == tolower(fn_name))) {
+      # Check against the slugs of reference pages that will actually be
+      # built (Rd topics), not NAMESPACE exports - `@rdname` grouped topics
+      # and `<pkg>-package` doc pages are valid targets but are not exports
+      if (!any(tolower(reference_slugs) == tolower(fn_name))) {
         cli::cli_warn(
-          "Reference link target not found: {.val {link}} - no exported function {.fn {fn_name}} ({context})"
+          "Reference link target not found: {.val {link}} - no reference page {.val {fn_name}} ({context})"
         )
         return(TRUE)
       }
