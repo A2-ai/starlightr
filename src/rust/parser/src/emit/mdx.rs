@@ -544,13 +544,17 @@ impl Emitter {
             }
         }
 
-        if let Some(png) = &outputs.png {
-            self.emit_text(&format!("![Example plot]({png})\n\n"));
+        if let Some(pngs) = &outputs.png {
+            for png in pngs {
+                self.emit_text(&format!("![Example plot]({png})\n\n"));
+            }
         }
 
-        if let Some(html) = &outputs.html {
-            self.emit_text(html);
-            self.emit_text("\n\n");
+        if let Some(htmls) = &outputs.html {
+            for html in htmls {
+                self.emit_text(html);
+                self.emit_text("\n\n");
+            }
         }
     }
 
@@ -892,5 +896,48 @@ mod tests {
         let document = parse_file(&path).unwrap();
         let source = path.file_name().and_then(|f| f.to_str());
         assert_snapshot!(emit_document(document, &opts, source).unwrap());
+    }
+
+    #[test]
+    fn emit_example_outputs_emits_every_png_and_html_entry() {
+        // Regression test for a bug where an example producing more than one
+        // plot/table only kept the last one: capture_rd_examples() now
+        // accumulates a Vec per function instead of overwriting a scalar, so
+        // the emitter must walk the whole Vec rather than assuming one entry.
+        let test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("test_data");
+        let path = test_dir.join("hyperion-tables-section-rules.Rd");
+
+        let mut example_outputs = HashMap::new();
+        example_outputs.insert(
+            "hyperion-tables-section-rules".to_string(),
+            ExampleOutput {
+                txt: None,
+                png: Some(vec![
+                    "data:image/png;base64,AAA".to_string(),
+                    "data:image/png;base64,BBB".to_string(),
+                ]),
+                html: Some(vec![
+                    "<div>table-one</div>".to_string(),
+                    "<div>table-two</div>".to_string(),
+                ]),
+            },
+        );
+
+        let opts = EmitOptions {
+            example_outputs,
+            ..EmitOptions::default()
+        };
+
+        let document = parse_file(&path).unwrap();
+        let source = path.file_name().and_then(|f| f.to_str());
+        let rendered = emit_document(document, &opts, source).unwrap();
+
+        assert_eq!(
+            rendered.matches("![Example plot]").count(),
+            2,
+            "expected both PNG outputs to be emitted, not just the last"
+        );
+        assert!(rendered.contains("<div>table-one</div>"));
+        assert!(rendered.contains("<div>table-two</div>"));
     }
 }

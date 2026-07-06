@@ -6,6 +6,7 @@
 #'
 #' @param rd_files Character vector of paths to `.Rd` files.
 #' @param output_dir Path to directory where reference MDX files are saved.
+#'   If relative, resolved against `pkg`.
 #' @param pkg Path to the package directory (default `"."`).
 #' @param config_file Path to `_starlightr.toml` (relative to `pkg`).
 #' @param examples Logical, whether to capture and embed example outputs
@@ -41,6 +42,12 @@ build_reference_files <- function(
 ) {
   pkg_path <- normalizePath(pkg, mustWork = TRUE)
   config_path <- file.path(pkg_path, config_file)
+
+  # A relative output_dir must resolve against the package root, not
+  # whatever directory render_reference()'s Rust side falls back to
+  # (std::env::current_dir()) — see resolve_against(). Always cross the
+  # R/Rust boundary with an absolute path.
+  output_dir <- resolve_against(output_dir, pkg_path)
 
   # The Rust emitter re-reads its own config file rather than accepting
   # options in-process; give it R's merged config (user values over
@@ -84,22 +91,51 @@ build_reference_files <- function(
   dep_packages <- extract_dependency_packages(pkg_path)
   external_links_file <- build_external_link_map(dep_packages)
 
-  # Render each Rd file
+  # Render each Rd file. A single malformed Rd must not abort the whole
+  # batch (and the site build with it) — collect failures and keep going,
+  # then report a summary. This mirrors the warn-and-skip policy used for
+  # example capture in capture_rd_examples().
   cli::cli_alert_info("Rendering {length(rd_files)} reference file{?s}...")
+  rendered <- character()
+  render_failures <- character()
   for (rd_file in rd_files) {
-    render_reference(
-      rd_file = rd_file,
-      output_dir = output_dir,
-      config_file = emit_config_path,
-      external_links_file = external_links_file,
-      example_outputs_file = example_outputs_file
+    ok <- tryCatch(
+      {
+        render_reference(
+          rd_file = rd_file,
+          output_dir = output_dir,
+          config_file = emit_config_path,
+          external_links_file = external_links_file,
+          example_outputs_file = example_outputs_file
+        )
+        TRUE
+      },
+      error = function(e) {
+        render_failures <<- c(
+          render_failures,
+          sprintf("%s: %s", rd_file, conditionMessage(e))
+        )
+        FALSE
+      }
     )
+    if (ok) {
+      rendered <- c(rendered, rd_file)
+    }
   }
 
   written_files <- file.path(
     output_dir,
-    paste0(vapply(rd_files, rd_file_to_slug, character(1)), ".mdx")
+    paste0(vapply(rendered, rd_file_to_slug, character(1)), ".mdx")
   )
+
+  if (length(render_failures) > 0) {
+    bullets <- render_failures
+    names(bullets) <- rep_len("x", length(bullets))
+    cli::cli_warn(c(
+      "Skipped {length(render_failures)} reference file{?s} due to render errors:",
+      bullets
+    ))
+  }
 
   cli::cli_alert_success(
     "Wrote {length(written_files)} reference file{?s} to {.path {output_dir}}"
@@ -204,12 +240,21 @@ build_inline_example_outputs_map <- function(captured) {
     }
 
     if (!is.null(cap$png_raw)) {
-      b64 <- base64enc::base64encode(cap$png_raw)
-      entry$png <- paste0("data:image/png;base64,", b64)
+      data_uris <- vapply(
+        cap$png_raw,
+        function(png_raw) {
+          paste0("data:image/png;base64,", base64enc::base64encode(png_raw))
+        },
+        character(1)
+      )
+      # I() forces array serialization even when there's exactly one
+      # element -- otherwise auto_unbox would collapse it to a bare string
+      # and the Rust side (which always expects an array) would fail to parse.
+      entry$png <- I(unname(data_uris))
     }
 
     if (!is.null(cap$html)) {
-      entry$html <- as.character(cap$html)
+      entry$html <- I(unname(vapply(cap$html, as.character, character(1))))
     }
 
     if (length(entry) > 0) {

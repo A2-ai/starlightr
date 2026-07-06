@@ -9,10 +9,13 @@ use serde::{Deserialize, Serialize};
 pub struct ExampleOutput {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub txt: Option<String>,
+    /// One data URI per plot the example produced -- an example that draws
+    /// multiple ggplots keeps all of them, not just the last.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub png: Option<String>,
+    pub png: Option<Vec<String>>,
+    /// One raw HTML blob per gt table the example produced.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub html: Option<String>,
+    pub html: Option<Vec<String>>,
 }
 
 #[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
