@@ -44,13 +44,13 @@ Platform Specific Variables
 
 A list with at least the following components:
 
-  - **OS.type**: character string, giving the perating ystem (family) of the computer. One of `"unix"` or `"windows"`.
-- **file.sep**: character string, giving the arator used on your platform: `"/"` on both Unix-alikes *and* on Windows (but not on the former port to Classic Mac OS).
-- **dynlib.ext**: character string, giving the file name ension of amically loadable raries, e.g., `".dll"` on Windows and `".so"` or `".sl"` on Unix-alikes. (Note for macOS users: these are shared objects as loaded by [`dyn.load`](../dyn-load/) and not dylibs: see [`dyn.load`](../dyn-load/).)
+  - **OS.type**: character string, giving the **O**perating **S**ystem (family) of the computer. One of `"unix"` or `"windows"`.
+- **file.sep**: character string, giving the **file** **sep**arator used on your platform: `"/"` on both Unix-alikes *and* on Windows (but not on the former port to Classic Mac OS).
+- **dynlib.ext**: character string, giving the file name **ext**ension of **dyn**amically loadable **lib**raries, e.g., `".dll"` on Windows and `".so"` or `".sl"` on Unix-alikes. (Note for macOS users: these are shared objects as loaded by [`dyn.load`](../dyn-load/) and not dylibs: see [`dyn.load`](../dyn-load/).)
 - **GUI**: character string, giving the type of GUI in use, or `"unknown"` if no GUI can be assumed. Possible values are for Unix-alikes the values given via the `-g` command-line flag (`"X11"`, `"Tk"`), `"AQUA"` (running under `R.app` on macOS), `"Rgui"` and `"RTerm"` (Windows) and perhaps others under alternative front-ends or embedded .
 - **endian**: character string, `"big"` or `"little"`, giving the 'endianness' of the processor in use. This is relevant when it is necessary to know the order to read/write bytes of e.g.an integer or double from/to a [connection](../connection/): see [`readBin`](../readbin/).
 - **pkgType**: character string, the preferred setting for [`options("pkgType")`](../options/). Values `"source"`, `"mac.binary"` and `"win.binary"` are currently in use. This should **not** be used to identify the OS.
-- **path.sep**: character string, giving the arator, used on your platform, e.g., `":"` on Unix-alikes and `";"` on Windows. Used to separate paths in environment variables such as `PATH` and `TEXINPUTS`.
+- **path.sep**: character string, giving the **path** **sep**arator, used on your platform, e.g., `":"` on Unix-alikes and `";"` on Windows. Used to separate paths in environment variables such as `PATH` and `TEXINPUTS`.
 - **r_arch**: character string, possibly `""`. The name of an architecture-specific directory used in this build of .
 
 

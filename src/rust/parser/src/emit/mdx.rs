@@ -126,7 +126,7 @@ impl Emitter {
         match name {
             "code" | "verb" => self.emit_code(option, args),
             "emph" => self.emit_emph(option, args),
-            "strong" => self.emit_strong(option, args),
+            "strong" | "bold" => self.emit_strong(option, args),
             "eqn" => self.emit_eqn(option, args),
             "deqn" => self.emit_deqn(option, args),
             "email" => self.emit_email(args),
