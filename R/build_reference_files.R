@@ -219,6 +219,133 @@ build_package_reference_docs <- function(
   )
 }
 
+#' Build reference MDX files from a directory of .Rd files (batch)
+#'
+#' Fast batch alternative to [build_reference_files()]. Both resolve and
+#' filter `.Rd` files the same way (keyword-internal filtering, example
+#' capture, external link resolution), but [build_reference_files()] renders
+#' each file with its own call to [render_reference()] in an R loop, while
+#' this function renders the whole (filtered) directory in a single call to
+#' the Rust `render_references()` batch path -- lower per-file overhead, at
+#' the cost of the error isolation described in the Note below.
+#'
+#' @inheritParams build_reference_files
+#' @param rd_dir Path to directory of `.Rd` files (default `"man"`, relative
+#'   to `pkg` if not absolute).
+#' @param include_internal Logical, whether to include internal functions
+#'   (those with `@keywords internal`). If `NULL` (default), reads from
+#'   `reference.include_internal` in `_starlightr.toml`, falling back to
+#'   `FALSE`.
+#'
+#' @note Unlike [build_reference_files()], a single malformed `.Rd` file
+#'   aborts the whole batch rather than being skipped and reported --
+#'   `render_references()`'s Rust implementation has no per-file error
+#'   isolation. Prefer [build_reference_files()] (or
+#'   [build_package_reference_docs()]) when resilience to bad input matters
+#'   more than raw throughput.
+#'
+#' @return Invisibly returns a character vector of written file paths.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' build_reference_dir(
+#'   rd_dir = "man",
+#'   output_dir = "../my-site/src/content/docs/reference"
+#' )
+#' }
+build_reference_dir <- function(
+  rd_dir = "man",
+  output_dir,
+  pkg = ".",
+  config_file = "_starlightr.toml",
+  examples = TRUE,
+  include_internal = NULL,
+  verbose = FALSE
+) {
+  pkg_path <- normalizePath(pkg, mustWork = TRUE)
+  rd_dir <- resolve_against(rd_dir, pkg_path)
+
+  if (!dir.exists(rd_dir)) {
+    cli::cli_abort("No such directory: {.path {rd_dir}}")
+  }
+
+  # See the comment in build_reference_files() -- the Rust emitter re-reads
+  # its own config file, so it needs R's merged config, not the raw user
+  # file.
+  config_path <- file.path(pkg_path, config_file)
+  config <- read_config(config_path)
+  emit_config_path <- write_reference_config_toml(config$reference)
+
+  if (is.null(include_internal)) {
+    include_internal <- config$reference$include_internal %||% FALSE
+  }
+
+  rd_files <- list.files(rd_dir, pattern = "\\.Rd$", full.names = TRUE)
+
+  if (!include_internal) {
+    rd_files <- Filter(function(f) {
+      content <- readLines(f, warn = FALSE)
+      !any(grepl("\\\\keyword\\{internal\\}", content))
+    }, rd_files)
+  }
+
+  if (length(rd_files) == 0) {
+    cli::cli_warn("No Rd files to process in {.path {rd_dir}}")
+    return(invisible(character()))
+  }
+
+  # relative to `pkg`, output_dir must resolve against pkg_path, not
+  # render_references()'s Rust-side fallback (std::env::current_dir()).
+  output_dir <- resolve_against(output_dir, pkg_path)
+  ensure_dir(output_dir)
+
+  example_outputs_file <- NULL
+  if (examples) {
+    pkg_name <- get_package_name(pkg_path)
+    fn_names <- tools::file_path_sans_ext(basename(rd_files))
+
+    cli::cli_alert_info("Capturing example outputs...")
+    captured <- capture_rd_examples(pkg_name, fn_names, verbose = verbose)
+
+    if (length(captured) > 0) {
+      example_outputs_file <- build_inline_example_outputs_map(captured)
+      cli::cli_alert_success("Captured examples for {length(captured)} function{?s}")
+    }
+  }
+
+  dep_packages <- extract_dependency_packages(pkg_path)
+  external_links_file <- build_external_link_map(dep_packages)
+
+  # render_references() walks *every* `.Rd` file in a directory -- it has no
+  # filtering of its own. Stage only the files that survived the
+  # internal-keyword filter above into a fresh temp dir so the Rust batch
+  # call sees exactly the same set build_reference_files() would have.
+  staging_dir <- tempfile("starlightr-refdir-")
+  dir.create(staging_dir)
+  on.exit(unlink(staging_dir, recursive = TRUE, force = TRUE), add = TRUE)
+  file.copy(rd_files, staging_dir)
+
+  cli::cli_alert_info("Rendering {length(rd_files)} reference file{?s}...")
+  render_references(
+    rd_dir = staging_dir,
+    output_dir = output_dir,
+    config_file = emit_config_path,
+    external_links_file = external_links_file,
+    example_outputs_file = example_outputs_file
+  )
+
+  written_files <- file.path(
+    output_dir,
+    paste0(vapply(rd_files, rd_file_to_slug, character(1)), ".mdx")
+  )
+
+  cli::cli_alert_success(
+    "Wrote {length(written_files)} reference file{?s} to {.path {output_dir}}"
+  )
+  invisible(written_files)
+}
+
 #' Build inline example outputs JSON map
 #'
 #' Takes in-memory captured results from [capture_rd_examples()] and produces
