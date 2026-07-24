@@ -23,12 +23,17 @@ fn normalize_link(mut nodes: Vec<Node>) -> Vec<Node> {
     };
 
     if let Node::Text(s) = first {
-        let normal = s
-            .trim()
-            .trim_matches(['(', ')'])
-            .to_lowercase()
-            .replace('.', "-")
-            .replace("/", "");
+        let trimmed = s.trim().trim_matches(['(', ')']);
+        // roxygen mangles a leading `.` to `dot-` in Rd filenames
+        // (`.foo` -> dot-foo.Rd), so page slugs carry the same prefix
+        let (prefix, rest) = match trimmed.strip_prefix('.') {
+            Some(rest) => ("dot-", rest),
+            None => ("", trimmed),
+        };
+        let normal = format!(
+            "{prefix}{}",
+            rest.to_lowercase().replace('.', "-").replace("/", "")
+        );
         *s = normal;
     }
 

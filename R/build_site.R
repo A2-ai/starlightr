@@ -161,6 +161,9 @@ build_site <- function(
 #'
 #' If config has sidebar.reference, resolves slugs/patterns to .Rd files.
 #' Otherwise returns all .Rd files (minus internal unless configured).
+#' When `reference.include_internal` is `TRUE`, internal topics
+#' (`\keyword{internal}`) are always included, even if absent from
+#' sidebar.reference, so links to them resolve without sidebar entries.
 #'
 #' @param pkg_path Package directory path
 #' @param config Parsed config list
@@ -176,11 +179,12 @@ resolve_config_rd_files <- function(pkg_path, config) {
 
   # Filter internal unless config says otherwise
   include_internal <- config$reference$include_internal %||% FALSE
+  internal_rd <- Filter(function(f) {
+    content <- readLines(f, warn = FALSE)
+    any(grepl("\\\\keyword\\{internal\\}", content))
+  }, all_rd)
   if (!include_internal) {
-    all_rd <- Filter(function(f) {
-      content <- readLines(f, warn = FALSE)
-      !any(grepl("\\\\keyword\\{internal\\}", content))
-    }, all_rd)
+    all_rd <- setdiff(all_rd, internal_rd)
   }
 
   # If no sidebar.reference config, return all
@@ -201,7 +205,15 @@ resolve_config_rd_files <- function(pkg_path, config) {
   }
 
   matched <- unique(matched)
-  all_rd[rd_basenames %in% matched]
+  keep <- rd_basenames %in% matched
+
+  # Internal topics are rendered (so links to them resolve) even when not
+  # listed in sidebar.reference; the sidebar itself only shows config contents
+  if (include_internal) {
+    keep <- keep | all_rd %in% internal_rd
+  }
+
+  all_rd[keep]
 }
 
 #' Resolve config sidebar.articles to .Rmd file paths
