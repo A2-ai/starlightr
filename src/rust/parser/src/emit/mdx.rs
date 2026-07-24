@@ -766,6 +766,29 @@ mod tests {
     }
 
     #[test]
+    fn dotted_topic_links_get_dot_prefix() {
+        // scicalc's bsa.Rd links to internal .bsa_dubois, documented in
+        // dot-bsa_dubois.Rd (roxygen mangles the leading `.` to `dot-`)
+        let doc = crate::parsing::parser::parse(
+            r#"\name{bsa}\title{Calculate Body Surface Area}\seealso{
+The method implementations:
+\link[=.bsa_dubois]{bsa(method = "Dubois")},
+\link[=.bsa_mosteller]{bsa(method = "Mosteller")}.
+}"#,
+        )
+        .unwrap();
+        let out = emit_document(doc, &EmitOptions::default(), None).unwrap();
+        assert!(
+            out.contains("](../dot-bsa_dubois/)"),
+            "expected dot- prefixed link in:\n{out}"
+        );
+        assert!(
+            !out.contains("](../-bsa_dubois/)"),
+            "leading dot should not become a bare dash in:\n{out}"
+        );
+    }
+
+    #[test]
     fn can_resolve_external_links() {
         let test_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("test_data");
         let path = test_dir.join("hyperion-tables-section-rules.Rd");
