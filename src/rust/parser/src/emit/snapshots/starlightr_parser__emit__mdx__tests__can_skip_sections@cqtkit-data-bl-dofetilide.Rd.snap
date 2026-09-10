@@ -1,0 +1,64 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &opts, source).unwrap()"
+input_file: parser/test_data/cqtkit-data-bl-dofetilide.Rd
+---
+---
+title: "Baseline data for dofetilide C-QT study"
+description: "Baseline data for dofetilide C-QT study."
+sidebar:
+  label: "cqtkit_data_bl_dofetilide"
+pagefind: false
+---
+
+## Doc Type
+
+data
+
+
+
+## Alias
+
+cqtkit_data_bl_dofetilide
+
+
+
+## Format
+
+## `cqtkit_data_bl_dofetilide`
+
+A data frame with 132 rows and 17 columns:
+- **ID**: Unique subject identifier
+- **SEX**: Sex either M (Male) or F (Female)
+- **AGE**: Age in years at screening
+- **HGHT**: Height in cm at screening
+- **WGHT**: Weight in kg at screening
+- **RACE**: Race as provided
+- **ETHNIC**: Ethnicity as provided
+- **VISIT**: Visit code
+- **TRTG**: Treatment Group (Drug or Placebo)
+- **DOSE**: numeric value of dose
+- **DOSEU**: Units of DOSE
+- **TPT**: Timepoint of collection relative to first dose (h)
+- **RR**: RR before dose (ms)
+- **QT**: QT before dose (ms)
+- **HR**: HR before dose (bpm)
+- **QTCB**: Bazett's corrected QT before dose (ms)
+- **QTCF**: Fridericia's corrected QT before dose (ms)
+
+
+## Source
+
+Derived from Johannesen et. al. (https://ascpt.onlinelibrary.wiley.com/doi/10.1038/clpt.2014.155)
+
+
+## Usage
+
+```r
+cqtkit_data_bl_dofetilide
+```
+
+
+## Keyword
+
+datasets

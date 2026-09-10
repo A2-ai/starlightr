@@ -1,3 +1,7 @@
+# starlightr 0.2.1 
+
+* `\source` now lowered from Rd files.
+
 # starlightr 0.2.0
 
 * `\link{}` targets to dotted internal functions (e.g. `.bsa_dubois`) now
