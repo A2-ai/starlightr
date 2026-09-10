@@ -287,6 +287,9 @@ process_article_inline <- function(
   # Fix lifecycle badges (must come BEFORE generic man/figures/ rewrite)
   md_content <- fix_lifecycle_badges(md_content)
 
+  # Starlight's height: auto ignores HTML height attributes
+  md_content <- fix_img_width(md_content)
+
   # Remove HTML comments
   md_content <- gsub("(?s)<!--.*?-->", "", md_content, perl = TRUE)
 

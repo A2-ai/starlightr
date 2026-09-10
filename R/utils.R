@@ -205,6 +205,26 @@ fix_lifecycle_badges <- function(md) {
   md
 }
 
+#' Swap img height attributes to width
+#'
+#' Starlight's markdown CSS sets `height: auto` on content images, which
+#' overrides an HTML `height` attribute and leaves the image at full size.
+#' READMEs written for GitHub commonly size logos that way, so rename the
+#' attribute. Tags that already set `width` are left alone.
+#'
+#' @param md Markdown string
+#' @return Markdown with `height`-only img tags sized by `width` instead
+#' @keywords internal
+#' @noRd
+fix_img_width <- function(md) {
+  gsub(
+    "(?i)<img(?![^>]*\\swidth\\s*=)([^>]*?)\\sheight\\s*=",
+    "<img\\1 width=",
+    md,
+    perl = TRUE
+  )
+}
+
 #' Render a whisker template from inst/templates/
 #'
 #' @param name Template filename (e.g. "astro.config.mjs")

@@ -126,7 +126,7 @@ impl Emitter {
         match name {
             "code" | "verb" => self.emit_code(option, args),
             "emph" => self.emit_emph(option, args),
-            "strong" => self.emit_strong(option, args),
+            "strong" | "pkg" => self.emit_strong(option, args),
             "eqn" => self.emit_eqn(option, args),
             "deqn" => self.emit_deqn(option, args),
             "email" => self.emit_email(args),
@@ -844,6 +844,20 @@ Derived from Johannesen et. al.
         assert!(
             out.contains("https://example.org/paper"),
             "expected url from \\source in:\n{out}"
+        );
+    }
+
+    #[test]
+    fn pkg_renders_bold() {
+        // cqtkit's package doc uses \pkg{ggstylekit} inline in a section body
+        let doc = crate::parsing::parser::parse(
+            r"\name{x}\title{x}\description{Plots are styled with \pkg{ggstylekit}.}",
+        )
+        .unwrap();
+        let out = emit_document(doc, &EmitOptions::default(), None).unwrap();
+        assert!(
+            out.contains("**ggstylekit**"),
+            "expected bold package name in:\n{out}"
         );
     }
 }
