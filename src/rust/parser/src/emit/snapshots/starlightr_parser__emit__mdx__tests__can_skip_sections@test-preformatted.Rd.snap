@@ -1,0 +1,24 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &opts, source).unwrap()"
+input_file: parser/test_data/test-preformatted.Rd
+---
+---
+title: "Read a parameter-config YAML file."
+description: "Expected structure: ``` parameters: Cmax: { label: \"Cmax\", units: \"ng/mL\", digits: 3 } AUClast: { label: \"AUClast\", units: \"h*ng/mL\" } N_Samples: { label: \"N Sa"
+sidebar:
+  label: "read_param_yaml"
+pagefind: false
+---
+
+## Alias
+
+read_param_yaml
+
+
+
+## Usage
+
+```r
+read_param_yaml(path)
+```

@@ -1,0 +1,58 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &opts, source).unwrap()"
+input_file: parser/test_data/test-preformatted.Rd
+---
+---
+title: "Read a parameter-config YAML file."
+description: "Expected structure: ``` parameters: Cmax: { label: \"Cmax\", units: \"ng/mL\", digits: 3 } AUClast: { label: \"AUClast\", units: \"h*ng/mL\" } N_Samples: { label: \"N Sa"
+sidebar:
+  label: "read_param_yaml"
+pagefind: false
+---
+
+## Description
+
+Expected structure:
+```
+parameters:
+  Cmax:      { label: "Cmax",      units: "ng/mL", digits: 3 }
+  AUClast:   { label: "AUClast",   units: "h*ng/mL" }
+  N_Samples: { label: "N Samples", digit_type: integer }
+  ...
+```
+
+
+
+
+
+
+## Usage
+
+```r
+read_param_yaml(path)
+```
+
+## Arguments
+
+<div class="arg-table">
+<table>
+<thead>
+<tr><th>Argument</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>path</code></td>
+<td>File path to the YAML.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+## Value
+
+Named list keyed by raw column name; each entry is a list with
+`label`, `units`, `digits`, `digit_type` (any of
+which may be missing). `digit_type` is `"sigfig"` (default),
+`"decimal"`, `"integer"`, or `"raw"`.

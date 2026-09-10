@@ -5,6 +5,7 @@ use crate::document::Node;
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum CodeKind {
     Plain,
+    Preformatted,
     DontRun,
     DontTest,
     DontShow,
@@ -22,6 +23,7 @@ fn lower_code(node: Node) -> Node {
     };
 
     let kind = match name.as_str() {
+        "preformatted" => CodeKind::Preformatted,
         "dontrun" => CodeKind::DontRun,
         "dontshow" => CodeKind::DontShow,
         "donttest" => CodeKind::DontTest,
@@ -39,7 +41,9 @@ fn lower_code(node: Node) -> Node {
 
 pub(crate) fn lower_code_command(name: impl AsRef<str>, cmd: Node) -> Node {
     match name.as_ref() {
-        "examples" | "example" | "usage" | "dontrun" | "donttest" | "dontshow" => lower_code(cmd),
+        "examples" | "example" | "usage" | "preformatted" | "dontrun" | "donttest" | "dontshow" => {
+            lower_code(cmd)
+        }
         _ => cmd,
     }
 }

@@ -487,7 +487,7 @@ impl Emitter {
         let nodes = &nodes[start..end];
 
         match kind {
-            CodeKind::Plain => {}
+            CodeKind::Plain | CodeKind::Preformatted => {}
             CodeKind::DontRun => self.emit_text("# Not run:\n"),
             CodeKind::DontTest => self.emit_text("# Not tested:\n"),
             CodeKind::DontShow => return,
@@ -516,7 +516,13 @@ impl Emitter {
             self.emit_text("\n\n");
         }
 
-        self.emit_text("```r\n");
+        // \preformatted is verbatim text, not necessarily R, so it gets a
+        // plain fence.
+        if matches!(kind, CodeKind::Preformatted) {
+            self.emit_text("```\n");
+        } else {
+            self.emit_text("```r\n");
+        }
         self.code_mode_depth += 1;
         self.emit_code_body_nodes(kind, children);
         self.code_mode_depth -= 1;
@@ -858,6 +864,29 @@ Derived from Johannesen et. al.
         assert!(
             out.contains("**ggstylekit**"),
             "expected bold package name in:\n{out}"
+        );
+    }
+
+    #[test]
+    fn preformatted_becomes_a_plain_fence() {
+        // YAML braces inside \preformatted must survive verbatim: inside a
+        // fence they are literal, not MDX expressions
+        let doc = crate::parsing::parser::parse(
+            "\\name{x}\\title{x}\\description{Expected structure:\n\\preformatted{\nparameters:\n  Cmax: { label: \"Cmax\", digits: 3 }\n}\n}",
+        )
+        .unwrap();
+        let out = emit_document(doc, &EmitOptions::default(), None).unwrap();
+        assert!(
+            out.contains("```\nparameters:"),
+            "expected a plain (non-r) fence in:\n{out}"
+        );
+        assert!(
+            out.contains("  Cmax: { label: \"Cmax\", digits: 3 }"),
+            "expected braces preserved verbatim in:\n{out}"
+        );
+        assert!(
+            !out.contains("```r"),
+            "preformatted should not be fenced as r in:\n{out}"
         );
     }
 }
