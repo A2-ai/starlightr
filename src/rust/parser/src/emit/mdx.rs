@@ -235,9 +235,8 @@ impl Emitter {
                 self.emit_text(url);
                 self.emit_text(")");
                 self.emit_text("<span style = {{ display: 'inline-block', verticalAlign: 'middle' }}><Icon name=\"external\" /></span>");
-                self.imports.insert(
-                    "import { Icon } from '@astrojs/starlight/components';".to_string(),
-                );
+                self.imports
+                    .insert("import { Icon } from '@astrojs/starlight/components';".to_string());
             }
             None => {
                 self.emit_nodes(label);
@@ -725,7 +724,10 @@ mod tests {
         )
         .unwrap();
         let out = emit_document(doc, &EmitOptions::default(), None).unwrap();
-        assert!(out.contains("HTML_BRANCH"), "expected html branch in:\n{out}");
+        assert!(
+            out.contains("HTML_BRANCH"),
+            "expected html branch in:\n{out}"
+        );
         assert!(
             !out.contains("[Deprecated]"),
             "else branch should not appear:\n{out}"
@@ -752,12 +754,14 @@ mod tests {
     #[test]
     fn if_emits_only_on_html() {
         let html_doc =
-            crate::parsing::parser::parse(r"\name{x}\title{x}\description{\if{html}{KEPT}}").unwrap();
+            crate::parsing::parser::parse(r"\name{x}\title{x}\description{\if{html}{KEPT}}")
+                .unwrap();
         let html_out = emit_document(html_doc, &EmitOptions::default(), None).unwrap();
         assert!(html_out.contains("KEPT"), "expected KEPT in:\n{html_out}");
 
         let latex_doc =
-            crate::parsing::parser::parse(r"\name{x}\title{x}\description{\if{latex}{DROPPED}}").unwrap();
+            crate::parsing::parser::parse(r"\name{x}\title{x}\description{\if{latex}{DROPPED}}")
+                .unwrap();
         let latex_out = emit_document(latex_doc, &EmitOptions::default(), None).unwrap();
         assert!(
             !latex_out.contains("DROPPED"),
@@ -807,5 +811,39 @@ The method implementations:
         let document = parse_file(&path).unwrap();
         let source = path.file_name().and_then(|f| f.to_str());
         assert_snapshot!(emit_document(document, &opts, source).unwrap());
+    }
+
+    #[test]
+    fn source_becomes_a_section() {
+        // cqtkit's data docs cite provenance in \source; roxygen emits it as a
+        // top-level section alongside \format and \description
+        let doc = crate::parsing::parser::parse(
+            r"\name{cqtkit_data_dofetilide}\title{C-QT dataset}\source{
+Derived from Johannesen et. al.
+}",
+        )
+        .unwrap();
+        let out = emit_document(doc, &EmitOptions::default(), None).unwrap();
+        assert!(
+            out.contains("## Source"),
+            "expected a Source heading in:\n{out}"
+        );
+        assert!(
+            out.contains("Derived from Johannesen et. al."),
+            "expected source text in:\n{out}"
+        );
+    }
+
+    #[test]
+    fn source_renders_nested_markup() {
+        let doc = crate::parsing::parser::parse(
+            r"\name{x}\title{x}\source{See \url{https://example.org/paper} for details}",
+        )
+        .unwrap();
+        let out = emit_document(doc, &EmitOptions::default(), None).unwrap();
+        assert!(
+            out.contains("https://example.org/paper"),
+            "expected url from \\source in:\n{out}"
+        );
     }
 }

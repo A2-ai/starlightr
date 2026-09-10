@@ -1,0 +1,399 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/cqtkit-data-bl-dofetilide.Rd
+---
+Document {
+    children: [
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Doc Type",
+                ),
+            ],
+            children: [
+                Text(
+                    "data",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Name",
+                ),
+            ],
+            children: [
+                Text(
+                    "cqtkit_data_bl_dofetilide",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "cqtkit_data_bl_dofetilide",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Title",
+                ),
+            ],
+            children: [
+                Text(
+                    "Baseline data for dofetilide C-QT study",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Format",
+                ),
+            ],
+            children: [
+                NewLine,
+                Section {
+                    title: [
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "cqtkit_data_bl_dofetilide",
+                                    ),
+                                ],
+                            ],
+                        },
+                    ],
+                    children: [
+                        NewLine,
+                        NewLine,
+                        Text(
+                            "A data frame with 132 rows and 17 columns:",
+                        ),
+                        NewLine,
+                        List {
+                            kind: Describe,
+                            items: [
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "ID",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "Unique subject identifier",
+                                        ),
+                                    ],
+                                },
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "SEX",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "Sex either M (Male) or F (Female)",
+                                        ),
+                                    ],
+                                },
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "AGE",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "Age in years at screening",
+                                        ),
+                                    ],
+                                },
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "HGHT",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "Height in cm at screening",
+                                        ),
+                                    ],
+                                },
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "WGHT",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "Weight in kg at screening",
+                                        ),
+                                    ],
+                                },
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "RACE",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "Race as provided",
+                                        ),
+                                    ],
+                                },
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "ETHNIC",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "Ethnicity as provided",
+                                        ),
+                                    ],
+                                },
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "VISIT",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "Visit code",
+                                        ),
+                                    ],
+                                },
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "TRTG",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "Treatment Group (Drug or Placebo)",
+                                        ),
+                                    ],
+                                },
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "DOSE",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "numeric value of dose",
+                                        ),
+                                    ],
+                                },
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "DOSEU",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "Units of DOSE",
+                                        ),
+                                    ],
+                                },
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "TPT",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "Timepoint of collection relative to first dose (h)",
+                                        ),
+                                    ],
+                                },
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "RR",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "RR before dose (ms)",
+                                        ),
+                                    ],
+                                },
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "QT",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "QT before dose (ms)",
+                                        ),
+                                    ],
+                                },
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "HR",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "HR before dose (bpm)",
+                                        ),
+                                    ],
+                                },
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "QTCB",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "Bazett's corrected QT before dose (ms)",
+                                        ),
+                                    ],
+                                },
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "QTCF",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "Fridericia's corrected QT before dose (ms)",
+                                        ),
+                                    ],
+                                },
+                            ],
+                        },
+                        NewLine,
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Source",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "Derived from Johannesen et. al. (https://ascpt.onlinelibrary.wiley.com/doi/10.1038/clpt.2014.155)",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "cqtkit_data_bl_dofetilide",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "Baseline data for dofetilide C-QT study",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Keyword",
+                ),
+            ],
+            children: [
+                Text(
+                    "datasets",
+                ),
+            ],
+        },
+        NewLine,
+    ],
+}

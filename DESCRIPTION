@@ -1,7 +1,7 @@
 Package: starlightr
 Type: Package
 Title: Build Starlight Documentation Sites for R Packages
-Version: 0.2.0
+Version: 0.2.1
 Authors@R:
     person("Matt", "Smith", email = "matthews@a2-ai.com", role = c("aut", "cre"))
 Description: A modern R package documentation generator that creates beautiful
@@ -9,7 +9,6 @@ Description: A modern R package documentation generator that creates beautiful
     Starlight-based sites with modern aesthetics and navigation.
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.3.3
 Imports:
     base64enc,
     callr,
@@ -31,3 +30,4 @@ Config/rextendr/version: 0.4.2.9000
 SystemRequirements: Cargo (Rust's package manager), rustc >= 1.85.0, xz
 Depends: 
     R (>= 4.2)
+Config/roxygen2/version: 8.0.0
