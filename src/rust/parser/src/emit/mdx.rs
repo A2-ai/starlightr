@@ -135,6 +135,9 @@ impl Emitter {
             "if" => self.emit_if(args),
             "ifelse" => self.emit_ifelse(args),
             "figure" => self.emit_figure(args),
+            // \out passes its payload through as text; MDX escaping keeps a
+            // stray tag from being parsed as JSX.
+            "out" => self.emit_node_group(args),
             _ if self.in_math_mode() => self.emit_math_command(name, option, args),
             _ => {
                 if self.source_file.is_empty() {
@@ -887,6 +890,19 @@ Derived from Johannesen et. al.
         assert!(
             !out.contains("```r"),
             "preformatted should not be fenced as r in:\n{out}"
+        );
+    }
+
+    #[test]
+    fn out_emits_escaped_payload() {
+        let doc = crate::parsing::parser::parse(
+            r#"\name{x}\title{x}\description{labels read "\if{html}{\out{<group>}} (N = n)".}"#,
+        )
+        .unwrap();
+        let out = emit_document(doc, &EmitOptions::default(), None).unwrap();
+        assert!(
+            out.contains(r"\<group> (N = n)"),
+            "expected escaped out payload in:\n{out}"
         );
     }
 }

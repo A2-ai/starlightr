@@ -34,3 +34,34 @@ test_that("fix_img_width leaves explicit width and non-tag text alone", {
   prose <- "plain text with height=\"138\" not in a tag"
   expect_equal(starlightr:::fix_img_width(prose), prose)
 })
+
+test_that("rewrite_article_links points cross-vignette links at sibling pages", {
+  targets <- c("eda-pk-pkpd-workflow" = "eda-pk-pkpd-workflow")
+  md <- "See the [EDA](eda-pk-pkpd-workflow.html) article."
+  expect_equal(
+    starlightr:::rewrite_article_links(md, targets),
+    "See the [EDA](../eda-pk-pkpd-workflow/) article."
+  )
+})
+
+test_that("rewrite_article_links keeps anchors and slugifies the target", {
+  targets <- c("Getting.Started" = "getting-started")
+  expect_equal(
+    starlightr:::rewrite_article_links("[a](Getting.Started.html#setup)", targets),
+    "[a](../getting-started/#setup)"
+  )
+})
+
+test_that("rewrite_article_links leaves unbuilt and external targets alone", {
+  targets <- c("built" = "built")
+  md <- paste(
+    "[a](other.html)",
+    "[b](https://example.org/page.html)",
+    "[c](built.html)",
+    sep = "\n"
+  )
+  expect_equal(
+    starlightr:::rewrite_article_links(md, targets),
+    "[a](other.html)\n[b](https://example.org/page.html)\n[c](../built/)"
+  )
+})

@@ -1,0 +1,1182 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/test-html-out.Rd
+---
+Document {
+    children: [
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Name",
+                ),
+            ],
+            children: [
+                Text(
+                    "plot_conc_time_mean",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "plot_conc_time_mean",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Title",
+                ),
+            ],
+            children: [
+                Text(
+                    "Generate Mean ± SD Concentration-Time Summary Plot",
+                ),
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "plot_conc_time_mean(",
+                ),
+                NewLine,
+                Text(
+                    "  data,",
+                ),
+                NewLine,
+                Text(
+                    "  x_var,",
+                ),
+                NewLine,
+                Text(
+                    "  y_var,",
+                ),
+                NewLine,
+                Text(
+                    "  id_var,",
+                ),
+                NewLine,
+                Text(
+                    "  color_var,",
+                ),
+                NewLine,
+                Text(
+                    "  split_by = NULL,",
+                ),
+                NewLine,
+                Text(
+                    "  facet_by = NULL,",
+                ),
+                NewLine,
+                Text(
+                    "  shape_var = NULL,",
+                ),
+                NewLine,
+                Text(
+                    "  color_limit = 8,",
+                ),
+                NewLine,
+                Text(
+                    "  stat_type = c(\"arithmetic\", \"geometric\"),",
+                ),
+                NewLine,
+                Text(
+                    "  errorbar = c(\"upper\", \"both\"),",
+                ),
+                NewLine,
+                Text(
+                    "  x_units = NULL,",
+                ),
+                NewLine,
+                Text(
+                    "  y_units = NULL,",
+                ),
+                NewLine,
+                Text(
+                    "  x_lab = NULL,",
+                ),
+                NewLine,
+                Text(
+                    "  y_lab = NULL,",
+                ),
+                NewLine,
+                Text(
+                    "  color_lab = NULL,",
+                ),
+                NewLine,
+                Text(
+                    "  shape_lab = NULL,",
+                ),
+                NewLine,
+                Text(
+                    "  style = pkdemo_style(),",
+                ),
+                NewLine,
+                Text(
+                    "  blq = c(\"drop\", \"zero\", \"half_lloq\"),",
+                ),
+                NewLine,
+                Text(
+                    "  lloq = NULL,",
+                ),
+                NewLine,
+                Text(
+                    "  mean_below_lloq = c(\"none\", \"zero\", \"missing\")",
+                ),
+                NewLine,
+                Text(
+                    ")",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        ArgumentTable(
+            [
+                Argument {
+                    name: [
+                        Text(
+                            "data",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "A data frame containing individual PK data",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "x_var",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Time variable (column name, quoted or unquoted, e.g. NTIME or",
+                        ),
+                        NewLine,
+                        Text(
+                            "\"NTIME\")",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "y_var",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Concentration variable (column name, quoted or unquoted, e.g. AVAL)",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "id_var",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Subject ID variable (column name, quoted or unquoted, e.g. USUBJID)",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "color_var",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Grouping variable mapped to color (column name, quoted or",
+                        ),
+                        NewLine,
+                        Text(
+                            "unquoted, e.g. COHORT or \"DOSE\")",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "split_by",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Character vector of column names used to split the data",
+                        ),
+                        NewLine,
+                        Text(
+                            "into separate plots. NULL (default) returns a single ggplot. When",
+                        ),
+                        NewLine,
+                        Text(
+                            "provided, returns a named list of ggplots, one per unique combination.",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "facet_by",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Optional single column name; when set, the returned plot(s)",
+                        ),
+                        NewLine,
+                        Text(
+                            "are faceted by this column via ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "ggplot2::facet_wrap()",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ". Stratifies",
+                        ),
+                        NewLine,
+                        Text(
+                            "the summary by (color_var, facet_by, x_var) so each panel shows only its",
+                        ),
+                        NewLine,
+                        Text(
+                            "own data. Independent of ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "split_by",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " (which produces separate plot",
+                        ),
+                        NewLine,
+                        Text(
+                            "objects); the two can be combined.",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "shape_var",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Optional single column name mapped to point shape. Useful",
+                        ),
+                        NewLine,
+                        Text(
+                            "for overlaying a secondary stratifier (e.g. visit or period) on top of",
+                        ),
+                        NewLine,
+                        Text(
+                            "the color-coded group. Stratifies the summary by that column.",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "color_limit",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Maximum number of ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "color_var",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " groups that colour",
+                        ),
+                        NewLine,
+                        Text(
+                            "alone encodes. When the number of groups exceeds this, groups are split into",
+                        ),
+                        NewLine,
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "ceiling(n / color_limit)",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " equal sets --- balanced rather than filled",
+                        ),
+                        NewLine,
+                        Text(
+                            "to ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "color_limit",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " each (12 groups at 8 gives 6 + 6, not 8 + 4) ---",
+                        ),
+                        NewLine,
+                        Text(
+                            "with colours repeating across sets while linetype changes per set, so each",
+                        ),
+                        NewLine,
+                        Text(
+                            "group stays distinguishable. At or below the limit, every group gets a",
+                        ),
+                        NewLine,
+                        Text(
+                            "unique colour and a solid line. Default: 8.",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "stat_type",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Summary statistic family. One of:",
+                        ),
+                        NewLine,
+                        List {
+                            kind: Describe,
+                            items: [
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "\"arithmetic\"",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "Arithmetic mean and SD (default)",
+                                        ),
+                                    ],
+                                },
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "\"geometric\"",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "Geometric mean and geometric SD on the log scale;",
+                                        ),
+                                        NewLine,
+                                        Text(
+                                            "non-positive y values are dropped before summarising",
+                                        ),
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "errorbar",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Error bar style. One of:",
+                        ),
+                        NewLine,
+                        List {
+                            kind: Describe,
+                            items: [
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "\"upper\"",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "Upper whisker only (default)",
+                                        ),
+                                    ],
+                                },
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "\"both\"",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "Upper and lower whiskers",
+                                        ),
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "x_units",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Optional units string appended to the x-axis label.",
+                        ),
+                        NewLine,
+                        Text(
+                            "May also be a named list/character vector keyed by a value of one of",
+                        ),
+                        NewLine,
+                        Text(
+                            "the ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "split_by",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " columns (e.g. ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "c(Drug1 = \"h\", Drug2 = \"min\")",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ");",
+                        ),
+                        NewLine,
+                        Text(
+                            "each split picks the matching entry.",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "y_units",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Optional units string appended to the y-axis label.",
+                        ),
+                        NewLine,
+                        Text(
+                            "Accepts the same per-group lookup form as ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "x_units",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ".",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "x_lab",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Override x-axis label. If NULL, derived from x_var + x_units.",
+                        ),
+                        NewLine,
+                        Text(
+                            "Also accepts a named list/character vector keyed by a split value.",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "y_lab",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Override y-axis label. If NULL, derived from y_var + y_units.",
+                        ),
+                        NewLine,
+                        Text(
+                            "Same per-group lookup form as ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "x_lab",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ".",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "color_lab",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Legend title. Default: column name of color_var",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "shape_lab",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Legend title for the shape aesthetic. Default: column",
+                        ),
+                        NewLine,
+                        Text(
+                            "name of ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "shape_var",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ".",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "style",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "A ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "ggstylekit_style_spec",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " controlling theme, base geom",
+                        ),
+                        NewLine,
+                        Text(
+                            "looks, log axis (",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "logy",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            "), and plot-level/legend appearance. Defaults",
+                        ),
+                        NewLine,
+                        Text(
+                            "to ",
+                        ),
+                        Link {
+                            label: [
+                                Text(
+                                    "pkdemo_style",
+                                ),
+                                Text(
+                                    "()",
+                                ),
+                            ],
+                            target: Local(
+                                [
+                                    Text(
+                                        "pkdemo_style",
+                                    ),
+                                ],
+                            ),
+                            mode: Code,
+                        },
+                        Text(
+                            "; pass ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "pkdemo_style(logy = TRUE)",
+                                    ),
+                                ],
+                            ],
+                        },
+                        NewLine,
+                        Text(
+                            "for a log y-axis. The plot is finished with",
+                        ),
+                        NewLine,
+                        Link {
+                            label: [
+                                Text(
+                                    "style_plot",
+                                ),
+                            ],
+                            target: Package {
+                                package: [
+                                    Text(
+                                        "ggstylekit",
+                                    ),
+                                ],
+                                topic: [
+                                    Text(
+                                        "style_plot",
+                                    ),
+                                ],
+                            },
+                            mode: Code,
+                        },
+                        Text(
+                            ". Named ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "colors",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " pins are keyed by",
+                        ),
+                        NewLine,
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "color_var",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " value (",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "c(`50` = \"steelblue\")",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            "), resolved per split,",
+                        ),
+                        NewLine,
+                        Text(
+                            "and do not reach the set-based path above ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "color_limit",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ", which owns",
+                        ),
+                        NewLine,
+                        Text(
+                            "colour itself. A whole-palette choice does reach it, so",
+                        ),
+                        NewLine,
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "pkdemo_style(colorblind = TRUE)",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " recolours these plots too.",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "blq",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "How to handle BLQ values — non-numeric strings in a character",
+                        ),
+                        NewLine,
+                        Text(
+                            "y_var column. NA rows are always dropped. One of \"drop\" (default),",
+                        ),
+                        NewLine,
+                        Text(
+                            "\"zero\", or \"half_lloq\"",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "lloq",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "Scalar numeric LLOQ, or unquoted column name with per-row LLOQ",
+                        ),
+                        NewLine,
+                        Text(
+                            "values. Required when blq = \"half_lloq\". When ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "mean_below_lloq",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " is",
+                        ),
+                        NewLine,
+                        Text(
+                            "set, lloq must instead be a scalar numeric or a named numeric vector keyed",
+                        ),
+                        NewLine,
+                        Text(
+                            "by a ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "split_by",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            " value (e.g. ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "c(Drug1 = 25, Drug2 = 0.5)",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ") —",
+                        ),
+                        NewLine,
+                        Text(
+                            "column references are not supported for that comparison.",
+                        ),
+                    ],
+                },
+                Argument {
+                    name: [
+                        Text(
+                            "mean_below_lloq",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "How to handle per-group mean values that fall below",
+                        ),
+                        NewLine,
+                        Text(
+                            "the LLOQ. One of:",
+                        ),
+                        NewLine,
+                        List {
+                            kind: Describe,
+                            items: [
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "\"none\"",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "Leave means as computed (default)",
+                                        ),
+                                    ],
+                                },
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "\"zero\"",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "Replace mean (and its error-bar bounds) with 0",
+                                        ),
+                                    ],
+                                },
+                                ListItem {
+                                    term: Some(
+                                        [
+                                            Text(
+                                                "\"missing\"",
+                                            ),
+                                        ],
+                                    ),
+                                    children: [
+                                        Text(
+                                            "Replace mean (and its error-bar bounds) with NA, so",
+                                        ),
+                                        NewLine,
+                                        Text(
+                                            "the connecting line breaks at that point",
+                                        ),
+                                    ],
+                                },
+                            ],
+                        },
+                        NewLine,
+                        Text(
+                            "Requires ",
+                        ),
+                        Command {
+                            name: "code",
+                            options: None,
+                            args: [
+                                [
+                                    Text(
+                                        "lloq",
+                                    ),
+                                ],
+                            ],
+                        },
+                        Text(
+                            ". When lloq is a named lookup, each split's mean is",
+                        ),
+                        NewLine,
+                        Text(
+                            "compared against the matching entry; splits with no matching name are",
+                        ),
+                        NewLine,
+                        Text(
+                            "left unchanged.",
+                        ),
+                    ],
+                },
+            ],
+        ),
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Value",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "A ggplot object when ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "split_by",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " is NULL, otherwise a named list of",
+                ),
+                NewLine,
+                Text(
+                    "ggplot objects with names like \"var1=val1_var2=val2\".",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "Computes mean and standard deviation (arithmetic by default, optionally",
+                ),
+                NewLine,
+                Text(
+                    "geometric) of a concentration variable at each time point, stratified by a",
+                ),
+                NewLine,
+                Text(
+                    "grouping variable (e.g. cohort or dose level). Plots mean lines with SD",
+                ),
+                NewLine,
+                Text(
+                    "error bars; legend labels include the number of unique subjects per group",
+                ),
+                NewLine,
+                Text(
+                    "formatted as \"",
+                ),
+                Command {
+                    name: "if",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "html",
+                            ),
+                        ],
+                        [
+                            Command {
+                                name: "out",
+                                options: None,
+                                args: [
+                                    [
+                                        Text(
+                                            "<group>",
+                                        ),
+                                    ],
+                                ],
+                            },
+                        ],
+                    ],
+                },
+                Text(
+                    " (N = n)\". For geometric statistics the error bars",
+                ),
+                NewLine,
+                Text(
+                    "span ",
+                ),
+                Text(
+                    "[",
+                ),
+                Text(
+                    "mean / GSD, mean × GSD",
+                ),
+                Text(
+                    "]",
+                ),
+                Text(
+                    ". Each group gets a distinct colour; once the",
+                ),
+                NewLine,
+                Text(
+                    "number of groups exceeds ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "color_limit",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ", colours repeat across balanced",
+                ),
+                NewLine,
+                Text(
+                    "sets and linetype varies per set so groups stay distinguishable. When",
+                ),
+                NewLine,
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "split_by",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " is supplied, returns one plot per unique combination of those",
+                ),
+                NewLine,
+                Text(
+                    "columns (useful for separating by analyte, cycle, etc.).",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+    ],
+}

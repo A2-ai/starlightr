@@ -225,6 +225,71 @@ fix_img_width <- function(md) {
   )
 }
 
+#' Rewrite cross-vignette .html links to article page URLs
+#'
+#' Vignettes link to each other with `[Title](other.html)`, which is how
+#' `R CMD build` lays them out side by side in `inst/doc/`. Each article is
+#' published as its own directory, so the link has to climb one level and
+#' point at the sibling page. Only targets that were actually built are
+#' rewritten; anything else is left alone rather than turned into a link
+#' that looks valid and 404s.
+#'
+#' @param md Markdown string
+#' @param link_targets Named character vector mapping a built article's
+#'   source name (the `.html` stem a vignette would link to) to its slug
+#' @return Markdown with cross-article links pointing at `../<slug>/`
+#' @keywords internal
+#' @noRd
+rewrite_article_links <- function(md, link_targets) {
+  for (name in names(link_targets)) {
+    pattern <- paste0(
+      "\\]\\(",
+      escape_regex(name),
+      "\\.html(#[^)]*)?\\)"
+    )
+    md <- gsub(
+      pattern,
+      paste0("](../", link_targets[[name]], "/\\1)"),
+      md,
+      perl = TRUE
+    )
+  }
+  md
+}
+
+#' Rewrite cross-vignette links across every built article
+#'
+#' @param files Character vector of written article paths
+#' @param link_targets Named character vector of source name to slug
+#' @return Invisibly, `files`
+#' @keywords internal
+#' @noRd
+fix_article_links <- function(files, link_targets) {
+  if (length(files) == 0 || length(link_targets) == 0) {
+    return(invisible(files))
+  }
+
+  for (f in files) {
+    md <- paste(readLines(f, warn = FALSE), collapse = "\n")
+    updated <- rewrite_article_links(md, link_targets)
+    if (!identical(updated, md)) {
+      writeLines(updated, f)
+    }
+  }
+
+  invisible(files)
+}
+
+#' Escape regex metacharacters in a literal string
+#'
+#' @param x Character string
+#' @return `x` with metacharacters backslash-escaped
+#' @keywords internal
+#' @noRd
+escape_regex <- function(x) {
+  gsub("([.\\\\|()\\[\\]{}^$*+?-])", "\\\\\\1", x, perl = TRUE)
+}
+
 #' Render a whisker template from inst/templates/
 #'
 #' @param name Template filename (e.g. "astro.config.mjs")

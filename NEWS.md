@@ -2,6 +2,10 @@
 
 * README.md generated from `usethis` sets the logo img height attribute. Starlight does not work well with that creating full-width images. Now the height attribute in img tags are swapped to width.
 * `\pkg` now emitted as bold text instead of dropped.
+* `\preformatted` now lowered from Rd files.
+
+# starlightr 0.2.1
+
 * `\source` now lowered from Rd files.
 
 # starlightr 0.2.0

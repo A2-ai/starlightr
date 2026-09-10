@@ -113,11 +113,13 @@ build_articles <- function(
 
   # Process each article
   written_files <- character()
+  link_targets <- character()
   for (i in seq_along(rmd_files)) {
     src <- rmd_files[i]
     md_name <- tools::file_path_sans_ext(basename(src))
     slug <- slugify(md_name)
     title <- titles[i]
+    link_targets[[md_name]] <- slug
 
     out_file <- process_article_inline(
       slug,
@@ -132,6 +134,10 @@ build_articles <- function(
       written_files <- c(written_files, out_file)
     }
   }
+
+  # Cross-vignette `other.html` links only resolve once every article's
+  # slug is known, so they are rewritten in a second pass.
+  fix_article_links(written_files, link_targets)
 
   cli::cli_alert_success("Generated {length(written_files)} article{?s}")
   invisible(written_files)

@@ -1,0 +1,46 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &opts, source).unwrap()"
+input_file: parser/test_data/test-html-out.Rd
+---
+---
+title: "Generate Mean ± SD Concentration-Time Summary Plot"
+description: "Computes mean and standard deviation (arithmetic by default, optionally geometric) of a concentration variable at each time point, stratified by a grouping vari"
+sidebar:
+  label: "plot_conc_time_mean"
+pagefind: false
+---
+
+## Alias
+
+plot_conc_time_mean
+
+
+
+## Usage
+
+```r
+plot_conc_time_mean(
+  data,
+  x_var,
+  y_var,
+  id_var,
+  color_var,
+  split_by = NULL,
+  facet_by = NULL,
+  shape_var = NULL,
+  color_limit = 8,
+  stat_type = c("arithmetic", "geometric"),
+  errorbar = c("upper", "both"),
+  x_units = NULL,
+  y_units = NULL,
+  x_lab = NULL,
+  y_lab = NULL,
+  color_lab = NULL,
+  shape_lab = NULL,
+  style = pkdemo_style(),
+  blq = c("drop", "zero", "half_lloq"),
+  lloq = NULL,
+  mean_below_lloq = c("none", "zero", "missing")
+)
+```
