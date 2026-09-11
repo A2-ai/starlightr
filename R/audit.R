@@ -68,11 +68,37 @@ audit_config <- function(pkg = ".", config_file = "_starlightr.toml") {
     }
   }
 
-  if (length(config_only) > 0) {
-    cli::cli_alert_info(
-      "{length(config_only)} config reference{?s} don't match exports:"
+  # A reference that isn't an export may still be a real topic: datasets and
+  # @rdname package pages are documented but never exported.
+  include_internal <- config$reference$include_internal %||% FALSE
+  buckets <- classify_unmatched_references(config_only, pkg_path)
+
+  if (length(buckets$topics) > 0) {
+    cli::cli_alert_success(
+      "{length(buckets$topics)} package or data topic{?s} documented but not exported"
     )
-    for (ref in sort(config_only)) {
+  }
+
+  if (length(buckets$internal) > 0) {
+    if (include_internal) {
+      cli::cli_alert_success(
+        "{length(buckets$internal)} internal topic{?s} allowed by {.code reference.include_internal}"
+      )
+    } else {
+      cli::cli_alert_warning(
+        "{length(buckets$internal)} internal topic{?s} in config but {.code reference.include_internal} is false:"
+      )
+      for (ref in sort(buckets$internal)) {
+        cli::cli_bullets(c("!" = "{.val {ref}}"))
+      }
+    }
+  }
+
+  if (length(buckets$unknown) > 0) {
+    cli::cli_alert_warning(
+      "{length(buckets$unknown)} config reference{?s} match no documented topic:"
+    )
+    for (ref in sort(buckets$unknown)) {
       cli::cli_bullets(c("!" = "{.val {ref}}"))
     }
   }
@@ -199,6 +225,49 @@ audit_config <- function(pkg = ".", config_file = "_starlightr.toml") {
     covered = matched$covered,
     config_only = config_only
   ))
+}
+
+#' Classify config references that matched no NAMESPACE export
+#'
+#' A reference can still be valid: datasets and `@rdname` package topics are
+#' documented but never exported, and internal topics are legitimate when
+#' `reference.include_internal` is set. Anything with no Rd file behind it is
+#' a typo or a deleted topic.
+#'
+#' @param refs Character vector of unmatched config references
+#' @param pkg_path Package directory path
+#' @return List with `topics`, `internal` and `unknown` character vectors
+#' @keywords internal
+#' @noRd
+classify_unmatched_references <- function(refs, pkg_path) {
+  out <- list(
+    topics = character(),
+    internal = character(),
+    unknown = character()
+  )
+  if (length(refs) == 0) {
+    return(out)
+  }
+
+  rd_files <- list.files(
+    file.path(pkg_path, "man"),
+    pattern = "\\.Rd$",
+    full.names = TRUE
+  )
+  rd_names <- tolower(tools::file_path_sans_ext(basename(rd_files)))
+
+  for (ref in refs) {
+    idx <- match(tolower(ref), rd_names)
+    if (is.na(idx)) {
+      out$unknown <- c(out$unknown, ref)
+    } else if (is_internal_rd(rd_files[idx])) {
+      out$internal <- c(out$internal, ref)
+    } else {
+      out$topics <- c(out$topics, ref)
+    }
+  }
+
+  out
 }
 
 #' Parse NAMESPACE file to extract exported functions

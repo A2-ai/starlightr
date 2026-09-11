@@ -290,6 +290,17 @@ escape_regex <- function(x) {
   gsub("([.\\\\|()\\[\\]{}^$*+?-])", "\\\\\\1", x, perl = TRUE)
 }
 
+#' Does an Rd file carry \\keyword{internal}?
+#'
+#' @param path Path to an .Rd file
+#' @return `TRUE` when the topic is marked internal
+#' @keywords internal
+#' @noRd
+is_internal_rd <- function(path) {
+  content <- readLines(path, warn = FALSE)
+  any(grepl("\\\\keyword\\{internal\\}", content))
+}
+
 #' Render a whisker template from inst/templates/
 #'
 #' @param name Template filename (e.g. "astro.config.mjs")

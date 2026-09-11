@@ -141,6 +141,18 @@ is_external_doc_link <- function(link) {
   TRUE
 }
 
+#' Is there an Rd topic behind this name?
+#'
+#' @param pkg_path Path to package directory
+#' @param name Topic name, matched against `man/<name>.Rd` case-insensitively
+#' @return `TRUE` when a matching Rd file exists
+#' @keywords internal
+#' @noRd
+has_documented_topic <- function(pkg_path, name) {
+  rd_files <- list.files(file.path(pkg_path, "man"), pattern = "\\.Rd$")
+  any(tolower(tools::file_path_sans_ext(rd_files)) == tolower(name))
+}
+
 #' Validate that an internal link points to existing content
 #'
 #' @param link Link string
@@ -194,8 +206,12 @@ validate_link_target <- function(link, context, pkg_path, exported) {
   if (startsWith(path, "reference/")) {
     fn_name <- sub("^reference/", "", path)
     if (nchar(fn_name) > 0) {
-      # Check if function is exported (case-insensitive)
-      if (!any(tolower(exported) == tolower(fn_name))) {
+      # Exports are the common case, but datasets and @rdname package topics
+      # are documented without being exported and still get a page.
+      if (
+        !any(tolower(exported) == tolower(fn_name)) &&
+          !has_documented_topic(pkg_path, fn_name)
+      ) {
         cli::cli_warn(
           "Reference link target not found: {.val {link}} - no exported function {.fn {fn_name}} ({context})"
         )

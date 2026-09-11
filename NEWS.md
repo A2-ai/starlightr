@@ -3,6 +3,9 @@
 * README.md generated from `usethis` sets the logo img height attribute. Starlight does not work well with that creating full-width images. Now the height attribute in img tags are swapped to width.
 * `\pkg` now emitted as bold text instead of dropped.
 * `\preformatted` now lowered from Rd files.
+* `\out` payload now emitted as escaped text instead of dropped.
+* Cross-vignette `other.html` links now point at the sibling article page.
+* `audit_config()` now checks references against documented topics, not just NAMESPACE exports, so datasets and package doc pages no longer report as warnings.
 
 # starlightr 0.2.1
 
