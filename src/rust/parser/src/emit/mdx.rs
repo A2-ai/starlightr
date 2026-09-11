@@ -126,7 +126,7 @@ impl Emitter {
         match name {
             "code" | "verb" => self.emit_code(option, args),
             "emph" => self.emit_emph(option, args),
-            "strong" => self.emit_strong(option, args),
+            "strong" | "pkg" => self.emit_strong(option, args),
             "eqn" => self.emit_eqn(option, args),
             "deqn" => self.emit_deqn(option, args),
             "email" => self.emit_email(args),
@@ -135,6 +135,9 @@ impl Emitter {
             "if" => self.emit_if(args),
             "ifelse" => self.emit_ifelse(args),
             "figure" => self.emit_figure(args),
+            // \out passes its payload through as text; MDX escaping keeps a
+            // stray tag from being parsed as JSX.
+            "out" => self.emit_node_group(args),
             _ if self.in_math_mode() => self.emit_math_command(name, option, args),
             _ => {
                 if self.source_file.is_empty() {
@@ -487,7 +490,7 @@ impl Emitter {
         let nodes = &nodes[start..end];
 
         match kind {
-            CodeKind::Plain => {}
+            CodeKind::Plain | CodeKind::Preformatted => {}
             CodeKind::DontRun => self.emit_text("# Not run:\n"),
             CodeKind::DontTest => self.emit_text("# Not tested:\n"),
             CodeKind::DontShow => return,
@@ -516,7 +519,13 @@ impl Emitter {
             self.emit_text("\n\n");
         }
 
-        self.emit_text("```r\n");
+        // \preformatted is verbatim text, not necessarily R, so it gets a
+        // plain fence.
+        if matches!(kind, CodeKind::Preformatted) {
+            self.emit_text("```\n");
+        } else {
+            self.emit_text("```r\n");
+        }
         self.code_mode_depth += 1;
         self.emit_code_body_nodes(kind, children);
         self.code_mode_depth -= 1;
@@ -844,6 +853,56 @@ Derived from Johannesen et. al.
         assert!(
             out.contains("https://example.org/paper"),
             "expected url from \\source in:\n{out}"
+        );
+    }
+
+    #[test]
+    fn pkg_renders_bold() {
+        // cqtkit's package doc uses \pkg{ggstylekit} inline in a section body
+        let doc = crate::parsing::parser::parse(
+            r"\name{x}\title{x}\description{Plots are styled with \pkg{ggstylekit}.}",
+        )
+        .unwrap();
+        let out = emit_document(doc, &EmitOptions::default(), None).unwrap();
+        assert!(
+            out.contains("**ggstylekit**"),
+            "expected bold package name in:\n{out}"
+        );
+    }
+
+    #[test]
+    fn preformatted_becomes_a_plain_fence() {
+        // YAML braces inside \preformatted must survive verbatim: inside a
+        // fence they are literal, not MDX expressions
+        let doc = crate::parsing::parser::parse(
+            "\\name{x}\\title{x}\\description{Expected structure:\n\\preformatted{\nparameters:\n  Cmax: { label: \"Cmax\", digits: 3 }\n}\n}",
+        )
+        .unwrap();
+        let out = emit_document(doc, &EmitOptions::default(), None).unwrap();
+        assert!(
+            out.contains("```\nparameters:"),
+            "expected a plain (non-r) fence in:\n{out}"
+        );
+        assert!(
+            out.contains("  Cmax: { label: \"Cmax\", digits: 3 }"),
+            "expected braces preserved verbatim in:\n{out}"
+        );
+        assert!(
+            !out.contains("```r"),
+            "preformatted should not be fenced as r in:\n{out}"
+        );
+    }
+
+    #[test]
+    fn out_emits_escaped_payload() {
+        let doc = crate::parsing::parser::parse(
+            r#"\name{x}\title{x}\description{labels read "\if{html}{\out{<group>}} (N = n)".}"#,
+        )
+        .unwrap();
+        let out = emit_document(doc, &EmitOptions::default(), None).unwrap();
+        assert!(
+            out.contains(r"\<group> (N = n)"),
+            "expected escaped out payload in:\n{out}"
         );
     }
 }

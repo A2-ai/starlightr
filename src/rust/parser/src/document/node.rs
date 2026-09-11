@@ -133,9 +133,8 @@ impl Node {
                     | "title" | "format" | "alias" | "keyword" | "concept" | "docType" => {
                         lower_section_command(name, cmd)
                     }
-                    "examples" | "example" | "usage" | "dontrun" | "dontshow" | "donttest" => {
-                        lower_code_command(name, cmd)
-                    }
+                    "examples" | "example" | "usage" | "preformatted" | "dontrun" | "dontshow"
+                    | "donttest" => lower_code_command(name, cmd),
                     // Pure metadata — no visual output
                     "encoding" | "Rdversion" => Node::Text(String::new()),
                     _ => cmd,

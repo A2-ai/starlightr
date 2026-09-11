@@ -205,6 +205,113 @@ fix_lifecycle_badges <- function(md) {
   md
 }
 
+#' Swap img height attributes to width
+#'
+#' Starlight's markdown CSS sets `height: auto` on content images, which
+#' overrides an HTML `height` attribute and leaves the image at full size.
+#' READMEs written for GitHub commonly size logos that way, so rename the
+#' attribute. Tags that already set `width` are left alone.
+#'
+#' @param md Markdown string
+#' @return Markdown with `height`-only img tags sized by `width` instead
+#' @keywords internal
+#' @noRd
+fix_img_width <- function(md) {
+  gsub(
+    "(?i)<img(?![^>]*\\swidth\\s*=)([^>]*?)\\sheight\\s*=",
+    "<img\\1 width=",
+    md,
+    perl = TRUE
+  )
+}
+
+#' Rewrite cross-vignette .html links to article page URLs
+#'
+#' Vignettes link to each other with `[Title](other.html)`, which is how
+#' `R CMD build` lays them out side by side in `inst/doc/`. Each article is
+#' published as its own directory, so the link has to climb one level and
+#' point at the sibling page. Only targets that were actually built are
+#' rewritten; anything else is left alone rather than turned into a link
+#' that looks valid and 404s.
+#'
+#' @param md Markdown string
+#' @param link_targets Named character vector mapping a built article's
+#'   source name (the `.html` stem a vignette would link to) to its slug
+#' @return Markdown with cross-article links pointing at `../<slug>/`
+#' @keywords internal
+#' @noRd
+rewrite_article_links <- function(md, link_targets) {
+  for (name in names(link_targets)) {
+    pattern <- paste0(
+      "\\]\\(",
+      escape_regex(name),
+      "\\.html(#[^)]*)?\\)"
+    )
+    md <- gsub(
+      pattern,
+      paste0("](../", link_targets[[name]], "/\\1)"),
+      md,
+      perl = TRUE
+    )
+  }
+  md
+}
+
+#' Rewrite cross-vignette links across every built article
+#'
+#' @param files Character vector of written article paths
+#' @param link_targets Named character vector of source name to slug
+#' @return Invisibly, `files`
+#' @keywords internal
+#' @noRd
+fix_article_links <- function(files, link_targets) {
+  if (length(files) == 0 || length(link_targets) == 0) {
+    return(invisible(files))
+  }
+
+  for (f in files) {
+    md <- paste(readLines(f, warn = FALSE), collapse = "\n")
+    updated <- rewrite_article_links(md, link_targets)
+    if (!identical(updated, md)) {
+      writeLines(updated, f)
+    }
+  }
+
+  invisible(files)
+}
+
+#' Escape regex metacharacters in a literal string
+#'
+#' @param x Character string
+#' @return `x` with metacharacters backslash-escaped
+#' @keywords internal
+#' @noRd
+escape_regex <- function(x) {
+  gsub("([.\\\\|()\\[\\]{}^$*+?-])", "\\\\\\1", x, perl = TRUE)
+}
+
+#' Does an Rd file carry \\keyword{internal}?
+#'
+#' @param path Path to an .Rd file
+#' @return `TRUE` when the topic is marked internal
+#' @keywords internal
+#' @noRd
+is_internal_rd <- function(path) {
+  content <- readLines(path, warn = FALSE)
+  any(grepl("\\\\keyword\\{internal\\}", content))
+}
+
+#' Does an Rd file document a dataset?
+#'
+#' @param path Path to an .Rd file
+#' @return `TRUE` when the topic is a dataset (`\\docType{data}`)
+#' @keywords internal
+#' @noRd
+is_dataset_rd <- function(path) {
+  content <- readLines(path, warn = FALSE)
+  any(grepl("\\\\docType\\{data\\}", content))
+}
+
 #' Render a whisker template from inst/templates/
 #'
 #' @param name Template filename (e.g. "astro.config.mjs")

@@ -1,0 +1,298 @@
+---
+source: parser/src/parsing/parser.rs
+expression: parse_file(path).unwrap()
+input_file: parser/test_data/test-preformatted.Rd
+---
+Document {
+    children: [
+        NewLine,
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Name",
+                ),
+            ],
+            children: [
+                Text(
+                    "read_param_yaml",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Alias",
+                ),
+            ],
+            children: [
+                Text(
+                    "read_param_yaml",
+                ),
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Title",
+                ),
+            ],
+            children: [
+                Text(
+                    "Read a parameter-config YAML file.",
+                ),
+            ],
+        },
+        NewLine,
+        Code {
+            title: Some(
+                "Usage",
+            ),
+            kind: Plain,
+            children: [
+                NewLine,
+                Text(
+                    "read_param_yaml(path)",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        ArgumentTable(
+            [
+                Argument {
+                    name: [
+                        Text(
+                            "path",
+                        ),
+                    ],
+                    description: [
+                        Text(
+                            "File path to the YAML.",
+                        ),
+                    ],
+                },
+            ],
+        ),
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Value",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "Named list keyed by raw column name; each entry is a list with",
+                ),
+                NewLine,
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "label",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ", ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "units",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ", ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "digits",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ", ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "digit_type",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " (any of",
+                ),
+                NewLine,
+                Text(
+                    "which may be missing). ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "digit_type",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " is ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "\"sigfig\"",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    " (default),",
+                ),
+                NewLine,
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "\"decimal\"",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ", ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "\"integer\"",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ", or ",
+                ),
+                Command {
+                    name: "code",
+                    options: None,
+                    args: [
+                        [
+                            Text(
+                                "\"raw\"",
+                            ),
+                        ],
+                    ],
+                },
+                Text(
+                    ".",
+                ),
+                NewLine,
+            ],
+        },
+        NewLine,
+        Section {
+            title: [
+                Text(
+                    "Description",
+                ),
+            ],
+            children: [
+                NewLine,
+                Text(
+                    "Expected structure:",
+                ),
+                NewLine,
+                Code {
+                    title: None,
+                    kind: Preformatted,
+                    children: [
+                        NewLine,
+                        Text(
+                            "parameters:",
+                        ),
+                        NewLine,
+                        Text(
+                            "  Cmax:      ",
+                        ),
+                        Text(
+                            "{",
+                        ),
+                        Text(
+                            " label: \"Cmax\",      units: \"ng/mL\", digits: 3 ",
+                        ),
+                        Text(
+                            "}",
+                        ),
+                        NewLine,
+                        Text(
+                            "  AUClast:   ",
+                        ),
+                        Text(
+                            "{",
+                        ),
+                        Text(
+                            " label: \"AUClast\",   units: \"h*ng/mL\" ",
+                        ),
+                        Text(
+                            "}",
+                        ),
+                        NewLine,
+                        Text(
+                            "  N_Samples: ",
+                        ),
+                        Text(
+                            "{",
+                        ),
+                        Text(
+                            " label: \"N Samples\", digit_type: integer ",
+                        ),
+                        Text(
+                            "}",
+                        ),
+                        NewLine,
+                        Text(
+                            "  ...",
+                        ),
+                        NewLine,
+                    ],
+                },
+                NewLine,
+            ],
+        },
+        NewLine,
+    ],
+}

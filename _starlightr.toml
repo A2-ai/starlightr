@@ -69,4 +69,8 @@ include_build_files = true
 
 [versions]
 enabled = true
-list = [{ tag = "0.1.0", label = "v0.1.0", default = true }]
+list = [
+	{ tag = "0.2.2", label = "v0.2.2", default = true },
+	{ tag = "0.2.0", label = "v0.2.0" },
+	{ tag = "0.1.0", label = "v0.1.0" }
+]

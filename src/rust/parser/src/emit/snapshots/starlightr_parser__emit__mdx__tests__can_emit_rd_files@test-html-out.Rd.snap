@@ -1,0 +1,171 @@
+---
+source: parser/src/emit/mdx.rs
+expression: "emit_document(document, &EmitOptions::default(), source).unwrap()"
+input_file: parser/test_data/test-html-out.Rd
+---
+---
+title: "Generate Mean ± SD Concentration-Time Summary Plot"
+description: "Computes mean and standard deviation (arithmetic by default, optionally geometric) of a concentration variable at each time point, stratified by a grouping vari"
+sidebar:
+  label: "plot_conc_time_mean"
+pagefind: false
+---
+
+## Name
+
+plot_conc_time_mean
+
+
+## Alias
+
+plot_conc_time_mean
+
+
+## Title
+
+Generate Mean ± SD Concentration-Time Summary Plot
+
+
+## Usage
+
+```r
+plot_conc_time_mean(
+  data,
+  x_var,
+  y_var,
+  id_var,
+  color_var,
+  split_by = NULL,
+  facet_by = NULL,
+  shape_var = NULL,
+  color_limit = 8,
+  stat_type = c("arithmetic", "geometric"),
+  errorbar = c("upper", "both"),
+  x_units = NULL,
+  y_units = NULL,
+  x_lab = NULL,
+  y_lab = NULL,
+  color_lab = NULL,
+  shape_lab = NULL,
+  style = pkdemo_style(),
+  blq = c("drop", "zero", "half_lloq"),
+  lloq = NULL,
+  mean_below_lloq = c("none", "zero", "missing")
+)
+```
+
+## Arguments
+
+<div class="arg-table">
+<table>
+<thead>
+<tr><th>Argument</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data</code></td>
+<td>A data frame containing individual PK data</td>
+</tr>
+<tr>
+<td><code>x_var</code></td>
+<td>Time variable (column name, quoted or unquoted, e.g. NTIME or "NTIME")</td>
+</tr>
+<tr>
+<td><code>y_var</code></td>
+<td>Concentration variable (column name, quoted or unquoted, e.g. AVAL)</td>
+</tr>
+<tr>
+<td><code>id_var</code></td>
+<td>Subject ID variable (column name, quoted or unquoted, e.g. USUBJID)</td>
+</tr>
+<tr>
+<td><code>color_var</code></td>
+<td>Grouping variable mapped to color (column name, quoted or unquoted, e.g. COHORT or "DOSE")</td>
+</tr>
+<tr>
+<td><code>split_by</code></td>
+<td>Character vector of column names used to split the data into separate plots. NULL (default) returns a single ggplot. When provided, returns a named list of ggplots, one per unique combination.</td>
+</tr>
+<tr>
+<td><code>facet_by</code></td>
+<td>Optional single column name; when set, the returned plot(s) are faceted by this column via `ggplot2::facet_wrap()`. Stratifies the summary by (color_var, facet_by, x_var) so each panel shows only its own data. Independent of `split_by` (which produces separate plot objects); the two can be combined.</td>
+</tr>
+<tr>
+<td><code>shape_var</code></td>
+<td>Optional single column name mapped to point shape. Useful for overlaying a secondary stratifier (e.g. visit or period) on top of the color-coded group. Stratifies the summary by that column.</td>
+</tr>
+<tr>
+<td><code>color_limit</code></td>
+<td>Maximum number of `color_var` groups that colour alone encodes. When the number of groups exceeds this, groups are split into `ceiling(n / color_limit)` equal sets --- balanced rather than filled to `color_limit` each (12 groups at 8 gives 6 + 6, not 8 + 4) --- with colours repeating across sets while linetype changes per set, so each group stays distinguishable. At or below the limit, every group gets a unique colour and a solid line. Default: 8.</td>
+</tr>
+<tr>
+<td><code>stat_type</code></td>
+<td>Summary statistic family. One of: - **"arithmetic"**: Arithmetic mean and SD (default) - **"geometric"**: Geometric mean and geometric SD on the log scale; non-positive y values are dropped before summarising</td>
+</tr>
+<tr>
+<td><code>errorbar</code></td>
+<td>Error bar style. One of: - **"upper"**: Upper whisker only (default) - **"both"**: Upper and lower whiskers</td>
+</tr>
+<tr>
+<td><code>x_units</code></td>
+<td>Optional units string appended to the x-axis label. May also be a named list/character vector keyed by a value of one of the `split_by` columns (e.g. `c(Drug1 = "h", Drug2 = "min")`); each split picks the matching entry.</td>
+</tr>
+<tr>
+<td><code>y_units</code></td>
+<td>Optional units string appended to the y-axis label. Accepts the same per-group lookup form as `x_units`.</td>
+</tr>
+<tr>
+<td><code>x_lab</code></td>
+<td>Override x-axis label. If NULL, derived from x_var + x_units. Also accepts a named list/character vector keyed by a split value.</td>
+</tr>
+<tr>
+<td><code>y_lab</code></td>
+<td>Override y-axis label. If NULL, derived from y_var + y_units. Same per-group lookup form as `x_lab`.</td>
+</tr>
+<tr>
+<td><code>color_lab</code></td>
+<td>Legend title. Default: column name of color_var</td>
+</tr>
+<tr>
+<td><code>shape_lab</code></td>
+<td>Legend title for the shape aesthetic. Default: column name of `shape_var`.</td>
+</tr>
+<tr>
+<td><code>style</code></td>
+<td>A `ggstylekit_style_spec` controlling theme, base geom looks, log axis (`logy`), and plot-level/legend appearance. Defaults to [`pkdemo_style()`](../pkdemo_style/); pass `pkdemo_style(logy = TRUE)` for a log y-axis. The plot is finished with style_plot. Named `colors` pins are keyed by `color_var` value (`c(`50` = "steelblue")`), resolved per split, and do not reach the set-based path above `color_limit`, which owns colour itself. A whole-palette choice does reach it, so `pkdemo_style(colorblind = TRUE)` recolours these plots too.</td>
+</tr>
+<tr>
+<td><code>blq</code></td>
+<td>How to handle BLQ values — non-numeric strings in a character y_var column. NA rows are always dropped. One of "drop" (default), "zero", or "half_lloq"</td>
+</tr>
+<tr>
+<td><code>lloq</code></td>
+<td>Scalar numeric LLOQ, or unquoted column name with per-row LLOQ values. Required when blq = "half_lloq". When `mean_below_lloq` is set, lloq must instead be a scalar numeric or a named numeric vector keyed by a `split_by` value (e.g. `c(Drug1 = 25, Drug2 = 0.5)`) — column references are not supported for that comparison.</td>
+</tr>
+<tr>
+<td><code>mean_below_lloq</code></td>
+<td>How to handle per-group mean values that fall below the LLOQ. One of: - **"none"**: Leave means as computed (default) - **"zero"**: Replace mean (and its error-bar bounds) with 0 - **"missing"**: Replace mean (and its error-bar bounds) with NA, so the connecting line breaks at that point Requires `lloq`. When lloq is a named lookup, each split's mean is compared against the matching entry; splits with no matching name are left unchanged.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+## Value
+
+A ggplot object when `split_by` is NULL, otherwise a named list of
+ggplot objects with names like "var1=val1_var2=val2".
+
+
+## Description
+
+Computes mean and standard deviation (arithmetic by default, optionally
+geometric) of a concentration variable at each time point, stratified by a
+grouping variable (e.g. cohort or dose level). Plots mean lines with SD
+error bars; legend labels include the number of unique subjects per group
+formatted as "\<group> (N = n)". For geometric statistics the error bars
+span [mean / GSD, mean × GSD]. Each group gets a distinct colour; once the
+number of groups exceeds `color_limit`, colours repeat across balanced
+sets and linetype varies per set so groups stay distinguishable. When
+`split_by` is supplied, returns one plot per unique combination of those
+columns (useful for separating by analyte, cycle, etc.).

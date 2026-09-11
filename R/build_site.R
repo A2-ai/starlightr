@@ -179,10 +179,7 @@ resolve_config_rd_files <- function(pkg_path, config) {
 
   # Filter internal unless config says otherwise
   include_internal <- config$reference$include_internal %||% FALSE
-  internal_rd <- Filter(function(f) {
-    content <- readLines(f, warn = FALSE)
-    any(grepl("\\\\keyword\\{internal\\}", content))
-  }, all_rd)
+  internal_rd <- Filter(is_internal_rd, all_rd)
   if (!include_internal) {
     all_rd <- setdiff(all_rd, internal_rd)
   }

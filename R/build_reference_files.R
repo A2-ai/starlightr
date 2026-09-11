@@ -155,10 +155,7 @@ build_package_reference_docs <- function(
   rd_files <- list.files(rd_dir, pattern = "\\.Rd$", full.names = TRUE)
 
   if (!include_internal) {
-    rd_files <- Filter(function(f) {
-      content <- readLines(f, warn = FALSE)
-      !any(grepl("\\\\keyword\\{internal\\}", content))
-    }, rd_files)
+    rd_files <- Filter(Negate(is_internal_rd), rd_files)
   }
 
   if (length(rd_files) == 0) {
