@@ -75,13 +75,13 @@ audit_config <- function(pkg = ".", config_file = "_starlightr.toml") {
 
   if (length(buckets$topics) > 0) {
     cli::cli_alert_success(
-      "{length(buckets$topics)} package topic{?s} covered in config"
+      "{length(buckets$topics)} package topic{?s} covered by configuration"
     )
   }
 
   if (length(buckets$datasets) > 0) {
     cli::cli_alert_success(
-      "{length(buckets$datasets)} dataset{?s} covered in config"
+      "{length(buckets$datasets)} dataset{?s} covered by configuration"
     )
   }
 
@@ -92,7 +92,7 @@ audit_config <- function(pkg = ".", config_file = "_starlightr.toml") {
       )
     } else {
       cli::cli_alert_warning(
-        "{length(buckets$internal)} internal topic{?s} in config but {.code reference.include_internal} is false:"
+        "{length(buckets$internal)} internal topic{?s} in configuration but {.code reference.include_internal} is false:"
       )
       for (ref in sort(buckets$internal)) {
         cli::cli_bullets(c("!" = "{.val {ref}}"))
