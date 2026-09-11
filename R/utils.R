@@ -301,6 +301,17 @@ is_internal_rd <- function(path) {
   any(grepl("\\\\keyword\\{internal\\}", content))
 }
 
+#' Does an Rd file document a dataset?
+#'
+#' @param path Path to an .Rd file
+#' @return `TRUE` when the topic is a dataset (`\\docType{data}`)
+#' @keywords internal
+#' @noRd
+is_dataset_rd <- function(path) {
+  content <- readLines(path, warn = FALSE)
+  any(grepl("\\\\docType\\{data\\}", content))
+}
+
 #' Render a whisker template from inst/templates/
 #'
 #' @param name Template filename (e.g. "astro.config.mjs")

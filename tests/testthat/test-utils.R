@@ -79,11 +79,14 @@ test_that("is_internal_rd detects the internal keyword", {
   expect_true(starlightr:::is_internal_rd(internal))
 })
 
-test_that("classify_unmatched_references separates topics, internals and typos", {
+test_that("classify_unmatched_references separates topics, datasets, internals and typos", {
   pkg <- tempfile()
   dir.create(file.path(pkg, "man"), recursive = TRUE)
   on.exit(unlink(pkg, recursive = TRUE), add = TRUE)
-  writeLines("\\name{d}", file.path(pkg, "man", "pkg_data.Rd"))
+  writeLines(
+    c("\\docType{data}", "\\name{d}"),
+    file.path(pkg, "man", "pkg_data.Rd")
+  )
   writeLines("\\name{t}", file.path(pkg, "man", "pkg-compute.Rd"))
   writeLines(
     c("\\name{h}", "\\keyword{internal}"),
@@ -95,7 +98,8 @@ test_that("classify_unmatched_references separates topics, internals and typos",
     pkg
   )
 
-  expect_equal(sort(got$topics), c("pkg-compute", "pkg_data"))
+  expect_equal(got$topics, "pkg-compute")
+  expect_equal(got$datasets, "pkg_data")
   expect_equal(got$internal, "dot-helper")
   expect_equal(got$unknown, "nope")
 })

@@ -75,7 +75,13 @@ audit_config <- function(pkg = ".", config_file = "_starlightr.toml") {
 
   if (length(buckets$topics) > 0) {
     cli::cli_alert_success(
-      "{length(buckets$topics)} package or data topic{?s} documented but not exported"
+      "{length(buckets$topics)} package topic{?s} covered in config"
+    )
+  }
+
+  if (length(buckets$datasets) > 0) {
+    cli::cli_alert_success(
+      "{length(buckets$datasets)} dataset{?s} covered in config"
     )
   }
 
@@ -236,12 +242,14 @@ audit_config <- function(pkg = ".", config_file = "_starlightr.toml") {
 #'
 #' @param refs Character vector of unmatched config references
 #' @param pkg_path Package directory path
-#' @return List with `topics`, `internal` and `unknown` character vectors
+#' @return List with `topics`, `datasets`, `internal` and `unknown` character
+#'   vectors
 #' @keywords internal
 #' @noRd
 classify_unmatched_references <- function(refs, pkg_path) {
   out <- list(
     topics = character(),
+    datasets = character(),
     internal = character(),
     unknown = character()
   )
@@ -262,6 +270,8 @@ classify_unmatched_references <- function(refs, pkg_path) {
       out$unknown <- c(out$unknown, ref)
     } else if (is_internal_rd(rd_files[idx])) {
       out$internal <- c(out$internal, ref)
+    } else if (is_dataset_rd(rd_files[idx])) {
+      out$datasets <- c(out$datasets, ref)
     } else {
       out$topics <- c(out$topics, ref)
     }
