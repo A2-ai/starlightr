@@ -20,19 +20,22 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: windows-latest, r: '4.6', rust-version: 'stable-msvc', rust-target: 'x86_64-pc-windows-gnu'}
-          - {os: macos-latest,   r: '4.6', rust-version: 'stable'}
-          - {os: ubuntu-latest,  r: '4.6', rust-version: 'stable'}
-          - {os: ubuntu-latest,  r: '4.5', rust-version: 'stable'}
+          - {os: windows-latest, r: '4.6', rust-version: 'stable-msvc', rust-target: 'x86_64-pc-windows-gnu', repo: 'https://packagemanager.posit.co/cran/2026-03-30'}
+          - {os: macos-latest,   r: '4.6', rust-version: 'stable', repo: 'https://prism.dev.a2-ai.cloud/rpkgs/stratus/2026-05-11/'}
+          - {os: ubuntu-latest,  r: '4.6', rust-version: 'stable', repo: 'https://prism.dev.a2-ai.cloud/rpkgs/stratus/2026-05-11/'}
+          - {os: ubuntu-latest,  r: '4.5', rust-version: 'stable', repo: 'https://prism.dev.a2-ai.cloud/rpkgs/stratus/2026-05-11/'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
       CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+      RV_R_VERSION: ${{ matrix.config.r }}
+      RV_R_BIN: R
+      CRAN_REPOSITORY: ${{ matrix.config.repo }}
 
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: ${{ matrix.config.rust-version }}
@@ -40,19 +43,9 @@ jobs:
 
       - name: Ensure rustup cargo bin is first on PATH
         if: runner.os != 'Windows'
+        shell: bash
         run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
 
-      - name: Verify Rust toolchain
-        if: runner.os != 'Windows'
-        run: |
-          which rustup
-          which rustc
-          which cargo
-          rustup show
-          rustc --version
-          cargo --version
-
-      # Add rust-cache for faster builds
       - name: Cache Rust dependencies
         uses: Swatinem/rust-cache@v2
         with:
@@ -64,42 +57,21 @@ jobs:
       - uses: r-lib/actions/setup-r@v2
         with:
           r-version: ${{ matrix.config.r }}
-          use-public-rspm: true
 
       - uses: a2-ai/setup-rv@main
 
-      - name: replace-rversion
+      - name: Configure repositories
+        shell: bash
         run: |
-          perl -i -pe 's|^r_version = "4\.[0-9\.]+"$|r_version = "${{ matrix.config.r }}"|' rproject.toml
-          cat rproject.toml
-        if: runner.os != 'Windows'
-
-      - name: replace-rversion and set repos (Windows)
-        run: |
-          $rVersion = "${{ matrix.config.r }}"
-          (Get-Content rproject.toml) -replace '^r_version = "4\.[0-9\.]+"$', "r_version = `"$rVersion`"" | Set-Content rproject.toml
-          Get-Content rproject.toml
-        shell: pwsh
-        if: runner.os == 'Windows'
-      
-      - name: fix windows repository
-        run: |
-          rv.exe configure repository remove prism
-          rv.exe configure repository add PPM --url https://packagemanager.posit.co/cran/2026-03-30
-        shell: cmd
-        if: runner.os == 'Windows'
+          rv configure repository replace prism --alias prism --url "$CRAN_REPOSITORY"
 
       - name: rv-plan
+        shell: bash
         run: rv plan
-        if: runner.os != 'Windows'
 
-      - name: rv-plan (Windows)
-        run: rv.exe plan
-        shell: cmd
-        if: runner.os == 'Windows'
-      
       - name: rv-sysdeps-install (Linux)
         if: runner.os == 'Linux'
+        shell: bash
         run: |
           MISSING_DEPS=$(rv plan --json | jq -r '.installed[].sys_deps[]? | select(.status == "absent") | .name')
           if [ -n "$MISSING_DEPS" ]; then
@@ -110,14 +82,17 @@ jobs:
           else
             echo "All system dependencies are present"
           fi
-      - name: rv-sync
-        run: rv sync -vvv
-        if: runner.os != 'Windows'
 
-      - name: rv-sync (Windows)
-        run: rv.exe sync -vvv
-        shell: cmd
-        if: runner.os == 'Windows'
+      - name: rv-sync
+        shell: bash
+        run: rv sync
+
+      - name: Use the rv library for package checks
+        shell: bash
+        run: |
+          touch "$RUNNER_TEMP/empty.Rprofile"
+          echo "R_PROFILE_USER=$RUNNER_TEMP/empty.Rprofile" >> "$GITHUB_ENV"
+          echo "R_LIBS_USER=$GITHUB_WORKSPACE/$(rv library)" >> "$GITHUB_ENV"
 
       - uses: r-lib/actions/check-r-package@v2
         with:
