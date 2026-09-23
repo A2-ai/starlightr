@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: windows-latest, r: '4.6', rust-version: 'stable-msvc', rust-target: 'x86_64-pc-windows-gnu', repo: 'https://packagemanager.posit.co/cran/2026-03-30'}
+          - {os: windows-latest, r: '4.6', rust-version: 'stable-msvc', rust-target: 'x86_64-pc-windows-gnu', repo: 'https://packagemanager.posit.co/cran/latest'}
           - {os: macos-latest,   r: '4.6', rust-version: 'stable', repo: 'https://prism.dev.a2-ai.cloud/rpkgs/stratus/2026-05-11/'}
           - {os: ubuntu-latest,  r: '4.6', rust-version: 'stable', repo: 'https://prism.dev.a2-ai.cloud/rpkgs/stratus/2026-05-11/'}
           - {os: ubuntu-latest,  r: '4.5', rust-version: 'stable', repo: 'https://prism.dev.a2-ai.cloud/rpkgs/stratus/2026-05-11/'}
