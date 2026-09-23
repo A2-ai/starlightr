@@ -10,6 +10,7 @@ build_reference_files(
   pkg = ".",
   config_file = "_starlightr.toml",
   examples = TRUE,
+  site_dir = NULL,
   verbose = FALSE
 )
 }
@@ -25,6 +26,10 @@ build_reference_files(
 \item{examples}{Logical, whether to capture and embed example outputs
 (default `TRUE`).}
 
+\item{site_dir}{Path to the Astro site root. Example plots are written to
+`public/figures/reference/` under this directory. If `NULL` (default),
+derived from `output_dir` by stripping the `src/content/docs/...` suffix.}
+
 \item{verbose}{Logical, whether to print debug messages during example
 capture (default `FALSE`).}
 }
@@ -33,8 +38,9 @@ Invisibly returns a character vector of written file paths.
 }
 \description{
 Self-contained function that captures example outputs, resolves external
-links, and renders `.Rd` files to MDX. Example outputs (plots, tables, text)
-are embedded inline in the MDX as base64 data URIs and raw HTML.
+links, and renders `.Rd` files to MDX. Example plots are written to
+`public/figures/reference/` in the site and referenced by path; tables and
+text are embedded inline in the MDX.
 }
 \examples{
 \dontrun{

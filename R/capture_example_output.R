@@ -111,7 +111,12 @@ capture_rd_examples <- function(pkg_name, fn_names, verbose = FALSE) {
       message("Code:\n", ex_code, "\n---")
     }
 
-    eval_env <- new.env(parent = globalenv())
+    # Examples run in globalenv, not a child env: model objects such as
+    # nlme::lme store `data` as a symbol and re-evaluate it from their own
+    # namespace, which resolves through globalenv only. Snapshot and restore
+    # so examples neither leak into each other nor clobber the user's session.
+    before <- ls(globalenv(), all.names = TRUE)
+    saved <- mget(before, envir = globalenv())
     entry <- list()
     txt_parts <- character()
 
@@ -120,7 +125,7 @@ capture_rd_examples <- function(pkg_name, fn_names, verbose = FALSE) {
         message("  Evaluating expression ", i, ": ", deparse(ex_exprs[[i]])[1])
       }
       val <- tryCatch(
-        withVisible(eval(ex_exprs[[i]], envir = eval_env)),
+        withVisible(eval(ex_exprs[[i]], envir = globalenv())),
         error = function(e) {
           message("  Error in example ", i, " for ", fn_name, ": ", e$message)
           NULL
@@ -166,6 +171,12 @@ capture_rd_examples <- function(pkg_name, fn_names, verbose = FALSE) {
         }
       }
     }
+
+    rm(
+      list = setdiff(ls(globalenv(), all.names = TRUE), before),
+      envir = globalenv()
+    )
+    list2env(saved, envir = globalenv())
 
     if (length(txt_parts) > 0) {
       entry$txt <- paste(txt_parts, collapse = "\n")

@@ -10,6 +10,7 @@ build_package_reference_docs(
   config_file = "_starlightr.toml",
   examples = TRUE,
   include_internal = NULL,
+  site_dir = NULL,
   verbose = FALSE
 )
 }
@@ -27,6 +28,10 @@ build_package_reference_docs(
 (those with `@keywords internal`). If `NULL` (default), reads from
 `reference.include_internal` in `_starlightr.toml`, falling back to
 `FALSE`.}
+
+\item{site_dir}{Path to the Astro site root. Example plots are written to
+`public/figures/reference/` under this directory. If `NULL` (default),
+derived from `output_dir` by stripping the `src/content/docs/...` suffix.}
 
 \item{verbose}{Logical, whether to print debug messages during example
 capture (default `FALSE`).}

@@ -1,11 +1,15 @@
 #' Build reference MDX files from Rd files
 #'
 #' Self-contained function that captures example outputs, resolves external
-#' links, and renders `.Rd` files to MDX. Example outputs (plots, tables, text)
-#' are embedded inline in the MDX as base64 data URIs and raw HTML.
+#' links, and renders `.Rd` files to MDX. Example plots are written to
+#' `public/figures/reference/` in the site and referenced by path; tables and
+#' text are embedded inline in the MDX.
 #'
 #' @param rd_files Character vector of paths to `.Rd` files.
 #' @param output_dir Path to directory where reference MDX files are saved.
+#' @param site_dir Path to the Astro site root. Example plots are written to
+#'   `public/figures/reference/` under this directory. If `NULL` (default),
+#'   derived from `output_dir` by stripping the `src/content/docs/...` suffix.
 #' @param pkg Path to the package directory (default `"."`).
 #' @param config_file Path to `_starlightr.toml` (relative to `pkg`).
 #' @param examples Logical, whether to capture and embed example outputs
@@ -37,10 +41,16 @@ build_reference_files <- function(
   pkg = ".",
   config_file = "_starlightr.toml",
   examples = TRUE,
+  site_dir = NULL,
   verbose = FALSE
 ) {
   pkg_path <- normalizePath(pkg, mustWork = TRUE)
   config_path <- file.path(pkg_path, config_file)
+
+  if (is.null(site_dir)) {
+    site_dir <- resolve_site_dir(output_dir)
+  }
+  public_figures_dir <- file.path(site_dir, "public", "figures", "reference")
 
   # Validate rd_files exist
   rd_files <- normalizePath(rd_files, mustWork = FALSE)
@@ -68,7 +78,7 @@ build_reference_files <- function(
     captured <- capture_rd_examples(pkg_name, fn_names, verbose = verbose)
 
     if (length(captured) > 0) {
-      example_outputs_file <- build_inline_example_outputs_map(captured)
+      example_outputs_file <- build_example_outputs_map(captured, public_figures_dir)
       cli::cli_alert_success("Captured examples for {length(captured)} function{?s}")
     }
   }
@@ -132,6 +142,7 @@ build_package_reference_docs <- function(
   config_file = "_starlightr.toml",
   examples = TRUE,
   include_internal = NULL,
+  site_dir = NULL,
   verbose = FALSE
 ) {
   pkg_path <- normalizePath(pkg, mustWork = TRUE)
@@ -169,20 +180,24 @@ build_package_reference_docs <- function(
     pkg = pkg,
     config_file = config_file,
     examples = examples,
+    site_dir = site_dir,
     verbose = verbose
   )
 }
 
-#' Build inline example outputs JSON map
+#' Build example outputs JSON map
 #'
 #' Takes in-memory captured results from [capture_rd_examples()] and produces
-#' a temporary JSON file with inline content (base64 PNGs, raw HTML, text).
+#' a temporary JSON file. Plots are written to `public_figures_dir` as
+#' `<slug>.png` and referenced by their `/figures/reference/` web path; HTML
+#' and text are included inline.
 #'
 #' @param captured Named list from `capture_rd_examples()`
+#' @param public_figures_dir Directory to write example PNGs into
 #' @return Path to temporary JSON file
 #' @keywords include_internal
 #' @noRd
-build_inline_example_outputs_map <- function(captured) {
+build_example_outputs_map <- function(captured, public_figures_dir) {
   outputs <- list()
 
   for (fn_name in names(captured)) {
@@ -194,8 +209,10 @@ build_inline_example_outputs_map <- function(captured) {
     }
 
     if (!is.null(cap$png_raw)) {
-      b64 <- base64enc::base64encode(cap$png_raw)
-      entry$png <- paste0("data:image/png;base64,", b64)
+      ensure_dir(public_figures_dir)
+      file_name <- paste0(slugify(fn_name), ".png")
+      writeBin(cap$png_raw, file.path(public_figures_dir, file_name))
+      entry$png <- paste0("/figures/reference/", file_name)
     }
 
     if (!is.null(cap$html)) {
