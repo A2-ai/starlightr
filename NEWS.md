@@ -1,3 +1,7 @@
+# starlightr 0.2.3
+
+* Reference example plots are now written to `public/figures/reference/<slug>.png` and linked by path instead of being embedded as base64 data URIs, so the generated MDX stays readable. `build_reference_files()` and `build_package_reference_docs()` gain a `site_dir` argument.
+
 # starlightr 0.2.2 
 
 * README.md generated from `usethis` sets the logo img height attribute. Starlight does not work well with that creating full-width images. Now the height attribute in img tags are swapped to width.

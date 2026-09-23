@@ -105,7 +105,7 @@ build_site <- function(
     }
   }
 
-  # Build reference documentation (config-filtered, with inline examples)
+  # Build reference documentation (config-filtered, plots to public/figures/)
   ref_output <- file.path(output_path, "src", "content", "docs", "reference")
   rd_files <- resolve_config_rd_files(pkg_path, config)
   if (length(rd_files) > 0) {
@@ -115,6 +115,7 @@ build_site <- function(
       pkg = pkg_path,
       config_file = config_file,
       examples = TRUE,
+      site_dir = output_path,
       verbose = verbose
     )
   }
