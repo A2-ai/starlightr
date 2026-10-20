@@ -108,6 +108,9 @@ dir = "../my-docs-site"
 include_build_files = true  # Generate package.json, .gitignore, remark plugin
 ```
 
+`dir` can be a separate docs repository (`"../my-docs-site"`) or a directory
+inside the package repository (`"docs"`).
+
 ## Versioned Documentation
 
 Enable multi-version documentation with tagged releases:
@@ -121,5 +124,26 @@ list = [
 ]
 ```
 
-When enabled, a version selector component is added to the site header and a
-GitHub Actions workflow is generated for building all tagged versions.
+When enabled, a version selector component is added to the site header. Each
+version is built from the git tag of the same name with a `v` prefix, so
+`tag = "0.2.0"` is built from `v0.2.0`.
+
+## Deployment
+
+```toml
+[deploy]
+workflow = true  # Generate .github/workflows/deploy-docs.yml
+```
+
+The workflow is written to `.github/workflows/` at the root of the git
+repository containing `output.dir`, and builds the site from that directory.
+It publishes to the `gh-pages` branch, so set GitHub Pages to deploy from that
+branch.
+
+- **Versioned sites** build every version in `versions.list` when a `v*` tag is
+  pushed, and redirect the site root to the default version.
+- **Unversioned sites** build on every push to `main`.
+
+`workflow` defaults to `true` for versioned sites and `false` otherwise. Run
+`build_site(overwrite = TRUE)` to regenerate an existing workflow, for example
+after turning versions on or off.

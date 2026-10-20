@@ -1,3 +1,4 @@
+{{=<% %>=}}
 name: Build & Deploy Docs (Multi-Version)
 
 on:
@@ -11,6 +12,8 @@ permissions:
   id-token: write
 
 env:
+  # Site directory, relative to the repository root
+  DOCS_DIR: <%& docs_dir %>
   # For private repos: leave empty
   # For public repos: set to "/${{ github.event.repository.name }}"
   BASE_PREFIX: ""
@@ -24,75 +27,88 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get all version tags
-        id: all-tags
-        run: |
-          ALL_TAGS=$(git tag -l 'v*' | sort -V | tr '\n' ' ' | sed 's/[[:space:]]*$//')
-          echo "tags=$ALL_TAGS" >> $GITHUB_OUTPUT
-          echo "Found tags: $ALL_TAGS"
-
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
 
       - name: Build all versions
         run: |
-          # Get the latest versions.ts from main
+          # Get the latest versions.ts from main; it lists the versions to build
           git fetch origin main --depth=1
-          LATEST_VERSIONS=$(git show origin/main:src/data/versions.ts)
+          LATEST_VERSIONS=$(git show "origin/main:$DOCS_DIR/src/data/versions.ts")
+          LATEST_SELECT=$(git show "origin/main:$DOCS_DIR/src/components/VersionSelect.astro" 2>/dev/null || true)
+          VERSIONS=$(echo "$LATEST_VERSIONS" | sed -n 's/^ *tag: "\(.*\)",$/\1/p')
+          DEFAULT_VERSION=$(echo "$LATEST_VERSIONS" | awk -F'"' '/tag: "/ { tag = $2 } /default: true/ { print tag; exit }')
+          DEFAULT_VERSION=${DEFAULT_VERSION:-$(echo "$VERSIONS" | head -n1)}
+          echo "Found versions: $VERSIONS"
 
           # Create site directory structure
-          mkdir -p site/versions
+          SITE_DIR="$RUNNER_TEMP/site"
+          mkdir -p "$SITE_DIR/versions"
+          BUILT_COUNT=0
 
-          # Build each version
-          for tag in ${{ steps.all-tags.outputs.tags }}; do
-            echo "Building version $tag..."
+          # Build each version from its v-prefixed tag
+          for version in $VERSIONS; do
+            tag="v${version#v}"
+            if ! git rev-parse -q --verify "refs/tags/$tag" > /dev/null; then
+              echo "::warning::Skipping version $version (tag $tag not found)"
+              continue
+            fi
+            echo "Building version $version from $tag..."
 
             # Reset and checkout the tag
             git checkout .
-            git checkout $tag
+            git checkout "$tag"
 
             # Clean this version's directory
-            TAG_SLUG=${tag#v}
-            rm -rf site/versions/$TAG_SLUG
+            rm -rf "$SITE_DIR/versions/$version"
 
             # Install dependencies
-            bun install
+            (cd "$DOCS_DIR" && bun install)
 
             # Replace versions.ts and VersionSelect.astro with latest from main
-            if [ -f src/data/versions.ts ]; then
-              echo "$LATEST_VERSIONS" > src/data/versions.ts
+            if [ -f "$DOCS_DIR/src/data/versions.ts" ]; then
+              echo "$LATEST_VERSIONS" > "$DOCS_DIR/src/data/versions.ts"
             fi
-            git show origin/main:src/components/VersionSelect.astro > src/components/VersionSelect.astro 2>/dev/null || true
+            if [ -n "$LATEST_SELECT" ]; then
+              echo "$LATEST_SELECT" > "$DOCS_DIR/src/components/VersionSelect.astro"
+            fi
 
             # Build this version
-            ASTRO_BASE="${BASE_PREFIX}/versions/$TAG_SLUG/" \
-            bun run build
+            (cd "$DOCS_DIR" && ASTRO_BASE="${BASE_PREFIX}/versions/$version/" bun run build)
 
             # Copy to site tree
-            mkdir -p site/versions/$TAG_SLUG
-            cp -a dist/. site/versions/$TAG_SLUG/
+            mkdir -p "$SITE_DIR/versions/$version"
+            cp -a "$DOCS_DIR/dist/." "$SITE_DIR/versions/$version/"
+            BUILT_COUNT=$((BUILT_COUNT + 1))
 
-            echo "Completed build for $tag"
+            echo "Completed build for $version"
           done
 
-          # Create redirect to latest version
-          LATEST_TAG=$(echo "${{ steps.all-tags.outputs.tags }}" | tr ' ' '\n' | grep -v '^[[:space:]]*$' | tail -n1)
-          LATEST_SLUG=${LATEST_TAG#v}
+          # Fail before publishing if there is no usable default destination.
+          if [ "$BUILT_COUNT" -eq 0 ]; then
+            echo "::error::No documentation versions were built"
+            exit 1
+          fi
+          if [ ! -d "$SITE_DIR/versions/$DEFAULT_VERSION" ]; then
+            echo "::error::Default version $DEFAULT_VERSION was not built"
+            exit 1
+          fi
 
-          cat > site/index.html <<EOF
+          # Create redirect to the default version
+          cat > "$SITE_DIR/index.html" <<EOF
           <!doctype html>
-          <meta http-equiv="refresh" content="0; url=${BASE_PREFIX}/versions/$LATEST_SLUG/">
+          <meta http-equiv="refresh" content="0; url=${BASE_PREFIX}/versions/$DEFAULT_VERSION/">
           <title>Redirecting…</title>
-          <p>Redirecting to documentation $LATEST_SLUG…</p>
+          <p>Redirecting to documentation $DEFAULT_VERSION…</p>
           EOF
 
           # Add .nojekyll file for GitHub Pages
-          touch site/.nojekyll
+          touch "$SITE_DIR/.nojekyll"
 
       - name: Publish to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: site
+          publish_dir: ${{ runner.temp }}/site
           keep_files: true

@@ -1,0 +1,41 @@
+{{=<% %>=}}
+name: Build & Deploy Docs
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  # For private repos: leave empty
+  # For public repos: set to "/${{ github.event.repository.name }}"
+  BASE_PREFIX: ""
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Build site
+        working-directory: <%& docs_dir %>
+        run: |
+          bun install
+          ASTRO_BASE="${BASE_PREFIX}/" bun run build
+
+          # Add .nojekyll file for GitHub Pages
+          touch dist/.nojekyll
+
+      - name: Publish to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: <%& publish_dir %>
