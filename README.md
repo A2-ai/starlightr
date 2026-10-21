@@ -86,8 +86,8 @@ enabled = true
 ```
 
 `\dontrun{}` and `\dontshow{}` in Rd are respected. The `[versions]`
-section enables multi-version docs and can generate a deployment
-workflow.
+section enables multi-version docs, and `[deploy]` generates a
+deployment workflow for versioned or unversioned sites.
 
 ## Keeping config in sync
 

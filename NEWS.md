@@ -1,3 +1,9 @@
+# starlightr 0.3.0
+
+* Docs can now share the package repository or live in a separate repository.
+* `deploy.workflow` supports versioned and unversioned sites, replacing `versions.workflow`.
+* Versioned deployment builds configured releases and redirects to the default version, with checks to prevent broken deployments.
+
 # starlightr 0.2.3
 
 * Reference example plots are now written to `public/figures/reference/<slug>.png` and linked by path instead of being embedded as base64 data URIs, so the generated MDX stays readable. `build_reference_files()` and `build_package_reference_docs()` gain a `site_dir` argument.

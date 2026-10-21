@@ -121,34 +121,3 @@ generate_version_select_component <- function(output_path, config) {
   )
   cli::cli_alert_success("Generated {.file src/components/VersionSelect.astro}")
 }
-
-#' Generate deploy-docs.yml GitHub Actions workflow
-#'
-#' @param output_path Path to docs output directory
-#' @param config Configuration list
-#' @param overwrite Logical, whether to overwrite existing file
-#' @keywords internal
-#' @noRd
-generate_deploy_workflow <- function(output_path, config, overwrite = FALSE) {
-  template_path <- system.file(
-    "templates/deploy-docs.yml",
-    package = "starlightr"
-  )
-
-  # Create .github/workflows directory in docs output
-  workflows_dir <- file.path(output_path, ".github", "workflows")
-  ensure_dir(workflows_dir)
-
-  workflow_path <- file.path(workflows_dir, "deploy-docs.yml")
-
-  # Don't overwrite existing workflow unless requested
-  if (file.exists(workflow_path) && !overwrite) {
-    cli::cli_alert_info(
-      "Skipping {.file .github/workflows/deploy-docs.yml} (already exists)"
-    )
-    return(invisible(NULL))
-  }
-
-  file.copy(template_path, workflow_path, overwrite = TRUE)
-  cli::cli_alert_success("Generated {.file .github/workflows/deploy-docs.yml}")
-}

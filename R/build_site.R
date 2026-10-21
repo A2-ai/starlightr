@@ -14,14 +14,14 @@
 #' # Build site for current package (uses config default)
 #' build_site()
 #'
-#' # Build to external directory (recommended to avoid bloat)
+#' # Build to a separate docs repository
 #' build_site(output_dir = "/path/to/my-package-docs")
 #' build_site(output_dir = "../my-package-docs")
 #'
 #' # Build with custom configuration
 #' build_site(config_file = "my_config.toml")
 #'
-#' # Build to relative directory (not recommended due to Starlight bloat)
+#' # Build inside the package repository
 #' build_site(output_dir = "docs")
 #'
 #' # Build with verbose example output
@@ -68,17 +68,6 @@ build_site <- function(
   cli::cli_h1("Building Starlight site for {.pkg {basename(pkg_path)}}")
   cli::cli_alert_info("Output directory: {.path {output_path}}")
 
-  # Provide helpful info about external vs internal directories
-  if (is_absolute_path(output_dir) || startsWith(output_dir, "..")) {
-    cli::cli_alert_info(
-      "Using external directory (recommended for Starlight sites)"
-    )
-  } else {
-    cli::cli_alert_warning(
-      "Using internal directory - consider external directory to avoid bloat"
-    )
-  }
-
   # Create output directory structure
   setup_starlight_structure(output_path, config)
 
@@ -97,12 +86,11 @@ build_site <- function(
     validate_version_config(config)
     generate_versions_ts(output_path, config)
     generate_version_select_component(output_path, config)
+  }
 
-    # Generate GitHub workflow if requested
-    # Generate workflow by default unless explicitly disabled
-    if (!isFALSE(config$versions$workflow)) {
-      generate_deploy_workflow(output_path, config, overwrite = overwrite)
-    }
+  # Generate GitHub workflow at the root of the repository containing the site
+  if (wants_deploy_workflow(config)) {
+    generate_deploy_workflow(output_path, config, overwrite = overwrite)
   }
 
   # Build reference documentation (config-filtered, plots to public/figures/)
